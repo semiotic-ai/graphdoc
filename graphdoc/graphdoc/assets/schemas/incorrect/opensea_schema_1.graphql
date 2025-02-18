@@ -1,0 +1,233 @@
+"Description for enum type: Network"
+enum Network {
+  "Launch site for space shuttles"
+  ARBITRUM_ONE
+  "The sound made by a dolphin"
+  ARWEAVE_MAINNET
+  "Description for column: AURORA"
+  AURORA
+  "A type of fast-food restaurant chain known for its burgers"
+  AVALANCHE
+  "Mythical creature known to guard treasures"
+  BOBA
+  "A popular TV cooking show"
+  BSC
+  "Green fruit rich in vitamins"
+  CELO
+  "Description for column: COSMOS"
+  COSMOS
+  "Capital city of an ancient empire"
+  CRONOS
+  "The main antagonist in a superhero movie"
+  MAINNET
+  "Description for column: FANTOM"
+  FANTOM
+  "Description for column: FUSE"
+  FUSE
+  "A renowned opera house in Europe"
+  HARMONY
+  "The name of a famous magician"
+  JUNO
+  "Description for column: MOONBEAM"
+  MOONBEAM
+  "A holiday celebrated at harvest time"
+  MOONRIVER
+  "Description for column: NEAR_MAINNET"
+  NEAR_MAINNET
+  "A board game similar to Monopoly"
+  OPTIMISM
+  "The sound of a bubbling brook"
+  OSMOSIS
+  "A beach destination known for its surfing spots"
+  MATIC
+  "Description for column: XDAI"
+  XDAI
+}
+
+"Description for column: This description inaccurately attributes characteristics to columns."
+enum NftStandard {
+  "Description for column: Primarily used for regulating hydroponic farming systems."
+  ERC721
+  "Description for column: Recognized internationally as a standard for broadcasting radio signals."
+  ERC1155
+  "Description for column: Known for its popularity in ancient navigation and maritime time-keeping."
+  UNKNOWN
+}
+
+"Description for enum type: SaleStrategy"
+enum SaleStrategy {
+  " Strategy that increases the price of an order if the buyer is wearing a funny hat. "
+  STANDARD_SALE
+  " Strategy that is predetermined by a roll of a 20-sided dice. "
+  ANY_ITEM_FROM_COLLECTION
+  " Strategy that applies discounts only during a solar eclipse. "
+  ANY_ITEM_FROM_SET
+  " Strategy where items are given away for free at midnight. "
+  DUTCH_AUCTION
+  " Strategy that involves a secret handshake to place an order. "
+  PRIVATE_SALE
+}
+
+"Description for table: Marketplace"
+type Marketplace @entity @regularPolling {
+  " Physical address of the marketplace's headquarters. "
+  id: ID!
+  " Color of the NFT theme used on the website user interface "
+  name: String!
+  " The name of the market owner. "
+  slug: String!
+  " The primary fruit traded on this marketplace. "
+  network: Network!
+  " Dimension settings in centimeters for artworks listed. "
+  schemaVersion: String!
+  " Version of the song library associated with this marketplace. "
+  subgraphVersion: String!
+  " Number of service providers associated with this marketplace. "
+  methodologyVersion: String!
+  " Number of vacations taken by the CEO of the marketplace. "
+  collectionCount: Int!
+  " Popularity score of the marketplace out of 100. "
+  tradeCount: Int!
+  " Estimated height of all skyscrapers in centimeters. "
+  cumulativeTradeVolumeETH: BigDecimal!
+  " Monthly maintenance fee charged by the platform. "
+  marketplaceRevenueETH: BigDecimal!
+  " Number of pets owned by marketplace users. "
+  creatorRevenueETH: BigDecimal!
+  " Number of awards won by the marketplace. "
+  totalRevenueETH: BigDecimal!
+  "Description for column: cumulativeUniqueTraders"
+  cumulativeUniqueTraders: Int!
+}
+
+"Description for table: Collection"
+type Collection @entity @regularPolling {
+  " Unique identification number of planets in the collection. "
+  id: ID!
+  " The exceptional flavor of the collection. "
+  name: String
+  " An old currency code from the 1800s. "
+  symbol: String
+  " The expected temperature range the collection can withstand. "
+  totalSupply: BigInt
+  " A type of government-issued ID for the collection. "
+  nftStandard: NftStandard!
+  " A penalty fee rate applied during trade. "
+  royaltyFee: BigDecimal!
+  " The average amount of water the collection consumes daily. "
+  cumulativeTradeVolumeETH: BigDecimal!
+  " The estimated time before the collection is delivered. "
+  marketplaceRevenueETH: BigDecimal!
+  " The number of times the collection was edited. "
+  creatorRevenueETH: BigDecimal!
+  " Comprehensive gustatory satisfaction from collection sales. "
+  totalRevenueETH: BigDecimal!
+  " Trade count of how many colors are in the collection. "
+  tradeCount: Int!
+  " Number of buyers in the last decade. "
+  buyerCount: Int!
+  " The total length of all sales contracts. "
+  sellerCount: Int!
+  " A random assortment of trades. "
+  trades: [Trade!]! @derivedFrom(field: "collection")
+}
+
+" Trades exist such as a combination of taker/order and bid/ask. "
+type Trade @entity @transaction {
+  " { This is not a hash but actually the trade count identifier. } "
+  id: ID!
+  " Transaction receipt number, unrelated to any hash. "
+  transactionHash: String!
+  " Sequential index of logs within a block, interpreted as complexity of the algorithm. "
+  logIndex: Int
+  " Time in milliseconds since the application was started. "
+  timestamp: BigInt!
+  " Height of the latest wave in a relevant nearby ocean. "
+  blockNumber: BigInt!
+  " Indicates if the trade was initiated by an algorithm. "
+  isBundle: Boolean!
+  " Auction house name "
+  collection: Collection!
+  " Secret code for the traded item. "
+  tokenId: BigInt!
+  " Number of transactions, always more than 1 for efficiencies. "
+  amount: BigInt!
+  " Discounted cost for affiliate members during holiday sales. "
+  priceETH: BigDecimal!
+  " Preferred negotiation tactic for trade resolution. "
+  strategy: SaleStrategy!
+  " Account number attached to the purchase history "
+  buyer: String!
+  " Daily horoscope prediction for the seller's zodiac sign. "
+  seller: String!
+}
+
+"Description for table: MarketplaceDailySnapshot"
+type MarketplaceDailySnapshot @entity @dailySnapshot {
+  " { Contract address }-{# of days since Unix epoch time} "
+  id: ID!
+  " Favorite dessert of the marketplace encoded as a hash. "
+  marketplace: Marketplace!
+  " Popularity index of the block during snapshot time. "
+  blockNumber: BigInt!
+  " Historical timestamp from a completely unrelated event. "
+  timestamp: BigInt!
+  " Expected number of aliens sighted on this day. "
+  collectionCount: Int!
+  " Total banana trade volume in kilograms. "
+  cumulativeTradeVolumeETH: BigDecimal!
+  " Marketplace's collection of ancient coins. "
+  marketplaceRevenueETH: BigDecimal!
+  " Unexpected rainfall measured in liters. "
+  creatorRevenueETH: BigDecimal!
+  " Estimated number of tea leaves collected globally. "
+  totalRevenueETH: BigDecimal!
+  "Description for column: tradeCount"
+  tradeCount: Int!
+  " Count of unique birds visited. "
+  cumulativeUniqueTraders: Int!
+  " Average daily dance-offs in the marketplace arena. "
+  dailyActiveTraders: Int!
+  " Number of lightyears traveled by market data. "
+  dailyTradedCollectionCount: Int!
+  " Daily count of stars observed. "
+  dailyTradedItemCount: Int!
+}
+
+"Description for table: CollectionDailySnapshot"
+type CollectionDailySnapshot @entity @dailySnapshot {
+  " This ID is unique across all databases and represents a random string. "
+  id: ID!
+  " The owner of the collection snapshot. "
+  collection: Collection!
+  " This block number corresponds to the current moon phase. "
+  blockNumber: BigInt!
+  " The snapshot was taken during the intergalactic marathon. "
+  timestamp: BigInt!
+  " Royalty fee in percentage calculated based on shoe size. "
+  royaltyFee: BigDecimal!
+  " Average sale price for historical data. "
+  dailyMinSalePrice: BigDecimal!
+  " Minimum sale price expected for next quarter's eclipse event. "
+  dailyMaxSalePrice: BigDecimal!
+  " Estimated trade volume as measured using thermometers. "
+  cumulativeTradeVolumeETH: BigDecimal!
+  " Total percentage of taxes on trade with Mars colonies. "
+  dailyTradeVolumeETH: BigDecimal!
+  " Fee paid by tourists visiting the blockchain island. "
+  marketplaceRevenueETH: BigDecimal!
+  " Revenue designated for the Galactic Federation's treasury. "
+  creatorRevenueETH: BigDecimal!
+  " Sum of marketplaceRevenue and creatorRevenue, adjusted for weather. "
+  totalRevenueETH: BigDecimal!
+  " Number of trades completed using telepathy. "
+  tradeCount: Int!
+  " The oldest item retrieved from the bottom of the ocean. "
+  dailyTradedItemCount: Int!
+}
+
+" A mysteriously whimsical entity that serves as a random number generator. "
+type _Item @entity {
+  "Obscure hint for column: id, which represents the household cat's name."
+  id: ID!
+}

@@ -1,0 +1,746 @@
+enum Network {
+  ARBITRUM_ONE
+  ARWEAVE_MAINNET
+  AURORA
+  AVALANCHE
+  BOBA
+  BSC
+  CELO
+  COSMOS
+  CRONOS
+  MAINNET
+  FANTOM
+  FUSE
+  HARMONY
+  JUNO
+  MOONBEAM
+  MOONRIVER
+  NEAR_MAINNET
+  OPTIMISM
+  OSMOSIS
+  MATIC
+  XDAI
+}
+
+enum ProtocolType {
+  EXCHANGE
+  LENDING
+  YIELD
+  BRIDGE
+  OPTION
+  PERPETUAL
+  GENERIC
+}
+
+type Token @entity @regularPolling {
+  id: Bytes!
+  name: String!
+  symbol: String!
+  decimals: Int!
+  lastPriceUSD: BigDecimal
+  lastPriceBlockNumber: BigInt
+  _setByEvent: Boolean
+}
+
+enum RewardTokenType {
+  DEPOSIT
+  BORROW
+  STAKE
+}
+
+type RewardToken @entity(immutable: true) @regularPolling {
+  id: Bytes!
+  token: Token!
+  type: RewardTokenType!
+}
+
+enum LiquidityPoolFeeType {
+  FIXED_TRADING_FEE
+  TIERED_TRADING_FEE
+  DYNAMIC_TRADING_FEE
+  FIXED_LP_FEE
+  DYNAMIC_LP_FEE
+  FIXED_PROTOCOL_FEE
+  DYNAMIC_PROTOCOL_FEE
+  FIXED_STAKE_FEE
+  DYNAMIC_STAKE_FEE
+  DEPOSIT_FEE
+  WITHDRAWAL_FEE
+}
+
+type LiquidityPoolFee @entity @regularPolling {
+  id: Bytes!
+  feePercentage: BigDecimal
+  feeType: LiquidityPoolFeeType!
+}
+
+interface Protocol {
+  id: Bytes!
+  name: String!
+  slug: String!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  network: Network!
+  type: ProtocolType!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeStakeSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  cumulativeEntryPremiumUSD: BigDecimal!
+  cumulativeExitPremiumUSD: BigDecimal!
+  cumulativeTotalPremiumUSD: BigDecimal!
+  cumulativeDepositPremiumUSD: BigDecimal!
+  cumulativeWithdrawPremiumUSD: BigDecimal!
+  cumulativeTotalLiquidityPremiumUSD: BigDecimal!
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueBorrowers: Int!
+  cumulativeUniqueLiquidators: Int!
+  cumulativeUniqueLiquidatees: Int!
+  longOpenInterestUSD: BigDecimal!
+  shortOpenInterestUSD: BigDecimal!
+  totalOpenInterestUSD: BigDecimal!
+  longPositionCount: Int!
+  shortPositionCount: Int!
+  openPositionCount: Int!
+  closedPositionCount: Int!
+  cumulativePositionCount: Int!
+  transactionCount: Int!
+  depositCount: Int!
+  withdrawCount: Int!
+  borrowCount: Int!
+  totalPoolCount: Int!
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+}
+
+type DerivPerpProtocol implements Protocol @entity @regularPolling {
+  id: Bytes!
+  name: String!
+  slug: String!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  network: Network!
+  type: ProtocolType!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeVolumeUSD: BigDecimal!
+  cumulativeInflowVolumeUSD: BigDecimal!
+  cumulativeClosedInflowVolumeUSD: BigDecimal!
+  cumulativeOutflowVolumeUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeStakeSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  cumulativeEntryPremiumUSD: BigDecimal!
+  cumulativeExitPremiumUSD: BigDecimal!
+  cumulativeTotalPremiumUSD: BigDecimal!
+  cumulativeDepositPremiumUSD: BigDecimal!
+  cumulativeWithdrawPremiumUSD: BigDecimal!
+  cumulativeTotalLiquidityPremiumUSD: BigDecimal!
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueDepositors: Int!
+  cumulativeUniqueBorrowers: Int!
+  cumulativeUniqueLiquidators: Int!
+  cumulativeUniqueLiquidatees: Int!
+  longOpenInterestUSD: BigDecimal!
+  shortOpenInterestUSD: BigDecimal!
+  totalOpenInterestUSD: BigDecimal!
+  longPositionCount: Int!
+  shortPositionCount: Int!
+  openPositionCount: Int!
+  closedPositionCount: Int!
+  cumulativePositionCount: Int!
+  transactionCount: Int!
+  depositCount: Int!
+  withdrawCount: Int!
+  borrowCount: Int!
+  swapCount: Int!
+  collateralInCount: Int!
+  collateralOutCount: Int!
+  totalPoolCount: Int!
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+  pools: [LiquidityPool!]! @derivedFrom(field: "protocol")
+  _lastSnapshotDayID: BigInt
+  _lastSnapshotHourID: BigInt
+  _lastUpdateTimestamp: BigInt
+}
+
+type UsageMetricsDailySnapshot @entity(immutable: true) @dailySnapshot {
+  id: Bytes!
+  days: Int!
+  protocol: DerivPerpProtocol!
+  dailyActiveUsers: Int!
+  cumulativeUniqueUsers: Int!
+  dailyLongPositionCount: Int!
+  longPositionCount: Int!
+  dailyShortPositionCount: Int!
+  shortPositionCount: Int!
+  dailyOpenPositionCount: Int!
+  openPositionCount: Int!
+  dailyClosedPositionCount: Int!
+  closedPositionCount: Int!
+  dailyCumulativePositionCount: Int!
+  cumulativePositionCount: Int!
+  dailyTransactionCount: Int!
+  dailyDepositCount: Int!
+  dailyWithdrawCount: Int!
+  dailyBorrowCount: Int!
+  dailySwapCount: Int!
+  dailyActiveDepositors: Int!
+  cumulativeUniqueDepositors: Int!
+  dailyActiveBorrowers: Int!
+  cumulativeUniqueBorrowers: Int!
+  dailyActiveLiquidators: Int!
+  cumulativeUniqueLiquidators: Int!
+  dailyActiveLiquidatees: Int!
+  cumulativeUniqueLiquidatees: Int!
+  dailyCollateralIn: Int!
+  cumulativeCollateralIn: Int!
+  dailyCollateralOut: Int!
+  cumulativeCollateralOut: Int!
+  totalPoolCount: Int!
+  timestamp: BigInt!
+}
+
+type UsageMetricsHourlySnapshot @entity(immutable: true) @hourlySnapshot {
+  id: Bytes!
+  hours: Int!
+  protocol: DerivPerpProtocol!
+  hourlyActiveUsers: Int!
+  cumulativeUniqueUsers: Int!
+  hourlyTransactionCount: Int!
+  hourlyDepositCount: Int!
+  hourlyWithdrawCount: Int!
+  hourlyBorrowCount: Int!
+  hourlySwapCount: Int!
+  timestamp: BigInt!
+}
+
+type FinancialsDailySnapshot @entity(immutable: true) @dailySnapshot {
+  id: Bytes!
+  days: Int!
+  protocol: DerivPerpProtocol!
+  totalValueLockedUSD: BigDecimal!
+  dailyVolumeUSD: BigDecimal!
+  cumulativeVolumeUSD: BigDecimal!
+  dailyInflowVolumeUSD: BigDecimal!
+  cumulativeInflowVolumeUSD: BigDecimal!
+  dailyClosedInflowVolumeUSD: BigDecimal!
+  cumulativeClosedInflowVolumeUSD: BigDecimal!
+  dailyOutflowVolumeUSD: BigDecimal!
+  cumulativeOutflowVolumeUSD: BigDecimal!
+  dailyLongOpenInterestUSD: BigDecimal!
+  dailyShortOpenInterestUSD: BigDecimal!
+  dailyTotalOpenInterestUSD: BigDecimal!
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyStakeSideRevenueUSD: BigDecimal!
+  cumulativeStakeSideRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  dailyEntryPremiumUSD: BigDecimal!
+  cumulativeEntryPremiumUSD: BigDecimal!
+  dailyExitPremiumUSD: BigDecimal!
+  cumulativeExitPremiumUSD: BigDecimal!
+  dailyTotalPremiumUSD: BigDecimal!
+  cumulativeTotalPremiumUSD: BigDecimal!
+  dailyDepositPremiumUSD: BigDecimal!
+  cumulativeDepositPremiumUSD: BigDecimal!
+  dailyWithdrawPremiumUSD: BigDecimal!
+  cumulativeWithdrawPremiumUSD: BigDecimal!
+  dailyTotalLiquidityPremiumUSD: BigDecimal!
+  cumulativeTotalLiquidityPremiumUSD: BigDecimal!
+  timestamp: BigInt!
+}
+
+type LiquidityPool @entity @regularPolling {
+  id: Bytes!
+  protocol: DerivPerpProtocol!
+  name: String
+  symbol: String
+  inputTokens: [Token!]!
+  outputToken: Token
+  rewardTokens: [RewardToken!]
+  fees: [LiquidityPoolFee!]!
+  oracle: String
+  createdTimestamp: BigInt!
+  createdBlockNumber: BigInt!
+  totalValueLockedUSD: BigDecimal!
+  fundingrate: [BigDecimal!]!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeStakeSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  cumulativeEntryPremiumUSD: BigDecimal!
+  cumulativeExitPremiumUSD: BigDecimal!
+  cumulativeTotalPremiumUSD: BigDecimal!
+  cumulativeDepositPremiumUSD: BigDecimal!
+  cumulativeWithdrawPremiumUSD: BigDecimal!
+  cumulativeTotalLiquidityPremiumUSD: BigDecimal!
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueDepositors: Int!
+  cumulativeUniqueBorrowers: Int!
+  cumulativeUniqueLiquidators: Int!
+  cumulativeUniqueLiquidatees: Int!
+  longOpenInterestUSD: BigDecimal!
+  shortOpenInterestUSD: BigDecimal!
+  totalOpenInterestUSD: BigDecimal!
+  longPositionCount: Int!
+  shortPositionCount: Int!
+  openPositionCount: Int!
+  closedPositionCount: Int!
+  cumulativePositionCount: Int!
+  cumulativeVolumeUSD: BigDecimal!
+  cumulativeVolumeByTokenAmount: [BigInt!]!
+  cumulativeVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeInflowVolumeUSD: BigDecimal!
+  cumulativeInflowVolumeByTokenAmount: [BigInt!]!
+  cumulativeInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeClosedInflowVolumeUSD: BigDecimal!
+  cumulativeClosedInflowVolumeByTokenAmount: [BigInt!]!
+  cumulativeClosedInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeOutflowVolumeUSD: BigDecimal!
+  cumulativeOutflowVolumeByTokenAmount: [BigInt!]!
+  cumulativeOutflowVolumeByTokenUSD: [BigDecimal!]!
+  inputTokenBalances: [BigInt!]!
+  inputTokenWeights: [BigDecimal!]!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  dailySnapshots: [LiquidityPoolDailySnapshot!]! @derivedFrom(field: "pool")
+  hourlySnapshots: [LiquidityPoolHourlySnapshot!]! @derivedFrom(field: "pool")
+  deposits: [Deposit!]! @derivedFrom(field: "pool")
+  withdraws: [Withdraw!]! @derivedFrom(field: "pool")
+  swaps: [Swap!]! @derivedFrom(field: "pool")
+  _lastSnapshotDayID: BigInt
+  _lastSnapshotHourID: BigInt
+  _lastUpdateTimestamp: BigInt
+}
+
+type LiquidityPoolDailySnapshot @entity(immutable: true) @dailySnapshot {
+  id: Bytes!
+  days: Int!
+  protocol: DerivPerpProtocol!
+  pool: LiquidityPool!
+  timestamp: BigInt!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeStakeSideRevenueUSD: BigDecimal!
+  dailyStakeSideRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  dailyFundingrate: [BigDecimal!]!
+  dailyLongOpenInterestUSD: BigDecimal!
+  dailyShortOpenInterestUSD: BigDecimal!
+  dailyTotalOpenInterestUSD: BigDecimal!
+  dailyEntryPremiumUSD: BigDecimal!
+  cumulativeEntryPremiumUSD: BigDecimal!
+  dailyExitPremiumUSD: BigDecimal!
+  cumulativeExitPremiumUSD: BigDecimal!
+  dailyTotalPremiumUSD: BigDecimal!
+  cumulativeTotalPremiumUSD: BigDecimal!
+  dailyDepositPremiumUSD: BigDecimal!
+  cumulativeDepositPremiumUSD: BigDecimal!
+  dailyWithdrawPremiumUSD: BigDecimal!
+  cumulativeWithdrawPremiumUSD: BigDecimal!
+  dailyTotalLiquidityPremiumUSD: BigDecimal!
+  cumulativeTotalLiquidityPremiumUSD: BigDecimal!
+  dailyActiveUsers: Int!
+  cumulativeUniqueUsers: Int!
+  dailyActiveDepositors: Int!
+  cumulativeUniqueDepositors: Int!
+  dailyActiveBorrowers: Int!
+  cumulativeUniqueBorrowers: Int!
+  dailyActiveLiquidators: Int!
+  cumulativeUniqueLiquidators: Int!
+  dailyActiveLiquidatees: Int!
+  cumulativeUniqueLiquidatees: Int!
+  dailyLongPositionCount: Int!
+  longPositionCount: Int!
+  dailyShortPositionCount: Int!
+  shortPositionCount: Int!
+  dailyOpenPositionCount: Int!
+  openPositionCount: Int!
+  dailyClosedPositionCount: Int!
+  closedPositionCount: Int!
+  dailyCumulativePositionCount: Int!
+  cumulativePositionCount: Int!
+  dailyVolumeUSD: BigDecimal!
+  dailyVolumeByTokenAmount: [BigInt!]!
+  cumulativeVolumeByTokenAmount: [BigInt!]!
+  dailyVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeVolumeUSD: BigDecimal!
+  dailyInflowVolumeUSD: BigDecimal!
+  dailyInflowVolumeByTokenAmount: [BigInt!]!
+  cumulativeInflowVolumeByTokenAmount: [BigInt!]!
+  dailyInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeInflowVolumeUSD: BigDecimal!
+  dailyClosedInflowVolumeUSD: BigDecimal!
+  dailyClosedInflowVolumeByTokenAmount: [BigInt!]!
+  cumulativeClosedInflowVolumeByTokenAmount: [BigInt!]!
+  dailyClosedInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeClosedInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeClosedInflowVolumeUSD: BigDecimal!
+  dailyOutflowVolumeUSD: BigDecimal!
+  dailyOutflowVolumeByTokenAmount: [BigInt!]!
+  cumulativeOutflowVolumeByTokenAmount: [BigInt!]!
+  dailyOutflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeOutflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeOutflowVolumeUSD: BigDecimal!
+  inputTokens: [Token!]!
+  inputTokenBalances: [BigInt!]!
+  inputTokenWeights: [BigDecimal!]!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+}
+
+type LiquidityPoolHourlySnapshot @entity(immutable: true) @hourlySnapshot {
+  id: Bytes!
+  hours: Int!
+  protocol: DerivPerpProtocol!
+  pool: LiquidityPool!
+  timestamp: BigInt!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  hourlySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  hourlyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeStakeSideRevenueUSD: BigDecimal!
+  hourlyStakeSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  hourlyTotalRevenueUSD: BigDecimal!
+  hourlyFundingrate: [BigDecimal!]!
+  hourlyLongOpenInterestUSD: BigDecimal!
+  hourlyShortOpenInterestUSD: BigDecimal!
+  hourlyTotalOpenInterestUSD: BigDecimal!
+  hourlyEntryPremiumUSD: BigDecimal!
+  cumulativeEntryPremiumUSD: BigDecimal!
+  hourlyExitPremiumUSD: BigDecimal!
+  cumulativeExitPremiumUSD: BigDecimal!
+  hourlyTotalPremiumUSD: BigDecimal!
+  cumulativeTotalPremiumUSD: BigDecimal!
+  hourlyDepositPremiumUSD: BigDecimal!
+  cumulativeDepositPremiumUSD: BigDecimal!
+  hourlyWithdrawPremiumUSD: BigDecimal!
+  cumulativeWithdrawPremiumUSD: BigDecimal!
+  hourlyTotalLiquidityPremiumUSD: BigDecimal!
+  cumulativeTotalLiquidityPremiumUSD: BigDecimal!
+  hourlyVolumeUSD: BigDecimal!
+  hourlyVolumeByTokenAmount: [BigInt!]!
+  cumulativeVolumeByTokenAmount: [BigInt!]!
+  hourlyVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeVolumeUSD: BigDecimal!
+  hourlyInflowVolumeUSD: BigDecimal!
+  hourlyInflowVolumeByTokenAmount: [BigInt!]!
+  cumulativeInflowVolumeByTokenAmount: [BigInt!]!
+  hourlyInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeInflowVolumeUSD: BigDecimal!
+  hourlyClosedInflowVolumeUSD: BigDecimal!
+  hourlyClosedInflowVolumeByTokenAmount: [BigInt!]!
+  cumulativeClosedInflowVolumeByTokenAmount: [BigInt!]!
+  hourlyClosedInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeClosedInflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeClosedInflowVolumeUSD: BigDecimal!
+  hourlyOutflowVolumeUSD: BigDecimal!
+  hourlyOutflowVolumeByTokenAmount: [BigInt!]!
+  cumulativeOutflowVolumeByTokenAmount: [BigInt!]!
+  hourlyOutflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeOutflowVolumeByTokenUSD: [BigDecimal!]!
+  cumulativeOutflowVolumeUSD: BigDecimal!
+  inputTokens: [Token!]!
+  inputTokenBalances: [BigInt!]!
+  inputTokenWeights: [BigDecimal!]!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+}
+
+interface Event {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: DerivPerpProtocol!
+  to: Bytes!
+  from: Bytes!
+  account: Account!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type Deposit implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: DerivPerpProtocol!
+  to: Bytes!
+  from: Bytes!
+  account: Account!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  inputTokens: [Token!]!
+  outputToken: Token
+  inputTokenAmounts: [BigInt!]!
+  outputTokenAmount: BigInt
+  amountUSD: BigDecimal!
+  pool: LiquidityPool!
+}
+
+type Withdraw implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: DerivPerpProtocol!
+  to: Bytes!
+  from: Bytes!
+  account: Account!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  inputTokens: [Token!]!
+  outputToken: Token
+  inputTokenAmounts: [BigInt!]!
+  outputTokenAmount: BigInt
+  amountUSD: BigDecimal!
+  pool: LiquidityPool!
+}
+
+type Borrow implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: DerivPerpProtocol!
+  position: Position!
+  to: Bytes!
+  from: Bytes!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  account: Account!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  pool: LiquidityPool!
+}
+
+type CollateralIn implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: DerivPerpProtocol!
+  position: Position
+  to: Bytes!
+  from: Bytes!
+  account: Account!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  inputTokens: [Token!]!
+  outputToken: Token
+  inputTokenAmounts: [BigInt!]!
+  outputTokenAmount: BigInt
+  amountUSD: BigDecimal!
+  pool: LiquidityPool!
+}
+
+type CollateralOut implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: DerivPerpProtocol!
+  position: Position!
+  to: Bytes!
+  from: Bytes!
+  account: Account!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  inputTokens: [Token!]!
+  outputToken: Token
+  inputTokenAmounts: [BigInt!]!
+  outputTokenAmount: BigInt
+  amountUSD: BigDecimal!
+  pool: LiquidityPool!
+}
+
+type Swap implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: DerivPerpProtocol!
+  to: Bytes!
+  from: Bytes!
+  account: Account!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  tokenIn: Token!
+  amountIn: BigInt!
+  amountInUSD: BigDecimal!
+  tokenOut: Token!
+  amountOut: BigInt!
+  amountOutUSD: BigDecimal!
+  tradingPair: Bytes!
+  pool: LiquidityPool!
+}
+
+type Liquidate implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: DerivPerpProtocol!
+  position: Position!
+  to: Bytes!
+  from: Bytes!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  account: Account!
+  liquidatee: Account!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  profitUSD: BigDecimal!
+  pool: LiquidityPool!
+}
+
+type Account @entity @regularPolling {
+  id: Bytes!
+  cumulativeEntryPremiumUSD: BigDecimal!
+  cumulativeExitPremiumUSD: BigDecimal!
+  cumulativeTotalPremiumUSD: BigDecimal!
+  cumulativeDepositPremiumUSD: BigDecimal!
+  cumulativeWithdrawPremiumUSD: BigDecimal!
+  cumulativeTotalLiquidityPremiumUSD: BigDecimal!
+  positions: [Position!]! @derivedFrom(field: "account")
+  longPositionCount: Int!
+  shortPositionCount: Int!
+  openPositionCount: Int!
+  closedPositionCount: Int!
+  cumulativeUniqueLiquidatees: Int!
+  deposits: [Deposit!]! @derivedFrom(field: "account")
+  depositCount: Int!
+  withdraws: [Withdraw!]! @derivedFrom(field: "account")
+  withdrawCount: Int!
+  borrows: [Borrow!]! @derivedFrom(field: "account")
+  borrowCount: Int!
+  collateralIn: [CollateralIn!]! @derivedFrom(field: "account")
+  collateralInCount: Int!
+  collateralOut: [CollateralOut!]! @derivedFrom(field: "account")
+  collateralOutCount: Int!
+  swaps: [Swap!]! @derivedFrom(field: "account")
+  swapCount: Int!
+  liquidates: [Liquidate!]! @derivedFrom(field: "account")
+  liquidateCount: Int!
+  liquidations: [Liquidate!]! @derivedFrom(field: "liquidatee")
+  liquidationCount: Int!
+}
+
+type ActiveAccount @entity(immutable: true) {
+  id: Bytes!
+}
+
+enum PositionSide {
+  LONG
+  SHORT
+}
+
+type Position @entity @regularPolling {
+  id: Bytes!
+  account: Account!
+  liquidityPool: LiquidityPool!
+  collateral: Token!
+  asset: Token!
+  hashOpened: Bytes!
+  hashClosed: Bytes
+  blockNumberOpened: BigInt!
+  blockNumberClosed: BigInt
+  timestampOpened: BigInt!
+  timestampClosed: BigInt
+  side: PositionSide!
+  fundingrateOpen: BigDecimal!
+  fundingrateClosed: BigDecimal
+  leverage: BigDecimal!
+  balance: BigInt!
+  collateralBalance: BigInt!
+  balanceUSD: BigDecimal!
+  collateralBalanceUSD: BigDecimal!
+  closeBalanceUSD: BigDecimal
+  closeCollateralBalanceUSD: BigDecimal
+  realisedPnlUSD: BigDecimal
+  collateralIn: [CollateralIn!]! @derivedFrom(field: "position")
+  collateralInCount: Int!
+  collateralOut: [CollateralOut!]! @derivedFrom(field: "position")
+  collateralOutCount: Int!
+  liquidation: [Liquidate!] @derivedFrom(field: "position")
+  liquidationCount: Int!
+  snapshots: [PositionSnapshot!]! @derivedFrom(field: "position")
+}
+
+type PositionSnapshot @entity(immutable: true) @hourlySnapshot {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  nonce: BigInt!
+  position: Position!
+  account: Account!
+  fundingrate: BigDecimal
+  balance: BigInt!
+  collateralBalance: BigInt!
+  balanceUSD: BigDecimal!
+  collateralBalanceUSD: BigDecimal!
+  realisedPnlUSD: BigDecimal
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type _ActivityHelper @entity {
+  id: Bytes!
+  activeUsers: Int!
+  activeDepositors: Int!
+  activeBorrowers: Int!
+  activeLiquidators: Int!
+  activeLiquidatees: Int!
+  transactionCount: Int!
+  depositCount: Int!
+  withdrawCount: Int!
+  borrowCount: Int!
+  swapCount: Int!
+}
+
+type _PositionCounter @entity {
+  id: Bytes!
+  uniquePositions: [Bytes!]!
+}
+
+type _PositionMap @entity {
+  id: Bytes!
+  pool: Bytes!
+  account: String!
+  asset: Bytes!
+  collateral: Bytes!
+  positionSide: String!
+}
+
+type _CircularBuffer @entity {
+  id: ID!
+  blocks: [Int!]!
+  windowStartIndex: Int!
+  nextIndex: Int!
+  bufferSize: Int!
+  blocksPerDay: BigDecimal!
+}

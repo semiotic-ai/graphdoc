@@ -1,0 +1,1086 @@
+# noinspection GraphQLMissingType
+########################
+## Time series events ##
+########################
+
+# Generic activity stream events for history of actions including primary and secondary sales actions & triggers
+# Used for listing out token history on the token pages
+" TokenEvent is a table for recording events related to tokens "
+type TokenEvent @entity(immutable: true) {
+    " The unique identifier for the event. A composite key made from multiple items. Type: ID! "
+    id: ID!                     # Composite key made form multiple items
+    " The version of the KODA schema used to record the event. Type: BigInt! "
+    version: BigInt!            # KODA 2 or 3
+    " The name of the event. Type: String! "
+    name: String!
+    " The token associated with the event. References the Token entity. Type: Token! "
+    token: Token!
+    " The edition associated with the event. References the Edition entity. Type: Edition! "
+    edition: Edition!
+    " The buyer associated with the event. References the Collector entity. Type: Collector "
+    buyer: Collector
+    " The bidder associated with the event. References the Collector entity. Type: Collector "
+    bidder: Collector
+    " The current owner associated with the event. References the Collector entity. Type: Collector "
+    currentOwner: Collector
+    " The value of the event in ETH. Type: BigDecimal! "
+    ethValue: BigDecimal!
+
+    # Common event details
+    " The timestamp of the event. Based on the unix timestamp of the block the event was recorded in. Type: BigInt! "
+    timestamp: BigInt!
+    " The transaction hash of the event. Based on the transaction that recorded the event. Type: Bytes! "
+    transactionHash: Bytes!
+    " The transaction index of the event. The index of the transaction in the block. Type: BigInt! "
+    transactionIndex: BigInt!
+    " The log index of the event. The index of the log in the transaction. Type: BigInt! "
+    logIndex: BigInt!
+    " The address of the event. The address of the contract that recorded the event. Type: Bytes! "
+    eventAddress: Bytes!
+    " The transaction from address of the event. The address of the account that initiated the transaction. Type: Bytes! "
+    eventTxFrom: Bytes!
+    " The transaction to address of the event. The address of the account that received the transaction. Type: Bytes "
+    eventTxTo: Bytes
+    " The block number of the event. The block number of the block the event was recorded in. Type: BigInt! "
+    blockNumber: BigInt!
+}
+
+# Token events for transfers
+" TransferEvent is a table for recording events related to transfers of tokens "
+type TransferEvent @entity(immutable: true) {
+    " The unique identifier for the event. A composite key made from multiple items. Type: ID! "
+    id: ID!
+    " The version of the KODA schema used to record the event. Type: BigInt! "
+    version: BigInt! # KODA 2 or 3
+    " The from address of the transfer. The address of the account that initiated the transfer. Type: Bytes! "
+    from: Bytes! # address
+    " The to address of the transfer. The address of the account that received the transfer. Type: Bytes! "
+    to: Bytes! # address
+    " The token ID of the transfer. The ID of the token being transferred. Type: BigInt! "
+    tokenId: BigInt!
+    " The edition associated with the transfer. References the Edition entity. Type: Edition! "
+    edition: Edition!
+
+    # Common event details
+    " The timestamp of the event. Based on the unix timestamp of the block the event was recorded in. Type: BigInt! "
+    timestamp: BigInt!
+    " The transaction hash of the event. Based on the transaction that recorded the event. Type: Bytes! "
+    transactionHash: Bytes!
+    " The transaction index of the event. The index of the transaction in the block. Type: BigInt! "
+    transactionIndex: BigInt!
+    " The log index of the event. The index of the log in the transaction. Type: BigInt! "
+    logIndex: BigInt!
+    " The address of the event. The address of the contract that recorded the event. Type: Bytes! "
+    eventAddress: Bytes!
+    " The transaction from address of the event. The address of the account that initiated the transaction. Type: Bytes! "
+    eventTxFrom: Bytes!
+    " The transaction to address of the event. The address of the account that received the transaction. Type: Bytes "
+    eventTxTo: Bytes
+    " The block number of the event. The block number of the block the event was recorded in. "
+    blockNumber: BigInt!
+}
+
+# Edition primary sale auction events
+" AuctionEvent is a table for recording events related to primary sale auctions "
+type AuctionEvent @entity(immutable: true) {
+    " The unique identifier for the event. A composite key made from multiple items. Type: ID! "
+    id: ID!
+    " The version of the KODA schema used to record the event. Type: BigInt! "
+    version: BigInt! # KODA 2 or 3
+    " The edition associated with the auction. References the Edition entity. Type: Edition! "
+    edition: Edition!
+    " The name of the auction. Type: String! "
+    name: String!
+    " The bidder associated with the auction. This is the address of the person who placed the bid. Type: Bytes! "
+    bidder: Bytes!
+    " The caller associated with the auction. This is the address of the person who called the auction. Type: Bytes! "
+    caller: Bytes!
+    " The value of the auction in ETH. Type: BigDecimal! "
+    ethValue: BigDecimal!
+    " The lockupUntil timestamp of the auction. When set the bidder who set this is locked out. Type: BigInt! "
+    lockupUntil: BigInt # when set the bidder who set this is locked out
+
+    # Common event details
+    " The timestamp of the event. Based on the unix timestamp of the block the event was recorded in. Type: BigInt! "
+    timestamp: BigInt!
+    " The transaction hash of the event. Based on the transaction that recorded the event. Type: Bytes! "
+    transactionHash: Bytes!
+    " The transaction index of the event. The index of the transaction in the block. Type: BigInt! "
+    transactionIndex: BigInt!
+    " The log index of the event. The index of the log in the transaction. Type: BigInt! "
+    logIndex: BigInt!
+    " The address of the event. The address of the contract that recorded the event. Type: Bytes! "
+    eventAddress: Bytes!
+    " The transaction from address of the event. The address of the account that initiated the transaction. Type: Bytes! "
+    eventTxFrom: Bytes!
+    " The transaction to address of the event. The address of the account that received the transaction. Type: Bytes "
+    eventTxTo: Bytes
+    " The block number of the event. The block number of the block the event was recorded in. Type: BigInt! "
+    blockNumber: BigInt!
+}
+
+# Common unified event stream spanning KODA versions and various types
+" ActivityEvent is a table for recording events related to various types of activities "
+type ActivityEvent @entity(immutable: true) {
+    " The unique identifier for the event. A composite key made from multiple items. Type: ID! "
+    id: ID!
+    " The type of the event. Is either Token, Edition or Creator Contract. Type: String! "
+    type: String!               # Token, Edition or Creator Contract
+    " The version of the KODA schema used to record the event. KODA 2 or 3. Type: BigInt! "
+    version: BigInt!            # KODA 2 or 3
+    " The type of the event. e.g. ['EditionCreated', 'Purchase', 'BidPlaced', 'BidAccepted', 'BidIncreased', 'BidRejected', 'BidWithdrawn']. Type: String! "
+    eventType: String!          # Event types e.g. ['EditionCreated', 'Purchase', 'BidPlaced', 'BidAccepted', 'BidIncreased', 'BidRejected', 'BidWithdrawn']
+    " The edition associated with the event. References the Edition entity. All events relate to an edition unless it's v3. Type: Edition! "
+    edition: Edition            # All events relate to an edition unless it's v3
+    " The token associated with the event. References the Token entity. Type: Token! "
+    token: Token                # (nullable) the token this relates to
+    # accounts
+    " The creator associated with the event. This is the address of the person who created the edition. Type: Bytes! "
+    creator: Bytes!             # the original edition creator
+    " The creator's commission rate. This is the percentage of the sale price that the creator receives, only valid if the event has a value. Type: BigInt! "
+    creatorCommission: BigInt  # % received as creator - only valid is event has value
+    " The collaborator associated with the event. This is the address of the person who collaborated on the edition. Type: Bytes! "
+    collaborator: Bytes        # (nullable) the original edition creator collaborator
+    " The collaborator's commission rate. This is the percentage of the sale price that the collaborator receives, only valid if the event has a value. Type: BigInt! "
+    collaboratorCommission: BigInt # (nullable) % received as creator - only valid is event has value
+    " The buyer associated with the event. This is the account that triggered the transaction. Type: Bytes! "
+    triggeredBy: Bytes         # who fired the transaction
+    " The buyer associated with the event. This is the account that serves as the buyer. Type: Bytes! "
+    buyer: Bytes                # (nullable) the buyer
+    " The seller associated with the event. This is the account that serves as the seller. Type: Bytes! "
+    seller: Bytes               # (nullable) the seller
+    " The stakeholder addresses associated with the event. This is the list of accounts that interacted during the event. Type: [Bytes!]! "
+    stakeholderAddresses: [Bytes!]!     # the addresses that interacted during the event
+    " The contract address associated with the event. This is the address of the contract that recorded the event. Type: Bytes! "
+    contractAddress: Bytes      # the address of the contract
+
+    # technicals
+    " The value of the event in WEI. Type: BigInt! "
+    eventValueInWei: BigInt     # (nullable) the WEI value
+
+    # Common event details
+    " The timestamp of the event. Based on the unix timestamp of the block the event was recorded in. Type: BigInt! "
+    timestamp: BigInt!
+    " The transaction hash of the event. Based on the transaction that recorded the event. Type: Bytes! "
+    transactionHash: Bytes!
+    " The transaction index of the event. The index of the transaction in the block. Type: BigInt! "
+    transactionIndex: BigInt!
+    " The log index of the event. The index of the log in the transaction. Type: BigInt! "
+    logIndex: BigInt!
+    " The address of the event. The address of the contract that recorded the event. Type: Bytes! "
+    eventAddress: Bytes!
+    " The transaction from address of the event. The address of the account that initiated the transaction. Type: Bytes! "
+    eventTxFrom: Bytes!
+    " The transaction to address of the event. The address of the account that received the transaction. Type: Bytes "
+    eventTxTo: Bytes
+    " The block number of the event. The block number of the block the event was recorded in. Type: BigInt! "
+    blockNumber: BigInt!
+}
+
+#######################
+## Free-text schemas ##
+#######################
+
+type _Schema_
+@fulltext(
+    name: "listedTokenSearch",
+    language: en
+    algorithm: rank,
+    include: [
+        {
+            entity: "ListedToken",
+            fields: [
+                { name: "metadataName" },
+                { name: "metadataArtist" },
+                { name: "metadataArtistAccount" },
+                { name: "metadataTagString" },
+                { name: "primaryAssetShortType" },
+                { name: "primaryAssetActualType" },
+            ]
+        }
+    ]
+)
+@fulltext(
+    name: "editionSearch",
+    language: en
+    algorithm: rank,
+    include: [
+        {
+            entity: "Edition",
+            fields: [
+                { name: "metadataName" },
+                { name: "metadataArtist" },
+                { name: "metadataArtistAccount" },
+                { name: "metadataTagString" },
+                { name: "metadataFormat" },
+                { name: "metadataTheme" },
+                { name: "primaryAssetShortType" },
+                { name: "primaryAssetActualType" },
+            ]
+        }
+    ]
+)
+
+####################################################################################
+## Main entities                                                                  ##
+## All entities below are NOT event based but are updated from a stream of events ##
+####################################################################################
+
+# Rolled up counts for a given day
+" Day is a table for recording rolled up counts for a given day "
+type Day @entity {
+    " The unique identifier for the day. A composite key made from multiple items. Type: ID! "
+    id: ID!
+    " The date of the day. Type: String! "
+    date: String!
+    " The total number of transfers made in the day. Type: BigInt! "
+    transferCount: BigInt!
+    " The total number of editions created in the day. Type: BigInt! "
+    editionsCount: BigInt!
+
+    # Bid/offer counts and values (primary & secondary)
+    " The total number of bids accepted in the day. Type: BigInt! "
+    bidsAcceptedCount: BigInt! # Offers accepted
+    " The total number of bids placed in the day. Type: BigInt! "
+    bidsPlacedCount: BigInt! # Offers made
+    " The total number of bids rejected in the day. Type: BigInt! "
+    bidsRejectedCount: BigInt! # Offers reject
+    " The total number of bids withdrawn in the day. Type: BigInt! "
+    bidsWithdrawnCount: BigInt!
+    " The total number of bids increased in the day. This is when the value of the bid is increased. Type: BigInt! "
+    bidsIncreasedCount: BigInt!
+    " The total value of bids placed in the day. This is the total value of all bids placed in the day. Type: BigDecimal! "
+    totalValuePlaceInBids: BigDecimal!
+    " The total value of bids cycled in the day. This is the total value of all bids cycled in the day. Type: BigDecimal! "
+    totalValueCycledInBids: BigDecimal!
+
+    # Secondary sales value in ETH today
+    " The total value of secondary sales in the day. This is recorded in ETH. Type: BigDecimal! "
+    secondarySalesValue: BigDecimal!
+
+    # Sales/gifting counts and values
+    " The total number of sales in the day. Type: BigInt! "
+    issuedCount: BigInt!
+    " The total number of sales in the day. Type: BigInt! "
+    salesCount: BigInt!
+    " The total value of sales in the day. This is recorded in ETH. Type: BigDecimal! "
+    totalValueInEth: BigDecimal!
+    " The highest value of a sale in the day. This is recorded in ETH. Type: BigDecimal! "
+    highestValueInEth: BigDecimal!
+    " The highest value token of a sale in the day. This is recorded in ETH. Type: BigDecimal! "
+    highestValueToken: Token
+
+    " The list of tokens issued in the day. Derived from the Token entity. Type: [Token!]! "
+    issued: [Token!]!
+    " The list of editions issued in the day. Derived from the Edition entity. Type: [Edition!]! "
+    editions: [Edition!]!
+}
+
+# N.B: Only for V3 atm
+" PlatformConfig is a table for recording the platform configuration "
+type PlatformConfig @entity {
+    " The unique identifier for the platform configuration. A composite key made from multiple items. Type: ID! "
+    id: ID!
+
+    # NFT
+    " The address of the royalties registry. This references an address. Type: Bytes! "
+    royaltiesRegistry: Bytes # address
+    " The address of the token URI resolver. This references an address. Type: Bytes! "
+    tokenUriResolver: Bytes # address
+
+    # Marketplace
+    " The modulo value for the platform. This is a number. Type: BigInt! "
+    modulo: BigInt
+    " The primary sale commission rate. This is a percentage. Type: BigInt! "
+    primarySaleCommission: BigInt
+    " The secondary sale royalty rate. This is a percentage. Type: BigInt! "
+    secondarySaleRoyalty: BigInt
+    " The marketplace secondary sale royalty rate. This is a percentage. Type: BigInt! "
+    marketplaceSecondarySaleRoyalty: BigInt
+    " The minimum bid amount. This is a number. Type: BigInt! "
+    minBidAmount: BigInt
+
+    # Minting factory
+    " The minting period. This is a number that represents the period that minting is allowed during. Type: BigInt! "
+    mintingPeriod: BigInt  # Minting allowance period
+    " The maximum number of mints in a period. This is a number that represents the maximum number of mints that can be made during the minting period. Type: BigInt! "
+    maxMintsInPeriod: BigInt # Limit of mints with in the period
+
+    # Access controls
+    " The merkle proof root. This is a hash of the merkle tree. Type: Bytes! "
+    merkleProofRoot: Bytes
+    " The merkle proof IPFS hash. This is a hash of the merkle tree. Type: String! "
+    merkleProofIpfsHash: String
+}
+
+# A token and its details
+" Token is a table for recording the details of a token "
+type Token @entity {
+    " The unique identifier for the token. A composite key made from multiple items. Type: ID! "
+    id: ID!
+    " The version of the KODA schema used to record the token. KODA 2, 3 or 4. Type: BigInt! "
+    version: BigInt! # KODA 2, 3 or 4
+    " The current sales mechanic being used on this edition. Type: BigInt! "
+    salesType: BigInt! # The current sales mechanic being used on this edition
+    " The token ID. This is a number. Type: BigInt! "
+    tokenId: BigInt!
+    " The total number of transfers made for this token. Type: BigInt! "
+    transferCount: BigInt!
+    " The edition number. This is a composite ID made from the edition ID and the optional contract address for the creator contract. Type: String! "
+    editionNumber: String! # Composite ID from edition ID and optional contract address for CC
+    " The edition associated with the token. This references the Edition entity. Type: Edition! "
+    edition: Edition!
+    " The token URI. This is a string. Type: String! "
+    tokenURI: String!
+    " The metadata associated with the token. This references the MetaData entity. Type: MetaData! "
+    metadata: MetaData
+    " The birth timestamp. This is a number that represents the timestamp of the first transfer of the token from the zero address. Type: BigInt! "
+    birthTimestamp: BigInt!                 # initial transfer from zero address
+    " The primary value in ETH when the token was sold from an edition on KO. Type: BigDecimal! "
+    primaryValueInEth: BigDecimal!          # when it sold from an edition on KO
+    " The total purchase value in ETH. This is the total value of all purchases (primary & secondary). Type: BigDecimal! "
+    totalPurchaseValue: BigDecimal!         # tally of all purchases (primary & secondary)
+    " The total purchase count. This is the total number of purchases (primary & secondary). Type: BigInt! "
+    totalPurchaseCount: BigInt!             # tally of the number of purchases (primary & secondary)
+    " The largest secondary sale in ETH. This is the largest secondary sale in ETH. Type: BigDecimal! "
+    largestSecondaryValueInEth: BigDecimal! # largest secondary sale in ETH
+    " The largest sale price in ETH. This is set to the highest sale price for the token, primary or secondary. Type: BigDecimal! "
+    largestSalePriceEth: BigDecimal!        # set to the highest sale price for the token, primary or secondary
+    " The last sale price in ETH. This is the last sale price for the token, primary or secondary. Type: BigDecimal! "
+    lastSalePriceInEth: BigDecimal!         # known last sale if we capture it (primary & secondary)
+    " The last transfer timestamp. This is the timestamp of the last transfer of the token. Type: BigInt! "
+    lastTransferTimestamp: BigInt!          # updated on ever Transfer
+    " The current owner of the token. This also has a derived field linking to this from Collector.tokens. Type: Collector! "
+    currentOwner: Collector                 # the current owner - also has a derived field linking to this from Collector.tokens
+    " The list of all owners of the token. This is a list of all unique owners of the token. Type: [Collector!]! "
+    allOwners: [Collector!]!                # list (set) of all unique owners
+    " The list of all transfers made for the token. Type: [TransferEvent!]! "
+    transfers: [TransferEvent!]!            # total number of token transfers made
+    " The list of all token events such as secondary sales and transfers. Type: [TokenEvent!]! "
+    tokenEvents: [TokenEvent!]!             # list of token events such as secondary sales and transfers
+    " The current top active offer on a token. Type: TokenOffer! "
+    openOffer: TokenOffer,                  # current top active offer on a token
+    " The current active top bidder on the secondary market for this token. The current active top bidder is the top bidder on the secondary market for this token. Type: Bytes! "
+    currentTopBidder: Bytes                 # current active top bidder on the secondary market for this token
+    " The artist account associated with the token. This references the artist account. Type: Bytes! "
+    artistAccount: Bytes! # address
+    " The edition active flag. This is a boolean that indicates if the edition is active. Type: Boolean! "
+    editionActive: Boolean!
+    " The revoked approval flag. This is a boolean that indicates if the seller has revoked approved the marketplace. Type: Boolean! "
+    revokedApproval: Boolean! # set to true once if the seller has revoked approved the marketplace
+
+    ## Token secondary market
+    " The listed flag. This is a boolean that indicates if the token is listed. Type: Boolean! "
+    isListed: Boolean!
+    " The list price. This is a number. Type: BigDecimal! "
+    listPrice: BigDecimal
+    " The lister. This references the Collector entity. Type: Collector! "
+    lister: Collector
+    " The listing timestamp. This is a number that represents the timestamp of the listing. Type: BigInt! "
+    listingTimestamp: BigInt
+
+    # Complete attached token
+    " The complete attached token. This references the ListedToken entity. Type: ListedToken! "
+    listing: ListedToken
+
+    # Creator contract
+    " The creator contract. This references the CreatorContract entity. Optionally capture creator contract address if it is version 4. Type: CreatorContract! "
+    creatorContract: CreatorContract # Optionally capture creator contract address if it is version 4
+}
+
+# For Token Secondary market (KODA V2/3 only)
+" ListedToken is a table for recording the details of a token listed on the secondary market. Only applicable for KODA V2/3. "
+type ListedToken @entity {
+    " The unique identifier for the listed token. A composite key made from multiple items. Type: ID! "
+    id: ID!
+    " The version of the KODA schema used to record the token. KODA 2 or 3. Type: BigInt! "
+    version: BigInt! # KODA 2 or 3
+    " The edition number for the listed token. Type: String! "
+    editionNumber: String!
+    " The revoked approval flag. This is a boolean that indicates if the seller has revoked approved the marketplace. Type: Boolean! "
+    revokedApproval: Boolean! # set to true once if the seller has revoked approved the marketplace
+    " The list price. This is a number representing the price the token was listed at. Type: BigDecimal! "
+    listPrice: BigDecimal!
+    " The lister. This references the Collector entity. Type: Collector! "
+    lister: Collector!
+    " The listing timestamp. This is a number that represents the timestamp of the listing. Type: BigInt! "
+    listingTimestamp: BigInt!
+    " The series number for the token. This is similar to the edition number in a series (i.e. edition no. in the series i.e. #10 from the an edition of 10). Type: BigInt! "
+    seriesNumber: BigInt # i.e. edition no. in the series i.e. #10 from the an edition of 10
+    " The first edition flag. This is a boolean that indicates if the token is the first edition. Type: Boolean! "
+    isFirstEdition: Boolean # i.e. token number 1 from edition of 10
+    " The last edition flag. This is a boolean that indicates if the token is the last edition. Type: Boolean! "
+    isLastEdition: Boolean # i.e. token number 10 from edition of 10
+    " The genesis edition flag. This is a boolean that indicates if the token is the genesis edition. The genesis edition is the first edition of an artist. Type: Boolean! "
+    isGenesisEdition: Boolean # i.e. the first artwork from an artist
+
+    #metadata fields flattened for search
+    " The name of the token, flattened from the metadata. Type: String! "
+    metadataName: String!
+    " The artist of the token, flattened from the metadata. Type: String! "
+    metadataArtist: String!
+    " The artist account of the token, flattened from the metadata. Type: String! "
+    metadataArtistAccount: String!
+    " The tag string of the token, flattened from the metadata. Type: String! "
+    metadataTagString: String!
+    " The primary asset short type of the token, flattened from the metadata. Type: String! "
+    primaryAssetShortType: String!
+    " The primary asset actual type of the token, flattened from the metadata. Type: String! "
+    primaryAssetActualType: String!
+
+    # Complete attached token
+    " The complete attached token. This references the Token entity. Type: Token! "
+    fullToken: Token!
+
+    # ---- Reserve auction fields --------- #
+    " The reserve auction seller. This references the edition seller. Type: Bytes! "
+    reserveAuctionSeller: Bytes!     # edition seller
+    " The reserve auction bidder. This references the current bidder. Type: Bytes! "
+    reserveAuctionBidder: Bytes!     # current bidder
+    " The reserve price. This is a number, listed for the reserve auction. Type: BigInt! "
+    reservePrice: BigInt!            # listed reserve price
+    " The current bid. This is a number, the current bid for the auction. Type: BigInt! "
+    reserveAuctionBid: BigInt!       # current bid
+    " The auction start timestamp. This is a number, the timestamp of the auction start time. Type: BigInt! "
+    reserveAuctionStartDate: BigInt! # auction start
+    " The previous reserve auction end timestamp. This is a number, set to the same as reserve unless an extension is in flight. Type: BigInt! "
+    previousReserveAuctionEndTimestamp: BigInt! # set to the same as reserve unless an extension is in flight
+    " The reserve auction end timestamp. This is a number, the timestamp of the auction end time. Type: BigInt! "
+    reserveAuctionEndTimestamp: BigInt!         # when the auction will end
+    " The number of times the auction has been extended. This is a number, the number of times the auction has been extended. Type: BigInt! "
+    reserveAuctionNumTimesExtended: BigInt!     # number of times auction has been extended
+    " The sudden death flag. This is a boolean that indicates if the auction is in sudden death. Type: Boolean! "
+    isReserveAuctionInSuddenDeath: Boolean!     # set to true when in sudden death
+    " The total extension length in seconds. This is a number, the total length of the extension. Type: BigInt! "
+    reserveAuctionTotalExtensionLengthInSeconds: BigInt! # total extension
+    " The reserve auction resulted flag. This is a boolean that indicates if the auction has resulted. Type: Boolean! "
+    isReserveAuctionResulted: Boolean!
+    " The reserve auction resulted timestamp. This is a number, the timestamp of the auction result. Type: BigInt! "
+    isReserveAuctionResultedDateTime: BigInt!
+    " The reserve auction resulter. This references the bytes of the auction resulter. Type: Bytes! "
+    reserveAuctionResulter: Bytes!
+    " The reserve auction can emergency exit flag. This is a boolean that indicates if the auction can emergency exit. Type: Boolean! "
+    reserveAuctionCanEmergencyExit: Boolean!
+    # ----- End of reserve auction fields - #
+    " The creator contract. This references the CreatorContract entity. Optionally capture creator contract address if this is version 4. Type: CreatorContract! "
+    creatorContract: CreatorContract # Optionally capture creator contract address if this is version 4
+}
+
+# A composable is a combination of a V3 NFT and a set number of tokens
+" Composable is a table for recording the details of a composable item. A composable is a combination of a V3 NFT and a set number of tokens. "
+type Composable @entity {
+    " The unique identifier for the composable. This is the address of the composable. Type: ID! "
+    id: ID! # toString for address
+    " The list of composable items. This is an array of composable items. Type: [ComposableItem!]! "
+    items: [ComposableItem!]  # An array of composable items
+}
+
+# ComposableItem represents one token attached to a composable
+" A table of composable items. A composable item is one token attached to a composable. "
+type ComposableItem @entity  {
+    " The unique identifier for the composable item. This is the ID made up of combined tokenID/composing contract/composing IDs. Type: ID! "
+    id: ID! # ID made up of combined tokenID/composing contract/composing IDs
+    " The address of the ERC20/ERC721 token. Type: String! "
+    address: String! # Address of the ERC20/ERC721 token
+    " The token ID. This can be thought of as the token ticker. Type: String! "
+    tokenID: String! # ID of the token
+    " The type of token. This is the technical spec of the token, such as ERC20, ERC721 etc. Type: String! "
+    type: String! # Type of token, ERC20, ERC721 etc
+    " The value of the token. This is the number of tokens attached or the ERC721 token ID. Type: BigInt! "
+    value: BigInt! # Number of tokens attached or the ERC721 token ID
+}
+
+# Maintain an list of approved collective handlers i.e. contracts which are cloned and used
+" A table of approved collective handlers. A collective handler is a contract which is cloned and used to handle the collective. "
+type CollectiveHandlers @entity {
+    " The unique identifier for the collective handler. This is the base address of the collective handler. Type: ID! "
+    id: ID! # base address
+    " The active flag. This is a boolean that indicates if the collective handler is active. Type: Boolean! "
+    active: Boolean!
+    " The last updated timestamp. This is a number, the timestamp of the last update to the collective handler. Type: BigInt! "
+    lastUpdatedTimestamp: BigInt!
+    " The last updated transaction hash. This is the transaction hash of the last update to the collective handler. Type: Bytes! "
+    lastUpdatedTransactionHash: Bytes!
+}
+
+" A table of collective contracts. "
+type Collective @entity {
+    " The unique identifier for the collective. This is the deployed address of the collective. Type: ID! "
+    id: ID! # deployed address
+    " The base handler. This is the clone which this is based on. Type: Bytes! "
+    baseHandler: Bytes! # clone which this is based on
+    " The creator. This is the address of the creator who deployed the collective. Type: Bytes! "
+    creator: Bytes! # who deployed it
+    " The recipients. This is an array of addresses who are recipients for the deployed collab. Type: [Bytes!]! "
+    recipients: [Bytes!]! # recipients for the deployed collab
+    " The splits. This is an array of numbers who are splits for the deployed collab. Type: [BigInt!]! "
+    splits: [BigInt!]! # splits for the deployed collab
+    " The created timestamp. This is a number, the timestamp of the creation of the collective. Type: BigInt! "
+    createdTimestamp: BigInt!
+    " The transaction hash. This is the transaction hash of the creation of the collective. Type: Bytes! "
+    transactionHash: Bytes!
+    " The editions. This is an array of editions assigned to the collective. Type: [Edition!]! "
+    editions: [Edition!]! # A list of editions assigned to
+    " The deployed flag. This is a boolean that indicates if the collective is deployed. Type: Boolean! "
+    isDeployed: Boolean!
+}
+
+# A token/editions and its meta data
+" A table of editions. An edition is a collection of tokens. "
+type Edition @entity {
+    " The unique identifier for the edition. This is the composite ID made up of the edition ID and the optional contract address for the creator contract. Type: ID! "
+    id: ID! # Composite ID from edition ID and optional contract address for CC
+    " The version of the KODA schema used to record the edition. KODA 2, 3 or 4. Type: BigInt! "
+    version: BigInt! # KODA 2 or 3 or 4
+    " The edition number. This is the edition number. This is not a composite key. Type: String! "
+    editionNmber: String! # edition no. not composite key
+    " The edition type. This is a legacy field from KODA V2. Type: BigInt! "
+    editionType: BigInt! # legacy field from KODA V2
+    " The edition data. This is a legacy field from KODA V2 which contains some additional data about the edition. Type: Bytes! "
+    editionData: Bytes # bytes32 - legacy field from KODA V2 - some additional data about the edition
+    " The creator contract. This references the CreatorContract entity. Type: CreatorContract! "
+    creatorContract: CreatorContract # address of creator contract that minted the edition if version 4
+    " The sales type. This is the current sales mechanic being used on this edition. Type: BigInt! "
+    salesType: BigInt! # The current sales mechanic being used on this edition
+    " The revoked approval flag. This is a boolean that indicates if the seller has revoked approved the marketplace, which is set to true once if the seller has revoked approved the marketplace. Type: Boolean! "
+    revokedApproval: Boolean! # set to true once if the seller has revoked approved the marketplace
+    " The created timestamp. This is a number, the timestamp of the creation of the edition. Type: BigInt! "
+    createdTimestamp: BigInt!
+    " The token IDs. This is an array of token IDs. Type: [String!]! "
+    tokenIds: [String!]!
+    " The tokens. This is an array of tokens. Type: [Token!]! "
+    tokens: [Token!]! @derivedFrom(field: "edition")
+    " The token URI. This is a string, the URI of the token. Type: String! "
+    tokenURI: String!
+    " The artist account. This is the address of the artist for the edition. Type: Bytes! "
+    artistAccount: Bytes! # address
+    " The artist commission. This is the base artists commission. Type: BigInt! "
+    artistCommission: BigInt! # base artists commission
+    " The optional commission account. This is the address of the optional commission account. NOTE: deprecated - V2 only - use collaborators for this. Type: Bytes! "
+    optionalCommissionAccount: Bytes # address - NOTE: deprecated - V2 only - use collaborators for
+    " The optional commission rate. This is the rate of the optional commission. Type: BigInt! "
+    optionalCommissionRate: BigInt
+    " The collaborators. This is an array of addresses who have collaborated on this edition. Type: [Bytes!]! "
+    collaborators: [Bytes!]! # list of addresses who have collaborated on this edition
+    " The collective. This references the Collective entity. NOTE: nullable V3 collective i.e. its split funds. Type: Collective! "
+    collective: Collective # nullable V3 collective i.e. its split funds
+    " The offers only flag. This is a boolean that indicates if the edition is only for offers. Type: Boolean! "
+    offersOnly: Boolean!
+
+    # Token counters
+    " The total supply. This is the total purchases or mints i.e. total number of primary transfers. Type: BigInt! "
+    totalSupply: BigInt!         # Total purchases or mints i.e. total number of primary transfers
+    " The total available. This is the total number available to be purchased i.e. edition size. Type: BigInt! "
+    totalAvailable: BigInt!      # Total number available to be purchased i.e. edition size
+    " The remaining supply. This is the total remaining i.e. number of primary sale tokens left to buy from this edition. Type: BigInt! "
+    remainingSupply: BigInt!     # Total remaining i.e. number of primary sale tokens left to buy from this edition
+    " The total sold. This is the total number sold i.e. number of primary sale tokens sold. sold = purchase/bid accepted with price > 0. Type: BigInt! "
+    totalSold: BigInt!           # sold = purchase/bid accepted with price > 0
+    " The total burnt. This is the total number burnt i.e. number of primary sale tokens burnt. burnt = send to 0xDead or 0x0 (only applicable for V3). Type: BigInt! "
+    totalBurnt: BigInt!          # number of items send to 0xDead or 0x0 (only applicable for V3)
+    " The original edition size. This is the original edition size of the edition at mint - this field should NEVER change once set. Type: BigInt! "
+    originalEditionSize: BigInt! # original edition size of the edition at mint - this field should NEVER change once set
+    " The secondary royalty V4 edition override. This is the EIP2981 percentage requested by the creator(s) at the edition level. Type: BigInt! "
+    secondaryRoyaltyV4EditionOverride: BigInt # At the edition level, the EIP2981 percentage requested by the creator(s)
+    " The sales. This is an array of tokens that have been sold from this edition. Type: [Token!]! "
+    sales: [Token!]!
+    " The total eth spent on the edition. This is the total amount of ETH spent on the edition. Type: BigDecimal! "
+    totalEthSpentOnEdition: BigDecimal!,
+    " The active flag. This is a boolean that indicates if the edition is active. Type: Boolean! "
+    active: Boolean!
+    " The metadata. This references the MetaData entity. Type: MetaData! "
+    metadata: MetaData
+    " The isGenesisEdition flag. This is a boolean that indicates if the edition is the first edition. This is set true if edition is an artists first edition. Type: Boolean! "
+    isGenesisEdition: Boolean! # set true if edition is an artists first edition
+    " The isEnhancedEdition flag. This is a boolean that indicates if the edition is an enhanced edition. This is set true if any of the tokens are enhanced i.e. composed. Type: Boolean! "
+    isEnhancedEdition: Boolean! # set true if any of the tokens are enhanced i.e. composed
+    " The isOpenEdition flag. This is a boolean that indicates if the edition is an open edition. This is applicable to version 4 and editions where the artist does not mint all of the tokens up front. Type: Boolean! "
+    isOpenEdition: Boolean # applicable to version 4 and editions where the artist does not mint all of the tokens up front
+    " The hasCoverImage flag. This is a boolean that indicates if the edition has a cover image. Type: Boolean! "
+    hasCoverImage: Boolean! # set to true if non-image asset with cover image
+
+    # Reference to the primary minter
+    " The artist. This references the Artist entity, and reference the primary minter. Type: Artist! "
+    artist: Artist
+
+    # date when the edition goes on sale
+    " The start date. This is a number, the timestamp of the start date of the edition. Type: BigInt! "
+    startDate: BigInt!
+    " The end date. The date when the edition is available until (only applicable for V2). Type: BigInt! "
+    endDate: BigInt!   # date when the edition is available until (only applicable for V2)
+
+    # ---- Reserve auction fields --------- #
+    " The reserve auction seller. This is the address of the edition seller. Type: Bytes! "
+    reserveAuctionSeller: Bytes!     # edition seller
+    " The reserve auction bidder. This is the address of the current bidder. Type: Bytes! "
+    reserveAuctionBidder: Bytes!     # current bidder
+    " The reserve price. This is the listed reserve price. Type: BigInt! "
+    reservePrice: BigInt!            # listed reserve price
+    " The reserve auction bid. This is the current bid. Type: BigInt! "
+    reserveAuctionBid: BigInt!       # current bid
+    " The reserve auction start date. This is the timestamp of the auction start. Type: BigInt! "
+    reserveAuctionStartDate: BigInt! # auction start
+    " The previous reserve auction end timestamp. This is set to the same as reserve unless an extension is in flight. Type: BigInt! "
+    previousReserveAuctionEndTimestamp: BigInt! # set to the same as reserve unless an extension is in flight
+    " The reserve auction end timestamp. This is the timestamp of the auction end. Type: BigInt! "
+    reserveAuctionEndTimestamp: BigInt!         # when the auction will end
+    " The reserve auction number of times extended. This is the number of times the auction has been extended. Type: BigInt! "
+    reserveAuctionNumTimesExtended: BigInt!     # number of times auction has been extended
+    " The reserve auction in sudden death flag. This is a boolean that indicates if the auction is in sudden death. Type: Boolean! "
+    isReserveAuctionInSuddenDeath: Boolean!     # set to true when in sudden death
+    " The reserve auction total extension length in seconds. This is the total length of the extension. Type: BigInt! "
+    reserveAuctionTotalExtensionLengthInSeconds: BigInt! # total extension
+    " The reserve auction resulted flag. This is a boolean that indicates if the auction has resulted. Type: Boolean! "
+    isReserveAuctionResulted: Boolean!
+    " The reserve auction resulted timestamp. This is the timestamp of the auction result. Type: BigInt! "
+    isReserveAuctionResultedDateTime: BigInt!
+    " The reserve auction resulter. This is the address of the auction resulter. Type: Bytes! "
+    reserveAuctionResulter: Bytes!
+    " The reserve auction can emergency exit flag. This is a boolean that indicates if the auction can emergency exit. Type: Boolean! "
+    reserveAuctionCanEmergencyExit: Boolean!
+    # ----- End of reserve auction fields - #
+
+    # ----- Buy now price / current step price - #
+    " The price in wei. This is the buy now price / current step price. Type: BigInt! "
+    priceInWei: BigInt!
+    # ----- Buy now price / current step price - #
+
+    # ----- step sale - #
+    " The step sale base price. This is the base price of the step sale. Type: BigInt! "
+    stepSaleBasePrice: BigInt!
+    " The step sale step price. This is the step price of the step sale. Type: BigInt! "
+    stepSaleStepPrice: BigInt!
+    " The current step. This is the current step of the step sale. Type: BigInt! "
+    currentStep: BigInt!
+    # ----- step sale - #
+
+    # ----- Offers logic - #
+    " The auction enabled flag. This is a boolean that indicates if the auction is enabled. Type: Boolean! "
+    auctionEnabled: Boolean!
+    " The active bid. This references the AuctionEvent entity. Type: AuctionEvent! "
+    activeBid: AuctionEvent # if present, an active bid should be open
+    # ----- Offers logic - #
+
+    # ----- Gated sale config - #
+    " The gated sale. This references the GatedSale entity. Represents if the edition is gated, which means the edition is only available to a certain set of users. Type: GatedSale! "
+    gatedSale: GatedSale        # the linked gated sale
+    # ----- Gated sale config - #
+
+    # Events and histories
+    " The bidding history. This is an array of AuctionEvent entities. Type: [AuctionEvent!]! "
+    biddingHistory: [AuctionEvent!]!
+    " The transfers. The total number of token transfers made for all tokens from the edition. Type: [TransferEvent!]! "
+    transfers: [TransferEvent!]! # total number of token transfers made for all tokens from the edition
+    " The all owners. The list (set) of all unique owners for all tokens. Type: [Collector!]! "
+    allOwners: [Collector!]! # list (set) of all unique owners for all tokens
+    " The current owners. The current set of owners for this edition. Type: [Collector!]! "
+    currentOwners: [Collector!]! # Current set of owners for this edition
+    " The primary owners. The owner is set when sold in primary sale. Type: [Collector!]! "
+    primaryOwners: [Collector!]! # Owners (set) when sold in primary sale
+
+    # START: freetext search fields
+    " The metadata name. This is the name of the edition. Type: String! "
+    metadataName: String!
+    " The metadata artist. This is the artist of the edition. Type: String! "
+    metadataArtist: String!
+    " The metadata tag string. This is the tags of the edition. Type: String! "
+    metadataTagString: String!
+    " The metadata artist account. This is the artist account of the edition. Type: String! "
+    metadataArtistAccount: String!
+    " The metadata price. A consolidated price for all sale types, making it orderable in lists. Type: BigInt! "
+    metadataPrice: BigInt! # A consolidated price for all sale types, making it orderable in lists
+    " The metadata format. This is the format of the edition (null-able as V3 only). Type: String! "
+    metadataFormat: String # null-able as V3 only
+    " The metadata theme. This is the theme of the edition (null-able as V3 only). Type: String! "
+    metadataTheme: String # null-able as V3 only
+    " The primary asset short type. This is the short type of the primary asset (null-able leading mime-type field i.e. image or video etc). Type: String! "
+    primaryAssetShortType: String # null-able leading mime-type field i.e. image or video etc
+    " The primary asset actual type. This is the actual type of the primary asset (null-able ending mime-type field e.g. mp4, gif, png etc). Type: String! "
+    primaryAssetActualType: String # null-able ending mime-type field e.g. mp4, gif, png etc
+    # END: freetext search fields
+}
+
+# A token/editions and its meta data
+" A table of metadata. A token/editions and its meta data. "
+type MetaData @entity(immutable: true) {
+    " The unique identifier for the metadata. This is the ID of the metadata. Type: ID! "
+    id: ID!
+    " The name. This is the name of the metadata. Type: String! "
+    name: String
+    " The description. This is the description of the metadata. Type: String! "
+    description: String
+    " The image for the metadata. This is the image of the metadata. Type: String! "
+    image: String
+    # only added july-2020
+    " The image type. This is the type of the image (only added july-2020). Type: String! "
+    image_type: String
+    " The image size in bytes. Type: BigInt! "
+    image_size_in_bytes: BigInt
+
+    # optional - only added july-2020
+    " The cover image that is used for the metadata (optional - only added july-2020). Type: String! "
+    cover_image: String
+    " The cover image type. This is the type of the cover image (only added july-2020). Type: String! "
+    cover_image_type: String
+    " The cover image size in bytes. This is the size of the cover image in bytes (only added july-2020). Type: BigInt! "
+    cover_image_size_in_bytes: BigInt
+    " The animation URL. This is the URL of the animation. Type: String! "
+    animation_url: String
+
+    # optional - only added Jan-21
+    " The image sphere flag (optional - only added Jan-21). Type: Boolean! "
+    image_sphere: Boolean
+    " The scarcity. This is the scarcity of the metadata. Type: String! "
+    scarcity: String
+    " The artist. This is the artist of the metadata. Type: String! "
+    artist: String
+    " The tags. This is an array of tags for the metadata. Type: [String!]! "
+    tags: [String!]
+
+    # New tags added in V3
+    " The production year. This is the production year of the metadata. Type: String! "
+    production_year: String
+    " The format. This is the format of the metadata. Type: String! "
+    format: String
+    " The theme. This is the theme of the metadata. Type: String! "
+    theme: String
+    " The nsfw flag. This is a boolean that indicates if the metadata is nsfw. Type: Boolean! "
+    nsfw: Boolean
+}
+
+# Single high level entity capturing the top offer on the secondary marketplace
+" A table of token offers. A single high level entity capturing the top offer on the secondary marketplace. "
+type TokenOffer @entity(immutable: true) {
+    " The unique identifier for the token offer. This is the ID of the token offer. Type: ID! "
+    id: ID!
+    " The version. This is the version of the KODA schema used to record the token offer. Type: BigInt! "
+    version: BigInt! # KODA 2 or 3
+    " The token. This references the Token entity. Type: Token! "
+    token: Token!
+    " The edition of the token offer. This references the Edition entity. Type: Edition! "
+    edition: Edition!
+    " The owner at time of bid. When the token is offered for sale, this is the owner of said token. This references the Collector entity. Type: Collector! "
+    ownerAtTimeOfBid: Collector!
+    " The bidder. This references the Collector entity. Type: Collector! "
+    bidder: Collector!
+    " The eth value. This is the eth value of the token offer. Type: BigDecimal! "
+    ethValue: BigDecimal!
+    " The timestamp. This is the timestamp of the token offer. Type: BigInt! "
+    timestamp: BigInt!
+}
+
+# Encapsulates all offers either on editions or tokens
+" A table of offers. Encapsulates all offers either on editions or tokens. "
+type Offer @entity {
+    " The unique identifier for the offer. This is edition ID or token ID. Type: ID! "
+    id: ID!                         # edition ID or token ID
+    " The version. This is the version of the KODA schema used to record the offer. Type: BigInt! "
+    version: BigInt!                # KODA 2 or 3
+    " The type. This is the type of the offer, either Token or Edition. Type: String! "
+    type: String!                   # either Token or Edition
+    " The sales type. This is the current sales mechnic being used on this offer. Type: BigInt! "
+    salesType: BigInt!              # The current sales mechnic being used on this offer
+    " The token in the offer. This is a nullable token, as editions dont have tokens attached. Type: Token! "
+    token: Token                    # nullable token, as editions dont have tokens attached
+    " The edition in the offer. All offers must be from an edition. Type: Edition! "
+    edition: Edition!               # All offers must be from an edition
+    " The current owner of the offer, refering to the collection the offer is from. This is either the token holder or the edition artist. Type: Collector! "
+    currentOwner: Collector!        # This is either the token holder or the edition artist
+    " The bidder. This is the address of account making the bid. This references the Collector entity. Type: Collector! "
+    bidder: Collector!              # Who is making the bid
+    " The eth value of the offer. This is human readable eth value of the offer. Type: BigDecimal! "
+    ethValue: BigDecimal!
+    " The wei value of the offer. This is the wei value, meaning the non-converted value of ETh, of the offer. Type: BigInt! "
+    weiValue: BigInt!
+    " The timestamp of the offer. This is the timestamp of the offer. Type: BigInt! "
+    timestamp: BigInt!
+    " The transaction hash of the offer. This is the transaction hash of the offer. Type: Bytes! "
+    transactionHash: Bytes!
+    " The locked until timestamp of the offer. For V3 offers, they will be locked for a certain amount of time. Type: BigInt! "
+    lockedUntil: BigInt             # For V3 offers, they will be locked for a certain amount of time
+    " The active flag of the offer. This is a boolean that indicates if the offer is active, as only active offers can be seen in the UI. Type: Boolean! "
+    isActive: Boolean!              # Only active offers can be seen in the UI
+}
+
+# Store the total mints per user, per sale & phase
+" A table of phase mint counts. Store the total mints per user, per sale & phase. "
+type PhaseMintCount @entity {
+    " The unique identifier for the phase mint count. This is a composite key (sale, edition, phase, minter) - unique per user and sale/phase. Type: ID! "
+    id: ID!                  # composite key (sale, edition, phase, minter) - unique per user and sale/phase
+    " The sale. This is the sale this phase relates to. Type: String! "
+    saleId: String!          # The sale this phase relates to
+    " The edition. This is the edition this phase relates to. Type: String! "
+    editionId: String!       # The edition this phase relates to
+    " The phase. This is the actual phase number. Type: String! "
+    phaseId: String!         # The actual phase number
+    " The minter. This is the minter who is creating the tokens. Type: String! "
+    minter: String!          # The minter
+    " The count. This is the total number of tokens minted by the minter in this phase. Type: BigInt! "
+    count: BigInt!           # How many have they minted
+}
+
+# A gate sale phase configuration
+" A table of phase. A gate sale phase configuration. "
+type Phase @entity {
+    " The unique identifier for the phase. Type: ID! "
+    id: ID!
+    " The sale. This is the sale this phase relates to. Type: String! "
+    saleId: String!          # The sale this phase relates to
+    " The edition. This is the edition this phase relates to. Type: String! "
+    editionId: String!       # The edition this phase relates to
+    " The phase. This is the actual phase number. Type: String! "
+    phaseId: String!         # The actual phase number
+    " The start time of the sale as a whole. Type: BigInt! "
+    startTime: BigInt!       # The start time of the sale as a whole
+    " The end time of the sale phase, also the beginning of the next phase if applicable. Type: BigInt! "
+    endTime: BigInt!         # The end time of the sale phase, also the beginning of the next phase if applicable
+    " The mint limit per wallet for the phase. Type: BigInt! "
+    walletMintLimit: BigInt! # The mint limit per wallet for the phase
+    " The price in wei for one mint. Type: BigInt! "
+    priceInWei: BigInt!      # Price in wei for one mint
+    " The maximum amount of mints for the phase. Type: BigInt! "
+    mintCap: BigInt!         # The maximum amount of mints for the phase
+    " The current amount of items minted in this phase. Type: BigInt! "
+    mintCount: BigInt!       # The current amount of items minted in this phase
+    " The merkle tree root for the phase. Type: Bytes! "
+    merkleRoot: Bytes        # The merkle tree root for the phase
+    " The IPFS hash referencing the merkle tree. Type: String! "
+    merkleIPFSHash: String   # The IPFS hash referencing the merkle tree
+}
+
+# A gate sale configuration - one per edition
+" A table of gated sale. A gate sale configuration - one per edition. "
+type GatedSale @entity {
+    " The unique identifier for the gated sale. This is the ID of the gated sale. Type: ID! "
+    id: ID!                 # The ID of the sale
+    " The edition. This is the edition the sale will mint. Type: String! "
+    editionId: String!      # The ID of the edition the sale will mint
+    " The paused flag. This is a boolean that indicates if the sale is currently paused. Type: Boolean! "
+    paused: Boolean!        # Whether the sale is currently paused
+    " The primary sale commission. This is the overridden sales commission for KO. Type: BigInt! "
+    primarySaleCommission: BigInt! # overridden sales commission for KO
+    " The artist account. This is the address of the artist associated with the given edition ID. Type: String! "
+    artistAccount: String   # The address of the artist associated with the given edition ID
+    " The mint count. This is the total mint current for the sale. Type: BigInt! "
+    mintCount: BigInt!      # The total mint current for the sale
+    " The phases. This is an array of phases associated with the sale. Type: [Phase!]! "
+    phases: [Phase!]!       # associated sales
+}
+
+# Any KODA V4 Contract Deployed from the V4 factory
+" A table of creator contracts. Any KODA V4 Contract Deployed from the V4 factory. "
+type CreatorContract @entity {
+    " The unique identifier for the creator contract. This is the ID of the creator contract. Type: ID! "
+    id: ID!
+
+    # Deployment information
+    " The block number. This is the block number of the deployment. Type: BigInt! "
+    blockNumber: BigInt!
+    " The timestamp. This is the timestamp of the deployment. Type: BigInt! "
+    timestamp: BigInt!
+    " The transaction hash. This is the transaction hash of the deployment. Type: Bytes! "
+    transactionHash: Bytes!
+    " The transaction index. This is the transaction index of the deployment. Type: BigInt! "
+    transactionIndex: BigInt!
+    " The log index. This is the log index of the deployment. Type: BigInt! "
+    logIndex: BigInt!
+    " The event address. This is the address of the event. Type: Bytes! "
+    eventAddress: Bytes!
+    " The event tx from. This is the address of the transaction from. Type: Bytes! "
+    eventTxFrom: Bytes!
+    " The event tx to. This is the address of the transaction to. Type: Bytes! "
+    eventTxTo: Bytes
+    " The implementation. This is the address of the contract cloned during the deployment of the creator contract. Type: Bytes! "
+    implementation: Bytes!          # address of the contract cloned during the deployment of the creator contract
+    " The deployer. The deployer may be different to creator in the case that platform deployed a contract. Type: Bytes! "
+    deployer: Bytes!                # deployer may be different to creator in the case that platform deployed a contract
+    " The creator. This is the address of the creator of the contract. Type: Bytes! "
+    creator: Bytes!
+
+    # Current Settings
+    " The paused flag. This is a boolean that indicates if the contract is currently paused. Type: Boolean! "
+    paused: Boolean!
+    " The owner. This is the address of the owner of the contract. Type: Bytes! "
+    owner: Bytes!
+    " The secondary royalty percentage. This is across all editions the currently specified secondary royalty EIP2981. Type: BigInt! "
+    secondaryRoyaltyPercentage: BigInt! # Across all editions the currently specified secondary royalty EIP2981
+    " The minter. This is the address of the minter of the contract. Type: Bytes! "
+    minter: Bytes!
+
+    # Funds handler
+    " The default funds handler. This is the address of the default funds handler. Type: Bytes! "
+    defaultFundsHandler: Bytes!
+    " The default funds recipients. This is an array of addresses of the default funds recipients. Type: [Bytes!]! "
+    defaultFundsRecipients: [Bytes!]!
+    " The default funds shares. This is an array of BigInts of the default funds shares. Type: [BigInt!]! "
+    defaultFundsShares: [BigInt!]!
+
+    # Interface ID
+    " The ERC165 interface ID. This is the interface ID of the contract. Type: Bytes! "
+    ERC165InterfaceID: Bytes # TODO - Assembly script casting issues fetching this from contract
+    " The batch buy it now flag. This is a boolean that indicates if the contract supports batch buy it now. Type: Boolean! "
+    isBatchBuyItNow: Boolean!
+
+    # banned - flagged by the creator contract factory
+    " The banned flag. This is a boolean that indicates if the contract is banned. Type: Boolean! "
+    isHidden: Boolean!
+
+    #Transfer details - see transferStates.ts
+    " The transfer state. This is the state of the transfer. Type: BigInt! "
+    transferState: BigInt!
+
+    # Global stats
+    " The total number of editions. This is the total number of editions from a given creator contract. Type: BigInt! "
+    totalNumOfEditions: BigInt!
+    " The total number of tokens sold. This is the total number of tokens sold from a given creator contract. Type: BigInt! "
+    totalNumOfTokensSold: BigInt!
+    " The total eth value of sales. This is the total eth value of sales from a given creator contract. Type: BigDecimal! "
+    totalEthValueOfSales: BigDecimal!
+    " The total number of transfers. This is the total number of transfers from a given creator contract. Type: BigInt! "
+    totalNumOfTransfers: BigInt!
+
+    # Editions created by contract
+    " The editions. This is an array of editions created by the creator contract. Type: [Edition!]! "
+    editions: [Edition!]!
+
+    # Contract metadata
+    " The name. This is the name of the contract. Type: String! "
+    name: String
+    " The symbol. This is the symbol of the contract. Type: String! "
+    symbol: String
+    " The filter registry. This is the filter registry of the contract. Type: Bytes! "
+    filterRegistry: Bytes
+}
+
+" A table of creator contract settings. The creator contract settings have the configuration of the creator contract. "
+type CreatorContractSetting @entity {
+    " The unique identifier for the creator contract setting. Type: ID! "
+    id: ID!
+    " The factory contract. This is the address of the factory contract. Type: Bytes! "
+    factoryContract: Bytes!             # Creator contract factory
+    " The koda sales settings contract. This is the address of the koda sales settings contract which is used to configure the creator contract settings. Type: Bytes! "
+    kodaSalesSettingsContract: Bytes!   # Things like current primary sales settings
+    " The platform. This is the address of the platform which the creator contract is deployed from. Type: Bytes! "
+    platform: Bytes!                    # Address
+
+    # Settings direct from KODA Settings contract
+    " The platform primary commission. This is the primary commission of the platform. Type: BigInt! "
+    platformPrimaryCommission: BigInt!
+    " The platform secondary commission. This is the secondary commission of the platform. Type: BigInt! "
+    platformSecondaryCommission: BigInt!
+    " The modulo. This is the modulo of the platform. Type: BigInt! "
+    MODULO: BigInt!
+}
+
+##########################
+## Accountable entities ##
+##########################
+
+" A table of artist minting config. The artist minting config has the configuration of the artist minting. "
+type ArtistMintingConfig @entity {
+    " The unique identifier for the artist minting config. Type: ID! "
+    id: ID!
+    " The mints. This is the total number of mints for the artist. Type: BigInt! "
+    mints: BigInt!
+    " The first mint in period. This is the first mint of a given period for the artist. Type: BigInt! "
+    firstMintInPeriod: BigInt!
+    " The frequency override. This is a boolean that indicates if the user can mint as much as possible. Type: Boolean! "
+    frequencyOverride: Boolean! # set to true if the user can mint as much as possible
+}
+
+# An artists who has created editions/tokens
+" A table of artists. An artists is someone who has created editions/tokens. "
+type Artist @entity {
+    " The unique identifier for the artist. Type: ID! "
+    id: ID!
+    " The address. This is the address of the artist. Type: Bytes! "
+    address: Bytes! # address
+    " The name. This is the name of the artist. Type: String! "
+    name: String
+    " The editions count. This is the total number of editions created by the artist. Type: BigInt! "
+    editionsCount: BigInt!
+    " The editions count. This is the total number of editions created by the artist. Type: BigInt! "
+    ccEditionsCount: BigInt!
+    " The supply. This is the total supply of the artist. Type: BigInt! "
+    supply: BigInt!
+    " The issued count. This is the total number of issued tokens by the artist. Type: BigInt! "
+    issuedCount: BigInt!
+    " The total value in eth. This is the total value of assets in eth of the artist. Type: BigDecimal! "
+    totalValueInEth: BigDecimal!
+    " The sales count. This is the total number of sales of the artist. Type: BigInt! "
+    salesCount: BigInt!
+    " The total primary sales. This is the total number of primary sales of the artist. Type: BigInt! "
+    totalPrimarySales: BigInt!
+    " The total primary sales in eth. This is the total number of primary sales in eth of the artist. Type: BigDecimal! "
+    totalPrimarySalesInEth: BigDecimal!
+    " The total secondary sales. This is the total number of secondary sales of the artist. Type: BigInt! "
+    totalSecondarySales: BigInt!
+    " The total secondary sales in eth. This is the total number of secondary sales in eth of the artist. Type: BigDecimal! "
+    totalSecondarySalesInEth: BigDecimal!
+    " The highest sale value in eth. This is the highest sale value in eth of the artist. Type: BigDecimal! "
+    highestSaleValueInEth: BigDecimal!
+    " The highest sale token. This is the highest sale token of the artist. Type: Token! "
+    highestSaleToken: Token
+    " The first edition. This is the first edition that the artist created. Type: Edition! "
+    firstEdition: Edition
+    " The first edition timestamp. This is the timestamp of the first edition that the artist created. Type: BigInt! "
+    firstEditionTimestamp: BigInt!
+    " The last edition. This is the last edition that the artist created. Type: Edition! "
+    lastEdition: Edition
+    " The last edition timestamp. This is the timestamp of the last edition that the artist created. Type: BigInt! "
+    lastEditionTimestamp: BigInt!
+
+    # all artist editions - derivedFrom only work at query time, not runtime!
+    " All of the editions that the artist has created. derivedFrom only work at query time, not runtime. Type: [Edition!]! "
+    editions: [Edition!]! @derivedFrom(field: "artist")
+    " All of the edition IDs that the artist has created. Type: [Edition!]! "
+    editionIds: [Edition!]!
+
+    " The minting config. This is the minting config of the artist. Type: ArtistMintingConfig! "
+    mintingConfig: ArtistMintingConfig!
+    " The creator contracts. This is an array of creator contracts created by the artist. Type: [CreatorContract!]! "
+    creatorContracts: [CreatorContract!]
+}
+
+# A single collector who has at sometime held a KO asset
+" A table of collectors. A single collector who has at sometime held a KO asset. "
+type Collector @entity {
+    " The unique identifier for the collector. Type: ID! "
+    id: ID! # toString for address
+    " The address. This is the address of the collector. Type: Bytes! "
+    address: Bytes! # address
+    " The first seen. This is the first time the collector has been seen. Type: BigInt! "
+    firstSeen: BigInt!
+    " The first purchase timestamp. This is the timestamp of the first purchase of the collector. Type: BigInt! "
+    firstPurchaseTimeStamp: BigInt!
+    " The last purchase timestamp. This is the timestamp of the last purchase of the collector. Type: BigInt! "
+    lastPurchaseTimeStamp: BigInt!
+
+    # Primary sales counts
+    " The primary purchase count. This is the total number of primary purchases of the collector. Type: BigInt! "
+    primaryPurchaseCount: BigInt!
+    " The primary purchase eth spent. This is the total eth spent on primary purchases of the collector. Type: BigDecimal! "
+    primaryPurchaseEthSpent: BigDecimal!
+
+    # Secondary sales counts
+    " The secondary sale count. This is the total number of secondary sales of the collector. Type: BigInt! "
+    secondarySaleCount: BigInt!
+    " The secondary sale eth total. This is the total eth spent on secondary sales of the collector. Type: BigDecimal! "
+    secondarySaleEthTotal: BigDecimal!
+    " The secondary purchase count. This is the total number of secondary purchases of the collector. Type: BigInt! "
+    secondaryPurchaseCount: BigInt!
+    " The secondary purchase eth spent. This is the total eth spent on secondary purchases of the collector. Type: BigDecimal! "
+    secondaryPurchaseEthSpent: BigDecimal!
+
+    # Primary & secondary sales counts
+    " The total purchase count. This is the total number of purchases of the collector. Type: BigInt! "
+    totalPurchaseCount: BigInt!
+    " The total purchase eth spent. This is the total eth spent on purchases of the collector. Type: BigDecimal! "
+    totalPurchaseEthSpent: BigDecimal!
+
+    # all tokens currently owned by this account - derivedFrom only work at query time, not runtime!
+    " All of the tokens currently owned by this account. derivedFrom only work at query time, not runtime. Type: [Token!]! "
+    tokens: [Token!]! @derivedFrom(field: "currentOwner")
+    " All of the token IDs currently owned by this account. Type: [Token!]! "
+    tokenIds: [Token!]!
+}

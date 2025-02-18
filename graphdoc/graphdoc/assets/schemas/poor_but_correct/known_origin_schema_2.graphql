@@ -1,0 +1,908 @@
+"Description for table: TokenEvent"
+type TokenEvent @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: version"
+  version: BigInt!
+  "Description for column: name"
+  name: String!
+  "Description for column: token"
+  token: Token!
+  "Description for column: edition"
+  edition: Edition!
+  "Description for column: buyer"
+  buyer: Collector
+  "Description for column: bidder"
+  bidder: Collector
+  "Description for column: currentOwner"
+  currentOwner: Collector
+  "Description for column: ethValue"
+  ethValue: BigDecimal!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: transactionHash"
+  transactionHash: Bytes!
+  "Description for column: transactionIndex"
+  transactionIndex: BigInt!
+  "Description for column: logIndex"
+  logIndex: BigInt!
+  "Description for column: eventAddress"
+  eventAddress: Bytes!
+  "Description for column: eventTxFrom"
+  eventTxFrom: Bytes!
+  "Description for column: eventTxTo"
+  eventTxTo: Bytes
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+}
+
+"Description for table: TransferEvent"
+type TransferEvent @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: version"
+  version: BigInt!
+  "Description for column: from"
+  from: Bytes!
+  "Description for column: to"
+  to: Bytes!
+  "Description for column: tokenId"
+  tokenId: BigInt!
+  "Description for column: edition"
+  edition: Edition!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: transactionHash"
+  transactionHash: Bytes!
+  "Description for column: transactionIndex"
+  transactionIndex: BigInt!
+  "Description for column: logIndex"
+  logIndex: BigInt!
+  "Description for column: eventAddress"
+  eventAddress: Bytes!
+  "Description for column: eventTxFrom"
+  eventTxFrom: Bytes!
+  "Description for column: eventTxTo"
+  eventTxTo: Bytes
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+}
+
+"Description for table: AuctionEvent"
+type AuctionEvent @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: version"
+  version: BigInt!
+  "Description for column: edition"
+  edition: Edition!
+  "Description for column: name"
+  name: String!
+  "Description for column: bidder"
+  bidder: Bytes!
+  "Description for column: caller"
+  caller: Bytes!
+  "Description for column: ethValue"
+  ethValue: BigDecimal!
+  "Description for column: lockupUntil"
+  lockupUntil: BigInt
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: transactionHash"
+  transactionHash: Bytes!
+  "Description for column: transactionIndex"
+  transactionIndex: BigInt!
+  "Description for column: logIndex"
+  logIndex: BigInt!
+  "Description for column: eventAddress"
+  eventAddress: Bytes!
+  "Description for column: eventTxFrom"
+  eventTxFrom: Bytes!
+  "Description for column: eventTxTo"
+  eventTxTo: Bytes
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+}
+
+"Description for table: ActivityEvent"
+type ActivityEvent @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: type"
+  type: String!
+  "Description for column: version"
+  version: BigInt!
+  "Description for column: eventType"
+  eventType: String!
+  "Description for column: edition"
+  edition: Edition
+  "Description for column: token"
+  token: Token
+  "Description for column: creator"
+  creator: Bytes!
+  "Description for column: creatorCommission"
+  creatorCommission: BigInt
+  "Description for column: collaborator"
+  collaborator: Bytes
+  "Description for column: collaboratorCommission"
+  collaboratorCommission: BigInt
+  "Description for column: triggeredBy"
+  triggeredBy: Bytes
+  "Description for column: buyer"
+  buyer: Bytes
+  "Description for column: seller"
+  seller: Bytes
+  "Description for column: stakeholderAddresses"
+  stakeholderAddresses: [Bytes!]!
+  "Description for column: contractAddress"
+  contractAddress: Bytes
+  "Description for column: eventValueInWei"
+  eventValueInWei: BigInt
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: transactionHash"
+  transactionHash: Bytes!
+  "Description for column: transactionIndex"
+  transactionIndex: BigInt!
+  "Description for column: logIndex"
+  logIndex: BigInt!
+  "Description for column: eventAddress"
+  eventAddress: Bytes!
+  "Description for column: eventTxFrom"
+  eventTxFrom: Bytes!
+  "Description for column: eventTxTo"
+  eventTxTo: Bytes
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+}
+
+"Description for table: _Schema_"
+type _Schema_ @fulltext(name: "listedTokenSearch", language: en, algorithm: rank, include: [{entity: "ListedToken", fields: [{name: "metadataName"}, {name: "metadataArtist"}, {name: "metadataArtistAccount"}, {name: "metadataTagString"}, {name: "primaryAssetShortType"}, {name: "primaryAssetActualType"}]}]) @fulltext(name: "editionSearch", language: en, algorithm: rank, include: [{entity: "Edition", fields: [{name: "metadataName"}, {name: "metadataArtist"}, {name: "metadataArtistAccount"}, {name: "metadataTagString"}, {name: "metadataFormat"}, {name: "metadataTheme"}, {name: "primaryAssetShortType"}, {name: "primaryAssetActualType"}]}])
+
+"Description for table: Day"
+type Day @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: date"
+  date: String!
+  "Description for column: transferCount"
+  transferCount: BigInt!
+  "Description for column: editionsCount"
+  editionsCount: BigInt!
+  "Description for column: bidsAcceptedCount"
+  bidsAcceptedCount: BigInt!
+  "Description for column: bidsPlacedCount"
+  bidsPlacedCount: BigInt!
+  "Description for column: bidsRejectedCount"
+  bidsRejectedCount: BigInt!
+  "Description for column: bidsWithdrawnCount"
+  bidsWithdrawnCount: BigInt!
+  "Description for column: bidsIncreasedCount"
+  bidsIncreasedCount: BigInt!
+  "Description for column: totalValuePlaceInBids"
+  totalValuePlaceInBids: BigDecimal!
+  "Description for column: totalValueCycledInBids"
+  totalValueCycledInBids: BigDecimal!
+  "Description for column: secondarySalesValue"
+  secondarySalesValue: BigDecimal!
+  "Description for column: issuedCount"
+  issuedCount: BigInt!
+  "Description for column: salesCount"
+  salesCount: BigInt!
+  "Description for column: totalValueInEth"
+  totalValueInEth: BigDecimal!
+  "Description for column: highestValueInEth"
+  highestValueInEth: BigDecimal!
+  "Description for column: highestValueToken"
+  highestValueToken: Token
+  "Description for column: issued"
+  issued: [Token!]!
+  "Description for column: editions"
+  editions: [Edition!]!
+}
+
+"Description for table: PlatformConfig"
+type PlatformConfig @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: royaltiesRegistry"
+  royaltiesRegistry: Bytes
+  "Description for column: tokenUriResolver"
+  tokenUriResolver: Bytes
+  "Description for column: modulo"
+  modulo: BigInt
+  "Description for column: primarySaleCommission"
+  primarySaleCommission: BigInt
+  "Description for column: secondarySaleRoyalty"
+  secondarySaleRoyalty: BigInt
+  "Description for column: marketplaceSecondarySaleRoyalty"
+  marketplaceSecondarySaleRoyalty: BigInt
+  "Description for column: minBidAmount"
+  minBidAmount: BigInt
+  "Description for column: mintingPeriod"
+  mintingPeriod: BigInt
+  "Description for column: maxMintsInPeriod"
+  maxMintsInPeriod: BigInt
+  "Description for column: merkleProofRoot"
+  merkleProofRoot: Bytes
+  "Description for column: merkleProofIpfsHash"
+  merkleProofIpfsHash: String
+}
+
+"Description for table: Token"
+type Token @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: version"
+  version: BigInt!
+  "Description for column: salesType"
+  salesType: BigInt!
+  "Description for column: tokenId"
+  tokenId: BigInt!
+  "Description for column: transferCount"
+  transferCount: BigInt!
+  "Description for column: editionNumber"
+  editionNumber: String!
+  "Description for column: edition"
+  edition: Edition!
+  "Description for column: tokenURI"
+  tokenURI: String!
+  "Description for column: metadata"
+  metadata: MetaData
+  "Description for column: birthTimestamp"
+  birthTimestamp: BigInt!
+  "Description for column: primaryValueInEth"
+  primaryValueInEth: BigDecimal!
+  "Description for column: totalPurchaseValue"
+  totalPurchaseValue: BigDecimal!
+  "Description for column: totalPurchaseCount"
+  totalPurchaseCount: BigInt!
+  "Description for column: largestSecondaryValueInEth"
+  largestSecondaryValueInEth: BigDecimal!
+  "Description for column: largestSalePriceEth"
+  largestSalePriceEth: BigDecimal!
+  "Description for column: lastSalePriceInEth"
+  lastSalePriceInEth: BigDecimal!
+  "Description for column: lastTransferTimestamp"
+  lastTransferTimestamp: BigInt!
+  "Description for column: currentOwner"
+  currentOwner: Collector
+  "Description for column: allOwners"
+  allOwners: [Collector!]!
+  "Description for column: transfers"
+  transfers: [TransferEvent!]!
+  "Description for column: tokenEvents"
+  tokenEvents: [TokenEvent!]!
+  "Description for column: openOffer"
+  openOffer: TokenOffer
+  "Description for column: currentTopBidder"
+  currentTopBidder: Bytes
+  "Description for column: artistAccount"
+  artistAccount: Bytes!
+  "Description for column: editionActive"
+  editionActive: Boolean!
+  "Description for column: revokedApproval"
+  revokedApproval: Boolean!
+  "Description for column: isListed"
+  isListed: Boolean!
+  "Description for column: listPrice"
+  listPrice: BigDecimal
+  "Description for column: lister"
+  lister: Collector
+  "Description for column: listingTimestamp"
+  listingTimestamp: BigInt
+  "Description for column: listing"
+  listing: ListedToken
+  "Description for column: creatorContract"
+  creatorContract: CreatorContract
+}
+
+"Description for table: ListedToken"
+type ListedToken @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: version"
+  version: BigInt!
+  "Description for column: editionNumber"
+  editionNumber: String!
+  "Description for column: revokedApproval"
+  revokedApproval: Boolean!
+  "Description for column: listPrice"
+  listPrice: BigDecimal!
+  "Description for column: lister"
+  lister: Collector!
+  "Description for column: listingTimestamp"
+  listingTimestamp: BigInt!
+  "Description for column: seriesNumber"
+  seriesNumber: BigInt
+  "Description for column: isFirstEdition"
+  isFirstEdition: Boolean
+  "Description for column: isLastEdition"
+  isLastEdition: Boolean
+  "Description for column: isGenesisEdition"
+  isGenesisEdition: Boolean
+  "Description for column: metadataName"
+  metadataName: String!
+  "Description for column: metadataArtist"
+  metadataArtist: String!
+  "Description for column: metadataArtistAccount"
+  metadataArtistAccount: String!
+  "Description for column: metadataTagString"
+  metadataTagString: String!
+  "Description for column: primaryAssetShortType"
+  primaryAssetShortType: String!
+  "Description for column: primaryAssetActualType"
+  primaryAssetActualType: String!
+  "Description for column: fullToken"
+  fullToken: Token!
+  "Description for column: reserveAuctionSeller"
+  reserveAuctionSeller: Bytes!
+  "Description for column: reserveAuctionBidder"
+  reserveAuctionBidder: Bytes!
+  "Description for column: reservePrice"
+  reservePrice: BigInt!
+  "Description for column: reserveAuctionBid"
+  reserveAuctionBid: BigInt!
+  "Description for column: reserveAuctionStartDate"
+  reserveAuctionStartDate: BigInt!
+  "Description for column: previousReserveAuctionEndTimestamp"
+  previousReserveAuctionEndTimestamp: BigInt!
+  "Description for column: reserveAuctionEndTimestamp"
+  reserveAuctionEndTimestamp: BigInt!
+  "Description for column: reserveAuctionNumTimesExtended"
+  reserveAuctionNumTimesExtended: BigInt!
+  "Description for column: isReserveAuctionInSuddenDeath"
+  isReserveAuctionInSuddenDeath: Boolean!
+  "Description for column: reserveAuctionTotalExtensionLengthInSeconds"
+  reserveAuctionTotalExtensionLengthInSeconds: BigInt!
+  "Description for column: isReserveAuctionResulted"
+  isReserveAuctionResulted: Boolean!
+  "Description for column: isReserveAuctionResultedDateTime"
+  isReserveAuctionResultedDateTime: BigInt!
+  "Description for column: reserveAuctionResulter"
+  reserveAuctionResulter: Bytes!
+  "Description for column: reserveAuctionCanEmergencyExit"
+  reserveAuctionCanEmergencyExit: Boolean!
+  "Description for column: creatorContract"
+  creatorContract: CreatorContract
+}
+
+"Description for table: Composable"
+type Composable @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: items"
+  items: [ComposableItem!]
+}
+
+"Description for table: ComposableItem"
+type ComposableItem @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: address"
+  address: String!
+  "Description for column: tokenID"
+  tokenID: String!
+  "Description for column: type"
+  type: String!
+  "Description for column: value"
+  value: BigInt!
+}
+
+"Description for table: CollectiveHandlers"
+type CollectiveHandlers @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: active"
+  active: Boolean!
+  "Description for column: lastUpdatedTimestamp"
+  lastUpdatedTimestamp: BigInt!
+  "Description for column: lastUpdatedTransactionHash"
+  lastUpdatedTransactionHash: Bytes!
+}
+
+"Description for table: Collective"
+type Collective @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: baseHandler"
+  baseHandler: Bytes!
+  "Description for column: creator"
+  creator: Bytes!
+  "Description for column: recipients"
+  recipients: [Bytes!]!
+  "Description for column: splits"
+  splits: [BigInt!]!
+  "Description for column: createdTimestamp"
+  createdTimestamp: BigInt!
+  "Description for column: transactionHash"
+  transactionHash: Bytes!
+  "Description for column: editions"
+  editions: [Edition!]!
+  "Description for column: isDeployed"
+  isDeployed: Boolean!
+}
+
+"Description for table: Edition"
+type Edition @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: version"
+  version: BigInt!
+  "Description for column: editionNmber"
+  editionNmber: String!
+  "Description for column: editionType"
+  editionType: BigInt!
+  "Description for column: editionData"
+  editionData: Bytes
+  "Description for column: creatorContract"
+  creatorContract: CreatorContract
+  "Description for column: salesType"
+  salesType: BigInt!
+  "Description for column: revokedApproval"
+  revokedApproval: Boolean!
+  "Description for column: createdTimestamp"
+  createdTimestamp: BigInt!
+  "Description for column: tokenIds"
+  tokenIds: [String!]!
+  "Description for column: tokens"
+  tokens: [Token!]! @derivedFrom(field: "edition")
+  "Description for column: tokenURI"
+  tokenURI: String!
+  "Description for column: artistAccount"
+  artistAccount: Bytes!
+  "Description for column: artistCommission"
+  artistCommission: BigInt!
+  "Description for column: optionalCommissionAccount"
+  optionalCommissionAccount: Bytes
+  "Description for column: optionalCommissionRate"
+  optionalCommissionRate: BigInt
+  "Description for column: collaborators"
+  collaborators: [Bytes!]!
+  "Description for column: collective"
+  collective: Collective
+  "Description for column: offersOnly"
+  offersOnly: Boolean!
+  "Description for column: totalSupply"
+  totalSupply: BigInt!
+  "Description for column: totalAvailable"
+  totalAvailable: BigInt!
+  "Description for column: remainingSupply"
+  remainingSupply: BigInt!
+  "Description for column: totalSold"
+  totalSold: BigInt!
+  "Description for column: totalBurnt"
+  totalBurnt: BigInt!
+  "Description for column: originalEditionSize"
+  originalEditionSize: BigInt!
+  "Description for column: secondaryRoyaltyV4EditionOverride"
+  secondaryRoyaltyV4EditionOverride: BigInt
+  "Description for column: sales"
+  sales: [Token!]!
+  "Description for column: totalEthSpentOnEdition"
+  totalEthSpentOnEdition: BigDecimal!
+  "Description for column: active"
+  active: Boolean!
+  "Description for column: metadata"
+  metadata: MetaData
+  "Description for column: isGenesisEdition"
+  isGenesisEdition: Boolean!
+  "Description for column: isEnhancedEdition"
+  isEnhancedEdition: Boolean!
+  "Description for column: isOpenEdition"
+  isOpenEdition: Boolean
+  "Description for column: hasCoverImage"
+  hasCoverImage: Boolean!
+  "Description for column: artist"
+  artist: Artist
+  "Description for column: startDate"
+  startDate: BigInt!
+  "Description for column: endDate"
+  endDate: BigInt!
+  "Description for column: reserveAuctionSeller"
+  reserveAuctionSeller: Bytes!
+  "Description for column: reserveAuctionBidder"
+  reserveAuctionBidder: Bytes!
+  "Description for column: reservePrice"
+  reservePrice: BigInt!
+  "Description for column: reserveAuctionBid"
+  reserveAuctionBid: BigInt!
+  "Description for column: reserveAuctionStartDate"
+  reserveAuctionStartDate: BigInt!
+  "Description for column: previousReserveAuctionEndTimestamp"
+  previousReserveAuctionEndTimestamp: BigInt!
+  "Description for column: reserveAuctionEndTimestamp"
+  reserveAuctionEndTimestamp: BigInt!
+  "Description for column: reserveAuctionNumTimesExtended"
+  reserveAuctionNumTimesExtended: BigInt!
+  "Description for column: isReserveAuctionInSuddenDeath"
+  isReserveAuctionInSuddenDeath: Boolean!
+  "Description for column: reserveAuctionTotalExtensionLengthInSeconds"
+  reserveAuctionTotalExtensionLengthInSeconds: BigInt!
+  "Description for column: isReserveAuctionResulted"
+  isReserveAuctionResulted: Boolean!
+  "Description for column: isReserveAuctionResultedDateTime"
+  isReserveAuctionResultedDateTime: BigInt!
+  "Description for column: reserveAuctionResulter"
+  reserveAuctionResulter: Bytes!
+  "Description for column: reserveAuctionCanEmergencyExit"
+  reserveAuctionCanEmergencyExit: Boolean!
+  "Description for column: priceInWei"
+  priceInWei: BigInt!
+  "Description for column: stepSaleBasePrice"
+  stepSaleBasePrice: BigInt!
+  "Description for column: stepSaleStepPrice"
+  stepSaleStepPrice: BigInt!
+  "Description for column: currentStep"
+  currentStep: BigInt!
+  "Description for column: auctionEnabled"
+  auctionEnabled: Boolean!
+  "Description for column: activeBid"
+  activeBid: AuctionEvent
+  "Description for column: gatedSale"
+  gatedSale: GatedSale
+  "Description for column: biddingHistory"
+  biddingHistory: [AuctionEvent!]!
+  "Description for column: transfers"
+  transfers: [TransferEvent!]!
+  "Description for column: allOwners"
+  allOwners: [Collector!]!
+  "Description for column: currentOwners"
+  currentOwners: [Collector!]!
+  "Description for column: primaryOwners"
+  primaryOwners: [Collector!]!
+  "Description for column: metadataName"
+  metadataName: String!
+  "Description for column: metadataArtist"
+  metadataArtist: String!
+  "Description for column: metadataTagString"
+  metadataTagString: String!
+  "Description for column: metadataArtistAccount"
+  metadataArtistAccount: String!
+  "Description for column: metadataPrice"
+  metadataPrice: BigInt!
+  "Description for column: metadataFormat"
+  metadataFormat: String
+  "Description for column: metadataTheme"
+  metadataTheme: String
+  "Description for column: primaryAssetShortType"
+  primaryAssetShortType: String
+  "Description for column: primaryAssetActualType"
+  primaryAssetActualType: String
+}
+
+"Description for table: MetaData"
+type MetaData @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: name"
+  name: String
+  "Description for column: description"
+  description: String
+  "Description for column: image"
+  image: String
+  "Description for column: image_type"
+  image_type: String
+  "Description for column: image_size_in_bytes"
+  image_size_in_bytes: BigInt
+  "Description for column: cover_image"
+  cover_image: String
+  "Description for column: cover_image_type"
+  cover_image_type: String
+  "Description for column: cover_image_size_in_bytes"
+  cover_image_size_in_bytes: BigInt
+  "Description for column: animation_url"
+  animation_url: String
+  "Description for column: image_sphere"
+  image_sphere: Boolean
+  "Description for column: scarcity"
+  scarcity: String
+  "Description for column: artist"
+  artist: String
+  "Description for column: tags"
+  tags: [String!]
+  "Description for column: production_year"
+  production_year: String
+  "Description for column: format"
+  format: String
+  "Description for column: theme"
+  theme: String
+  "Description for column: nsfw"
+  nsfw: Boolean
+}
+
+"Description for table: TokenOffer"
+type TokenOffer @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: version"
+  version: BigInt!
+  "Description for column: token"
+  token: Token!
+  "Description for column: edition"
+  edition: Edition!
+  "Description for column: ownerAtTimeOfBid"
+  ownerAtTimeOfBid: Collector!
+  "Description for column: bidder"
+  bidder: Collector!
+  "Description for column: ethValue"
+  ethValue: BigDecimal!
+  "Description for column: weiValue"
+  weiValue: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+}
+
+"Description for table: Offer"
+type Offer @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: version"
+  version: BigInt!
+  "Description for column: type"
+  type: String!
+  "Description for column: salesType"
+  salesType: BigInt!
+  "Description for column: token"
+  token: Token
+  "Description for column: edition"
+  edition: Edition!
+  "Description for column: currentOwner"
+  currentOwner: Collector!
+  "Description for column: bidder"
+  bidder: Collector!
+  "Description for column: ethValue"
+  ethValue: BigDecimal!
+  "Description for column: weiValue"
+  weiValue: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: transactionHash"
+  transactionHash: Bytes!
+  "Description for column: lockedUntil"
+  lockedUntil: BigInt
+  "Description for column: isActive"
+  isActive: Boolean!
+}
+
+"Description for table: PhaseMintCount"
+type PhaseMintCount @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: saleId"
+  saleId: String!
+  "Description for column: editionId"
+  editionId: String!
+  "Description for column: phaseId"
+  phaseId: String!
+  "Description for column: minter"
+  minter: String!
+  "Description for column: count"
+  count: BigInt!
+}
+
+"Description for table: Phase"
+type Phase @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: saleId"
+  saleId: String!
+  "Description for column: editionId"
+  editionId: String!
+  "Description for column: phaseId"
+  phaseId: String!
+  "Description for column: startTime"
+  startTime: BigInt!
+  "Description for column: endTime"
+  endTime: BigInt!
+  "Description for column: walletMintLimit"
+  walletMintLimit: BigInt!
+  "Description for column: priceInWei"
+  priceInWei: BigInt!
+  "Description for column: mintCap"
+  mintCap: BigInt!
+  "Description for column: mintCount"
+  mintCount: BigInt!
+  "Description for column: merkleRoot"
+  merkleRoot: Bytes
+  "Description for column: merkleIPFSHash"
+  merkleIPFSHash: String
+}
+
+"Description for table: GatedSale"
+type GatedSale @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: editionId"
+  editionId: String!
+  "Description for column: paused"
+  paused: Boolean!
+  "Description for column: primarySaleCommission"
+  primarySaleCommission: BigInt!
+  "Description for column: artistAccount"
+  artistAccount: String
+  "Description for column: mintCount"
+  mintCount: BigInt!
+  "Description for column: phases"
+  phases: [Phase!]!
+}
+
+"Description for table: CreatorContract"
+type CreatorContract @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: transactionHash"
+  transactionHash: Bytes!
+  "Description for column: transactionIndex"
+  transactionIndex: BigInt!
+  "Description for column: logIndex"
+  logIndex: BigInt!
+  "Description for column: eventAddress"
+  eventAddress: Bytes!
+  "Description for column: eventTxFrom"
+  eventTxFrom: Bytes!
+  "Description for column: eventTxTo"
+  eventTxTo: Bytes
+  "Description for column: implementation"
+  implementation: Bytes!
+  "Description for column: deployer"
+  deployer: Bytes!
+  "Description for column: creator"
+  creator: Bytes!
+  "Description for column: paused"
+  paused: Boolean!
+  "Description for column: owner"
+  owner: Bytes!
+  "Description for column: secondaryRoyaltyPercentage"
+  secondaryRoyaltyPercentage: BigInt!
+  "Description for column: minter"
+  minter: Bytes!
+  "Description for column: defaultFundsHandler"
+  defaultFundsHandler: Bytes!
+  "Description for column: defaultFundsRecipients"
+  defaultFundsRecipients: [Bytes!]!
+  "Description for column: defaultFundsShares"
+  defaultFundsShares: [BigInt!]!
+  "Description for column: ERC165InterfaceID"
+  ERC165InterfaceID: Bytes
+  "Description for column: isBatchBuyItNow"
+  isBatchBuyItNow: Boolean!
+  "Description for column: isHidden"
+  isHidden: Boolean!
+  "Description for column: transferState"
+  transferState: BigInt!
+  "Description for column: totalNumOfEditions"
+  totalNumOfEditions: BigInt!
+  "Description for column: totalNumOfTokensSold"
+  totalNumOfTokensSold: BigInt!
+  "Description for column: totalEthValueOfSales"
+  totalEthValueOfSales: BigDecimal!
+  "Description for column: totalNumOfTransfers"
+  totalNumOfTransfers: BigInt!
+  "Description for column: editions"
+  editions: [Edition!]!
+  "Description for column: name"
+  name: String
+  "Description for column: symbol"
+  symbol: String
+  "Description for column: filterRegistry"
+  filterRegistry: Bytes
+}
+
+"Description for table: CreatorContractSetting"
+type CreatorContractSetting @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: factoryContract"
+  factoryContract: Bytes!
+  "Description for column: kodaSalesSettingsContract"
+  kodaSalesSettingsContract: Bytes!
+  "Description for column: platform"
+  platform: Bytes!
+  "Description for column: platformPrimaryCommission"
+  platformPrimaryCommission: BigInt!
+  "Description for column: platformSecondaryCommission"
+  platformSecondaryCommission: BigInt!
+  "Description for column: MODULO"
+  MODULO: BigInt!
+}
+
+"Description for table: ArtistMintingConfig"
+type ArtistMintingConfig @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: mints"
+  mints: BigInt!
+  "Description for column: firstMintInPeriod"
+  firstMintInPeriod: BigInt!
+  "Description for column: frequencyOverride"
+  frequencyOverride: Boolean!
+}
+
+"Description for table: Artist"
+type Artist @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: address"
+  address: Bytes!
+  "Description for column: name"
+  name: String
+  "Description for column: editionsCount"
+  editionsCount: BigInt!
+  "Description for column: ccEditionsCount"
+  ccEditionsCount: BigInt!
+  "Description for column: supply"
+  supply: BigInt!
+  "Description for column: issuedCount"
+  issuedCount: BigInt!
+  "Description for column: totalValueInEth"
+  totalValueInEth: BigDecimal!
+  "Description for column: salesCount"
+  salesCount: BigInt!
+  "Description for column: totalPrimarySales"
+  totalPrimarySales: BigInt!
+  "Description for column: totalPrimarySalesInEth"
+  totalPrimarySalesInEth: BigDecimal!
+  "Description for column: totalSecondarySales"
+  totalSecondarySales: BigInt!
+  "Description for column: totalSecondarySalesInEth"
+  totalSecondarySalesInEth: BigDecimal!
+  "Description for column: highestSaleValueInEth"
+  highestSaleValueInEth: BigDecimal!
+  "Description for column: highestSaleToken"
+  highestSaleToken: Token
+  "Description for column: firstEdition"
+  firstEdition: Edition
+  "Description for column: firstEditionTimestamp"
+  firstEditionTimestamp: BigInt!
+  "Description for column: lastEdition"
+  lastEdition: Edition
+  "Description for column: lastEditionTimestamp"
+  lastEditionTimestamp: BigInt!
+  "Description for column: editions"
+  editions: [Edition!]! @derivedFrom(field: "artist")
+  "Description for column: editionIds"
+  editionIds: [Edition!]!
+  "Description for column: mintingConfig"
+  mintingConfig: ArtistMintingConfig!
+  "Description for column: creatorContracts"
+  creatorContracts: [CreatorContract!]
+}
+
+"Description for table: Collector"
+type Collector @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: address"
+  address: Bytes!
+  "Description for column: firstSeen"
+  firstSeen: BigInt!
+  "Description for column: firstPurchaseTimeStamp"
+  firstPurchaseTimeStamp: BigInt!
+  "Description for column: lastPurchaseTimeStamp"
+  lastPurchaseTimeStamp: BigInt!
+  "Description for column: primaryPurchaseCount"
+  primaryPurchaseCount: BigInt!
+  "Description for column: primaryPurchaseEthSpent"
+  primaryPurchaseEthSpent: BigDecimal!
+  "Description for column: secondarySaleCount"
+  secondarySaleCount: BigInt!
+  "Description for column: secondarySaleEthTotal"
+  secondarySaleEthTotal: BigDecimal!
+  "Description for column: secondaryPurchaseCount"
+  secondaryPurchaseCount: BigInt!
+  "Description for column: secondaryPurchaseEthSpent"
+  secondaryPurchaseEthSpent: BigDecimal!
+  "Description for column: totalPurchaseCount"
+  totalPurchaseCount: BigInt!
+  "Description for column: totalPurchaseEthSpent"
+  totalPurchaseEthSpent: BigDecimal!
+  "Description for column: tokens"
+  tokens: [Token!]! @derivedFrom(field: "currentOwner")
+  "Description for column: tokenIds"
+  tokenIds: [Token!]!
+}

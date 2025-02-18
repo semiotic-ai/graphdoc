@@ -1,0 +1,328 @@
+enum Network {
+  ARBITRUM_ONE
+  ARWEAVE_MAINNET
+  AURORA
+  AVALANCHE
+  BASE
+  BOBA
+  BSC
+  CELO
+  COSMOS
+  CRONOS
+  MAINNET
+  FANTOM
+  FUSE
+  HARMONY
+  JUNO
+  MOONBEAM
+  MOONRIVER
+  NEAR_MAINNET
+  OPTIMISM
+  OSMOSIS
+  MATIC
+  GNOSIS
+}
+
+enum ProtocolType {
+  EXCHANGE
+  LENDING
+  YIELD
+  BRIDGE
+  GENERIC
+  SOCIAL
+}
+
+enum PoolType {
+  EIGEN_POD
+  STRATEGY
+}
+
+type Token @entity @regularPolling {
+  id: Bytes!
+  name: String!
+  symbol: String!
+  decimals: Int!
+  lastPriceUSD: BigDecimal
+  lastPriceBlockNumber: BigInt
+}
+
+enum RewardTokenType {
+  DEPOSIT
+  BORROW
+}
+
+type RewardToken @entity @regularPolling {
+  id: Bytes!
+  token: Token!
+  type: RewardTokenType!
+}
+
+type Protocol @entity @regularPolling {
+  id: Bytes!
+  name: String!
+  slug: String!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  network: Network!
+  type: ProtocolType!
+  totalValueLockedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  cumulativeDepositVolumeUSD: BigDecimal!
+  cumulativeWithdrawalVolumeUSD: BigDecimal!
+  cumulativeTotalVolumeUSD: BigDecimal!
+  netVolumeUSD: BigDecimal!
+  cumulativeUniqueDepositors: Int!
+  cumulativeUniqueWithdrawers: Int!
+  cumulativeUniqueUsers: Int!
+  cumulativeDepositCount: Int!
+  cumulativeWithdrawalCount: Int!
+  cumulativeTransactionCount: Int!
+  totalEigenPodCount: Int!
+  totalStrategyCount: Int!
+  totalPoolCount: Int!
+  pools: [Pool!]! @derivedFrom(field: "protocol")
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+}
+
+type UsageMetricsDailySnapshot @entity @dailySnapshot {
+  id: Bytes!
+  day: Int!
+  protocol: Protocol!
+  dailyActiveDepositors: Int!
+  cumulativeUniqueDepositors: Int!
+  dailyActiveWithdrawers: Int!
+  cumulativeUniqueWithdrawers: Int!
+  dailyActiveUsers: Int!
+  cumulativeUniqueUsers: Int!
+  dailyDepositCount: Int!
+  cumulativeDepositCount: Int!
+  dailyWithdrawalCount: Int!
+  cumulativeWithdrawalCount: Int!
+  dailyTransactionCount: Int!
+  cumulativeTransactionCount: Int!
+  totalPoolCount: Int!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+}
+
+type UsageMetricsHourlySnapshot @entity @hourlySnapshot {
+  id: Bytes!
+  hour: Int!
+  protocol: Protocol!
+  hourlyActiveUsers: Int!
+  cumulativeUniqueUsers: Int!
+  hourlyTransactionCount: Int!
+  cumulativeTransactionCount: Int!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+}
+
+type FinancialsDailySnapshot @entity @dailySnapshot {
+  id: Bytes!
+  day: Int!
+  protocol: Protocol!
+  totalValueLockedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  dailyDepositVolumeUSD: BigDecimal!
+  cumulativeDepositVolumeUSD: BigDecimal!
+  dailyWithdrawalVolumeUSD: BigDecimal!
+  cumulativeWithdrawalVolumeUSD: BigDecimal!
+  dailyTotalVolumeUSD: BigDecimal!
+  cumulativeTotalVolumeUSD: BigDecimal!
+  dailyNetVolumeUSD: BigDecimal!
+  netVolumeUSD: BigDecimal!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+}
+
+type Pool @entity @regularPolling {
+  id: Bytes!
+  protocol: Protocol!
+  name: String
+  symbol: String
+  type: PoolType!
+  inputTokens: [Token!]!
+  outputToken: Token
+  rewardTokens: [RewardToken!]
+  active: Boolean!
+  createdTimestamp: BigInt!
+  createdBlockNumber: BigInt!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  inputTokenBalances: [BigInt!]!
+  inputTokenBalancesUSD: [BigDecimal!]!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  cumulativeDepositVolumeAmount: BigInt!
+  cumulativeDepositVolumeUSD: BigDecimal!
+  cumulativeWithdrawalVolumeAmount: BigInt!
+  cumulativeWithdrawalVolumeUSD: BigDecimal!
+  cumulativeTotalVolumeAmount: BigInt!
+  cumulativeTotalVolumeUSD: BigDecimal!
+  netVolumeAmount: BigInt!
+  netVolumeUSD: BigDecimal!
+  cumulativeUniqueDepositors: Int!
+  cumulativeUniqueWithdrawers: Int!
+  cumulativeDepositCount: Int!
+  cumulativeWithdrawalCount: Int!
+  cumulativeTransactionCount: Int!
+  depositors: [Account!]! @derivedFrom(field: "pools")
+  dailySnapshots: [PoolDailySnapshot!]! @derivedFrom(field: "pool")
+  hourlySnapshots: [PoolHourlySnapshot!]! @derivedFrom(field: "pool")
+}
+
+type PoolDailySnapshot @entity @dailySnapshot {
+  id: Bytes!
+  day: Int!
+  pool: Pool!
+  protocol: Protocol!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  inputTokenBalances: [BigInt!]!
+  inputTokenBalancesUSD: [BigDecimal!]!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  dailyDepositVolumeAmount: BigInt!
+  dailyDepositVolumeUSD: BigDecimal!
+  cumulativeDepositVolumeAmount: BigInt!
+  cumulativeDepositVolumeUSD: BigDecimal!
+  dailyWithdrawalVolumeAmount: BigInt!
+  dailyWithdrawalVolumeUSD: BigDecimal!
+  cumulativeWithdrawalVolumeAmount: BigInt!
+  cumulativeWithdrawalVolumeUSD: BigDecimal!
+  dailyTotalVolumeAmount: BigInt!
+  dailyTotalVolumeUSD: BigDecimal!
+  cumulativeTotalVolumeAmount: BigInt!
+  cumulativeTotalVolumeUSD: BigDecimal!
+  dailyNetVolumeAmount: BigInt!
+  dailyNetVolumeUSD: BigDecimal!
+  netVolumeAmount: BigInt!
+  netVolumeUSD: BigDecimal!
+  cumulativeUniqueDepositors: Int!
+  cumulativeUniqueWithdrawers: Int!
+  dailyDepositCount: Int!
+  cumulativeDepositCount: Int!
+  dailyWithdrawalCount: Int!
+  cumulativeWithdrawalCount: Int!
+  dailyTransactionCount: Int!
+  cumulativeTransactionCount: Int!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+}
+
+type PoolHourlySnapshot @entity @hourlySnapshot {
+  id: Bytes!
+  hour: Int!
+  pool: Pool!
+  protocol: Protocol!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  hourlySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  hourlyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  hourlyTotalRevenueUSD: BigDecimal!
+  inputTokenBalances: [BigInt!]!
+  inputTokenBalancesUSD: [BigDecimal!]!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  timestamp: BigInt!
+  blockNumber: BigInt!
+}
+
+interface Event {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: Protocol!
+  to: Bytes!
+  from: Bytes!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type Deposit implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: Protocol!
+  to: Bytes!
+  from: Bytes!
+  depositor: Bytes!
+  pool: Pool!
+  token: Token!
+  shares: BigInt!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type Withdraw implements Event @entity @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: Protocol!
+  to: Bytes!
+  from: Bytes!
+  depositor: Bytes!
+  withdrawer: Bytes!
+  delegatedTo: Bytes!
+  withdrawalRoot: Bytes!
+  nonce: BigInt!
+  pool: Pool!
+  token: Token!
+  shares: BigInt!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  hashCompleted: Bytes!
+  completed: Boolean!
+  blockNumber: BigInt!
+  blockNumberCompleted: BigInt
+  timestamp: BigInt!
+}
+
+type Account @entity @regularPolling {
+  id: Bytes!
+  pools: [Pool!]!
+  poolBalances: [BigInt!]!
+  poolBalancesUSD: [BigDecimal!]!
+  deposits: [Deposit!]!
+  withdrawsQueued: [Withdraw!]!
+  withdrawsCompleted: [Withdraw!]!
+  _hasWithdrawnFromPool: [Boolean!]!
+}
+
+type ActiveAccount @entity @regularPolling {
+  id: Bytes!
+  deposits: [Deposit!]!
+  withdraws: [Withdraw!]!
+}

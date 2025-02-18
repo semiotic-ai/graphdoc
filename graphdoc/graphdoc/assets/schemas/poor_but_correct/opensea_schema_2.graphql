@@ -1,0 +1,261 @@
+# Subgraph Schema: NFT Marketplace
+# Version: 1.0.0
+
+enum Network {
+  ARBITRUM_ONE
+  ARWEAVE_MAINNET
+  AURORA
+  AVALANCHE
+  BOBA
+  BSC # aka BNB Chain
+  CELO
+  COSMOS
+  CRONOS
+  MAINNET # Ethereum Mainnet
+  FANTOM
+  FUSE
+  HARMONY
+  JUNO
+  MOONBEAM
+  MOONRIVER
+  NEAR_MAINNET
+  OPTIMISM
+  OSMOSIS
+  MATIC # aka Polygon
+  XDAI # aka Gnosis Chain
+}
+
+enum NftStandard {
+  ERC721
+  ERC1155
+  UNKNOWN
+}
+
+enum SaleStrategy {
+  STANDARD_SALE
+  ANY_ITEM_FROM_COLLECTION
+  ANY_ITEM_FROM_SET
+  DUTCH_AUCTION
+  PRIVATE_SALE
+}
+
+type Marketplace @entity @regularPolling {
+  " Smart contract address "
+  id: ID!
+
+  " Name of the marketplace "
+  name: String!
+
+  " Slug of the marketplace "
+  slug: String!
+
+  " The network this subgraph is indexing. "
+  network: Network!
+
+  " Version of the subgraph schema "
+  schemaVersion: String!
+
+  " Version of the subgraph implementation "
+  subgraphVersion: String!
+
+  " Version of the methodology "
+  methodologyVersion: String!
+
+  " Number of collections listed. "
+  collectionCount: Int!
+
+  " Trade count of the all collections. "
+  tradeCount: Int!
+
+  " Cumulative trade volume "
+  cumulativeTradeVolumeETH: BigDecimal!
+
+  " Revenue that goes to the marketplace. "
+  marketplaceRevenueETH: BigDecimal!
+
+  " Revenue that goes to creator. "
+  creatorRevenueETH: BigDecimal!
+
+  " Sum of marketplaceRevenueETH and creatorRevenueETH. "
+  totalRevenueETH: BigDecimal!
+
+  " unique traders "
+  cumulativeUniqueTraders: Int!
+}
+
+type Collection @entity @regularPolling {
+  " Contract address. "
+  id: ID!
+
+  " Collection name. "
+  name: String
+
+  " Collection symbol. "
+  symbol: String
+
+  " Total supply of the collection. "
+  totalSupply: BigInt
+
+  " NFT Standard used. "
+  nftStandard: NftStandard!
+
+  " Royalty fee rate "
+  royaltyFee: BigDecimal!
+
+  " Cumulative trade volume "
+  cumulativeTradeVolumeETH: BigDecimal!
+
+  " Revenue that goes to the marketplace protocol. "
+  marketplaceRevenueETH: BigDecimal!
+
+  " Revenue that goes to creator. "
+  creatorRevenueETH: BigDecimal!
+
+  " Sum of marketplaceRevenue and creatorRevenue. "
+  totalRevenueETH: BigDecimal!
+
+  " Trade count. "
+  tradeCount: Int!
+
+  " Buyer count. "
+  buyerCount: Int!
+
+  " Seller count. "
+  sellerCount: Int!
+
+  " Trades. "
+  trades: [Trade!]! @derivedFrom(field: "collection")
+}
+
+type Trade @entity @transaction {
+  " { Transaction hash }-{ Log index }-{ (optional) ID within bundle } "
+  id: ID!
+
+  " Event hash. "
+  transactionHash: String!
+
+  " Event index. "
+  logIndex: Int
+
+  " Block timestamp. "
+  timestamp: BigInt!
+
+  " Block number. "
+  blockNumber: BigInt!
+
+  " Whether the trade is in a bundle. "
+  isBundle: Boolean!
+
+  " Collection involved "
+  collection: Collection!
+
+  " Token ID of NFT. "
+  tokenId: BigInt!
+
+  " The amount of token to transfer. "
+  amount: BigInt!
+
+  " Price. "
+  priceETH: BigDecimal!
+
+  " Strategy the trade is executed. "
+  strategy: SaleStrategy!
+
+  " Buyer address "
+  buyer: String!
+
+  " Seller address "
+  seller: String!
+}
+
+type MarketplaceDailySnapshot @entity @dailySnapshot {
+  " { Contract address }-{# of days since Unix epoch time} "
+  id: ID!
+
+  " The marketplace. "
+  marketplace: Marketplace!
+
+  " Block number. "
+  blockNumber: BigInt!
+
+  " Block timestamp. "
+  timestamp: BigInt!
+
+  " Number of collections. "
+  collectionCount: Int!
+
+  " Cumulative trade volume "
+  cumulativeTradeVolumeETH: BigDecimal!
+
+  " Revenue that goes to the marketplace protocol. "
+  marketplaceRevenueETH: BigDecimal!
+
+  " Revenue that goes to creator. "
+  creatorRevenueETH: BigDecimal!
+
+  " Sum of marketplaceRevenueETH and creatorRevenueETH. "
+  totalRevenueETH: BigDecimal!
+
+  " Trade count of collections. "
+  tradeCount: Int!
+
+  " Cumulative unique traders "
+  cumulativeUniqueTraders: Int!
+
+  " Daily active traders "
+  dailyActiveTraders: Int!
+
+  " Number of traded collections "
+  dailyTradedCollectionCount: Int!
+
+  " Number of traded items "
+  dailyTradedItemCount: Int!
+}
+
+type CollectionDailySnapshot @entity @dailySnapshot {
+  " { Contract address }-{# of days since epoch unix time } "
+  id: ID!
+
+  " The collection. "
+  collection: Collection!
+
+  " Block number. "
+  blockNumber: BigInt!
+
+  " Block timestamp. "
+  timestamp: BigInt!
+
+  " Royalty fee rate "
+  royaltyFee: BigDecimal!
+
+  " Minimum sale price "
+  dailyMinSalePrice: BigDecimal!
+
+  " Maximum sale price "
+  dailyMaxSalePrice: BigDecimal!
+
+  " trade volume "
+  cumulativeTradeVolumeETH: BigDecimal!
+
+  " Daily trade volume "
+  dailyTradeVolumeETH: BigDecimal!
+
+  " Revenue to the marketplace protocol. "
+  marketplaceRevenueETH: BigDecimal!
+
+  " Revenue to creator. "
+  creatorRevenueETH: BigDecimal!
+
+  " Sum of marketplaceRevenue and creatorRevenue. "
+  totalRevenueETH: BigDecimal!
+
+  " Trade count of collection. "
+  tradeCount: Int!
+
+  " Number of traded items "
+  dailyTradedItemCount: Int!
+}
+
+type _Item @entity {
+  id: ID!
+}

@@ -1,0 +1,125 @@
+enum Network {
+  ARBITRUM_ONE
+  ARWEAVE_MAINNET
+  AURORA
+  AVALANCHE
+  BOBA
+  BSC
+  CELO
+  COSMOS
+  CRONOS
+  MAINNET
+  FANTOM
+  FUSE
+  HARMONY
+  JUNO
+  MOONBEAM
+  MOONRIVER
+  NEAR_MAINNET
+  OPTIMISM
+  OSMOSIS
+  MATIC
+  XDAI
+}
+
+enum NftStandard {
+  ERC721
+  ERC1155
+  UNKNOWN
+}
+
+enum SaleStrategy {
+  STANDARD_SALE
+  ANY_ITEM_FROM_COLLECTION
+  ANY_ITEM_FROM_SET
+  DUTCH_AUCTION
+  PRIVATE_SALE
+}
+
+type Marketplace @entity @regularPolling {
+  id: ID!
+  name: String!
+  slug: String!
+  network: Network!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  collectionCount: Int!
+  tradeCount: Int!
+  cumulativeTradeVolumeETH: BigDecimal!
+  marketplaceRevenueETH: BigDecimal!
+  creatorRevenueETH: BigDecimal!
+  totalRevenueETH: BigDecimal!
+  cumulativeUniqueTraders: Int!
+}
+
+type Collection @entity @regularPolling {
+  id: ID!
+  name: String
+  symbol: String
+  totalSupply: BigInt
+  nftStandard: NftStandard!
+  royaltyFee: BigDecimal!
+  cumulativeTradeVolumeETH: BigDecimal!
+  marketplaceRevenueETH: BigDecimal!
+  creatorRevenueETH: BigDecimal!
+  totalRevenueETH: BigDecimal!
+  tradeCount: Int!
+  buyerCount: Int!
+  sellerCount: Int!
+  trades: [Trade!]! @derivedFrom(field: "collection")
+}
+
+type Trade @entity @transaction {
+  id: ID!
+  transactionHash: String!
+  logIndex: Int
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  isBundle: Boolean!
+  collection: Collection!
+  tokenId: BigInt!
+  amount: BigInt!
+  priceETH: BigDecimal!
+  strategy: SaleStrategy!
+  buyer: String!
+  seller: String!
+}
+
+type MarketplaceDailySnapshot @entity @dailySnapshot {
+  id: ID!
+  marketplace: Marketplace!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  collectionCount: Int!
+  cumulativeTradeVolumeETH: BigDecimal!
+  marketplaceRevenueETH: BigDecimal!
+  creatorRevenueETH: BigDecimal!
+  totalRevenueETH: BigDecimal!
+  tradeCount: Int!
+  cumulativeUniqueTraders: Int!
+  dailyActiveTraders: Int!
+  dailyTradedCollectionCount: Int!
+  dailyTradedItemCount: Int!
+}
+
+type CollectionDailySnapshot @entity @dailySnapshot {
+  id: ID!
+  collection: Collection!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  royaltyFee: BigDecimal!
+  dailyMinSalePrice: BigDecimal!
+  dailyMaxSalePrice: BigDecimal!
+  cumulativeTradeVolumeETH: BigDecimal!
+  dailyTradeVolumeETH: BigDecimal!
+  marketplaceRevenueETH: BigDecimal!
+  creatorRevenueETH: BigDecimal!
+  totalRevenueETH: BigDecimal!
+  tradeCount: Int!
+  dailyTradedItemCount: Int!
+}
+
+type _Item @entity {
+  id: ID!
+}

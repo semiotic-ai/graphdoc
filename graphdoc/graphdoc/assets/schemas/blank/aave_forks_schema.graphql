@@ -1,0 +1,800 @@
+enum Network {
+  ANDROMEDA
+  ARBITRUM_ONE
+  ARWEAVE_MAINNET
+  AURORA
+  AVALANCHE
+  BASE
+  BLAST_MAINNET
+  BOBA
+  BSC
+  CELO
+  COSMOS
+  CRONOS
+  FANTOM
+  FUSE
+  GNOSIS
+  HARMONY
+  JUNO
+  LINEA
+  MAINNET
+  MATIC
+  MOONBEAM
+  MOONRIVER
+  NEAR_MAINNET
+  OPTIMISM
+  OSMOSIS
+  SCROLL
+  XLAYER_MAINNET
+  ZKSYNC_ERA
+}
+
+enum ProtocolType {
+  EXCHANGE
+  LENDING
+  YIELD
+  BRIDGE
+  GENERIC
+}
+
+type Token @entity @regularPolling {
+  id: Bytes!
+  name: String!
+  symbol: String!
+  decimals: Int!
+  lastPriceUSD: BigDecimal
+  lastPriceBlockNumber: BigInt
+  type: TokenType
+  _market: Market
+  _iavsTokenType: String
+}
+
+enum RewardTokenType {
+  DEPOSIT
+  VARIABLE_BORROW
+  STABLE_BORROW
+  STAKE
+}
+
+type RewardToken @entity @regularPolling {
+  id: ID!
+  token: Token!
+  type: RewardTokenType!
+  _distributionEnd: BigInt
+}
+
+enum LendingType {
+  CDP
+  POOLED
+}
+
+enum PermissionType {
+  WHITELIST_ONLY
+  PERMISSIONED
+  PERMISSIONLESS
+  ADMIN
+}
+
+enum RiskType {
+  GLOBAL
+  ISOLATED
+}
+
+enum CollateralizationType {
+  OVER_COLLATERALIZED
+  UNDER_COLLATERALIZED
+  UNCOLLATERALIZED
+}
+
+enum TokenType {
+  REBASING
+  NON_REBASING
+}
+
+enum InterestRateType {
+  STABLE
+  VARIABLE
+  FIXED
+}
+
+enum InterestRateSide {
+  LENDER
+  BORROWER
+}
+
+enum Tranche {
+  SENIOR
+  JUNIOR
+}
+
+enum PositionSide {
+  COLLATERAL
+  BORROWER
+}
+
+type InterestRate @entity @regularPolling {
+  id: ID!
+  rate: BigDecimal!
+  duration: Int
+  maturityBlock: BigInt
+  side: InterestRateSide!
+  type: InterestRateType!
+  tranche: Tranche
+}
+
+enum FeeType {
+  LIQUIDATION_FEE
+  ADMIN_FEE
+  PROTOCOL_FEE
+  MINT_FEE
+  WITHDRAW_FEE
+  FLASHLOAN_PROTOCOL_FEE
+  FLASHLOAN_LP_FEE
+  OTHER
+}
+
+type Fee @entity @regularPolling {
+  id: ID!
+  rate: BigDecimal
+  flatFee: BigDecimal
+  type: FeeType!
+}
+
+type RevenueDetail @entity @regularPolling {
+  id: Bytes!
+  sources: [Fee!]!
+  amountsUSD: [BigDecimal!]!
+}
+
+enum OracleSource {
+  UNISWAP
+  BALANCER
+  CHAINLINK
+  YEARN
+  SUSHISWAP
+  CURVE
+}
+
+type Oracle @entity @regularPolling {
+  id: Bytes!
+  oracleAddress: Bytes!
+  market: Market!
+  blockCreated: BigInt!
+  timestampCreated: BigInt!
+  isActive: Boolean!
+  isUSD: Boolean!
+  hashEnded: Bytes
+  oracleSource: OracleSource
+}
+
+interface Protocol {
+  id: Bytes!
+  protocol: String!
+  name: String!
+  slug: String!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  network: Network!
+  type: ProtocolType!
+  lendingType: LendingType
+  lenderPermissionType: PermissionType
+  borrowerPermissionType: PermissionType
+  poolCreatorPermissionType: PermissionType
+  riskType: RiskType
+  collateralizationType: CollateralizationType
+  totalValueLockedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueTxSigners: Int!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  totalPoolCount: Int!
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+}
+
+type LendingProtocol implements Protocol @entity @regularPolling {
+  id: Bytes!
+  protocol: String!
+  name: String!
+  slug: String!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  network: Network!
+  type: ProtocolType!
+  lendingType: LendingType
+  lenderPermissionType: PermissionType
+  borrowerPermissionType: PermissionType
+  poolCreatorPermissionType: PermissionType
+  riskType: RiskType
+  collateralizationType: CollateralizationType
+  mintedTokens: [Token!]
+  rewardTokens: [RewardToken!]
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueDepositors: Int!
+  cumulativeUniqueBorrowers: Int!
+  cumulativeUniqueLiquidators: Int!
+  cumulativeUniqueLiquidatees: Int!
+  cumulativeUniqueTxSigners: Int!
+  totalValueLockedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  fees: [Fee!]
+  revenueDetail: RevenueDetail
+  totalDepositBalanceUSD: BigDecimal!
+  cumulativeDepositUSD: BigDecimal!
+  totalBorrowBalanceUSD: BigDecimal!
+  cumulativeBorrowUSD: BigDecimal!
+  cumulativeLiquidateUSD: BigDecimal!
+  mintedTokenSupplies: [BigInt!]
+  totalPoolCount: Int!
+  openPositionCount: Int!
+  cumulativePositionCount: Int!
+  transactionCount: Int!
+  depositCount: Int!
+  withdrawCount: Int!
+  borrowCount: Int!
+  repayCount: Int!
+  liquidationCount: Int!
+  transferCount: Int!
+  flashloanCount: Int!
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+  markets: [Market!]! @derivedFrom(field: "protocol")
+}
+
+type _MarketList @entity {
+  id: Bytes!
+  markets: [Bytes!]!
+}
+
+type UsageMetricsDailySnapshot @entity @dailySnapshot {
+  id: Bytes!
+  days: Int!
+  protocol: LendingProtocol!
+  dailyActiveUsers: Int!
+  cumulativeUniqueUsers: Int!
+  dailyActiveDepositors: Int!
+  cumulativeUniqueDepositors: Int!
+  dailyActiveBorrowers: Int!
+  cumulativeUniqueBorrowers: Int!
+  dailyActiveLiquidators: Int!
+  cumulativeUniqueLiquidators: Int!
+  dailyActiveLiquidatees: Int!
+  cumulativeUniqueLiquidatees: Int!
+  dailyActiveTxSigners: Int!
+  cumulativeUniqueTxSigners: Int!
+  dailyTransactionCount: Int!
+  dailyDepositCount: Int!
+  dailyWithdrawCount: Int!
+  dailyBorrowCount: Int!
+  dailyRepayCount: Int!
+  dailyLiquidateCount: Int!
+  dailyTransferCount: Int!
+  dailyFlashloanCount: Int!
+  cumulativePositionCount: Int!
+  openPositionCount: Int!
+  dailyActivePositions: Int!
+  totalPoolCount: Int!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type UsageMetricsHourlySnapshot @entity @hourlySnapshot {
+  id: Bytes!
+  hours: Int!
+  protocol: LendingProtocol!
+  hourlyActiveUsers: Int!
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueTxSigners: Int!
+  hourlyTransactionCount: Int!
+  hourlyDepositCount: Int!
+  hourlyWithdrawCount: Int!
+  hourlyBorrowCount: Int!
+  hourlyRepayCount: Int!
+  hourlyLiquidateCount: Int!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type FinancialsDailySnapshot @entity @dailySnapshot {
+  id: Bytes!
+  days: Int!
+  protocol: LendingProtocol!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  totalValueLockedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  mintedTokenSupplies: [BigInt!]
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  revenueDetail: RevenueDetail
+  totalDepositBalanceUSD: BigDecimal!
+  dailyDepositUSD: BigDecimal!
+  cumulativeDepositUSD: BigDecimal!
+  totalBorrowBalanceUSD: BigDecimal!
+  dailyBorrowUSD: BigDecimal!
+  cumulativeBorrowUSD: BigDecimal!
+  dailyLiquidateUSD: BigDecimal!
+  cumulativeLiquidateUSD: BigDecimal!
+  dailyWithdrawUSD: BigDecimal!
+  dailyRepayUSD: BigDecimal!
+  dailyTransferUSD: BigDecimal!
+  dailyFlashloanUSD: BigDecimal!
+}
+
+type Market @entity @regularPolling {
+  id: Bytes!
+  protocol: LendingProtocol!
+  name: String
+  isActive: Boolean!
+  canBorrowFrom: Boolean!
+  canUseAsCollateral: Boolean!
+  maximumLTV: BigDecimal!
+  liquidationThreshold: BigDecimal!
+  liquidationPenalty: BigDecimal!
+  canIsolate: Boolean!
+  createdTimestamp: BigInt!
+  createdBlockNumber: BigInt!
+  oracle: Oracle
+  relation: Bytes
+  rewardTokens: [RewardToken!]
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  stakedOutputTokenAmount: BigInt
+  inputToken: Token!
+  inputTokenBalance: BigInt!
+  inputTokenPriceUSD: BigDecimal!
+  outputToken: Token
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  exchangeRate: BigDecimal
+  rates: [InterestRate!]
+  reserves: BigDecimal
+  reserveFactor: BigDecimal
+  borrowedToken: Token
+  variableBorrowedTokenBalance: BigInt
+  stableBorrowedTokenBalance: BigInt
+  indexLastUpdatedTimestamp: BigInt
+  supplyIndex: BigInt
+  supplyCap: BigInt
+  borrowIndex: BigInt
+  borrowCap: BigInt
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  revenueDetail: RevenueDetail
+  totalDepositBalanceUSD: BigDecimal!
+  cumulativeDepositUSD: BigDecimal!
+  totalBorrowBalanceUSD: BigDecimal!
+  cumulativeBorrowUSD: BigDecimal!
+  cumulativeLiquidateUSD: BigDecimal!
+  cumulativeTransferUSD: BigDecimal!
+  cumulativeFlashloanUSD: BigDecimal!
+  transactionCount: Int!
+  depositCount: Int!
+  withdrawCount: Int!
+  borrowCount: Int!
+  repayCount: Int!
+  liquidationCount: Int!
+  transferCount: Int!
+  flashloanCount: Int!
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueDepositors: Int!
+  cumulativeUniqueBorrowers: Int!
+  cumulativeUniqueLiquidators: Int!
+  cumulativeUniqueLiquidatees: Int!
+  cumulativeUniqueTransferrers: Int!
+  cumulativeUniqueFlashloaners: Int!
+  cumulativeUniqueTxSigners: Int!
+  positions: [Position!]! @derivedFrom(field: "market")
+  positionCount: Int!
+  openPositionCount: Int!
+  closedPositionCount: Int!
+  lendingPositionCount: Int!
+  borrowingPositionCount: Int!
+  dailySnapshots: [MarketDailySnapshot!]! @derivedFrom(field: "market")
+  hourlySnapshots: [MarketHourlySnapshot!]! @derivedFrom(field: "market")
+  deposits: [Deposit!]! @derivedFrom(field: "market")
+  withdraws: [Withdraw!]! @derivedFrom(field: "market")
+  borrows: [Borrow!]! @derivedFrom(field: "market")
+  repays: [Repay!]! @derivedFrom(field: "market")
+  liquidates: [Liquidate!]! @derivedFrom(field: "market")
+  transfers: [Transfer!]! @derivedFrom(field: "market")
+  flashloans: [Flashloan!]! @derivedFrom(field: "market")
+  _baseTrackingBorrowSpeed: BigInt
+  _baseTrackingSupplySpeed: BigInt
+  _vToken: Token
+  _sToken: Token
+  _prePauseState: [Boolean!]
+  _lastRewardsUpdated: BigInt
+  _liquidationProtocolFee: BigDecimal
+  _siloedBorrowing: Boolean
+}
+
+type MarketDailySnapshot @entity @dailySnapshot {
+  id: Bytes!
+  days: Int!
+  protocol: LendingProtocol!
+  market: Market!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  relation: Bytes
+  rewardTokens: [RewardToken!]
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  stakedOutputTokenAmount: BigInt
+  inputTokenBalance: BigInt!
+  inputTokenPriceUSD: BigDecimal!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  exchangeRate: BigDecimal
+  rates: [InterestRate!]
+  reserves: BigDecimal
+  reserveFactor: BigDecimal
+  variableBorrowedTokenBalance: BigInt
+  stableBorrowedTokenBalance: BigInt
+  supplyCap: BigInt
+  borrowCap: BigInt
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  revenueDetail: RevenueDetail
+  totalDepositBalanceUSD: BigDecimal!
+  dailyDepositUSD: BigDecimal!
+  dailyNativeDeposit: BigInt!
+  cumulativeDepositUSD: BigDecimal!
+  totalBorrowBalanceUSD: BigDecimal!
+  dailyBorrowUSD: BigDecimal!
+  dailyNativeBorrow: BigInt!
+  cumulativeBorrowUSD: BigDecimal!
+  dailyLiquidateUSD: BigDecimal!
+  dailyNativeLiquidate: BigInt!
+  cumulativeLiquidateUSD: BigDecimal!
+  dailyWithdrawUSD: BigDecimal!
+  dailyNativeWithdraw: BigInt!
+  dailyRepayUSD: BigDecimal!
+  dailyNativeRepay: BigInt!
+  dailyTransferUSD: BigDecimal!
+  dailyNativeTransfer: BigInt!
+  cumulativeTransferUSD: BigDecimal!
+  dailyFlashloanUSD: BigDecimal!
+  dailyNativeFlashloan: BigInt!
+  cumulativeFlashloanUSD: BigDecimal!
+  dailyActiveUsers: Int!
+  dailyActiveDepositors: Int!
+  dailyActiveBorrowers: Int!
+  dailyActiveLiquidators: Int!
+  dailyActiveLiquidatees: Int!
+  dailyActiveTransferrers: Int!
+  dailyActiveFlashloaners: Int!
+  dailyActiveTxSigners: Int!
+  dailyDepositCount: Int!
+  dailyWithdrawCount: Int!
+  dailyBorrowCount: Int!
+  dailyRepayCount: Int!
+  dailyLiquidateCount: Int!
+  dailyTransferCount: Int!
+  dailyFlashloanCount: Int!
+  positionCount: Int!
+  openPositionCount: Int!
+  closedPositionCount: Int!
+  lendingPositionCount: Int!
+  dailyActiveLendingPositionCount: Int!
+  borrowingPositionCount: Int!
+  dailyActiveBorrowingPositionCount: Int!
+}
+
+type MarketHourlySnapshot @entity @hourlySnapshot {
+  id: Bytes!
+  hours: Int!
+  protocol: LendingProtocol!
+  market: Market!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  relation: Bytes
+  rewardTokens: [RewardToken!]
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  stakedOutputTokenAmount: BigInt
+  inputTokenBalance: BigInt!
+  inputTokenPriceUSD: BigDecimal!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  exchangeRate: BigDecimal
+  rates: [InterestRate!]
+  reserves: BigDecimal
+  variableBorrowedTokenBalance: BigInt
+  stableBorrowedTokenBalance: BigInt
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  hourlySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  hourlyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  hourlyTotalRevenueUSD: BigDecimal!
+  totalDepositBalanceUSD: BigDecimal!
+  hourlyDepositUSD: BigDecimal!
+  cumulativeDepositUSD: BigDecimal!
+  totalBorrowBalanceUSD: BigDecimal!
+  hourlyBorrowUSD: BigDecimal!
+  cumulativeBorrowUSD: BigDecimal!
+  hourlyLiquidateUSD: BigDecimal!
+  cumulativeLiquidateUSD: BigDecimal!
+  hourlyWithdrawUSD: BigDecimal!
+  hourlyRepayUSD: BigDecimal!
+  hourlyTransferUSD: BigDecimal!
+  hourlyFlashloanUSD: BigDecimal!
+}
+
+type Account @entity @regularPolling {
+  id: Bytes!
+  positionCount: Int!
+  positions: [Position!]! @derivedFrom(field: "account")
+  openPositionCount: Int!
+  closedPositionCount: Int!
+  depositCount: Int!
+  deposits: [Deposit!]! @derivedFrom(field: "account")
+  withdrawCount: Int!
+  withdraws: [Withdraw!]! @derivedFrom(field: "account")
+  borrowCount: Int!
+  borrows: [Borrow!]! @derivedFrom(field: "account")
+  repayCount: Int!
+  repays: [Repay!]! @derivedFrom(field: "account")
+  liquidateCount: Int!
+  liquidates: [Liquidate!]! @derivedFrom(field: "liquidator")
+  liquidationCount: Int!
+  liquidations: [Liquidate!]! @derivedFrom(field: "liquidatee")
+  transferredCount: Int!
+  transfers: [Transfer!]! @derivedFrom(field: "sender")
+  receivedCount: Int!
+  receives: [Transfer!]! @derivedFrom(field: "receiver")
+  flashloanCount: Int!
+  flashloans: [Flashloan!]! @derivedFrom(field: "account")
+  rewardsClaimedUSD: BigDecimal
+  _enabledCollaterals: [Market!]
+  _eMode: Boolean
+}
+
+type Position @entity @regularPolling {
+  id: ID!
+  account: Account!
+  market: Market!
+  asset: Token!
+  hashOpened: Bytes!
+  hashClosed: Bytes
+  blockNumberOpened: BigInt!
+  timestampOpened: BigInt!
+  blockNumberClosed: BigInt
+  timestampClosed: BigInt
+  side: PositionSide!
+  type: InterestRateType
+  isCollateral: Boolean
+  isIsolated: Boolean
+  balance: BigInt!
+  principal: BigInt
+  depositCount: Int!
+  deposits: [Deposit!]! @derivedFrom(field: "position")
+  withdrawCount: Int!
+  withdraws: [Withdraw!]! @derivedFrom(field: "position")
+  borrowCount: Int!
+  borrows: [Borrow!]! @derivedFrom(field: "position")
+  repayCount: Int!
+  repays: [Repay!]! @derivedFrom(field: "position")
+  liquidationCount: Int!
+  liquidations: [Liquidate!]! @derivedFrom(field: "positions")
+  transferredCount: Int!
+  receivedCount: Int!
+  transfers: [Transfer!]! @derivedFrom(field: "positions")
+  snapshots: [PositionSnapshot!]! @derivedFrom(field: "position")
+  _eMode: Boolean
+}
+
+type PositionSnapshot @entity(immutable: true) @hourlySnapshot {
+  id: ID!
+  hash: Bytes!
+  logIndex: Int!
+  nonce: BigInt!
+  account: Account!
+  position: Position!
+  balance: BigInt!
+  balanceUSD: BigDecimal!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  principal: BigInt
+  index: BigInt
+}
+
+type _ActiveAccount @entity(immutable: true) {
+  id: ID!
+}
+
+type _TxSigner @entity(immutable: true) {
+  id: ID!
+}
+
+type _PositionCounter @entity {
+  id: ID!
+  nextCount: Int!
+  lastTimestamp: BigInt!
+}
+
+interface Event {
+  id: Bytes!
+  hash: Bytes!
+  nonce: BigInt!
+  logIndex: Int!
+  gasPrice: BigInt
+  gasUsed: BigInt
+  gasLimit: BigInt
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  market: Market!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+}
+
+type Deposit implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  nonce: BigInt!
+  logIndex: Int!
+  gasPrice: BigInt
+  gasUsed: BigInt
+  gasLimit: BigInt
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  account: Account!
+  accountActor: Account
+  market: Market!
+  position: Position!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+}
+
+type Withdraw implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  nonce: BigInt!
+  logIndex: Int!
+  gasPrice: BigInt
+  gasUsed: BigInt
+  gasLimit: BigInt
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  account: Account!
+  accountActor: Account
+  market: Market!
+  position: Position!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+}
+
+type Borrow implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  nonce: BigInt!
+  logIndex: Int!
+  gasPrice: BigInt
+  gasUsed: BigInt
+  gasLimit: BigInt
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  account: Account!
+  accountActor: Account
+  market: Market!
+  position: Position!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+}
+
+type Repay implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  nonce: BigInt!
+  logIndex: Int!
+  gasPrice: BigInt
+  gasUsed: BigInt
+  gasLimit: BigInt
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  account: Account!
+  accountActor: Account
+  market: Market!
+  position: Position!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+}
+
+type Liquidate implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  nonce: BigInt!
+  logIndex: Int!
+  gasPrice: BigInt
+  gasUsed: BigInt
+  gasLimit: BigInt
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  liquidator: Account!
+  liquidatee: Account!
+  market: Market!
+  positions: [Position!]!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  profitUSD: BigDecimal!
+}
+
+type Transfer implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  nonce: BigInt!
+  logIndex: Int!
+  gasPrice: BigInt
+  gasUsed: BigInt
+  gasLimit: BigInt
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  sender: Account!
+  receiver: Account!
+  positions: [Position!]!
+  market: Market!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+}
+
+type Flashloan implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  nonce: BigInt!
+  logIndex: Int!
+  gasPrice: BigInt
+  gasUsed: BigInt
+  gasLimit: BigInt
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  account: Account!
+  accountActor: Account
+  market: Market!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  feeAmount: BigInt
+  feeAmountUSD: BigDecimal
+}
+
+type _DefaultOracle @entity {
+  id: Bytes!
+  oracle: Bytes!
+}
+
+type _FlashLoanPremium @entity {
+  id: Bytes!
+  premiumRateTotal: BigDecimal!
+  premiumRateToProtocol: BigDecimal!
+}

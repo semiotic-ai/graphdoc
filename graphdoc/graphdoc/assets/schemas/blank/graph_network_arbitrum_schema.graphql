@@ -1,0 +1,706 @@
+type GraphNetwork @entity {
+  id: ID!
+  controller: Bytes!
+  graphToken: Bytes!
+  epochManager: Bytes!
+  epochManagerImplementations: [Bytes!]!
+  curation: Bytes!
+  curationImplementations: [Bytes!]!
+  staking: Bytes!
+  stakingImplementations: [Bytes!]!
+  disputeManager: Bytes!
+  gns: Bytes!
+  serviceRegistry: Bytes!
+  rewardsManager: Bytes!
+  rewardsManagerImplementations: [Bytes!]!
+  isPaused: Boolean!
+  isPartialPaused: Boolean!
+  governor: Bytes!
+  pauseGuardian: Bytes!
+  curationPercentage: Int!
+  protocolFeePercentage: Int!
+  delegationRatio: Int!
+  channelDisputeEpochs: Int!
+  maxAllocationEpochs: Int!
+  thawingPeriod: Int!
+  delegationParametersCooldown: Int!
+  minimumIndexerStake: BigInt!
+  slashers: [Bytes!]
+  delegationUnbondingPeriod: Int!
+  rebateRatio: BigDecimal!
+  rebateAlpha: BigDecimal!
+  rebateLambda: BigDecimal!
+  delegationTaxPercentage: Int!
+  assetHolders: [Bytes!]
+  totalTokensStakedTransferredToL2: BigInt!
+  totalDelegatedTokensTransferredToL2: BigInt!
+  totalSignalledTokensTransferredToL2: BigInt!
+  totalTokensStaked: BigInt!
+  totalTokensClaimable: BigInt!
+  totalUnstakedTokensLocked: BigInt!
+  totalTokensAllocated: BigInt!
+  totalDelegatedTokens: BigInt!
+  totalTokensSignalled: BigInt!
+  totalTokensSignalledAutoMigrate: BigDecimal!
+  totalTokensSignalledDirectly: BigDecimal!
+  totalQueryFees: BigInt!
+  totalIndexerQueryFeesCollected: BigInt!
+  totalIndexerQueryFeeRebates: BigInt!
+  totalDelegatorQueryFeeRebates: BigInt!
+  totalCuratorQueryFees: BigInt!
+  totalTaxedQueryFees: BigInt!
+  totalUnclaimedQueryFeeRebates: BigInt!
+  totalIndexingRewards: BigInt!
+  totalIndexingDelegatorRewards: BigInt!
+  totalIndexingIndexerRewards: BigInt!
+  networkGRTIssuance: BigInt!
+  networkGRTIssuancePerBlock: BigInt!
+  subgraphAvailabilityOracle: Bytes!
+  defaultReserveRatio: Int!
+  minimumCurationDeposit: BigInt!
+  curationTaxPercentage: Int!
+  ownerTaxPercentage: Int!
+  totalSupply: BigInt!
+  GRTinUSD: BigDecimal!
+  GRTinETH: BigDecimal
+  totalGRTMinted: BigInt!
+  totalGRTBurned: BigInt!
+  epochLength: Int!
+  lastRunEpoch: Int!
+  lastLengthUpdateEpoch: Int!
+  lastLengthUpdateBlock: Int!
+  currentEpoch: Int!
+  indexerCount: Int!
+  stakedIndexersCount: Int!
+  delegatorCount: Int!
+  activeDelegatorCount: Int!
+  delegationCount: Int!
+  activeDelegationCount: Int!
+  curatorCount: Int!
+  activeCuratorCount: Int!
+  subgraphCount: Int!
+  activeSubgraphCount: Int!
+  subgraphDeploymentCount: Int!
+  epochCount: Int!
+  allocationCount: Int!
+  activeAllocationCount: Int!
+  arbitrator: Bytes!
+  querySlashingPercentage: Int!
+  indexingSlashingPercentage: Int!
+  slashingPercentage: Int!
+  minimumDisputeDeposit: BigInt!
+  fishermanRewardPercentage: Int!
+  totalGRTDeposited: BigInt!
+  totalGRTWithdrawnConfirmed: BigInt!
+  totalGRTMintedFromL2: BigInt!
+  totalGRTDepositedConfirmed: BigInt!
+  totalGRTWithdrawn: BigInt!
+  currentL1BlockNumber: BigInt
+}
+
+type GraphAccount @entity {
+  id: ID!
+  names: [GraphAccountName!]! @derivedFrom(field: "graphAccount")
+  defaultName: GraphAccountName
+  createdAt: Int!
+  defaultDisplayName: String
+  metadata: GraphAccountMeta
+  operatorOf: [GraphAccount!]! @derivedFrom(field: "operators")
+  operators: [GraphAccount!]!
+  balance: BigInt!
+  balanceReceivedFromL1Signalling: BigInt!
+  balanceReceivedFromL1Delegation: BigInt!
+  curationApproval: BigInt!
+  stakingApproval: BigInt!
+  gnsApproval: BigInt!
+  subgraphs: [Subgraph!]! @derivedFrom(field: "owner")
+  developerCreatedAt: Int
+  subgraphQueryFees: BigInt!
+  createdDisputes: [Dispute!]! @derivedFrom(field: "fisherman")
+  disputesAgainst: [Dispute!]! @derivedFrom(field: "indexer")
+  curator: Curator
+  indexer: Indexer
+  delegator: Delegator
+  nameSignalTransactions: [NameSignalTransaction!]! @derivedFrom(field: "signer")
+  bridgeWithdrawalTransactions: [BridgeWithdrawalTransaction!]! @derivedFrom(field: "signer")
+  bridgeDepositTransactions: [BridgeDepositTransaction!]! @derivedFrom(field: "signer")
+  tokenLockWallets: [TokenLockWallet!]!
+}
+
+type GraphAccountMeta @entity(immutable: true) {
+  id: ID!
+  graphAccount: GraphAccount @derivedFrom(field: "metadata")
+  graphAccounts: [GraphAccount!]! @derivedFrom(field: "metadata")
+  isOrganization: Boolean
+  codeRepository: String
+  description: String
+  image: String
+  website: String
+  displayName: String
+}
+
+type GraphAccountName @entity {
+  id: ID!
+  nameSystem: NameSystem!
+  name: String!
+  graphAccount: GraphAccount
+}
+
+enum NameSystem {
+  ENS
+}
+
+type Subgraph @entity {
+  id: ID!
+  owner: GraphAccount!
+  currentVersion: SubgraphVersion
+  pastVersions: [SubgraphVersion!]! @derivedFrom(field: "subgraph")
+  versions: [SubgraphVersion!]! @derivedFrom(field: "subgraph")
+  versionCount: BigInt!
+  createdAt: Int!
+  updatedAt: Int!
+  active: Boolean!
+  migrated: Boolean!
+  startedTransferToL2: Boolean!
+  startedTransferToL2At: BigInt
+  startedTransferToL2AtBlockNumber: BigInt
+  startedTransferToL2AtTx: String
+  transferredToL2: Boolean!
+  transferredToL2At: BigInt
+  transferredToL2AtBlockNumber: BigInt
+  transferredToL2AtTx: String
+  signalledTokensSentToL2: BigInt!
+  signalledTokensReceivedOnL2: BigInt!
+  idOnL2: String
+  idOnL1: String
+  nftID: String
+  oldID: String
+  creatorAddress: Bytes
+  subgraphNumber: BigInt
+  initializing: Boolean!
+  entityVersion: Int!
+  linkedEntity: Subgraph
+  signalledTokens: BigInt!
+  unsignalledTokens: BigInt!
+  currentSignalledTokens: BigInt!
+  nameSignalAmount: BigInt!
+  signalAmount: BigInt!
+  reserveRatio: Int!
+  withdrawableTokens: BigInt!
+  withdrawnTokens: BigInt!
+  nameSignals: [NameSignal!]! @derivedFrom(field: "subgraph")
+  nameSignalCount: Int!
+  metadataHash: Bytes
+  metadata: SubgraphMeta
+  currentVersionRelationEntity: CurrentSubgraphDeploymentRelation
+}
+
+type SubgraphMeta @entity(immutable: true) {
+  id: ID!
+  subgraph: Subgraph @derivedFrom(field: "metadata")
+  subgraphs: [Subgraph!]! @derivedFrom(field: "metadata")
+  description: String
+  image: String
+  nftImage: String
+  codeRepository: String
+  website: String
+  displayName: String
+  categories: [String!]
+}
+
+type CurrentSubgraphDeploymentRelation @entity {
+  id: ID!
+  subgraph: Subgraph!
+  deployment: SubgraphDeployment!
+  active: Boolean!
+}
+
+type SubgraphVersion @entity {
+  id: ID!
+  subgraph: Subgraph!
+  subgraphDeployment: SubgraphDeployment!
+  version: Int!
+  createdAt: Int!
+  metadataHash: Bytes
+  metadata: SubgraphVersionMeta
+  entityVersion: Int!
+  linkedEntity: SubgraphVersion
+}
+
+type SubgraphVersionMeta @entity(immutable: true) {
+  id: ID!
+  subgraphVersion: SubgraphVersion @derivedFrom(field: "metadata")
+  subgraphVersions: [SubgraphVersion!]! @derivedFrom(field: "metadata")
+  description: String
+  label: String
+}
+
+type SubgraphDeployment @entity {
+  id: ID!
+  ipfsHash: String!
+  versions: [SubgraphVersion!]! @derivedFrom(field: "subgraphDeployment")
+  createdAt: Int!
+  deniedAt: Int!
+  originalName: String
+  stakedTokens: BigInt!
+  indexerAllocations: [Allocation!]! @derivedFrom(field: "subgraphDeployment")
+  indexingRewardAmount: BigInt!
+  indexingIndexerRewardAmount: BigInt!
+  indexingDelegatorRewardAmount: BigInt!
+  queryFeesAmount: BigInt!
+  queryFeeRebates: BigInt!
+  curatorFeeRewards: BigInt!
+  signalledTokens: BigInt!
+  unsignalledTokens: BigInt!
+  signalAmount: BigInt!
+  pricePerShare: BigDecimal!
+  curatorSignals: [Signal!]! @derivedFrom(field: "subgraphDeployment")
+  reserveRatio: Int!
+  manifest: SubgraphDeploymentManifest
+  subgraphCount: Int!
+  activeSubgraphCount: Int!
+  deprecatedSubgraphCount: Int!
+  transferredToL2: Boolean!
+  transferredToL2At: BigInt
+  transferredToL2AtBlockNumber: BigInt
+  transferredToL2AtTx: String
+  signalledTokensSentToL2: BigInt!
+  signalledTokensReceivedOnL2: BigInt!
+}
+
+type SubgraphDeploymentSchema @entity(immutable: true) {
+  id: ID!
+  manifest: SubgraphDeploymentManifest @derivedFrom(field: "schema")
+  manifests: [SubgraphDeploymentManifest!]! @derivedFrom(field: "schema")
+  schema: String
+}
+
+type SubgraphDeploymentManifest @entity(immutable: true) {
+  id: ID!
+  deployment: SubgraphDeployment @derivedFrom(field: "manifest")
+  schema: SubgraphDeploymentSchema
+  schemaIpfsHash: String
+  manifest: String
+  network: String
+  poweredBySubstreams: Boolean
+  startBlock: BigInt
+}
+
+type Indexer @entity {
+  id: ID!
+  createdAt: Int!
+  account: GraphAccount!
+  url: String
+  geoHash: String
+  defaultDisplayName: String
+  stakedTokens: BigInt!
+  allocatedTokens: BigInt!
+  unstakedTokens: BigInt!
+  lockedTokens: BigInt!
+  tokensLockedUntil: Int!
+  allocations: [Allocation!]! @derivedFrom(field: "activeForIndexer")
+  totalAllocations: [Allocation!]! @derivedFrom(field: "indexer")
+  allocationCount: Int!
+  totalAllocationCount: BigInt!
+  queryFeesCollected: BigInt!
+  queryFeeRebates: BigInt!
+  rewardsEarned: BigInt!
+  indexerIndexingRewards: BigInt!
+  delegatorIndexingRewards: BigInt!
+  indexerRewardsOwnGenerationRatio: BigDecimal!
+  transferredToL2: Boolean!
+  firstTransferredToL2At: BigInt
+  firstTransferredToL2AtBlockNumber: BigInt
+  firstTransferredToL2AtTx: String
+  lastTransferredToL2At: BigInt
+  lastTransferredToL2AtBlockNumber: BigInt
+  lastTransferredToL2AtTx: String
+  stakedTokensTransferredToL2: BigInt!
+  idOnL2: String
+  idOnL1: String
+  delegatedCapacity: BigInt!
+  tokenCapacity: BigInt!
+  availableStake: BigInt!
+  delegators: [DelegatedStake!]! @derivedFrom(field: "indexer")
+  delegatedTokens: BigInt!
+  ownStakeRatio: BigDecimal!
+  delegatedStakeRatio: BigDecimal!
+  delegatorShares: BigInt!
+  delegationExchangeRate: BigDecimal!
+  indexingRewardCut: Int!
+  indexingRewardEffectiveCut: BigDecimal!
+  overDelegationDilution: BigDecimal!
+  delegatorQueryFees: BigInt!
+  queryFeeCut: Int!
+  queryFeeEffectiveCut: BigDecimal!
+  delegatorParameterCooldown: Int!
+  lastDelegationParameterUpdate: Int!
+  forcedClosures: Int!
+  totalReturn: BigDecimal!
+  annualizedReturn: BigDecimal!
+  stakingEfficiency: BigDecimal!
+}
+
+type Allocation @entity {
+  id: ID!
+  indexer: Indexer!
+  creator: Bytes!
+  activeForIndexer: Indexer
+  subgraphDeployment: SubgraphDeployment!
+  allocatedTokens: BigInt!
+  effectiveAllocation: BigInt!
+  createdAtEpoch: Int!
+  createdAtBlockHash: Bytes!
+  createdAtBlockNumber: Int!
+  closedAtEpoch: Int
+  closedAtBlockHash: Bytes
+  closedAtBlockNumber: Int
+  queryFeesCollected: BigInt!
+  queryFeeRebates: BigInt!
+  distributedRebates: BigInt!
+  curatorRewards: BigInt!
+  indexingRewards: BigInt!
+  indexingIndexerRewards: BigInt!
+  indexingDelegatorRewards: BigInt!
+  poolClosedIn: Pool
+  delegationFees: BigInt!
+  status: AllocationStatus!
+  createdAt: Int!
+  closedAt: Int
+  poi: Bytes
+  indexingRewardCutAtStart: Int!
+  indexingRewardEffectiveCutAtStart: BigDecimal!
+  queryFeeCutAtStart: Int!
+  queryFeeEffectiveCutAtStart: BigDecimal!
+  indexingRewardCutAtClose: Int
+  indexingRewardEffectiveCutAtClose: BigDecimal
+  queryFeeCutAtClose: Int
+  queryFeeEffectiveCutAtClose: BigDecimal
+  totalReturn: BigDecimal!
+  annualizedReturn: BigDecimal!
+}
+
+enum AllocationStatus {
+  Null
+  Active
+  Closed
+  Finalized
+  Claimed
+}
+
+type Pool @entity {
+  id: ID!
+  allocation: BigInt!
+  totalQueryFees: BigInt!
+  claimedFees: BigInt!
+  curatorRewards: BigInt!
+  closedAllocations: [Allocation!]! @derivedFrom(field: "poolClosedIn")
+}
+
+type Delegator @entity {
+  id: ID!
+  account: GraphAccount!
+  stakes: [DelegatedStake!]! @derivedFrom(field: "delegator")
+  totalStakedTokens: BigInt!
+  totalUnstakedTokens: BigInt!
+  createdAt: Int!
+  totalRealizedRewards: BigDecimal!
+  stakesCount: Int!
+  activeStakesCount: Int!
+  defaultDisplayName: String
+}
+
+type DelegatedStake @entity {
+  id: ID!
+  indexer: Indexer!
+  delegator: Delegator!
+  stakedTokens: BigInt!
+  unstakedTokens: BigInt!
+  lockedTokens: BigInt!
+  lockedUntil: Int!
+  shareAmount: BigInt!
+  personalExchangeRate: BigDecimal!
+  realizedRewards: BigDecimal!
+  createdAt: Int!
+  lastDelegatedAt: Int
+  lastUndelegatedAt: Int
+  transferredToL2: Boolean!
+  transferredToL2At: BigInt
+  transferredToL2AtBlockNumber: BigInt
+  transferredToL2AtTx: String
+  stakedTokensTransferredToL2: BigInt!
+  idOnL2: String
+  idOnL1: String
+}
+
+type Curator @entity {
+  id: ID!
+  createdAt: Int!
+  account: GraphAccount!
+  totalSignalledTokens: BigInt!
+  totalUnsignalledTokens: BigInt!
+  signals: [Signal!]! @derivedFrom(field: "curator")
+  defaultDisplayName: String
+  totalNameSignalledTokens: BigInt!
+  totalNameUnsignalledTokens: BigInt!
+  totalWithdrawnTokens: BigInt!
+  nameSignals: [NameSignal!]! @derivedFrom(field: "curator")
+  realizedRewards: BigInt!
+  annualizedReturn: BigDecimal!
+  totalReturn: BigDecimal!
+  signalingEfficiency: BigDecimal!
+  totalNameSignal: BigDecimal!
+  totalNameSignalAverageCostBasis: BigDecimal!
+  totalAverageCostBasisPerNameSignal: BigDecimal!
+  totalSignal: BigDecimal!
+  totalSignalAverageCostBasis: BigDecimal!
+  totalAverageCostBasisPerSignal: BigDecimal!
+  signalCount: Int!
+  activeSignalCount: Int!
+  nameSignalCount: Int!
+  activeNameSignalCount: Int!
+  combinedSignalCount: Int!
+  activeCombinedSignalCount: Int!
+}
+
+type Signal @entity {
+  id: ID!
+  curator: Curator!
+  subgraphDeployment: SubgraphDeployment!
+  signalledTokens: BigInt!
+  unsignalledTokens: BigInt!
+  signal: BigInt!
+  averageCostBasis: BigDecimal!
+  averageCostBasisPerSignal: BigDecimal!
+  lastSignalChange: Int!
+  realizedRewards: BigInt!
+  createdAt: Int!
+  lastUpdatedAt: Int!
+  createdAtBlock: Int!
+  lastUpdatedAtBlock: Int!
+}
+
+type NameSignal @entity {
+  id: ID!
+  curator: Curator!
+  subgraph: Subgraph!
+  signalledTokens: BigInt!
+  unsignalledTokens: BigInt!
+  withdrawnTokens: BigInt!
+  nameSignal: BigInt!
+  signal: BigDecimal!
+  signalledTokensSentToL2: BigInt!
+  signalledTokensReceivedOnL2: BigInt!
+  transferredToL2: Boolean!
+  transferredToL2At: BigInt
+  transferredToL2AtBlockNumber: BigInt
+  transferredToL2AtTx: String
+  idOnL2: String
+  idOnL1: String
+  lastNameSignalChange: Int!
+  realizedRewards: BigInt!
+  averageCostBasis: BigDecimal!
+  averageCostBasisPerSignal: BigDecimal!
+  nameSignalAverageCostBasis: BigDecimal!
+  nameSignalAverageCostBasisPerSignal: BigDecimal!
+  signalAverageCostBasis: BigDecimal!
+  signalAverageCostBasisPerSignal: BigDecimal!
+  entityVersion: Int!
+  linkedEntity: NameSignal
+}
+
+type NameSignalSubgraphRelation @entity {
+  id: ID!
+  nameSignal: NameSignal!
+  subgraph: Subgraph!
+}
+
+type Dispute @entity {
+  id: ID!
+  subgraphDeployment: SubgraphDeployment!
+  fisherman: GraphAccount!
+  deposit: BigInt!
+  createdAt: Int!
+  closedAt: Int!
+  status: DisputeStatus!
+  tokensSlashed: BigDecimal!
+  tokensBurned: BigDecimal!
+  tokensRewarded: BigInt!
+  type: DisputeType!
+  indexer: GraphAccount!
+  attestation: Attestation
+  linkedDispute: Dispute
+  allocation: Allocation
+}
+
+type Attestation @entity {
+  id: ID!
+  subgraphDeployment: SubgraphDeployment!
+  requestCID: String!
+  responseCID: String!
+  gasUsed: BigInt
+  responseNumBytes: BigInt
+  v: Int!
+  r: String!
+  s: String!
+}
+
+enum DisputeType {
+  SingleQuery
+  Conflicting
+  Indexing
+}
+
+enum DisputeStatus {
+  Undecided
+  Accepted
+  Rejected
+  Draw
+}
+
+type Epoch @entity {
+  id: ID!
+  startBlock: Int!
+  endBlock: Int!
+  signalledTokens: BigInt!
+  stakeDeposited: BigInt!
+  totalQueryFees: BigInt!
+  taxedQueryFees: BigInt!
+  queryFeesCollected: BigInt!
+  curatorQueryFees: BigInt!
+  queryFeeRebates: BigInt!
+  totalRewards: BigInt!
+  totalIndexerRewards: BigInt!
+  totalDelegatorRewards: BigInt!
+}
+
+interface Transaction {
+  id: ID!
+  blockNumber: Int!
+  timestamp: Int!
+  signer: GraphAccount!
+  type: TransactionType!
+}
+
+type NameSignalTransaction implements Transaction @entity {
+  id: ID!
+  blockNumber: Int!
+  timestamp: Int!
+  signer: GraphAccount!
+  type: TransactionType!
+  nameSignal: BigInt!
+  versionSignal: BigInt!
+  tokens: BigInt!
+  subgraph: Subgraph!
+}
+
+type SignalTransaction implements Transaction @entity {
+  id: ID!
+  blockNumber: Int!
+  timestamp: Int!
+  signer: GraphAccount!
+  type: TransactionType!
+  signal: BigInt!
+  tokens: BigInt!
+  subgraphDeployment: SubgraphDeployment!
+  withdrawalFees: BigInt!
+}
+
+type BridgeWithdrawalTransaction implements Transaction @entity {
+  id: ID!
+  blockNumber: Int!
+  timestamp: Int!
+  signer: GraphAccount!
+  type: TransactionType!
+  txHash: Bytes
+  from: Bytes
+  to: Bytes
+  amount: BigInt
+  l1Token: Bytes
+  transactionIndex: BigInt
+}
+
+type BridgeDepositTransaction implements Transaction @entity {
+  id: ID!
+  blockNumber: Int!
+  timestamp: Int!
+  signer: GraphAccount!
+  type: TransactionType!
+  txHash: Bytes!
+  from: Bytes
+  to: Bytes
+  amount: BigInt
+  l1Token: Bytes
+  retryableTicketId: String
+  routed: Boolean
+}
+
+type RetryableTicket @entity {
+  id: ID!
+  txHash: Bytes
+  redeemAttempts: [RetryableTicketRedeemAttempt!]! @derivedFrom(field: "ticketId")
+  redeemCount: Int
+}
+
+type RetryableTicketRedeemAttempt @entity {
+  id: ID!
+  ticketId: RetryableTicket!
+  txHash: Bytes
+  sequenceNumber: Int
+}
+
+enum TransactionType {
+  Stake
+  Unstake
+  MintSignal
+  BurnSignal
+  MintNSignal
+  BurnNSignal
+  BridgeWithdrawal
+  BridgeDeposit
+}
+
+type TokenManager @entity {
+  id: ID!
+  masterCopy: Bytes!
+  tokens: BigInt!
+  tokenDestinations: [Bytes!]
+  authorizedFunctions: [AuthorizedFunction!] @derivedFrom(field: "manager")
+  tokenLockCount: BigInt!
+}
+
+type AuthorizedFunction @entity {
+  id: ID!
+  target: Bytes!
+  sigHash: Bytes!
+  manager: TokenManager!
+}
+
+type TokenLockWallet @entity {
+  id: ID!
+  manager: Bytes!
+  initHash: Bytes!
+  beneficiary: Bytes!
+  token: Bytes!
+  managedAmount: BigInt!
+  startTime: BigInt!
+  endTime: BigInt!
+  periods: BigInt!
+  releaseStartTime: BigInt!
+  vestingCliffTime: BigInt!
+  revocable: Revocability
+  tokenDestinationsApproved: Boolean!
+  tokensReleased: BigInt!
+  tokensWithdrawn: BigInt!
+  tokensRevoked: BigInt!
+  blockNumberCreated: BigInt!
+  txHash: Bytes!
+}
+
+enum Revocability {
+  NotSet
+  Enabled
+  Disabled
+}
+
+type _Schema_ @fulltext(name: "subgraphMetadataSearch", language: en, algorithm: rank, include: [{entity: "SubgraphMeta", fields: [{name: "displayName"}, {name: "description"}]}]) @fulltext(name: "curatorSearch", language: en, algorithm: rank, include: [{entity: "Curator", fields: [{name: "defaultDisplayName"}, {name: "id"}]}]) @fulltext(name: "delegatorSearch", language: en, algorithm: rank, include: [{entity: "Delegator", fields: [{name: "defaultDisplayName"}, {name: "id"}]}])

@@ -1,0 +1,941 @@
+"Description for table: Protocol"
+type Protocol @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: inflation"
+  inflation: BigInt!
+  "Description for column: inflationChange"
+  inflationChange: BigInt!
+  "Description for column: numActiveTranscoders"
+  numActiveTranscoders: BigInt!
+  "Description for column: activeTranscoderCount"
+  activeTranscoderCount: BigInt!
+  "Description for column: paused"
+  paused: Boolean!
+  "Description for column: targetBondingRate"
+  targetBondingRate: BigInt!
+  "Description for column: unbondingPeriod"
+  unbondingPeriod: BigInt!
+  "Description for column: lockPeriod"
+  lockPeriod: BigInt!
+  "Description for column: roundLockAmount"
+  roundLockAmount: BigInt!
+  "Description for column: totalActiveStake"
+  totalActiveStake: BigDecimal!
+  "Description for column: totalVolumeETH"
+  totalVolumeETH: BigDecimal!
+  "Description for column: totalVolumeUSD"
+  totalVolumeUSD: BigDecimal!
+  "Description for column: participationRate"
+  participationRate: BigDecimal!
+  "Description for column: currentRound"
+  currentRound: Round!
+  "Description for column: lastInitializedRound"
+  lastInitializedRound: Round!
+  "Description for column: lastRoundLengthUpdateRound"
+  lastRoundLengthUpdateRound: Round!
+  "Description for column: roundLength"
+  roundLength: BigInt!
+  "Description for column: lastRoundLengthUpdateStartBlock"
+  lastRoundLengthUpdateStartBlock: BigInt!
+  "Description for column: totalSupply"
+  totalSupply: BigDecimal!
+  "Description for column: lptPriceEth"
+  lptPriceEth: BigDecimal!
+  "Description for column: winningTicketCount"
+  winningTicketCount: Int!
+  "Description for column: roundCount"
+  roundCount: Int!
+  "Description for column: pendingActivation"
+  pendingActivation: [Transcoder!]!
+  "Description for column: pendingDeactivation"
+  pendingDeactivation: [Transcoder!]!
+  "Description for column: delegatorsCount"
+  delegatorsCount: BigInt!
+}
+
+"Description for table: Transcoder"
+type Transcoder @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: activationRound"
+  activationRound: BigInt!
+  "Description for column: deactivationRound"
+  deactivationRound: BigInt!
+  "Description for column: lastActiveStakeUpdateRound"
+  lastActiveStakeUpdateRound: BigInt!
+  "Description for column: active"
+  active: Boolean!
+  "Description for column: status"
+  status: TranscoderStatus!
+  "Description for column: activationTimestamp"
+  activationTimestamp: Int!
+  "Description for column: lastRewardRound"
+  lastRewardRound: Round
+  "Description for column: rewardCut"
+  rewardCut: BigInt!
+  "Description for column: rewardCutUpdateTimestamp"
+  rewardCutUpdateTimestamp: Int!
+  "Description for column: feeShare"
+  feeShare: BigInt!
+  "Description for column: feeShareUpdateTimestamp"
+  feeShareUpdateTimestamp: Int!
+  "Description for column: totalStake"
+  totalStake: BigDecimal!
+  "Description for column: totalVolumeETH"
+  totalVolumeETH: BigDecimal!
+  "Description for column: thirtyDayVolumeETH"
+  thirtyDayVolumeETH: BigDecimal!
+  "Description for column: sixtyDayVolumeETH"
+  sixtyDayVolumeETH: BigDecimal!
+  "Description for column: ninetyDayVolumeETH"
+  ninetyDayVolumeETH: BigDecimal!
+  "Description for column: totalVolumeUSD"
+  totalVolumeUSD: BigDecimal!
+  "Description for column: pools"
+  pools: [Pool!] @derivedFrom(field: "delegate")
+  "Description for column: delegators"
+  delegators: [Delegator!] @derivedFrom(field: "delegate")
+  "Description for column: delegator"
+  delegator: Delegator
+  "Description for column: serviceURI"
+  serviceURI: String
+  "Description for column: transcoderDays"
+  transcoderDays: [TranscoderDay!]!
+}
+
+"Description for enum type: TranscoderStatus"
+enum TranscoderStatus @entity {
+  "Description for column: NotRegistered"
+  NotRegistered
+  "Description for column: Registered"
+  Registered
+}
+
+"Description for table: Pool"
+type Pool @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegate"
+  delegate: Transcoder!
+  "Description for column: fees"
+  fees: BigDecimal!
+  "Description for column: rewardTokens"
+  rewardTokens: BigDecimal
+  "Description for column: totalStake"
+  totalStake: BigDecimal!
+  "Description for column: rewardCut"
+  rewardCut: BigInt!
+  "Description for column: feeShare"
+  feeShare: BigInt!
+}
+
+"Description for table: Round"
+type Round @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: startTimestamp"
+  startTimestamp: Int!
+  "Description for column: initialized"
+  initialized: Boolean!
+  "Description for column: length"
+  length: BigInt!
+  "Description for column: startBlock"
+  startBlock: BigInt!
+  "Description for column: endBlock"
+  endBlock: BigInt!
+  "Description for column: pools"
+  pools: [Pool!] @derivedFrom(field: "round")
+  "Description for column: mintableTokens"
+  mintableTokens: BigDecimal!
+  "Description for column: volumeETH"
+  volumeETH: BigDecimal!
+  "Description for column: volumeUSD"
+  volumeUSD: BigDecimal!
+  "Description for column: totalActiveStake"
+  totalActiveStake: BigDecimal!
+  "Description for column: totalSupply"
+  totalSupply: BigDecimal!
+  "Description for column: participationRate"
+  participationRate: BigDecimal!
+  "Description for column: movedStake"
+  movedStake: BigDecimal!
+  "Description for column: newStake"
+  newStake: BigDecimal!
+  "Description for column: inflation"
+  inflation: BigInt!
+  "Description for column: numActiveTranscoders"
+  numActiveTranscoders: BigInt!
+  "Description for column: activeTranscoderCount"
+  activeTranscoderCount: BigInt!
+  "Description for column: delegatorsCount"
+  delegatorsCount: BigInt!
+}
+
+"Description for table: Delegator"
+type Delegator @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: delegate"
+  delegate: Transcoder
+  "Description for column: startRound"
+  startRound: BigInt!
+  "Description for column: lastClaimRound"
+  lastClaimRound: Round
+  "Description for column: bondedAmount"
+  bondedAmount: BigDecimal!
+  "Description for column: principal"
+  principal: BigDecimal!
+  "Description for column: unbonded"
+  unbonded: BigDecimal!
+  "Description for column: fees"
+  fees: BigDecimal!
+  "Description for column: withdrawnFees"
+  withdrawnFees: BigDecimal!
+  "Description for column: delegatedAmount"
+  delegatedAmount: BigDecimal!
+  "Description for column: unbondingLocks"
+  unbondingLocks: [UnbondingLock!] @derivedFrom(field: "delegator")
+}
+
+"Description for table: LivepeerAccount"
+type LivepeerAccount @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: lastUpdatedTimestamp"
+  lastUpdatedTimestamp: Int!
+  "Description for column: delegator"
+  delegator: Delegator
+  "Description for column: delegate"
+  delegate: Transcoder
+}
+
+"Description for table: Broadcaster"
+type Broadcaster @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: deposit"
+  deposit: BigDecimal!
+  "Description for column: reserve"
+  reserve: BigDecimal!
+}
+
+"Description for table: UnbondingLock"
+type UnbondingLock @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: unbondingLockId"
+  unbondingLockId: Int!
+  "Description for column: delegator"
+  delegator: Delegator!
+  "Description for column: delegate"
+  delegate: Transcoder!
+  "Description for column: amount"
+  amount: BigDecimal!
+  "Description for column: withdrawRound"
+  withdrawRound: BigInt!
+  "Description for column: sender"
+  sender: String!
+}
+
+"Description for table: Poll"
+type Poll @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: proposal"
+  proposal: String!
+  "Description for column: endBlock"
+  endBlock: BigInt!
+  "Description for column: quorum"
+  quorum: BigInt!
+  "Description for column: quota"
+  quota: BigInt!
+  "Description for column: tally"
+  tally: PollTally
+  "Description for column: votes"
+  votes: [Vote!]!
+}
+
+"Description for table: PollTally"
+type PollTally @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: yes"
+  yes: BigDecimal!
+  "Description for column: no"
+  no: BigDecimal!
+}
+
+"Description for table: Vote"
+type Vote @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: voter"
+  voter: String!
+  "Description for column: voteStake"
+  voteStake: BigDecimal!
+  "Description for column: nonVoteStake"
+  nonVoteStake: BigDecimal!
+  "Description for column: choiceID"
+  choiceID: PollChoice
+  "Description for column: poll"
+  poll: Poll
+  "Description for column: registeredTranscoder"
+  registeredTranscoder: Boolean
+}
+
+"Description for enum type: PollChoice"
+enum PollChoice @entity {
+  "Description for column: Yes"
+  Yes
+  "Description for column: No"
+  No
+}
+
+"Description for table: Day"
+type Day @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: date"
+  date: Int!
+  "Description for column: volumeETH"
+  volumeETH: BigDecimal!
+  "Description for column: volumeUSD"
+  volumeUSD: BigDecimal!
+  "Description for column: totalActiveStake"
+  totalActiveStake: BigDecimal!
+  "Description for column: totalSupply"
+  totalSupply: BigDecimal!
+  "Description for column: participationRate"
+  participationRate: BigDecimal!
+  "Description for column: inflation"
+  inflation: BigInt!
+  "Description for column: numActiveTranscoders"
+  numActiveTranscoders: BigInt!
+  "Description for column: activeTranscoderCount"
+  activeTranscoderCount: BigInt!
+  "Description for column: delegatorsCount"
+  delegatorsCount: BigInt!
+}
+
+"Description for table: TranscoderDay"
+type TranscoderDay @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: date"
+  date: Int!
+  "Description for column: volumeETH"
+  volumeETH: BigDecimal!
+  "Description for column: volumeUSD"
+  volumeUSD: BigDecimal!
+  "Description for column: transcoder"
+  transcoder: Transcoder!
+}
+
+"Description for table: TreasuryProposal"
+type TreasuryProposal @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: proposer"
+  proposer: LivepeerAccount!
+  "Description for column: targets"
+  targets: [String!]!
+  "Description for column: values"
+  values: [BigInt!]!
+  "Description for column: calldatas"
+  calldatas: [Bytes!]!
+  "Description for column: voteStart"
+  voteStart: BigInt!
+  "Description for column: voteEnd"
+  voteEnd: BigInt!
+  "Description for column: description"
+  description: String!
+}
+
+"Description for column: TreasuryProposal"
+interface Event {
+  "Description for column: id"
+  id: ID!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: round"
+  round: Round!
+}
+
+"Description for table: Transaction"
+type Transaction @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: gasUsed"
+  gasUsed: BigInt!
+  "Description for column: gasPrice"
+  gasPrice: BigInt!
+  "Description for column: from"
+  from: String!
+  "Description for column: to"
+  to: String!
+  "Description for column: events"
+  events: [Event!] @derivedFrom(field: "transaction")
+}
+
+"Description for table: BondEvent"
+type BondEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: bondedAmount"
+  bondedAmount: BigDecimal!
+  "Description for column: additionalAmount"
+  additionalAmount: BigDecimal!
+  "Description for column: newDelegate"
+  newDelegate: Transcoder!
+  "Description for column: oldDelegate"
+  oldDelegate: Transcoder
+  "Description for column: delegator"
+  delegator: Delegator!
+}
+
+"Description for table: UnbondEvent"
+type UnbondEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: amount"
+  amount: BigDecimal!
+  "Description for column: withdrawRound"
+  withdrawRound: BigInt!
+  "Description for column: unbondingLockId"
+  unbondingLockId: Int
+  "Description for column: delegate"
+  delegate: Transcoder!
+  "Description for column: delegator"
+  delegator: Delegator!
+}
+
+"Description for table: RebondEvent"
+type RebondEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegator"
+  delegator: Delegator!
+  "Description for column: delegate"
+  delegate: Transcoder!
+  "Description for column: amount"
+  amount: BigDecimal!
+  "Description for column: unbondingLockId"
+  unbondingLockId: Int!
+}
+
+"Description for table: TransferBondEvent"
+type TransferBondEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: amount"
+  amount: BigDecimal!
+  "Description for column: newDelegator"
+  newDelegator: Delegator!
+  "Description for column: oldDelegator"
+  oldDelegator: Delegator!
+  "Description for column: newUnbondingLockId"
+  newUnbondingLockId: Int!
+  "Description for column: oldUnbondingLockId"
+  oldUnbondingLockId: Int!
+}
+
+"Description for table: RewardEvent"
+type RewardEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: rewardTokens"
+  rewardTokens: BigDecimal!
+  "Description for column: delegate"
+  delegate: Transcoder!
+}
+
+"Description for table: TranscoderActivatedEvent"
+type TranscoderActivatedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegate"
+  delegate: Transcoder!
+  "Description for column: activationRound"
+  activationRound: BigInt!
+}
+
+"Description for table: TranscoderDeactivatedEvent"
+type TranscoderDeactivatedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegate"
+  delegate: Transcoder!
+  "Description for column: deactivationRound"
+  deactivationRound: BigInt!
+}
+
+"Description for table: EarningsClaimedEvent"
+type EarningsClaimedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegator"
+  delegator: Delegator!
+  "Description for column: delegate"
+  delegate: Transcoder!
+  "Description for column: startRound"
+  startRound: BigInt!
+  "Description for column: endRound"
+  endRound: Round!
+  "Description for column: rewardTokens"
+  rewardTokens: BigDecimal!
+  "Description for column: fees"
+  fees: BigDecimal!
+}
+
+"Description for table: TranscoderUpdateEvent"
+type TranscoderUpdateEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegate"
+  delegate: Transcoder!
+  "Description for column: rewardCut"
+  rewardCut: BigInt!
+  "Description for column: feeShare"
+  feeShare: BigInt!
+}
+
+"Description for table: TranscoderSlashedEvent"
+type TranscoderSlashedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegate"
+  delegate: Transcoder!
+  "Description for column: finder"
+  finder: Bytes!
+  "Description for column: penalty"
+  penalty: BigDecimal!
+  "Description for column: finderReward"
+  finderReward: BigInt!
+}
+
+"Description for table: TranscoderResignedEvent"
+type TranscoderResignedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegate"
+  delegate: Transcoder!
+}
+
+"Description for table: TranscoderEvictedEvent"
+type TranscoderEvictedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegate"
+  delegate: Transcoder!
+}
+
+"Description for table: WithdrawStakeEvent"
+type WithdrawStakeEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegator"
+  delegator: Delegator!
+  "Description for column: unbondingLockId"
+  unbondingLockId: Int
+  "Description for column: amount"
+  amount: BigDecimal!
+}
+
+"Description for table: WithdrawFeesEvent"
+type WithdrawFeesEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegator"
+  delegator: Delegator!
+  "Description for column: amount"
+  amount: BigDecimal!
+  "Description for column: recipient"
+  recipient: String!
+}
+
+"Description for table: NewRoundEvent"
+type NewRoundEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: blockHash"
+  blockHash: String!
+}
+
+"Description for table: WinningTicketRedeemedEvent"
+type WinningTicketRedeemedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: sender"
+  sender: Broadcaster!
+  "Description for column: recipient"
+  recipient: Transcoder!
+  "Description for column: faceValue"
+  faceValue: BigDecimal!
+  "Description for column: faceValueUSD"
+  faceValueUSD: BigDecimal!
+  "Description for column: winProb"
+  winProb: BigInt!
+  "Description for column: senderNonce"
+  senderNonce: BigInt!
+  "Description for column: recipientRand"
+  recipientRand: BigInt!
+  "Description for column: auxData"
+  auxData: Bytes!
+}
+
+"Description for table: DepositFundedEvent"
+type DepositFundedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: sender"
+  sender: Broadcaster!
+  "Description for column: amount"
+  amount: BigDecimal!
+}
+
+"Description for table: ReserveFundedEvent"
+type ReserveFundedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: reserveHolder"
+  reserveHolder: Broadcaster!
+  "Description for column: amount"
+  amount: BigDecimal!
+}
+
+"Description for table: ReserveClaimedEvent"
+type ReserveClaimedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: reserveHolder"
+  reserveHolder: Broadcaster!
+  "Description for column: claimant"
+  claimant: Transcoder!
+  "Description for column: amount"
+  amount: BigDecimal!
+}
+
+"Description for table: WithdrawalEvent"
+type WithdrawalEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: sender"
+  sender: Broadcaster!
+  "Description for column: deposit"
+  deposit: BigDecimal!
+  "Description for column: reserve"
+  reserve: BigDecimal!
+}
+
+"Description for table: SetCurrentRewardTokensEvent"
+type SetCurrentRewardTokensEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: currentMintableTokens"
+  currentMintableTokens: BigDecimal!
+  "Description for column: currentInflation"
+  currentInflation: BigInt!
+}
+
+"Description for table: PauseEvent"
+type PauseEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+}
+
+"Description for table: UnpauseEvent"
+type UnpauseEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+}
+
+"Description for table: ParameterUpdateEvent"
+type ParameterUpdateEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: param"
+  param: String!
+}
+
+"Description for table: VoteEvent"
+type VoteEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: voter"
+  voter: String!
+  "Description for column: choiceID"
+  choiceID: BigInt!
+  "Description for column: poll"
+  poll: Poll!
+}
+
+"Description for table: PollCreatedEvent"
+type PollCreatedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: poll"
+  poll: Poll!
+  "Description for column: proposal"
+  proposal: Bytes!
+  "Description for column: endBlock"
+  endBlock: BigInt!
+  "Description for column: quorum"
+  quorum: BigInt!
+  "Description for column: quota"
+  quota: BigInt!
+}
+
+"Description for table: ServiceURIUpdateEvent"
+type ServiceURIUpdateEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: addr"
+  addr: String!
+  "Description for column: serviceURI"
+  serviceURI: String!
+}
+
+"Description for table: MintEvent"
+type MintEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: to"
+  to: String!
+  "Description for column: amount"
+  amount: BigDecimal!
+}
+
+"Description for table: BurnEvent"
+type BurnEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: value"
+  value: BigDecimal!
+}
+
+"Description for table: MigrateDelegatorFinalizedEvent"
+type MigrateDelegatorFinalizedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: l1Addr"
+  l1Addr: String!
+  "Description for column: l2Addr"
+  l2Addr: String!
+  "Description for column: stake"
+  stake: BigDecimal!
+  "Description for column: delegatedStake"
+  delegatedStake: BigDecimal!
+  "Description for column: fees"
+  fees: BigDecimal!
+  "Description for column: delegate"
+  delegate: String!
+}
+
+"Description for table: StakeClaimedEvent"
+type StakeClaimedEvent implements Event @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: transaction"
+  transaction: Transaction!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: round"
+  round: Round!
+  "Description for column: delegator"
+  delegator: String!
+  "Description for column: delegate"
+  delegate: String!
+  "Description for column: stake"
+  stake: BigDecimal!
+  "Description for column: fees"
+  fees: BigDecimal!
+}

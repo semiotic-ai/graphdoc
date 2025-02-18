@@ -1,0 +1,477 @@
+type TokenEvent @entity(immutable: true) {
+  id: ID!
+  version: BigInt!
+  name: String!
+  token: Token!
+  edition: Edition!
+  buyer: Collector
+  bidder: Collector
+  currentOwner: Collector
+  ethValue: BigDecimal!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  transactionIndex: BigInt!
+  logIndex: BigInt!
+  eventAddress: Bytes!
+  eventTxFrom: Bytes!
+  eventTxTo: Bytes
+  blockNumber: BigInt!
+}
+
+type TransferEvent @entity(immutable: true) {
+  id: ID!
+  version: BigInt!
+  from: Bytes!
+  to: Bytes!
+  tokenId: BigInt!
+  edition: Edition!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  transactionIndex: BigInt!
+  logIndex: BigInt!
+  eventAddress: Bytes!
+  eventTxFrom: Bytes!
+  eventTxTo: Bytes
+  blockNumber: BigInt!
+}
+
+type AuctionEvent @entity(immutable: true) {
+  id: ID!
+  version: BigInt!
+  edition: Edition!
+  name: String!
+  bidder: Bytes!
+  caller: Bytes!
+  ethValue: BigDecimal!
+  lockupUntil: BigInt
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  transactionIndex: BigInt!
+  logIndex: BigInt!
+  eventAddress: Bytes!
+  eventTxFrom: Bytes!
+  eventTxTo: Bytes
+  blockNumber: BigInt!
+}
+
+type ActivityEvent @entity(immutable: true) {
+  id: ID!
+  type: String!
+  version: BigInt!
+  eventType: String!
+  edition: Edition
+  token: Token
+  creator: Bytes!
+  creatorCommission: BigInt
+  collaborator: Bytes
+  collaboratorCommission: BigInt
+  triggeredBy: Bytes
+  buyer: Bytes
+  seller: Bytes
+  stakeholderAddresses: [Bytes!]!
+  contractAddress: Bytes
+  eventValueInWei: BigInt
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  transactionIndex: BigInt!
+  logIndex: BigInt!
+  eventAddress: Bytes!
+  eventTxFrom: Bytes!
+  eventTxTo: Bytes
+  blockNumber: BigInt!
+}
+
+type _Schema_ @fulltext(name: "listedTokenSearch", language: en, algorithm: rank, include: [{entity: "ListedToken", fields: [{name: "metadataName"}, {name: "metadataArtist"}, {name: "metadataArtistAccount"}, {name: "metadataTagString"}, {name: "primaryAssetShortType"}, {name: "primaryAssetActualType"}]}]) @fulltext(name: "editionSearch", language: en, algorithm: rank, include: [{entity: "Edition", fields: [{name: "metadataName"}, {name: "metadataArtist"}, {name: "metadataArtistAccount"}, {name: "metadataTagString"}, {name: "metadataFormat"}, {name: "metadataTheme"}, {name: "primaryAssetShortType"}, {name: "primaryAssetActualType"}]}])
+
+type Day @entity {
+  id: ID!
+  date: String!
+  transferCount: BigInt!
+  editionsCount: BigInt!
+  bidsAcceptedCount: BigInt!
+  bidsPlacedCount: BigInt!
+  bidsRejectedCount: BigInt!
+  bidsWithdrawnCount: BigInt!
+  bidsIncreasedCount: BigInt!
+  totalValuePlaceInBids: BigDecimal!
+  totalValueCycledInBids: BigDecimal!
+  secondarySalesValue: BigDecimal!
+  issuedCount: BigInt!
+  salesCount: BigInt!
+  totalValueInEth: BigDecimal!
+  highestValueInEth: BigDecimal!
+  highestValueToken: Token
+  issued: [Token!]!
+  editions: [Edition!]!
+}
+
+type PlatformConfig @entity {
+  id: ID!
+  royaltiesRegistry: Bytes
+  tokenUriResolver: Bytes
+  modulo: BigInt
+  primarySaleCommission: BigInt
+  secondarySaleRoyalty: BigInt
+  marketplaceSecondarySaleRoyalty: BigInt
+  minBidAmount: BigInt
+  mintingPeriod: BigInt
+  maxMintsInPeriod: BigInt
+  merkleProofRoot: Bytes
+  merkleProofIpfsHash: String
+}
+
+type Token @entity {
+  id: ID!
+  version: BigInt!
+  salesType: BigInt!
+  tokenId: BigInt!
+  transferCount: BigInt!
+  editionNumber: String!
+  edition: Edition!
+  tokenURI: String!
+  metadata: MetaData
+  birthTimestamp: BigInt!
+  primaryValueInEth: BigDecimal!
+  totalPurchaseValue: BigDecimal!
+  totalPurchaseCount: BigInt!
+  largestSecondaryValueInEth: BigDecimal!
+  largestSalePriceEth: BigDecimal!
+  lastSalePriceInEth: BigDecimal!
+  lastTransferTimestamp: BigInt!
+  currentOwner: Collector
+  allOwners: [Collector!]!
+  transfers: [TransferEvent!]!
+  tokenEvents: [TokenEvent!]!
+  openOffer: TokenOffer
+  currentTopBidder: Bytes
+  artistAccount: Bytes!
+  editionActive: Boolean!
+  revokedApproval: Boolean!
+  isListed: Boolean!
+  listPrice: BigDecimal
+  lister: Collector
+  listingTimestamp: BigInt
+  listing: ListedToken
+  creatorContract: CreatorContract
+}
+
+type ListedToken @entity {
+  id: ID!
+  version: BigInt!
+  editionNumber: String!
+  revokedApproval: Boolean!
+  listPrice: BigDecimal!
+  lister: Collector!
+  listingTimestamp: BigInt!
+  seriesNumber: BigInt
+  isFirstEdition: Boolean
+  isLastEdition: Boolean
+  isGenesisEdition: Boolean
+  metadataName: String!
+  metadataArtist: String!
+  metadataArtistAccount: String!
+  metadataTagString: String!
+  primaryAssetShortType: String!
+  primaryAssetActualType: String!
+  fullToken: Token!
+  reserveAuctionSeller: Bytes!
+  reserveAuctionBidder: Bytes!
+  reservePrice: BigInt!
+  reserveAuctionBid: BigInt!
+  reserveAuctionStartDate: BigInt!
+  previousReserveAuctionEndTimestamp: BigInt!
+  reserveAuctionEndTimestamp: BigInt!
+  reserveAuctionNumTimesExtended: BigInt!
+  isReserveAuctionInSuddenDeath: Boolean!
+  reserveAuctionTotalExtensionLengthInSeconds: BigInt!
+  isReserveAuctionResulted: Boolean!
+  isReserveAuctionResultedDateTime: BigInt!
+  reserveAuctionResulter: Bytes!
+  reserveAuctionCanEmergencyExit: Boolean!
+  creatorContract: CreatorContract
+}
+
+type Composable @entity {
+  id: ID!
+  items: [ComposableItem!]
+}
+
+type ComposableItem @entity {
+  id: ID!
+  address: String!
+  tokenID: String!
+  type: String!
+  value: BigInt!
+}
+
+type CollectiveHandlers @entity {
+  id: ID!
+  active: Boolean!
+  lastUpdatedTimestamp: BigInt!
+  lastUpdatedTransactionHash: Bytes!
+}
+
+type Collective @entity {
+  id: ID!
+  baseHandler: Bytes!
+  creator: Bytes!
+  recipients: [Bytes!]!
+  splits: [BigInt!]!
+  createdTimestamp: BigInt!
+  transactionHash: Bytes!
+  editions: [Edition!]!
+  isDeployed: Boolean!
+}
+
+type Edition @entity {
+  id: ID!
+  version: BigInt!
+  editionNmber: String!
+  editionType: BigInt!
+  editionData: Bytes
+  creatorContract: CreatorContract
+  salesType: BigInt!
+  revokedApproval: Boolean!
+  createdTimestamp: BigInt!
+  tokenIds: [String!]!
+  tokens: [Token!]! @derivedFrom(field: "edition")
+  tokenURI: String!
+  artistAccount: Bytes!
+  artistCommission: BigInt!
+  optionalCommissionAccount: Bytes
+  optionalCommissionRate: BigInt
+  collaborators: [Bytes!]!
+  collective: Collective
+  offersOnly: Boolean!
+  totalSupply: BigInt!
+  totalAvailable: BigInt!
+  remainingSupply: BigInt!
+  totalSold: BigInt!
+  totalBurnt: BigInt!
+  originalEditionSize: BigInt!
+  secondaryRoyaltyV4EditionOverride: BigInt
+  sales: [Token!]!
+  totalEthSpentOnEdition: BigDecimal!
+  active: Boolean!
+  metadata: MetaData
+  isGenesisEdition: Boolean!
+  isEnhancedEdition: Boolean!
+  isOpenEdition: Boolean
+  hasCoverImage: Boolean!
+  artist: Artist
+  startDate: BigInt!
+  endDate: BigInt!
+  reserveAuctionSeller: Bytes!
+  reserveAuctionBidder: Bytes!
+  reservePrice: BigInt!
+  reserveAuctionBid: BigInt!
+  reserveAuctionStartDate: BigInt!
+  previousReserveAuctionEndTimestamp: BigInt!
+  reserveAuctionEndTimestamp: BigInt!
+  reserveAuctionNumTimesExtended: BigInt!
+  isReserveAuctionInSuddenDeath: Boolean!
+  reserveAuctionTotalExtensionLengthInSeconds: BigInt!
+  isReserveAuctionResulted: Boolean!
+  isReserveAuctionResultedDateTime: BigInt!
+  reserveAuctionResulter: Bytes!
+  reserveAuctionCanEmergencyExit: Boolean!
+  priceInWei: BigInt!
+  stepSaleBasePrice: BigInt!
+  stepSaleStepPrice: BigInt!
+  currentStep: BigInt!
+  auctionEnabled: Boolean!
+  activeBid: AuctionEvent
+  gatedSale: GatedSale
+  biddingHistory: [AuctionEvent!]!
+  transfers: [TransferEvent!]!
+  allOwners: [Collector!]!
+  currentOwners: [Collector!]!
+  primaryOwners: [Collector!]!
+  metadataName: String!
+  metadataArtist: String!
+  metadataTagString: String!
+  metadataArtistAccount: String!
+  metadataPrice: BigInt!
+  metadataFormat: String
+  metadataTheme: String
+  primaryAssetShortType: String
+  primaryAssetActualType: String
+}
+
+type MetaData @entity(immutable: true) {
+  id: ID!
+  name: String
+  description: String
+  image: String
+  image_type: String
+  image_size_in_bytes: BigInt
+  cover_image: String
+  cover_image_type: String
+  cover_image_size_in_bytes: BigInt
+  animation_url: String
+  image_sphere: Boolean
+  scarcity: String
+  artist: String
+  tags: [String!]
+  production_year: String
+  format: String
+  theme: String
+  nsfw: Boolean
+}
+
+type TokenOffer @entity(immutable: true) {
+  id: ID!
+  version: BigInt!
+  token: Token!
+  edition: Edition!
+  ownerAtTimeOfBid: Collector!
+  bidder: Collector!
+  ethValue: BigDecimal!
+  timestamp: BigInt!
+}
+
+type Offer @entity {
+  id: ID!
+  version: BigInt!
+  type: String!
+  salesType: BigInt!
+  token: Token
+  edition: Edition!
+  currentOwner: Collector!
+  bidder: Collector!
+  ethValue: BigDecimal!
+  weiValue: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  lockedUntil: BigInt
+  isActive: Boolean!
+}
+
+type PhaseMintCount @entity {
+  id: ID!
+  saleId: String!
+  editionId: String!
+  phaseId: String!
+  minter: String!
+  count: BigInt!
+}
+
+type Phase @entity {
+  id: ID!
+  saleId: String!
+  editionId: String!
+  phaseId: String!
+  startTime: BigInt!
+  endTime: BigInt!
+  walletMintLimit: BigInt!
+  priceInWei: BigInt!
+  mintCap: BigInt!
+  mintCount: BigInt!
+  merkleRoot: Bytes
+  merkleIPFSHash: String
+}
+
+type GatedSale @entity {
+  id: ID!
+  editionId: String!
+  paused: Boolean!
+  primarySaleCommission: BigInt!
+  artistAccount: String
+  mintCount: BigInt!
+  phases: [Phase!]!
+}
+
+type CreatorContract @entity {
+  id: ID!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  transactionHash: Bytes!
+  transactionIndex: BigInt!
+  logIndex: BigInt!
+  eventAddress: Bytes!
+  eventTxFrom: Bytes!
+  eventTxTo: Bytes
+  implementation: Bytes!
+  deployer: Bytes!
+  creator: Bytes!
+  paused: Boolean!
+  owner: Bytes!
+  secondaryRoyaltyPercentage: BigInt!
+  minter: Bytes!
+  defaultFundsHandler: Bytes!
+  defaultFundsRecipients: [Bytes!]!
+  defaultFundsShares: [BigInt!]!
+  ERC165InterfaceID: Bytes
+  isBatchBuyItNow: Boolean!
+  isHidden: Boolean!
+  transferState: BigInt!
+  totalNumOfEditions: BigInt!
+  totalNumOfTokensSold: BigInt!
+  totalEthValueOfSales: BigDecimal!
+  totalNumOfTransfers: BigInt!
+  editions: [Edition!]!
+  name: String
+  symbol: String
+  filterRegistry: Bytes
+}
+
+type CreatorContractSetting @entity {
+  id: ID!
+  factoryContract: Bytes!
+  kodaSalesSettingsContract: Bytes!
+  platform: Bytes!
+  platformPrimaryCommission: BigInt!
+  platformSecondaryCommission: BigInt!
+  MODULO: BigInt!
+}
+
+type ArtistMintingConfig @entity {
+  id: ID!
+  mints: BigInt!
+  firstMintInPeriod: BigInt!
+  frequencyOverride: Boolean!
+}
+
+type Artist @entity {
+  id: ID!
+  address: Bytes!
+  name: String
+  editionsCount: BigInt!
+  ccEditionsCount: BigInt!
+  supply: BigInt!
+  issuedCount: BigInt!
+  totalValueInEth: BigDecimal!
+  salesCount: BigInt!
+  totalPrimarySales: BigInt!
+  totalPrimarySalesInEth: BigDecimal!
+  totalSecondarySales: BigInt!
+  totalSecondarySalesInEth: BigDecimal!
+  highestSaleValueInEth: BigDecimal!
+  highestSaleToken: Token
+  firstEdition: Edition
+  firstEditionTimestamp: BigInt!
+  lastEdition: Edition
+  lastEditionTimestamp: BigInt!
+  editions: [Edition!]! @derivedFrom(field: "artist")
+  editionIds: [Edition!]!
+  mintingConfig: ArtistMintingConfig!
+  creatorContracts: [CreatorContract!]
+}
+
+type Collector @entity {
+  id: ID!
+  address: Bytes!
+  firstSeen: BigInt!
+  firstPurchaseTimeStamp: BigInt!
+  lastPurchaseTimeStamp: BigInt!
+  primaryPurchaseCount: BigInt!
+  primaryPurchaseEthSpent: BigDecimal!
+  secondarySaleCount: BigInt!
+  secondarySaleEthTotal: BigDecimal!
+  secondaryPurchaseCount: BigInt!
+  secondaryPurchaseEthSpent: BigDecimal!
+  totalPurchaseCount: BigInt!
+  totalPurchaseEthSpent: BigDecimal!
+  tokens: [Token!]! @derivedFrom(field: "currentOwner")
+  tokenIds: [Token!]!
+}
