@@ -4,7 +4,12 @@ import os
 from pathlib import Path
 
 # internal packages
-from graphdoc import check_directory_path, check_file_path, load_yaml_config
+from graphdoc import (
+    check_directory_path,
+    check_file_path,
+    load_yaml_config,
+    setup_logging,
+)
 
 # external packages
 import pytest
@@ -19,6 +24,13 @@ CONFIG_DIR = BASE_DIR / "tests" / "assets" / "configs"
 
 
 class TestHelper:
+
+    @pytest.fixture(autouse=True)
+    def setup_and_teardown(self):
+        """Reset logging configuration before and after each test"""
+        self.original_level = logging.getLogger().getEffectiveLevel()
+        yield
+        logging.getLogger().setLevel(self.original_level)
 
     def test_check_directory_path(self):
         with pytest.raises(ValueError):
@@ -51,3 +63,20 @@ class TestHelper:
         del os.environ["OPENAI_API_KEY"]
         del os.environ["HF_DATASET_KEY"]
         del os.environ["MLFLOW_TRACKING_URI"]
+
+    def test_setup_logging(self):
+        root_logger = logging.getLogger()
+        root_logger.setLevel(logging.WARNING)
+        assert root_logger.getEffectiveLevel() == logging.WARNING
+
+        setup_logging("DEBUG")
+        assert root_logger.getEffectiveLevel() == logging.DEBUG
+
+        setup_logging("INFO")
+        assert root_logger.getEffectiveLevel() == logging.INFO
+
+        setup_logging("WARNING")
+        assert root_logger.getEffectiveLevel() == logging.WARNING
+
+        setup_logging("ERROR")
+        assert root_logger.getEffectiveLevel() == logging.ERROR
