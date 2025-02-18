@@ -9,11 +9,14 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.13.0"
+mlflow = "2.20.0"
+dspy = "2.6.3"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.3.4"
+pytest = "^8.3.4"
 black = "24.10.0"
 pyright = "1.1.392.post0"
+requests = "^2.31.0"
 
 
 [build-system]
