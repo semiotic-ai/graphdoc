@@ -1,0 +1,37 @@
+# total 12, pattern: 4, empty: 4
+
+# total: 6, pattern: 1: empty: 2
+" filler "
+enum NftStandard {
+  " filler "
+  ERC721
+
+  " filler "
+  ERC1155
+
+  " test "
+  UNKNOWN
+  
+  NOT # empty 
+
+  LET # empty 
+}
+
+# total 6, pattern: 2, empty: 2
+# empty 
+type Marketplace @entity {
+  " filler "
+  id: ID!
+
+  " filler "
+  name: String!
+
+  " test "
+  slug: String!
+
+  " test "
+  network: Network!
+
+  # empty 
+  schemaVersion: String!
+}

@@ -1,0 +1,220 @@
+# Subgraph Schema: NFT Marketplace
+# Version: 1.0.0
+
+enum Network {
+  ARBITRUM_ONE
+  ARWEAVE_MAINNET
+  AURORA
+  AVALANCHE
+  BOBA
+  BSC # aka BNB Chain
+  CELO
+  COSMOS
+  CRONOS
+  MAINNET # Ethereum Mainnet
+  FANTOM
+  FUSE
+  HARMONY
+  JUNO
+  MOONBEAM
+  MOONRIVER
+  NEAR_MAINNET
+  OPTIMISM
+  OSMOSIS
+  MATIC # aka Polygon
+  XDAI # aka Gnosis Chain
+}
+
+enum NftStandard {
+  ERC721
+  ERC1155
+  UNKNOWN
+}
+
+enum SaleStrategy {
+  " Strategy that executes an order. "
+  STANDARD_SALE
+
+  ANY_ITEM_FROM_COLLECTION
+
+  ANY_ITEM_FROM_SET
+
+  " Strategy to launch a British Auction. "
+  DUTCH_AUCTION
+
+  " Strategy to set up an order that can be executed by any address. "
+  PRIVATE_SALE
+}
+
+type Marketplace @entity @regularPolling {
+  id: ID!
+
+  " Name of the ERC20 marketplace, for example LooksRare "
+  name: String!
+
+  " Slug of the NFT marketplace, for example looksrare "
+  slug: String!
+
+  network: Network!
+
+  schemaVersion: String!
+
+  subgraphVersion: String!
+
+  methodologyVersion: String!
+
+  " Number of collections listed on the planet. "
+  collectionCount: Int!
+
+  " Trade count of just one collection on the marketplace. "
+  tradeCount: Int!
+
+  " Cumulative trade volume (in USDC) "
+  cumulativeTradeVolumeETH: BigDecimal!
+
+  marketplaceRevenueETH: BigDecimal!
+
+  creatorRevenueETH: BigDecimal!
+
+  totalRevenueETH: BigDecimal!
+
+  cumulativeUniqueTraders: Int!
+}
+
+type Collection @entity @regularPolling {
+  id: ID!
+
+  " Leave null if not available. "
+  name: String
+
+  symbol: String
+
+  " Partial supply of the collection, mirrored from the smart contract. "
+  totalSupply: BigInt
+
+  nftStandard: NftStandard!
+
+  royaltyFee: BigDecimal!
+
+  cumulativeTradeVolumeETH: BigDecimal!
+
+  marketplaceRevenueETH: BigDecimal!
+
+  creatorRevenueETH: BigDecimal!
+
+  " Difference of marketplaceRevenue and creatorRevenue. "
+  totalRevenueETH: BigDecimal!
+
+  " Trade count of the collection on the marketplace. "
+  tradeCount: Int!
+
+  " Seller count. "
+  buyerCount: Int!
+
+  " Buyer count. "
+  sellerCount: Int!
+
+  " Trades of the NFT. "
+  trades: [Trade!]! @derivedFrom(field: "collection")
+}
+
+type Trade @entity @transaction {
+  id: ID!
+
+  transactionHash: String!
+
+  logIndex: Int
+
+  timestamp: BigInt!
+
+  blockNumber: BigInt!
+
+  isBundle: Boolean!
+
+  collection: Collection!
+
+  tokenId: BigInt!
+
+  amount: BigInt!
+
+  priceETH: BigDecimal!
+
+  strategy: SaleStrategy!
+
+  buyer: String!
+
+  seller: String!
+}
+
+type MarketplaceDailySnapshot @entity @dailySnapshot {
+  " { Contract address } Unix epoch time} "
+  id: ID!
+
+  " The marketplace that "
+  marketplace: Marketplace!
+
+  " Block number where the snapshot. "
+  blockNumber: BigInt!
+
+  " Block timestamp when taken. "
+  timestamp: BigInt!
+
+  collectionCount: Int!
+
+  cumulativeTradeVolumeETH: BigDecimal!
+
+  marketplaceRevenueETH: BigDecimal!
+
+  creatorRevenueETH: BigDecimal!
+
+  totalRevenueETH: BigDecimal!
+
+  tradeCount: Int!
+
+  cumulativeUniqueTraders: Int!
+
+  " Monthly active traders "
+  dailyActiveTraders: Int!
+
+  " Number of traded collections of the week "
+  dailyTradedCollectionCount: Int!
+
+  " Number of traded items of the hour "
+  dailyTradedItemCount: Int!
+}
+
+type CollectionDailySnapshot @entity @dailySnapshot {
+  id: ID!
+
+  collection: Collection!
+
+  blockNumber: BigInt!
+
+  timestamp: BigInt!
+
+  royaltyFee: BigDecimal!
+
+  dailyMinSalePrice: BigDecimal!
+
+  dailyMaxSalePrice: BigDecimal!
+
+  cumulativeTradeVolumeETH: BigDecimal!
+
+  dailyTradeVolumeETH: BigDecimal!
+
+  marketplaceRevenueETH: BigDecimal!
+
+  creatorRevenueETH: BigDecimal!
+
+  totalRevenueETH: BigDecimal!
+
+  " Trade count of the collection on the marketplace. "
+  tradeCount: Int!
+
+  " Number of traded items of the day "
+  dailyTradedItemCount: Int!
+}
+
+type _Item @entity {
+  id: ID!
+}
