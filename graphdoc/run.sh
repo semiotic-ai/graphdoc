@@ -15,6 +15,14 @@ dev_command() {
     poetry install --with dev
 }
 
+format_command() {
+    poetry run black .
+}
+
+lint_command() {
+    poetry run pyright .
+}
+
 # help menu
 show_help() {
     echo "Usage: ./nli [option]"
@@ -25,6 +33,8 @@ show_help() {
     echo "  shell                  Run shell"
     echo "  install                Install dependencies"
     echo "  dev                    Install dependencies with dev"
+    echo "  format                 Format the code"
+    echo "  lint                   Lint the code"
 }
 
 # handle command line arguments
@@ -38,6 +48,8 @@ else
         "shell") shell_command ;;
         "install") install_command ;;
         "dev") dev_command ;;
+        "format") format_command ;;
+        "lint") lint_command ;;
         *) show_help ;;
     esac
 fi
