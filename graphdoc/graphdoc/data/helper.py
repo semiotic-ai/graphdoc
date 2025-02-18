@@ -3,8 +3,8 @@ import os
 import yaml
 import logging
 from pathlib import Path
-from typing import Union
 from yaml import SafeLoader
+from typing import Literal, Union
 
 # internal packages
 
@@ -89,3 +89,24 @@ def load_yaml_config(file_path: Union[str, Path], use_env: bool = True) -> dict:
         )
     with open(_file_path, "r") as file:
         return yaml.load(file, Loader=SafeLoader)
+
+
+def setup_logging(
+    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+):
+    """
+    Setup logging for the application.
+
+    :param log_level: The log level.
+    :type log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+    """
+    root_logger = logging.getLogger()
+    root_logger.handlers.clear()
+    root_logger.setLevel(getattr(logging, log_level))
+
+    handler = logging.StreamHandler()
+    handler.setFormatter(
+        logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    )
+
+    root_logger.addHandler(handler)
