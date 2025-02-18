@@ -38,6 +38,12 @@ chmod +x run.sh
 ./run.sh dev
 ```
 
+To setup the mlflow-manager services, run the following command:
+
+```bash 
+./run.sh mlflow-setup
+```
+
 ### python 
 
 We utilize `python==3.13.0` for this project. Please see the [python documentation](https://www.python.org/downloads/) for more information. We recommend using [pyenv](https://github.com/pyenv/pyenv) to install python.

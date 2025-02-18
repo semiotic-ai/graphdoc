@@ -17,6 +17,13 @@ dev_install() {
     cd ..
 }
 
+# make command
+mlflow_setup() {
+    echo "Setting up mlflow-manager..."
+    cd mlflow-manager && ./run.sh install && ./run.sh make-install
+    cd ..
+}
+
 install() {
     echo "Installing all package dependencies..."
     
@@ -35,6 +42,9 @@ show_help() {
     echo "Options:"
     echo "  dev                    Install all package dependencies in development mode"
     echo "  install                Install all package dependencies in production mode"
+
+    # make commands
+    echo "  mlflow-setup           Install mlflow-manager dependencies and run the services"
 }
 
 # run the script
@@ -44,6 +54,9 @@ else
     case "$1" in
         "dev") dev_install ;;
         "install") install ;;
+
+        # make commands
+        "mlflow-setup") mlflow_setup ;;
         *) show_help ;;
     esac
 fi
