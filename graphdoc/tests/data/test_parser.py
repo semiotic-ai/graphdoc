@@ -98,8 +98,32 @@ class TestParser:
         assert counts["pattern"] == 3
         assert counts["empty"] == 4
 
-    # def test_fill_empty_descriptions(self, par: Parser):
-    #     pass
+    def test_fill_empty_descriptions(self, par: Parser):
+        schema_file = SCHEMA_DIR / "opensea_original_schema_sparse.graphql"
+        schema = par.parse_schema_from_file(schema_file)
+        updated_schema = par.fill_empty_descriptions(schema)
+        definitions = getattr(updated_schema, "definitions", None)
+
+        if definitions:
+            test_entity_definition_updated = definitions[3].fields[0].description.value
+            assert test_entity_definition_updated == "Description for column: id"
+
+            test_enum_definition_content = definitions[2].values[0].description.value
+            assert (
+                test_enum_definition_content
+                == " Strategy that executes an order at a fixed price that can be taken either by a bid or an ask. "
+            )
+
+            test_entity_description = definitions[5].description.value
+            assert (
+                test_entity_description
+                == " Trades exist such as a combination of taker/order and bid/ask. "
+            )
+
+            test_entity_description_updated = definitions[3].description.value
+            assert (
+                test_entity_description_updated == "Description for table: Marketplace"
+            )
 
     # def test_schema_equality_check(self, par: Parser):
     #     pass
