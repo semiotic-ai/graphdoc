@@ -47,6 +47,42 @@ class SchemaRating(str, Enum):
             return None
 
 
+class SchemaCategoryRatingMapping:
+    """Maps SchemaCategory to SchemaRating."""
+
+    @staticmethod
+    def get_rating(category: SchemaCategory) -> SchemaRating:
+        """Get the corresponding rating for a given schema category.
+
+        :param category: The schema category
+        :return: The corresponding rating
+        """
+        mapping = {
+            SchemaCategory.PERFECT: SchemaRating.FOUR,
+            SchemaCategory.ALMOST_PERFECT: SchemaRating.THREE,
+            SchemaCategory.POOR_BUT_CORRECT: SchemaRating.TWO,
+            SchemaCategory.INCORRECT: SchemaRating.ONE,
+            SchemaCategory.BLANK: SchemaRating.ZERO,
+        }
+        return mapping.get(category, SchemaRating.ZERO)
+
+    @staticmethod
+    def get_category(rating: SchemaRating) -> SchemaCategory:
+        """Get the corresponding category for a given schema rating.
+
+        :param rating: The schema rating
+        :return: The corresponding category
+        """
+        mapping = {
+            SchemaRating.FOUR: SchemaCategory.PERFECT,
+            SchemaRating.THREE: SchemaCategory.ALMOST_PERFECT,
+            SchemaRating.TWO: SchemaCategory.POOR_BUT_CORRECT,
+            SchemaRating.ONE: SchemaCategory.INCORRECT,
+            SchemaRating.ZERO: SchemaCategory.BLANK,
+        }
+        return mapping.get(rating, SchemaCategory.BLANK)
+
+
 class SchemaType(str, Enum):
     FULL_SCHEMA = "full schema"
     TABLE_SCHEMA = "table schema"
