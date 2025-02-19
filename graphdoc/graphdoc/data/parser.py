@@ -279,7 +279,7 @@ class Parser:
             return True
 
     @staticmethod
-    def _parse_objects_from_full_schema_object(
+    def parse_objects_from_full_schema_object(
         schema: SchemaObject, type_mapping: Optional[dict[type, str]] = None
     ) -> Union[dict[str, SchemaObject], None]:
         """
