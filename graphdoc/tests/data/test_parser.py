@@ -125,8 +125,20 @@ class TestParser:
                 test_entity_description_updated == "Description for table: Marketplace"
             )
 
-    # def test_schema_equality_check(self, par: Parser):
-    #     pass
+    def test_schema_equality_check(self, par: Parser):
+        gold_schema_file = SCHEMA_DIR / "opensea_original_schema.graphql"
+        silver_schema_file = (
+            SCHEMA_DIR
+            / "opensea_original_schema_sparse.graphql"  # only the comments are different
+        )
+        check_schema_file = SCHEMA_DIR / "opensea_original_schema_modified.graphql"
+        gold_schema = par.parse_schema_from_file(gold_schema_file)
+        silver_schema = par.parse_schema_from_file(silver_schema_file)
+        check_schema = par.parse_schema_from_file(check_schema_file)
+
+        assert par.schema_equality_check(gold_schema, gold_schema)
+        assert par.schema_equality_check(gold_schema, silver_schema)
+        assert par.schema_equality_check(gold_schema, check_schema) is False
 
     # def test_parse_objects_from_full_schema_object(self, par: Parser):
     #     pass
