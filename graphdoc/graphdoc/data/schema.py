@@ -4,7 +4,7 @@
 import logging
 from enum import Enum
 from dataclasses import dataclass
-from typing import Optional, Union
+from typing import Optional, Union, Type
 
 # internal packages
 
@@ -63,9 +63,64 @@ class SchemaType(str, Enum):
 @dataclass
 class SchemaObject:
     key: str
-    category: Optional[SchemaCategory] = None
-    rating: Optional[SchemaRating] = None
+    category: Optional[Enum] = None
+    rating: Optional[Enum] = None
     schema_name: Optional[str] = None
-    schema_type: Optional[SchemaType] = None
+    schema_type: Optional[Enum] = None
     schema_str: Optional[str] = None
     schema_ast: Optional[Node] = None
+
+    @classmethod
+    def from_dict(
+        cls,
+        data: dict,
+        category_enum: Type[Enum] = SchemaCategory,
+        rating_enum: Type[Enum] = SchemaRating,
+        type_enum: Type[Enum] = SchemaType,
+    ) -> "SchemaObject":
+        """Create SchemaObject from dictionary with validation.
+
+        :param data: The data dictionary
+        :param category_enum: Custom Enum class for categories
+        :param rating_enum: Custom Enum class for ratings
+        :param type_enum: Custom Enum class for schema types
+        """
+        if "key" not in data:
+            raise ValueError("Missing required field: key")
+
+        category = None
+        if "category" in data:
+            try:
+                category = category_enum(data["category"])
+            except ValueError as e:
+                raise ValueError(
+                    f"Invalid category. Must be one of: {[e.value for e in category_enum]}"
+                )
+
+        rating = None
+        if "rating" in data:
+            try:
+                rating = rating_enum(data["rating"])
+            except ValueError as e:
+                raise ValueError(
+                    f"Invalid rating. Must be one of: {[e.value for e in rating_enum]}"
+                )
+
+        schema_type = None
+        if "schema_type" in data:
+            try:
+                schema_type = type_enum(data["schema_type"])
+            except ValueError as e:
+                raise ValueError(
+                    f"Invalid schema type. Must be one of: {[e.value for e in type_enum]}"
+                )
+
+        return cls(
+            key=data["key"],
+            category=category,
+            rating=rating,
+            schema_name=data.get("schema_name"),
+            schema_type=schema_type,
+            schema_str=data.get("schema_str"),
+            schema_ast=data.get("schema_ast"),
+        )
