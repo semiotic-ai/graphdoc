@@ -2,7 +2,13 @@
 import logging
 
 # internal packages
-from graphdoc import SchemaCategory, SchemaRating, SchemaType, SchemaObject
+from graphdoc import (
+    SchemaCategory,
+    SchemaRating,
+    SchemaType,
+    SchemaObject,
+    SchemaCategoryRatingMapping,
+)
 
 # external packages
 from graphql import parse
@@ -57,6 +63,28 @@ class TestSchema:
         assert SchemaType.from_str("table schema") == SchemaType.TABLE_SCHEMA
         assert SchemaType.from_str("enum schema") == SchemaType.ENUM_SCHEMA
         assert SchemaType.from_str("invalid") is None
+
+    def test_schema_category_rating_mapping(self):
+        assert (
+            SchemaCategoryRatingMapping.get_rating(SchemaCategory.PERFECT)
+            == SchemaRating.FOUR
+        )
+        assert (
+            SchemaCategoryRatingMapping.get_rating(SchemaCategory.ALMOST_PERFECT)
+            == SchemaRating.THREE
+        )
+        assert (
+            SchemaCategoryRatingMapping.get_rating(SchemaCategory.POOR_BUT_CORRECT)
+            == SchemaRating.TWO
+        )
+        assert (
+            SchemaCategoryRatingMapping.get_rating(SchemaCategory.INCORRECT)
+            == SchemaRating.ONE
+        )
+        assert (
+            SchemaCategoryRatingMapping.get_rating(SchemaCategory.BLANK)
+            == SchemaRating.ZERO
+        )
 
     def test_schema_object_from_dict(self):
         schema_ast = parse("type Account @entity { id: Bytes! }")
