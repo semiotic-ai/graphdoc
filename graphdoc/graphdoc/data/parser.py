@@ -280,6 +280,30 @@ class Parser:
             return True
 
     @staticmethod
+    def schema_object_from_file(
+        schema_file: Union[str, Path],
+        category: Optional[str] = None,
+        rating: Optional[int] = None,
+    ) -> SchemaObject:
+        """
+        Parse a schema object from a file.
+        """
+        schema_ast = Parser.parse_schema_from_file(schema_file)
+        schema_str = print_ast(schema_ast)
+        schema_type = Parser._check_node_type(schema_ast)
+        return SchemaObject.from_dict(
+            {
+                "key": str(schema_file),
+                "category": category,
+                "rating": rating,
+                "schema_name": str(Path(schema_file).stem),
+                "schema_type": schema_type,
+                "schema_str": schema_str,
+                "schema_ast": schema_ast,
+            }
+        )
+
+    @staticmethod
     def parse_objects_from_full_schema_object(
         schema: SchemaObject, type_mapping: Optional[dict[type, str]] = None
     ) -> Union[dict[str, SchemaObject], None]:
