@@ -89,7 +89,7 @@ class SchemaObject:
             raise ValueError("Missing required field: key")
 
         category = None
-        if "category" in data:
+        if data.get("category"):
             try:
                 category = category_enum(data["category"])
             except ValueError as e:
@@ -98,16 +98,20 @@ class SchemaObject:
                 )
 
         rating = None
-        if "rating" in data:
+        if data.get("rating"):
             try:
-                rating = rating_enum(data["rating"])
+                if hasattr(rating_enum, "from_value"):
+                    # we ignore the type because we know that the from_value method exists
+                    rating = rating_enum.from_value(data["rating"])  # type: ignore
+                else:
+                    rating = rating_enum(data["rating"])
             except ValueError as e:
                 raise ValueError(
                     f"Invalid rating. Must be one of: {[e.value for e in rating_enum]}"
                 )
 
         schema_type = None
-        if "schema_type" in data:
+        if data.get("schema_type"):
             try:
                 schema_type = type_enum(data["schema_type"])
             except ValueError as e:
