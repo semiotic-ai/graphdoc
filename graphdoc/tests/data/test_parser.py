@@ -149,18 +149,14 @@ class TestParser:
         assert schema.schema_name == "opensea_original_schema_sparse"
         assert schema.rating == "3"
 
-    # def test_parse_objects_from_full_schema_object(self, par: Parser):
-    #     pass
-
-    # def test_parse_objects_from_full_schema_object(self, par: Parser):
-    #     schema_file = SCHEMA_DIR / "opensea_original_schema_sparse.graphql"
-    #     schema = par.parse_schema_from_file(schema_file)
-    #     objects = par.parse_objects_from_full_schema_object(schema)
-    #     assert isinstance(objects, dict)
-    #     counter = 0
-    #     for obj in objects.values():
-    #         log.debug(f"obj type ({type(obj)}): {obj.schema_type}")
-    #         assert isinstance(obj, SchemaObject)
-    #         counter += 1
-    #         # TODO: make this a static value by deriving from a knowmn schema directory
-    #     assert counter == 9
+    def test_parse_objects_from_full_schema_object(self, par: Parser):
+        schema_file = SCHEMA_DIR / "opensea_original_schema_sparse.graphql"
+        schema_object = par.schema_object_from_file(schema_file, rating=3)
+        objects = par.parse_objects_from_full_schema_object(schema_object)
+        assert isinstance(objects, dict)
+        counter = 0
+        for obj in objects.values():
+            log.debug(f"obj type ({type(obj)}): {obj.schema_type}")
+            assert isinstance(obj, SchemaObject)
+            counter += 1
+        assert counter == 9
