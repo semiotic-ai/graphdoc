@@ -5,6 +5,7 @@ import logging
 from graphdoc import SchemaCategory, SchemaRating, SchemaType, SchemaObject
 
 # external packages
+from graphql import parse
 
 # logging
 log = logging.getLogger(__name__)
@@ -56,3 +57,23 @@ class TestSchema:
         assert SchemaType.from_str("table schema") == SchemaType.TABLE_SCHEMA
         assert SchemaType.from_str("enum schema") == SchemaType.ENUM_SCHEMA
         assert SchemaType.from_str("invalid") is None
+
+    def test_schema_object_from_dict(self):
+        schema_ast = parse("type Account @entity { id: Bytes! }")
+        data = {
+            "key": "test",
+            "category": SchemaCategory.PERFECT,
+            "rating": SchemaRating.FOUR,
+            "schema_name": "test",
+            "schema_type": SchemaType.FULL_SCHEMA,
+            "schema_str": "test",
+            "schema_ast": schema_ast,
+        }
+        schema_object = SchemaObject.from_dict(data)
+        assert schema_object.key == "test"
+        assert schema_object.category == SchemaCategory.PERFECT
+        assert schema_object.rating == SchemaRating.FOUR
+        assert schema_object.schema_name == "test"
+        assert schema_object.schema_type == SchemaType.FULL_SCHEMA
+        assert schema_object.schema_str == "test"
+        assert schema_object.schema_ast == schema_ast
