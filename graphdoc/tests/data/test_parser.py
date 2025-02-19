@@ -19,6 +19,7 @@ log = logging.getLogger(__name__)
 
 # global variables
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+SCHEMA_DIR = BASE_DIR / "tests" / "assets" / "schemas"
 
 
 class TestParser:
@@ -68,18 +69,26 @@ class TestParser:
         )
 
     def test_parse_schema_from_file(self, par: Parser):
-        schema_file = (
-            Path(BASE_DIR)
-            / "tests"
-            / "assets"
-            / "schemas"
-            / "opensea_original_schema.graphql"
+        schema_file = SCHEMA_DIR / "opensea_original_schema.graphql"
+        schema = par.parse_schema_from_file(
+            schema_file, schema_directory_path=SCHEMA_DIR
         )
-        schema = par.parse_schema_from_file(schema_file)
         assert isinstance(schema, DocumentNode)
 
-    # def test_update_node_descriptions(self, par: Parser):
-    #     pass
+    def test_update_node_descriptions(self, par: Parser):
+        schema_file = "opensea_original_schema.graphql"
+        schema = par.parse_schema_from_file(
+            schema_file, schema_directory_path=SCHEMA_DIR
+        )
+        updated_schema = par.update_node_descriptions(
+            node=schema, new_value="This is a test description"
+        )
+        for i in range(3, 6):
+            for x in range(3):
+                definitions = getattr(updated_schema, "definitions", None)
+                if definitions:
+                    test_node_definition = definitions[i].fields[x].description.value
+                    assert test_node_definition == "This is a test description"
 
     # def test_count_description_pattern_matching(self, par: Parser):
     #     pass
