@@ -60,7 +60,8 @@ class Parser:
 
     @staticmethod
     def parse_schema_from_file(
-        schema_file: Union[str, Path], schema_directory_path: Optional[str] = None
+        schema_file: Union[str, Path],
+        schema_directory_path: Optional[Union[str, Path]] = None,
     ) -> DocumentNode:
         """
         Parse a schema from a file.
