@@ -4,6 +4,7 @@ from pathlib import Path
 
 # internal packages
 from graphdoc import Parser
+from graphdoc import SchemaObject
 
 # external packages
 from graphql import (
@@ -140,5 +141,26 @@ class TestParser:
         assert par.schema_equality_check(gold_schema, silver_schema)
         assert par.schema_equality_check(gold_schema, check_schema) is False
 
+    def test_schema_object_from_file(self, par: Parser):
+        schema_file = SCHEMA_DIR / "opensea_original_schema_sparse.graphql"
+        schema = par.schema_object_from_file(schema_file, rating=3)
+        assert isinstance(schema, SchemaObject)
+        assert schema.schema_type == "full schema"
+        assert schema.schema_name == "opensea_original_schema_sparse"
+        assert schema.rating == "3"
+
     # def test_parse_objects_from_full_schema_object(self, par: Parser):
     #     pass
+
+    # def test_parse_objects_from_full_schema_object(self, par: Parser):
+    #     schema_file = SCHEMA_DIR / "opensea_original_schema_sparse.graphql"
+    #     schema = par.parse_schema_from_file(schema_file)
+    #     objects = par.parse_objects_from_full_schema_object(schema)
+    #     assert isinstance(objects, dict)
+    #     counter = 0
+    #     for obj in objects.values():
+    #         log.debug(f"obj type ({type(obj)}): {obj.schema_type}")
+    #         assert isinstance(obj, SchemaObject)
+    #         counter += 1
+    #         # TODO: make this a static value by deriving from a knowmn schema directory
+    #     assert counter == 9
