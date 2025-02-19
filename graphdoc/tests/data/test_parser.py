@@ -90,8 +90,13 @@ class TestParser:
                     test_node_definition = definitions[i].fields[x].description.value
                     assert test_node_definition == "This is a test description"
 
-    # def test_count_description_pattern_matching(self, par: Parser):
-    #     pass
+    def test_count_description_pattern_matching(self, par: Parser):
+        gold_schema_file = SCHEMA_DIR / "opensea_original_schema_pattern.graphql"
+        gold_schema = par.parse_schema_from_file(gold_schema_file)
+        counts = par.count_description_pattern_matching(gold_schema, "test")
+        assert counts["total"] == 12
+        assert counts["pattern"] == 3
+        assert counts["empty"] == 4
 
     # def test_fill_empty_descriptions(self, par: Parser):
     #     pass
