@@ -154,6 +154,18 @@ class LocalDataHelper:
         parse_objects: bool = True,
         type_mapping: Optional[dict[type, str]] = None,
     ) -> Dataset:
+        """
+        Load a folder of schemas, keeping the difficulty tag.
+
+        :param category: The category of the schemas
+        :type category: str
+        :param folder_path: The path to the folder containing the schemas
+        :type folder_path: Union[str, Path]
+        :param parse_objects: Whether to parse the objects from the schemas
+        :type parse_objects: bool
+        :param type_mapping: A dictionary mapping types to strings
+        :type type_mapping: Optional[dict[type, str]]
+        """
         objects = []
         rating = self.categories_ratings(self.categories(category))
         schema_objects = self.schema_objects_from_folder(
@@ -175,6 +187,39 @@ class LocalDataHelper:
         )
 
     # def _folder_of_folders_to_dataset
+    def folder_of_folders_to_dataset(
+        self,
+        folder_paths: Type[Enum] = SchemaCategoryPath,
+        parse_objects: bool = True,
+        type_mapping: Optional[dict[type, str]] = None,
+    ) -> Dataset:
+        """
+        Load a folder of folders containing schemas, keeping the difficulty tag.
+
+        :param folder_paths: Enum class defining folder paths, defaults to SchemaCategoryPath. Must have a get_path method.
+        :type folder_paths: Type[Enum]
+        :param parse_objects: Whether to parse the objects from the schemas
+        :type parse_objects: bool
+        :param type_mapping: A dictionary mapping types to strings
+        """
+        schema_objects = self.schema_objects_from_folder_of_folders(
+            folder_paths=folder_paths
+        )
+        if schema_objects is None:
+            raise ValueError("No schema objects found")
+        objects = []
+        for schema_object in schema_objects.values():
+            if parse_objects:
+                parsed_objects = Parser.parse_objects_from_full_schema_object(
+                    schema=schema_object, type_mapping=type_mapping
+                )
+                if parsed_objects:
+                    for parsed_object in parsed_objects.values():
+                        objects.append(parsed_object)
+            objects.append(schema_object)
+        return concatenate_datasets(
+            [schema_object.to_dataset() for schema_object in objects]
+        )
 
     # def _get_graph_doc_columns # we should move this to a huggingface file
 
