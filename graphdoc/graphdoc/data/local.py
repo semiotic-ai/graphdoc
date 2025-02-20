@@ -4,7 +4,7 @@
 import logging
 from enum import Enum
 from pathlib import Path
-from typing import Optional, Union, Type, Callable
+from typing import Optional, Union, Type, Callable, Dict
 
 # internal packages
 from .helper import check_directory_path, check_file_path
@@ -13,6 +13,7 @@ from .schema import (
     SchemaObject,
     SchemaCategory,
     SchemaRating,
+    SchemaCategoryPath,
 )
 from .parser import Parser
 
@@ -29,17 +30,18 @@ class LocalDataHelper:
 
     def __init__(
         self,
-        schema_directory_path: Optional[Union[str, Path]] = None,
-        categories: Optional[Type[Enum]] = SchemaCategory,
-        ratings: Optional[Type[Enum]] = SchemaRating,
-        categories_ratings: Optional[Callable] = SchemaCategoryRatingMapping.get_rating,
+        schema_directory_path: Union[str, Path] = Path(__file__).parent
+        / "assets"
+        / "schemas",
+        categories: Type[Enum] = SchemaCategory,
+        ratings: Type[Enum] = SchemaRating,
+        categories_ratings: Callable = SchemaCategoryRatingMapping.get_rating,
     ):
         if schema_directory_path:
             check_directory_path(schema_directory_path)
             self.schema_directory_path = schema_directory_path
             self.package_directory_path = False
         else:
-            self.schema_directory_path = Path(__file__).parent / "assets" / "schemas"
             check_directory_path(self.schema_directory_path)
             self.package_directory_path = True
 
@@ -91,9 +93,53 @@ class LocalDataHelper:
                 continue
         return schemas
 
-    # def _load_folder_schemas
+    # def _load_folder_schemas # we don't need this anymore because we have schema_objects_from_folder which is more general
 
     # def _load_folder_of_folders
+    def schema_objects_from_folder_of_folders(
+        self,
+        folder_paths: Optional[Type[Enum]] = SchemaCategoryPath,
+    ) -> Union[Dict[str, SchemaObject], None]:
+        """
+        Load a folder of folders containing schemas, keeping the difficulty tag.
+
+        :param folder_paths: Enum class defining folder paths, defaults to SchemaCategoryPath. Must have a get_path method.
+        :type folder_paths: Optional[Type[Enum]]
+        :return: Dictionary of loaded schemas
+        :rtype: Union[Dict[str, SchemaObject], None]
+        """
+        schemas = {}
+
+        # iterate through categories defined in self.categories
+        for category in self.categories:
+            try:
+                category_enum = self.categories(category)
+                rating = self.categories_ratings(category_enum)
+
+                # get path using provided folder_paths enum
+                if not hasattr(folder_paths, "get_path"):
+                    raise AttributeError(
+                        f"folder_paths enum must have a get_path method. Received: {folder_paths}"
+                    )
+                path = folder_paths.get_path(category_enum, self.schema_directory_path)  # type: ignore # since we know that the enum has a get_path method
+                if not path:
+                    log.warning(f"No path found for category: {category}")
+                    continue
+
+                try:
+                    folder_schemas = self.schema_objects_from_folder(
+                        category=category.value, rating=rating.value, folder_path=path
+                    )
+                    schemas.update(folder_schemas)
+                except Exception as e:
+                    log.warning(f"Error loading schemas from {path}: {e}")
+                    continue
+
+            except ValueError as e:
+                log.warning(f"Invalid category {category}: {e}")
+                continue
+
+        return schemas if schemas else None
 
     # def _schema_objects_to_dict # we should move this to schema.py
 
