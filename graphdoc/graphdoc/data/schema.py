@@ -4,6 +4,7 @@
 import logging
 from enum import Enum
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Optional, Union, Type
 
 # internal packages
@@ -94,6 +95,34 @@ class SchemaType(str, Enum):
             return cls(value)
         except ValueError:
             return None
+
+
+class SchemaCategoryPath(str, Enum):
+    """Maps schema categories to their folder names."""
+
+    PERFECT = "perfect"
+    ALMOST_PERFECT = "almost_perfect"
+    POOR_BUT_CORRECT = "poor_but_correct"
+    INCORRECT = "incorrect"
+    BLANK = "blank"
+
+    @classmethod
+    def get_path(
+        cls, category: SchemaCategory, folder_path: Union[str, Path]
+    ) -> Optional[Path]:
+        """Get the folder path for a given schema category and folder path.
+
+        :param category: The schema category
+        :return: The corresponding folder path
+        """
+        mapping = {
+            SchemaCategory.PERFECT: Path(folder_path) / cls.PERFECT,
+            SchemaCategory.ALMOST_PERFECT: Path(folder_path) / cls.ALMOST_PERFECT,
+            SchemaCategory.POOR_BUT_CORRECT: Path(folder_path) / cls.POOR_BUT_CORRECT,
+            SchemaCategory.INCORRECT: Path(folder_path) / cls.INCORRECT,
+            SchemaCategory.BLANK: Path(folder_path) / cls.BLANK,
+        }
+        return mapping.get(category)
 
 
 @dataclass
