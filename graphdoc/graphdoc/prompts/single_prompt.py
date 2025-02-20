@@ -17,7 +17,7 @@ log = logging.getLogger(__name__)
 class SinglePrompt(ABC):
     def __init__(
         self,
-        prompt: dspy.Signature,
+        prompt: Union[dspy.Signature, dspy.SignatureMeta],
         prompt_type: Union[Literal["predict", "chain_of_thought"], Callable],
         prompt_metric: Any,
     ) -> None:
