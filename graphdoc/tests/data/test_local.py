@@ -8,6 +8,7 @@ from graphdoc import SchemaObject
 
 # external packages
 from graphql import DocumentNode
+from datasets import Dataset
 
 # logging
 log = logging.getLogger(__name__)
@@ -34,3 +35,11 @@ class TestLocalDataHelper:
         schema_objects = ldh.schema_objects_from_folder_of_folders()
         assert schema_objects is not None
         assert len(schema_objects) == 4
+
+    def test_folder_to_dataset(self, default_ldh: LocalDataHelper):
+        ldh = default_ldh
+        dataset = ldh.folder_to_dataset(
+            category="perfect", folder_path=SCHEMA_DIR / "perfect", parse_objects=False
+        )
+        assert isinstance(dataset, Dataset)
+        assert dataset.num_rows == 1
