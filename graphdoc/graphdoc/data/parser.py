@@ -288,20 +288,24 @@ class Parser:
         """
         Parse a schema object from a file.
         """
-        schema_ast = Parser.parse_schema_from_file(schema_file)
-        schema_str = print_ast(schema_ast)
-        schema_type = Parser._check_node_type(schema_ast)
-        return SchemaObject.from_dict(
-            {
-                "key": str(schema_file),
-                "category": category,
-                "rating": rating,
-                "schema_name": str(Path(schema_file).stem),
-                "schema_type": schema_type,
-                "schema_str": schema_str,
-                "schema_ast": schema_ast,
-            }
-        )
+        try:
+            schema_ast = Parser.parse_schema_from_file(schema_file)
+            schema_str = print_ast(schema_ast)
+            schema_type = Parser._check_node_type(schema_ast)
+            return SchemaObject.from_dict(
+                {
+                    "key": str(schema_file),
+                    "category": category,
+                    "rating": rating,
+                    "schema_name": str(Path(schema_file).stem),
+                    "schema_type": schema_type,
+                    "schema_str": schema_str,
+                    "schema_ast": schema_ast,
+                }
+            )
+        except Exception as e:
+            log.error(f"Error parsing schema file {schema_file}: {e}")
+            raise ValueError(f"Failed to parse schema from file {schema_file}: {e}")
 
     @staticmethod
     def parse_objects_from_full_schema_object(
