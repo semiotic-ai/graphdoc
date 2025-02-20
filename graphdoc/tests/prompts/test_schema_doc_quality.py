@@ -91,3 +91,24 @@ class TestDocQualityPrompt:
             "details": [],
             "results": [],
         }
+
+    def test_compare_metrics(self):
+        dqp = DocQualityPrompt(
+            prompt="doc_quality",
+            prompt_type="predict",
+            prompt_metric="rating",
+        )
+        base_metrics = {
+            "overall_score": 0,
+            "per_category_scores": {},
+            "details": [],
+            "results": [],
+        }
+        optimized_metrics = {
+            "overall_score": 1,
+            "per_category_scores": {},
+            "details": [],
+            "results": [],
+        }
+        assert dqp.compare_metrics(base_metrics, optimized_metrics) == True
+        assert dqp.compare_metrics(optimized_metrics, base_metrics) == False
