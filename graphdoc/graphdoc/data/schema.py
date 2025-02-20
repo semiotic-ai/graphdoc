@@ -193,3 +193,19 @@ class SchemaObject:
             schema_str=data.get("schema_str"),
             schema_ast=data.get("schema_ast"),
         )
+
+    def to_dict(self) -> dict:
+        """
+        Convert the SchemaObject to a dictionary, excluding the key field.
+
+        :return: Dictionary representation of the SchemaObject without the key
+        :rtype: dict
+        """
+        return {
+            "category": self.category.value if self.category else None,
+            "rating": self.rating.value if self.rating else None,
+            "schema_name": self.schema_name,
+            "schema_type": self.schema_type.value if self.schema_type else None,
+            "schema_str": self.schema_str,
+            "schema_ast": self.schema_ast,
+        }
