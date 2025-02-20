@@ -8,6 +8,7 @@ from graphdoc import (
     SchemaType,
     SchemaObject,
     SchemaCategoryRatingMapping,
+    schema_objects_to_dataset,
 )
 
 # external packages
@@ -142,4 +143,20 @@ class TestSchema:
 
         dataset = schema_object.to_dataset()
         assert dataset.num_rows == 1
+        assert isinstance(dataset, Dataset)
+
+    def test_schema_objects_to_dataset(self):
+        schema_ast = parse("type Account @entity { id: Bytes! }")
+        schema_object = SchemaObject(
+            key="test",
+            category=SchemaCategory.PERFECT,
+            rating=SchemaRating.FOUR,
+            schema_name="test",
+            schema_type=SchemaType.FULL_SCHEMA,
+            schema_str="test",
+            schema_ast=schema_ast,
+        )
+        schema_objects = [schema_object] * 5
+        dataset = schema_objects_to_dataset(schema_objects)
+        assert dataset.num_rows == 5
         assert isinstance(dataset, Dataset)
