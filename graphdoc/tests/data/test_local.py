@@ -27,3 +27,10 @@ class TestLocalDataHelper:
         assert len(schema_objects) == 1
         for value in schema_objects.values():
             assert isinstance(value, SchemaObject)
+
+    def test_schema_objects_from_folder_of_folders(self, default_ldh: LocalDataHelper):
+        ldh = default_ldh
+        ldh.schema_directory_path = SCHEMA_DIR
+        schema_objects = ldh.schema_objects_from_folder_of_folders()
+        assert schema_objects is not None
+        assert len(schema_objects) == 4
