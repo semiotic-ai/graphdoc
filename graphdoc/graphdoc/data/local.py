@@ -27,6 +27,14 @@ log = logging.getLogger(__name__)
 class LocalDataHelper:
     """
     A helper class for loading data from a local directory.
+
+    :param schema_directory_path: The path to the directory containing the schemas
+    :type schema_directory_path: Union[str, Path]. Defaults to the path to the schemas in the graphdoc package.
+    :param categories: The categories of the schemas. Defaults to SchemaCategory.
+    :type categories: Type[Enum]
+    :param ratings: The ratings of the schemas. Defaults to SchemaRating.
+    :type ratings: Type[Enum]
+    :param categories_ratings: A callable that maps categories to ratings. Defaults to SchemaCategoryRatingMapping.get_rating.
     """
 
     def __init__(
@@ -94,9 +102,6 @@ class LocalDataHelper:
                 continue
         return schemas
 
-    # def _load_folder_schemas # we don't need this anymore because we have schema_objects_from_folder which is more general
-
-    # def _load_folder_of_folders
     def schema_objects_from_folder_of_folders(
         self,
         folder_paths: Optional[Type[Enum]] = SchemaCategoryPath,
@@ -142,11 +147,6 @@ class LocalDataHelper:
 
         return schemas if schemas else None
 
-    # def _schema_objects_to_dict # we should move this to schema.py
-
-    # _schema_objects_to_dataset # we should move this to schema.py
-
-    # def _folder_to_dataset
     def folder_to_dataset(
         self,
         category: str,
@@ -186,7 +186,6 @@ class LocalDataHelper:
             [schema_object.to_dataset() for schema_object in objects]
         )
 
-    # def _folder_of_folders_to_dataset
     def folder_of_folders_to_dataset(
         self,
         folder_paths: Type[Enum] = SchemaCategoryPath,
