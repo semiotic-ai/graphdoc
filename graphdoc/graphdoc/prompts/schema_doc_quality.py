@@ -263,4 +263,16 @@ class DocQualityPrompt(SinglePrompt):
         optimized_metrics: Any,
         comparison_value: str = "overall_score",
     ) -> bool:
-        pass
+        """
+        Compare the metrics of the base and optimized models. Returns true if the optimized model is better than the base model.
+
+        :param base_metrics: The metrics of the base model.
+        :type base_metrics: Any
+        :param optimized_metrics: The metrics of the optimized model.
+        :type optimized_metrics: Any
+        :param comparison_value: The value to compare.
+        """
+        if comparison_value == "overall_score":
+            return optimized_metrics["overall_score"] > base_metrics["overall_score"]
+        else:
+            raise ValueError(f"Invalid comparison value: {comparison_value}")
