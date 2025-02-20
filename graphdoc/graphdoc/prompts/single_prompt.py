@@ -39,9 +39,10 @@ class SinglePrompt(ABC):
             "predict": dspy.Predict,
             "chain_of_thought": dspy.ChainOfThought,
         }
-
+        # functools.singledispatch - less oop approach
+        # oop: make two classes for passing the callable
         if self.prompt_type in module_mapping:
-            self.infer = module_mapping[self.prompt_type](self.prompt)
+            self.infer = module_mapping[self.prompt_type](self.prompt) # .get and then we can remove the error
         elif isinstance(self.prompt_type, Callable):
             log.warning(
                 f"Using alternative dspy.Module for inference, please know what you are doing"
