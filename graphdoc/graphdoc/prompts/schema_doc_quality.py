@@ -1,5 +1,6 @@
 # system packages
 import logging
+from collections import defaultdict
 from typing import Any, Callable, Dict, List, Literal, Union
 
 # internal packages
@@ -175,7 +176,86 @@ class DocQualityPrompt(SinglePrompt):
         results: List,
         scores: List,
     ) -> Dict[str, Any]:
-        pass
+        """
+        Formats evaluation metrics into a structured report containing:
+        - Overall score across all categories
+        - Percentage correct per category
+        - Detailed results for each evaluation
+
+        :param examples: The examples to evaluate the metric on.
+        :type examples: List[dspy.Example]
+        :param overall_score: The overall score across all categories.
+        :type overall_score: float
+        :param results: The results of the evaluation.
+        :type results: List
+        :param scores: The scores of the evaluation.
+        :type scores: List
+        :return: A dictionary containing the overall score, per category scores, and details. { "overall_score": 0, "per_category_scores": {}, "details": [], "results": [] }
+        :rtype: Dict[str, Any]
+        """
+
+        def _initialize_formatted_results() -> Dict[str, Any]:
+            """Initialize the results structure with empty containers"""
+            return {
+                "overall_score": overall_score,
+                "per_category_scores": {},
+                "details": [],
+                "results": results,
+            }
+
+        def _process_single_result(result: tuple, score: Any) -> Dict[str, Any]:
+            """Process individual result to extract metadata and update statistics"""
+            example, prediction, is_correct = result
+            example_data = dict(example.items())
+
+            expected_category = example_data.get("category", "unknown")
+            expected_rating = example_data.get("rating", None)
+            predicted_category = getattr(prediction, "category", "unknown")
+            predicted_rating = getattr(prediction, "rating", None)
+
+            category_stats[expected_category]["total"] += 1
+            if is_correct:
+                category_stats[expected_category]["correct"] += 1
+
+            return {
+                "expected_category": expected_category,
+                "expected_rating": expected_rating,
+                "predicted_category": predicted_category,
+                "predicted_rating": predicted_rating,
+                "is_correct": is_correct,
+            }
+
+        def _calculate_percent_correct(correct: int, total: int) -> float:
+            """Calculate percentage correct with safe division"""
+            return (correct / total) * 100 if total > 0 else 0.0
+
+        def _calculate_per_category_scores() -> Dict[str, Dict]:
+            """Convert category statistics to percentage scores"""
+            return {
+                category: {
+                    "percent_correct": _calculate_percent_correct(
+                        stats["correct"], stats["total"]
+                    ),
+                    "total": stats["total"],
+                    "correct": stats["correct"],
+                }
+                for category, stats in category_stats.items()
+            }
+
+        # processing flow
+        formatted_results = _initialize_formatted_results()
+        category_stats = defaultdict(lambda: {"correct": 0, "total": 0})
+
+        # process all results and collect details
+        formatted_results["details"] = [
+            _process_single_result(result, score)
+            for result, score in zip(results, scores)
+        ]
+
+        # calculate final scores per category
+        formatted_results["per_category_scores"] = _calculate_per_category_scores()
+
+        return formatted_results
 
     def compare_metrics(
         self,
