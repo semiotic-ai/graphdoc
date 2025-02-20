@@ -11,7 +11,7 @@ from typing import List, Optional, Union, Type
 
 # external packages
 from graphql import Node
-from datasets import Features, Value, Dataset
+from datasets import Features, Value, Dataset, concatenate_datasets
 
 # logging
 log = logging.getLogger(__name__)
@@ -255,7 +255,6 @@ def schema_objects_to_dataset(schema_objects: List[SchemaObject]) -> Dataset:
     :param schema_objects: The list of SchemaObjects
     :return: The Hugging Face Dataset
     """
-    return Dataset.from_list(
-        [schema_object.to_dict().pop("schema_ast") for schema_object in schema_objects],
-        features=SchemaObject._hf_schema_object_columns(),
+    return concatenate_datasets(
+        [schema_object.to_dataset() for schema_object in schema_objects]
     )
