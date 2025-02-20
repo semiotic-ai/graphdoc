@@ -7,7 +7,8 @@ from graphdoc.prompts import DocQualityPrompt
 # external packages
 import dspy
 
-# logging
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 log = logging.getLogger(__name__)
 
 
@@ -72,3 +73,21 @@ class TestDocQualityPrompt:
         )
         assert dqp.evaluate_metric(example, pass_prediction) == True
         assert dqp.evaluate_metric(example, fail_prediction) == False
+
+    def test_format_metric(self):
+        dqp = DocQualityPrompt(
+            prompt="doc_quality",
+            prompt_type="predict",
+            prompt_metric="rating",
+        )
+        examples = []
+        overall_score = 0
+        results = []
+        scores = []
+        formatted_results = dqp.format_metric(examples, overall_score, results, scores)
+        assert formatted_results == {
+            "overall_score": 0,
+            "per_category_scores": {},
+            "details": [],
+            "results": [],
+        }
