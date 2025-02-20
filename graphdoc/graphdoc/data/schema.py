@@ -5,12 +5,13 @@ import logging
 from enum import Enum
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Optional, Union, Type
+from typing import List, Optional, Union, Type
 
 # internal packages
 
 # external packages
 from graphql import Node
+from datasets import Features, Value, Dataset
 
 # logging
 log = logging.getLogger(__name__)
@@ -209,3 +210,52 @@ class SchemaObject:
             "schema_str": self.schema_str,
             "schema_ast": self.schema_ast,
         }
+
+    @staticmethod
+    def _hf_schema_object_columns() -> Features:
+        """
+        Return the columns for the graph_doc dataset, based on the SchemaObject fields.
+
+        :return: The columns for the graph_doc dataset
+        :rtype: Features
+        """
+        return Features(
+            {
+                "category": Value("string"),
+                "rating": Value("string"),
+                "schema_name": Value("string"),
+                "schema_type": Value("string"),
+                "schema_str": Value("string"),
+            }
+        )
+
+    def to_dataset(self) -> Dataset:
+        """
+        Convert the SchemaObject to a Hugging Face Dataset.
+
+        :return: The Hugging Face Dataset
+        :rtype: Dataset
+        """
+        dictionary = {
+            "category": [self.category.value if self.category else None],
+            "rating": [self.rating.value if self.rating else None],
+            "schema_name": [self.schema_name],
+            "schema_type": [self.schema_type.value if self.schema_type else None],
+            "schema_str": [self.schema_str],
+        }
+        return Dataset.from_dict(
+            dictionary, features=SchemaObject._hf_schema_object_columns()
+        )
+
+
+def schema_objects_to_dataset(schema_objects: List[SchemaObject]) -> Dataset:
+    """
+    Convert a list of SchemaObjects to a Hugging Face Dataset.
+
+    :param schema_objects: The list of SchemaObjects
+    :return: The Hugging Face Dataset
+    """
+    return Dataset.from_list(
+        [schema_object.to_dict().pop("schema_ast") for schema_object in schema_objects],
+        features=SchemaObject._hf_schema_object_columns(),
+    )
