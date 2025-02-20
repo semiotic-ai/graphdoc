@@ -105,3 +105,24 @@ class TestSchema:
         assert schema_object.schema_type == SchemaType.FULL_SCHEMA
         assert schema_object.schema_str == "test"
         assert schema_object.schema_ast == schema_ast
+
+    def test_schema_object_to_dict(self):
+        schema_ast = parse("type Account @entity { id: Bytes! }")
+        schema_object = SchemaObject(
+            key="test",
+            category=SchemaCategory.PERFECT,
+            rating=SchemaRating.FOUR,
+            schema_name="test",
+            schema_type=SchemaType.FULL_SCHEMA,
+            schema_str="test",
+            schema_ast=schema_ast,
+        )
+
+        assert schema_object.to_dict() == {
+            "category": "perfect",
+            "rating": "4",
+            "schema_name": "test",
+            "schema_type": "full schema",
+            "schema_str": "test",
+            "schema_ast": schema_ast,
+        }
