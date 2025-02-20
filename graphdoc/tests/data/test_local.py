@@ -43,3 +43,13 @@ class TestLocalDataHelper:
         )
         assert isinstance(dataset, Dataset)
         assert dataset.num_rows == 1
+
+    def test_folder_of_folders_to_dataset(self, default_ldh: LocalDataHelper):
+        ldh = default_ldh
+        ldh.schema_directory_path = SCHEMA_DIR
+        dataset = ldh.folder_of_folders_to_dataset(parse_objects=False)
+        assert isinstance(dataset, Dataset)
+        assert dataset.num_rows == 4
+        dataset = ldh.folder_of_folders_to_dataset(parse_objects=True)
+        assert isinstance(dataset, Dataset)
+        assert dataset.num_rows == 40
