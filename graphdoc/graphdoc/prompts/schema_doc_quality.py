@@ -128,9 +128,8 @@ class DocQualityPrompt(SinglePrompt):
             prompt_type=prompt_type,
             prompt_metric=prompt_metric,
         )
-
     #######################
-    # Abstract Methods    #
+    # Internal Methods    #
     #######################
     def _evaluate_rating_metric(
         self, example: dspy.Example, prediction: dspy.Prediction
@@ -142,6 +141,9 @@ class DocQualityPrompt(SinglePrompt):
     ) -> bool:
         return example.category == prediction.category
 
+    #######################
+    # Abstract Methods    #
+    #######################
     def evaluate_metric(
         self, example: dspy.Example, prediction: dspy.Prediction, trace=None
     ) -> bool:
