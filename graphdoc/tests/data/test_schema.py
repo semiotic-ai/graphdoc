@@ -12,6 +12,7 @@ from graphdoc import (
 
 # external packages
 from graphql import parse
+from datasets import Dataset
 
 # logging
 log = logging.getLogger(__name__)
@@ -126,3 +127,19 @@ class TestSchema:
             "schema_str": "test",
             "schema_ast": schema_ast,
         }
+
+    def test_schema_object_to_dataset(self):
+        schema_ast = parse("type Account @entity { id: Bytes! }")
+        schema_object = SchemaObject(
+            key="test",
+            category=SchemaCategory.PERFECT,
+            rating=SchemaRating.FOUR,
+            schema_name="test",
+            schema_type=SchemaType.FULL_SCHEMA,
+            schema_str="test",
+            schema_ast=schema_ast,
+        )
+
+        dataset = schema_object.to_dataset()
+        assert dataset.num_rows == 1
+        assert isinstance(dataset, Dataset)
