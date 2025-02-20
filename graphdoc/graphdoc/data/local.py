@@ -18,6 +18,7 @@ from .schema import (
 from .parser import Parser
 
 # external packages
+from datasets import Dataset, concatenate_datasets
 
 # logging
 log = logging.getLogger(__name__)
@@ -146,6 +147,32 @@ class LocalDataHelper:
     # _schema_objects_to_dataset # we should move this to schema.py
 
     # def _folder_to_dataset
+    def folder_to_dataset(
+        self,
+        category: str,
+        folder_path: Union[str, Path],
+        parse_objects: bool = True,
+        type_mapping: Optional[dict[type, str]] = None,
+    ) -> Dataset:
+        objects = []
+        rating = self.categories_ratings(self.categories(category))
+        schema_objects = self.schema_objects_from_folder(
+            category=category, rating=rating, folder_path=folder_path
+        )
+
+        for schema_object in schema_objects.values():
+            if parse_objects:
+                parsed_objects = Parser.parse_objects_from_full_schema_object(
+                    schema=schema_object, type_mapping=type_mapping
+                )
+                if parsed_objects:
+                    for parsed_object in parsed_objects.values():
+                        objects.append(parsed_object)
+            objects.append(schema_object)
+
+        return concatenate_datasets(
+            [schema_object.to_dataset() for schema_object in objects]
+        )
 
     # def _folder_of_folders_to_dataset
 

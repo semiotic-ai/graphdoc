@@ -37,8 +37,8 @@ class Parser:
         EnumValueDefinitionNode: "enum value",
     }
 
-    def __init__(self) -> None:
-        pass
+    def __init__(self, type_mapping: Optional[dict[type, str]] = None) -> None:
+        self.type_mapping = type_mapping or Parser.DEFAULT_NODE_TYPES
 
     @staticmethod
     def _check_node_type(

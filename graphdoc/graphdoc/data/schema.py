@@ -248,6 +248,7 @@ class SchemaObject:
         )
 
 
+# TODO: we may end up wanting to both abstract and/or move this elsewhere
 def schema_objects_to_dataset(schema_objects: List[SchemaObject]) -> Dataset:
     """
     Convert a list of SchemaObjects to a Hugging Face Dataset.
