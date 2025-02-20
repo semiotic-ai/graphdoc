@@ -1,0 +1,303 @@
+enum Network {
+  ARBITRUM_ONE
+  ARWEAVE_MAINNET
+  AURORA
+  AVALANCHE
+  BOBA
+  BSC
+  CELO
+  COSMOS
+  CRONOS
+  MAINNET
+  FANTOM
+  FUSE
+  HARMONY
+  JUNO
+  MOONBEAM
+  MOONRIVER
+  NEAR_MAINNET
+  OPTIMISM
+  OSMOSIS
+  MATIC
+  XDAI
+}
+
+enum ProtocolType {
+  EXCHANGE
+  LENDING
+  YIELD
+  BRIDGE
+  GENERIC
+}
+
+type Token @entity @regularPolling {
+  id: ID!
+  name: String!
+  symbol: String!
+  decimals: Int!
+  lastPriceUSD: BigDecimal
+  lastPriceBlockNumber: BigInt
+  _lastPriceTimestamp: BigInt
+}
+
+enum RewardTokenType {
+  DEPOSIT
+  BORROW
+}
+
+type RewardToken @entity @regularPolling {
+  id: ID!
+  token: Token!
+  type: RewardTokenType!
+}
+
+enum VaultFeeType {
+  DEPOSIT_FEE
+  WITHDRAWAL_FEE
+  PERFORMANCE_FEE
+  MANAGEMENT_FEE
+}
+
+type VaultFee @entity @regularPolling {
+  id: ID!
+  feePercentage: BigDecimal
+  feeType: VaultFeeType!
+}
+
+interface Protocol {
+  id: ID!
+  name: String!
+  slug: String!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  network: Network!
+  type: ProtocolType!
+  totalValueLockedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  cumulativeUniqueUsers: Int!
+  totalPoolCount: Int!
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+}
+
+type YieldAggregator implements Protocol @entity @regularPolling {
+  id: ID!
+  name: String!
+  slug: String!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  network: Network!
+  type: ProtocolType!
+  totalValueLockedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  cumulativeUniqueUsers: Int!
+  totalPoolCount: Int!
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+  vaults: [Vault!]! @derivedFrom(field: "protocol")
+  _vaultIDs: [String!]
+}
+
+type UsageMetricsDailySnapshot @entity @dailySnapshot {
+  id: ID!
+  protocol: YieldAggregator!
+  dailyActiveUsers: Int!
+  cumulativeUniqueUsers: Int!
+  dailyTransactionCount: Int!
+  dailyDepositCount: Int!
+  dailyWithdrawCount: Int!
+  totalPoolCount: Int!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type UsageMetricsHourlySnapshot @entity @hourlySnapshot {
+  id: ID!
+  protocol: YieldAggregator!
+  hourlyActiveUsers: Int!
+  cumulativeUniqueUsers: Int!
+  hourlyTransactionCount: Int!
+  hourlyDepositCount: Int!
+  hourlyWithdrawCount: Int!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type FinancialsDailySnapshot @entity @dailySnapshot {
+  id: ID!
+  protocol: YieldAggregator!
+  totalValueLockedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type Vault @entity @regularPolling {
+  id: ID!
+  protocol: YieldAggregator!
+  name: String
+  symbol: String
+  inputToken: Token!
+  outputToken: Token
+  rewardTokens: [RewardToken!]
+  depositLimit: BigInt!
+  fees: [VaultFee!]!
+  createdTimestamp: BigInt!
+  createdBlockNumber: BigInt!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  inputTokenBalance: BigInt!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  pricePerShare: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  dailySnapshots: [VaultDailySnapshot!]! @derivedFrom(field: "vault")
+  hourlySnapshots: [VaultHourlySnapshot!]! @derivedFrom(field: "vault")
+  deposits: [Deposit!]! @derivedFrom(field: "vault")
+  withdraws: [Withdraw!]! @derivedFrom(field: "vault")
+  _token0: Token!
+  _token1: Token!
+  _token0Amount: BigInt!
+  _token1Amount: BigInt!
+  _token0AmountUSD: BigDecimal!
+  _token1AmountUSD: BigDecimal!
+}
+
+type VaultDailySnapshot @entity @dailySnapshot {
+  id: ID!
+  protocol: YieldAggregator!
+  vault: Vault!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  inputTokenBalance: BigInt!
+  outputTokenSupply: BigInt!
+  outputTokenPriceUSD: BigDecimal
+  pricePerShare: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  _token0: Token!
+  _token1: Token!
+  _token0Amount: BigInt!
+  _token1Amount: BigInt!
+  _token0AmountUSD: BigDecimal!
+  _token1AmountUSD: BigDecimal!
+}
+
+type VaultHourlySnapshot @entity @hourlySnapshot {
+  id: ID!
+  protocol: YieldAggregator!
+  vault: Vault!
+  totalValueLockedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  hourlySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  hourlyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  hourlyTotalRevenueUSD: BigDecimal!
+  inputTokenBalance: BigInt!
+  outputTokenSupply: BigInt!
+  outputTokenPriceUSD: BigDecimal
+  pricePerShare: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+interface Event {
+  id: ID!
+  hash: String!
+  logIndex: Int!
+  protocol: YieldAggregator!
+  to: String!
+  from: String!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type Deposit implements Event @entity @transaction {
+  id: ID!
+  hash: String!
+  logIndex: Int!
+  protocol: YieldAggregator!
+  to: String!
+  from: String!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  vault: Vault!
+}
+
+type Withdraw implements Event @entity @transaction {
+  id: ID!
+  hash: String!
+  logIndex: Int!
+  protocol: YieldAggregator!
+  to: String!
+  from: String!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  asset: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  vault: Vault!
+}
+
+type Account @entity @regularPolling {
+  id: ID!
+}
+
+type ActiveAccount @entity {
+  id: ID!
+}
+
+type _UnderlyingToken @entity {
+  id: ID!
+  token0: Token!
+  lastAmount0: BigInt!
+  token1: Token!
+  lastAmount1: BigInt!
+  lastAmountBlockNumber: BigInt!
+}
+
+type _LiquidityGauge @entity {
+  id: ID!
+  vault: Vault!
+}
+
+type _RewardData @entity {
+  id: ID!
+  rate: BigInt!
+  PeriodFinish: BigInt!
+}

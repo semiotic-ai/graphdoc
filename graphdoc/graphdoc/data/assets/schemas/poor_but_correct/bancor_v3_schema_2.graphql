@@ -1,0 +1,615 @@
+"Description for enum type: Network"
+enum Network {
+  "Description for column: ARBITRUM_ONE"
+  ARBITRUM_ONE
+  "Description for column: AURORA"
+  AURORA
+  "Description for column: AVALANCHE"
+  AVALANCHE
+  "Description for column: BSC"
+  BSC
+  "Description for column: CELO"
+  CELO
+  "Description for column: CRONOS"
+  CRONOS
+  "Description for column: MAINNET"
+  MAINNET
+  "Description for column: FANTOM"
+  FANTOM
+  "Description for column: FUSE"
+  FUSE
+  "Description for column: HARMONY"
+  HARMONY
+  "Description for column: JUNO"
+  JUNO
+  "Description for column: MOONBEAM"
+  MOONBEAM
+  "Description for column: MOONRIVER"
+  MOONRIVER
+  "Description for column: NEAR_MAINNET"
+  NEAR_MAINNET
+  "Description for column: OPTIMISM"
+  OPTIMISM
+  "Description for column: MATIC"
+  MATIC
+  "Description for column: XDAI"
+  XDAI
+}
+
+"Description for enum type: ProtocolType"
+enum ProtocolType {
+  "Description for column: EXCHANGE"
+  EXCHANGE
+  "Description for column: LENDING"
+  LENDING
+  "Description for column: YIELD"
+  YIELD
+  "Description for column: BRIDGE"
+  BRIDGE
+}
+
+"Description for table: Token"
+type Token @entity @regularPolling {
+  "Description for column: id"
+  id: ID!
+  "Description for column: name"
+  name: String!
+  "Description for column: symbol"
+  symbol: String!
+  "Description for column: decimals"
+  decimals: Int!
+  "Description for column: lastPriceUSD"
+  lastPriceUSD: BigDecimal
+  "Description for column: lastPriceBlockNumber"
+  lastPriceBlockNumber: BigInt
+  "Description for column: _poolToken"
+  _poolToken: Token
+}
+
+"Description for enum type: RewardTokenType"
+enum RewardTokenType {
+  "Description for column: DEPOSIT"
+  DEPOSIT
+  "Description for column: BORROW"
+  BORROW
+}
+
+"Description for table: RewardToken"
+type RewardToken @entity @regularPolling {
+  "Description for column: id"
+  id: ID!
+  "Description for column: token"
+  token: Token!
+  "Description for column: type"
+  type: RewardTokenType!
+}
+
+"Description for enum type: LiquidityPoolFeeType"
+enum LiquidityPoolFeeType {
+  "Description for column: FIXED_TRADING_FEE"
+  FIXED_TRADING_FEE
+  "Description for column: TIERED_TRADING_FEE"
+  TIERED_TRADING_FEE
+  "Description for column: DYNAMIC_TRADING_FEE"
+  DYNAMIC_TRADING_FEE
+  "Description for column: FIXED_LP_FEE"
+  FIXED_LP_FEE
+  "Description for column: DYNAMIC_LP_FEE"
+  DYNAMIC_LP_FEE
+  "Description for column: FIXED_PROTOCOL_FEE"
+  FIXED_PROTOCOL_FEE
+  "Description for column: DYNAMIC_PROTOCOL_FEE"
+  DYNAMIC_PROTOCOL_FEE
+  "Description for column: DEPOSIT_FEE"
+  DEPOSIT_FEE
+  "Description for column: WITHDRAWAL_FEE"
+  WITHDRAWAL_FEE
+}
+
+"Description for table: LiquidityPoolFee"
+type LiquidityPoolFee @entity @regularPolling {
+  "Description for column: id"
+  id: ID!
+  "Description for column: feePercentage"
+  feePercentage: BigDecimal
+  "Description for column: feeType"
+  feeType: LiquidityPoolFeeType!
+}
+
+"Description for column: LiquidityPoolFee"
+interface Protocol {
+  "Description for column: id"
+  id: ID!
+  "Description for column: name"
+  name: String!
+  "Description for column: slug"
+  slug: String!
+  "Description for column: schemaVersion"
+  schemaVersion: String!
+  "Description for column: subgraphVersion"
+  subgraphVersion: String!
+  "Description for column: methodologyVersion"
+  methodologyVersion: String!
+  "Description for column: network"
+  network: Network!
+  "Description for column: type"
+  type: ProtocolType!
+  "Description for column: totalValueLockedUSD"
+  totalValueLockedUSD: BigDecimal!
+  "Description for column: protocolControlledValueUSD"
+  protocolControlledValueUSD: BigDecimal
+  "Description for column: cumulativeSupplySideRevenueUSD"
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeProtocolSideRevenueUSD"
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeTotalRevenueUSD"
+  cumulativeTotalRevenueUSD: BigDecimal!
+  "Description for column: cumulativeUniqueUsers"
+  cumulativeUniqueUsers: Int!
+  "Description for column: totalPoolCount"
+  totalPoolCount: Int!
+  "Description for column: dailyUsageMetrics"
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  "Description for column: hourlyUsageMetrics"
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  "Description for column: financialMetrics"
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+}
+
+"Description for table: DexAmmProtocol"
+type DexAmmProtocol implements Protocol @entity @regularPolling {
+  "Description for column: id"
+  id: ID!
+  "Description for column: name"
+  name: String!
+  "Description for column: slug"
+  slug: String!
+  "Description for column: schemaVersion"
+  schemaVersion: String!
+  "Description for column: subgraphVersion"
+  subgraphVersion: String!
+  "Description for column: methodologyVersion"
+  methodologyVersion: String!
+  "Description for column: network"
+  network: Network!
+  "Description for column: type"
+  type: ProtocolType!
+  "Description for column: totalValueLockedUSD"
+  totalValueLockedUSD: BigDecimal!
+  "Description for column: protocolControlledValueUSD"
+  protocolControlledValueUSD: BigDecimal
+  "Description for column: cumulativeVolumeUSD"
+  cumulativeVolumeUSD: BigDecimal!
+  "Description for column: cumulativeSupplySideRevenueUSD"
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeProtocolSideRevenueUSD"
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeTotalRevenueUSD"
+  cumulativeTotalRevenueUSD: BigDecimal!
+  "Description for column: cumulativeUniqueUsers"
+  cumulativeUniqueUsers: Int!
+  "Description for column: totalPoolCount"
+  totalPoolCount: Int!
+  "Description for column: dailyUsageMetrics"
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  "Description for column: hourlyUsageMetrics"
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  "Description for column: financialMetrics"
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+  "Description for column: pools"
+  pools: [LiquidityPool!]! @derivedFrom(field: "protocol")
+  "Description for column: _poolIDs"
+  _poolIDs: [ID!]!
+  "Description for column: _defaultTradingFeeRate"
+  _defaultTradingFeeRate: BigDecimal!
+  "Description for column: _networkFeeRate"
+  _networkFeeRate: BigDecimal!
+  "Description for column: _withdrawalFeeRate"
+  _withdrawalFeeRate: BigDecimal!
+}
+
+"Description for table: UsageMetricsDailySnapshot"
+type UsageMetricsDailySnapshot @entity @dailySnapshot {
+  "Description for column: id"
+  id: ID!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: dailyActiveUsers"
+  dailyActiveUsers: Int!
+  "Description for column: cumulativeUniqueUsers"
+  cumulativeUniqueUsers: Int!
+  "Description for column: totalPoolCount"
+  totalPoolCount: Int!
+  "Description for column: dailyTransactionCount"
+  dailyTransactionCount: Int!
+  "Description for column: dailyDepositCount"
+  dailyDepositCount: Int!
+  "Description for column: dailyWithdrawCount"
+  dailyWithdrawCount: Int!
+  "Description for column: dailySwapCount"
+  dailySwapCount: Int!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+}
+
+"Description for table: UsageMetricsHourlySnapshot"
+type UsageMetricsHourlySnapshot @entity @hourlySnapshot {
+  "Description for column: id"
+  id: ID!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: hourlyActiveUsers"
+  hourlyActiveUsers: Int!
+  "Description for column: cumulativeUniqueUsers"
+  cumulativeUniqueUsers: Int!
+  "Description for column: hourlyTransactionCount"
+  hourlyTransactionCount: Int!
+  "Description for column: hourlyDepositCount"
+  hourlyDepositCount: Int!
+  "Description for column: hourlyWithdrawCount"
+  hourlyWithdrawCount: Int!
+  "Description for column: hourlySwapCount"
+  hourlySwapCount: Int!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+}
+
+"Description for table: FinancialsDailySnapshot"
+type FinancialsDailySnapshot @entity @dailySnapshot {
+  "Description for column: id"
+  id: ID!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: totalValueLockedUSD"
+  totalValueLockedUSD: BigDecimal!
+  "Description for column: protocolControlledValueUSD"
+  protocolControlledValueUSD: BigDecimal
+  "Description for column: dailyVolumeUSD"
+  dailyVolumeUSD: BigDecimal!
+  "Description for column: cumulativeVolumeUSD"
+  cumulativeVolumeUSD: BigDecimal!
+  "Description for column: dailySupplySideRevenueUSD"
+  dailySupplySideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeSupplySideRevenueUSD"
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  "Description for column: dailyProtocolSideRevenueUSD"
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeProtocolSideRevenueUSD"
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  "Description for column: dailyTotalRevenueUSD"
+  dailyTotalRevenueUSD: BigDecimal!
+  "Description for column: cumulativeTotalRevenueUSD"
+  cumulativeTotalRevenueUSD: BigDecimal!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+}
+
+"Description for table: LiquidityPool"
+type LiquidityPool @entity @regularPolling {
+  "Description for column: id"
+  id: ID!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: name"
+  name: String
+  "Description for column: symbol"
+  symbol: String
+  "Description for column: inputTokens"
+  inputTokens: [Token!]!
+  "Description for column: outputToken"
+  outputToken: Token
+  "Description for column: rewardTokens"
+  rewardTokens: [RewardToken!]
+  "Description for column: fees"
+  fees: [LiquidityPoolFee!]!
+  "Description for column: isSingleSided"
+  isSingleSided: Boolean!
+  "Description for column: createdTimestamp"
+  createdTimestamp: BigInt!
+  "Description for column: createdBlockNumber"
+  createdBlockNumber: BigInt!
+  "Description for column: totalValueLockedUSD"
+  totalValueLockedUSD: BigDecimal!
+  "Description for column: cumulativeSupplySideRevenueUSD"
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeProtocolSideRevenueUSD"
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeTotalRevenueUSD"
+  cumulativeTotalRevenueUSD: BigDecimal!
+  "Description for column: cumulativeVolumeUSD"
+  cumulativeVolumeUSD: BigDecimal!
+  "Description for column: inputTokenBalances"
+  inputTokenBalances: [BigInt!]!
+  "Description for column: inputTokenWeights"
+  inputTokenWeights: [BigDecimal!]!
+  "Description for column: outputTokenSupply"
+  outputTokenSupply: BigInt
+  "Description for column: outputTokenPriceUSD"
+  outputTokenPriceUSD: BigDecimal
+  "Description for column: stakedOutputTokenAmount"
+  stakedOutputTokenAmount: BigInt
+  "Description for column: rewardTokenEmissionsAmount"
+  rewardTokenEmissionsAmount: [BigInt!]
+  "Description for column: rewardTokenEmissionsUSD"
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  "Description for column: dailySnapshots"
+  dailySnapshots: [LiquidityPoolDailySnapshot!]! @derivedFrom(field: "pool")
+  "Description for column: hourlySnapshots"
+  hourlySnapshots: [LiquidityPoolHourlySnapshot!]! @derivedFrom(field: "pool")
+  "Description for column: deposits"
+  deposits: [Deposit!]! @derivedFrom(field: "pool")
+  "Description for column: withdraws"
+  withdraws: [Withdraw!]! @derivedFrom(field: "pool")
+  "Description for column: swaps"
+  swaps: [Swap!]! @derivedFrom(field: "pool")
+  "Description for column: _tradingFeeRate"
+  _tradingFeeRate: BigDecimal!
+  "Description for column: _cumulativeTradingFeeAmountUSD"
+  _cumulativeTradingFeeAmountUSD: BigDecimal!
+  "Description for column: _cumulativeWithdrawalFeeAmountUSD"
+  _cumulativeWithdrawalFeeAmountUSD: BigDecimal!
+  "Description for column: _latestRewardProgramID"
+  _latestRewardProgramID: BigInt!
+}
+
+"Description for table: LiquidityPoolDailySnapshot"
+type LiquidityPoolDailySnapshot @entity @dailySnapshot {
+  "Description for column: id"
+  id: ID!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: pool"
+  pool: LiquidityPool!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: totalValueLockedUSD"
+  totalValueLockedUSD: BigDecimal!
+  "Description for column: cumulativeSupplySideRevenueUSD"
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  "Description for column: dailySupplySideRevenueUSD"
+  dailySupplySideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeProtocolSideRevenueUSD"
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  "Description for column: dailyProtocolSideRevenueUSD"
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeTotalRevenueUSD"
+  cumulativeTotalRevenueUSD: BigDecimal!
+  "Description for column: dailyTotalRevenueUSD"
+  dailyTotalRevenueUSD: BigDecimal!
+  "Description for column: dailyVolumeUSD"
+  dailyVolumeUSD: BigDecimal!
+  "Description for column: dailyVolumeByTokenAmount"
+  dailyVolumeByTokenAmount: [BigInt!]!
+  "Description for column: dailyVolumeByTokenUSD"
+  dailyVolumeByTokenUSD: [BigDecimal!]!
+  "Description for column: cumulativeVolumeUSD"
+  cumulativeVolumeUSD: BigDecimal!
+  "Description for column: inputTokenBalances"
+  inputTokenBalances: [BigInt!]!
+  "Description for column: inputTokenWeights"
+  inputTokenWeights: [BigDecimal!]!
+  "Description for column: outputTokenSupply"
+  outputTokenSupply: BigInt
+  "Description for column: outputTokenPriceUSD"
+  outputTokenPriceUSD: BigDecimal
+  "Description for column: stakedOutputTokenAmount"
+  stakedOutputTokenAmount: BigInt
+  "Description for column: rewardTokenEmissionsAmount"
+  rewardTokenEmissionsAmount: [BigInt!]
+  "Description for column: rewardTokenEmissionsUSD"
+  rewardTokenEmissionsUSD: [BigDecimal!]
+}
+
+"Description for table: LiquidityPoolHourlySnapshot"
+type LiquidityPoolHourlySnapshot @entity @hourlySnapshot {
+  "Description for column: id"
+  id: ID!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: pool"
+  pool: LiquidityPool!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: totalValueLockedUSD"
+  totalValueLockedUSD: BigDecimal!
+  "Description for column: cumulativeSupplySideRevenueUSD"
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  "Description for column: hourlySupplySideRevenueUSD"
+  hourlySupplySideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeProtocolSideRevenueUSD"
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  "Description for column: hourlyProtocolSideRevenueUSD"
+  hourlyProtocolSideRevenueUSD: BigDecimal!
+  "Description for column: cumulativeTotalRevenueUSD"
+  cumulativeTotalRevenueUSD: BigDecimal!
+  "Description for column: hourlyTotalRevenueUSD"
+  hourlyTotalRevenueUSD: BigDecimal!
+  "Description for column: hourlyVolumeUSD"
+  hourlyVolumeUSD: BigDecimal!
+  "Description for column: hourlyVolumeByTokenAmount"
+  hourlyVolumeByTokenAmount: [BigInt!]!
+  "Description for column: hourlyVolumeByTokenUSD"
+  hourlyVolumeByTokenUSD: [BigDecimal!]!
+  "Description for column: cumulativeVolumeUSD"
+  cumulativeVolumeUSD: BigDecimal!
+  "Description for column: inputTokenBalances"
+  inputTokenBalances: [BigInt!]!
+  "Description for column: inputTokenWeights"
+  inputTokenWeights: [BigDecimal!]!
+  "Description for column: outputTokenSupply"
+  outputTokenSupply: BigInt
+  "Description for column: outputTokenPriceUSD"
+  outputTokenPriceUSD: BigDecimal
+  "Description for column: stakedOutputTokenAmount"
+  stakedOutputTokenAmount: BigInt
+  "Description for column: rewardTokenEmissionsAmount"
+  rewardTokenEmissionsAmount: [BigInt!]
+  "Description for column: rewardTokenEmissionsUSD"
+  rewardTokenEmissionsUSD: [BigDecimal!]
+}
+
+"Description for column: LiquidityPoolHourlySnapshot"
+interface Event {
+  "Description for column: id"
+  id: ID!
+  "Description for column: hash"
+  hash: String!
+  "Description for column: logIndex"
+  logIndex: Int!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: to"
+  to: String!
+  "Description for column: from"
+  from: String!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+}
+
+"Description for table: Deposit"
+type Deposit implements Event @entity @transaction {
+  "Description for column: id"
+  id: ID!
+  "Description for column: hash"
+  hash: String!
+  "Description for column: logIndex"
+  logIndex: Int!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: to"
+  to: String!
+  "Description for column: from"
+  from: String!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: inputTokens"
+  inputTokens: [Token!]!
+  "Description for column: outputToken"
+  outputToken: Token
+  "Description for column: inputTokenAmounts"
+  inputTokenAmounts: [BigInt!]!
+  "Description for column: outputTokenAmount"
+  outputTokenAmount: BigInt
+  "Description for column: amountUSD"
+  amountUSD: BigDecimal!
+  "Description for column: pool"
+  pool: LiquidityPool!
+}
+
+"Description for table: Withdraw"
+type Withdraw implements Event @entity @transaction {
+  "Description for column: id"
+  id: ID!
+  "Description for column: hash"
+  hash: String!
+  "Description for column: logIndex"
+  logIndex: Int!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: to"
+  to: String!
+  "Description for column: from"
+  from: String!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: inputTokens"
+  inputTokens: [Token!]!
+  "Description for column: outputToken"
+  outputToken: Token
+  "Description for column: inputTokenAmounts"
+  inputTokenAmounts: [BigInt!]!
+  "Description for column: outputTokenAmount"
+  outputTokenAmount: BigInt
+  "Description for column: amountUSD"
+  amountUSD: BigDecimal!
+  "Description for column: pool"
+  pool: LiquidityPool!
+  "Description for column: _withdrawalFeeAmount"
+  _withdrawalFeeAmount: BigInt!
+  "Description for column: _withdrawalFeeAmountUSD"
+  _withdrawalFeeAmountUSD: BigDecimal!
+}
+
+"Description for table: Swap"
+type Swap implements Event @entity @transaction {
+  "Description for column: id"
+  id: ID!
+  "Description for column: hash"
+  hash: String!
+  "Description for column: logIndex"
+  logIndex: Int!
+  "Description for column: protocol"
+  protocol: DexAmmProtocol!
+  "Description for column: to"
+  to: String!
+  "Description for column: from"
+  from: String!
+  "Description for column: blockNumber"
+  blockNumber: BigInt!
+  "Description for column: timestamp"
+  timestamp: BigInt!
+  "Description for column: tokenIn"
+  tokenIn: Token!
+  "Description for column: amountIn"
+  amountIn: BigInt!
+  "Description for column: amountInUSD"
+  amountInUSD: BigDecimal!
+  "Description for column: tokenOut"
+  tokenOut: Token!
+  "Description for column: amountOut"
+  amountOut: BigInt!
+  "Description for column: amountOutUSD"
+  amountOutUSD: BigDecimal!
+  "Description for column: pool"
+  pool: LiquidityPool!
+  "Description for column: _tradingFeeAmount"
+  _tradingFeeAmount: BigInt!
+  "Description for column: _tradingFeeAmountUSD"
+  _tradingFeeAmountUSD: BigDecimal!
+}
+
+"Description for table: Account"
+type Account @entity @regularPolling {
+  "Description for column: id"
+  id: ID!
+}
+
+"Description for table: ActiveAccount"
+type ActiveAccount @entity {
+  "Description for column: id"
+  id: ID!
+}
+
+"Description for table: RewardProgram"
+type RewardProgram @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: pool"
+  pool: LiquidityPool!
+  "Description for column: enabled"
+  enabled: Boolean!
+  "Description for column: totalRewards"
+  totalRewards: BigInt!
+  "Description for column: startTime"
+  startTime: BigInt!
+  "Description for column: endTime"
+  endTime: BigInt!
+  "Description for column: rewardsRate"
+  rewardsRate: BigInt!
+}

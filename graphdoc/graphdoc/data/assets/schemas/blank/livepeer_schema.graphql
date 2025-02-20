@@ -1,0 +1,519 @@
+type Protocol @entity {
+  id: ID!
+  inflation: BigInt!
+  inflationChange: BigInt!
+  numActiveTranscoders: BigInt!
+  activeTranscoderCount: BigInt!
+  paused: Boolean!
+  targetBondingRate: BigInt!
+  unbondingPeriod: BigInt!
+  lockPeriod: BigInt!
+  roundLockAmount: BigInt!
+  totalActiveStake: BigDecimal!
+  totalVolumeETH: BigDecimal!
+  totalVolumeUSD: BigDecimal!
+  participationRate: BigDecimal!
+  currentRound: Round!
+  lastInitializedRound: Round!
+  lastRoundLengthUpdateRound: Round!
+  roundLength: BigInt!
+  lastRoundLengthUpdateStartBlock: BigInt!
+  totalSupply: BigDecimal!
+  lptPriceEth: BigDecimal!
+  winningTicketCount: Int!
+  roundCount: Int!
+  pendingActivation: [Transcoder!]!
+  pendingDeactivation: [Transcoder!]!
+  delegatorsCount: BigInt!
+}
+
+type Transcoder @entity {
+  id: ID!
+  activationRound: BigInt!
+  deactivationRound: BigInt!
+  lastActiveStakeUpdateRound: BigInt!
+  active: Boolean!
+  status: TranscoderStatus!
+  activationTimestamp: Int!
+  lastRewardRound: Round
+  rewardCut: BigInt!
+  rewardCutUpdateTimestamp: Int!
+  feeShare: BigInt!
+  feeShareUpdateTimestamp: Int!
+  totalStake: BigDecimal!
+  totalVolumeETH: BigDecimal!
+  thirtyDayVolumeETH: BigDecimal!
+  sixtyDayVolumeETH: BigDecimal!
+  ninetyDayVolumeETH: BigDecimal!
+  totalVolumeUSD: BigDecimal!
+  pools: [Pool!] @derivedFrom(field: "delegate")
+  delegators: [Delegator!] @derivedFrom(field: "delegate")
+  delegator: Delegator
+  serviceURI: String
+  transcoderDays: [TranscoderDay!]!
+}
+
+enum TranscoderStatus @entity {
+  NotRegistered
+  Registered
+}
+
+type Pool @entity {
+  id: ID!
+  round: Round!
+  delegate: Transcoder!
+  fees: BigDecimal!
+  rewardTokens: BigDecimal
+  totalStake: BigDecimal!
+  rewardCut: BigInt!
+  feeShare: BigInt!
+}
+
+type Round @entity {
+  id: ID!
+  startTimestamp: Int!
+  initialized: Boolean!
+  length: BigInt!
+  startBlock: BigInt!
+  endBlock: BigInt!
+  pools: [Pool!] @derivedFrom(field: "round")
+  mintableTokens: BigDecimal!
+  volumeETH: BigDecimal!
+  volumeUSD: BigDecimal!
+  totalActiveStake: BigDecimal!
+  totalSupply: BigDecimal!
+  participationRate: BigDecimal!
+  movedStake: BigDecimal!
+  newStake: BigDecimal!
+  inflation: BigInt!
+  numActiveTranscoders: BigInt!
+  activeTranscoderCount: BigInt!
+  delegatorsCount: BigInt!
+}
+
+type Delegator @entity {
+  id: ID!
+  delegate: Transcoder
+  startRound: BigInt!
+  lastClaimRound: Round
+  bondedAmount: BigDecimal!
+  principal: BigDecimal!
+  unbonded: BigDecimal!
+  fees: BigDecimal!
+  withdrawnFees: BigDecimal!
+  delegatedAmount: BigDecimal!
+  unbondingLocks: [UnbondingLock!] @derivedFrom(field: "delegator")
+}
+
+type LivepeerAccount @entity {
+  id: ID!
+  lastUpdatedTimestamp: Int!
+  delegator: Delegator
+  delegate: Transcoder
+}
+
+type Broadcaster @entity {
+  id: ID!
+  deposit: BigDecimal!
+  reserve: BigDecimal!
+}
+
+type UnbondingLock @entity {
+  id: ID!
+  unbondingLockId: Int!
+  delegator: Delegator!
+  delegate: Transcoder!
+  amount: BigDecimal!
+  withdrawRound: BigInt!
+  sender: String!
+}
+
+type Poll @entity {
+  id: ID!
+  proposal: String!
+  endBlock: BigInt!
+  quorum: BigInt!
+  quota: BigInt!
+  tally: PollTally
+  votes: [Vote!]!
+}
+
+type PollTally @entity {
+  id: ID!
+  yes: BigDecimal!
+  no: BigDecimal!
+}
+
+type Vote @entity {
+  id: ID!
+  voter: String!
+  voteStake: BigDecimal!
+  nonVoteStake: BigDecimal!
+  choiceID: PollChoice
+  poll: Poll
+  registeredTranscoder: Boolean
+}
+
+enum PollChoice @entity {
+  Yes
+  No
+}
+
+type Day @entity {
+  id: ID!
+  date: Int!
+  volumeETH: BigDecimal!
+  volumeUSD: BigDecimal!
+  totalActiveStake: BigDecimal!
+  totalSupply: BigDecimal!
+  participationRate: BigDecimal!
+  inflation: BigInt!
+  numActiveTranscoders: BigInt!
+  activeTranscoderCount: BigInt!
+  delegatorsCount: BigInt!
+}
+
+type TranscoderDay @entity {
+  id: ID!
+  date: Int!
+  volumeETH: BigDecimal!
+  volumeUSD: BigDecimal!
+  transcoder: Transcoder!
+}
+
+type TreasuryProposal @entity {
+  id: ID!
+  proposer: LivepeerAccount!
+  targets: [String!]!
+  values: [BigInt!]!
+  calldatas: [Bytes!]!
+  voteStart: BigInt!
+  voteEnd: BigInt!
+  description: String!
+}
+
+interface Event {
+  id: ID!
+  timestamp: Int!
+  transaction: Transaction!
+  round: Round!
+}
+
+type Transaction @entity {
+  id: ID!
+  blockNumber: BigInt!
+  timestamp: Int!
+  gasUsed: BigInt!
+  gasPrice: BigInt!
+  from: String!
+  to: String!
+  events: [Event!] @derivedFrom(field: "transaction")
+}
+
+type BondEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  bondedAmount: BigDecimal!
+  additionalAmount: BigDecimal!
+  newDelegate: Transcoder!
+  oldDelegate: Transcoder
+  delegator: Delegator!
+}
+
+type UnbondEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  amount: BigDecimal!
+  withdrawRound: BigInt!
+  unbondingLockId: Int
+  delegate: Transcoder!
+  delegator: Delegator!
+}
+
+type RebondEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegator: Delegator!
+  delegate: Transcoder!
+  amount: BigDecimal!
+  unbondingLockId: Int!
+}
+
+type TransferBondEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  amount: BigDecimal!
+  newDelegator: Delegator!
+  oldDelegator: Delegator!
+  newUnbondingLockId: Int!
+  oldUnbondingLockId: Int!
+}
+
+type RewardEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  rewardTokens: BigDecimal!
+  delegate: Transcoder!
+}
+
+type TranscoderActivatedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegate: Transcoder!
+  activationRound: BigInt!
+}
+
+type TranscoderDeactivatedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegate: Transcoder!
+  deactivationRound: BigInt!
+}
+
+type EarningsClaimedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegator: Delegator!
+  delegate: Transcoder!
+  startRound: BigInt!
+  endRound: Round!
+  rewardTokens: BigDecimal!
+  fees: BigDecimal!
+}
+
+type TranscoderUpdateEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegate: Transcoder!
+  rewardCut: BigInt!
+  feeShare: BigInt!
+}
+
+type TranscoderSlashedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegate: Transcoder!
+  finder: Bytes!
+  penalty: BigDecimal!
+  finderReward: BigInt!
+}
+
+type TranscoderResignedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegate: Transcoder!
+}
+
+type TranscoderEvictedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegate: Transcoder!
+}
+
+type WithdrawStakeEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegator: Delegator!
+  unbondingLockId: Int
+  amount: BigDecimal!
+}
+
+type WithdrawFeesEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegator: Delegator!
+  amount: BigDecimal!
+  recipient: String!
+}
+
+type NewRoundEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  blockHash: String!
+}
+
+type WinningTicketRedeemedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  sender: Broadcaster!
+  recipient: Transcoder!
+  faceValue: BigDecimal!
+  faceValueUSD: BigDecimal!
+  winProb: BigInt!
+  senderNonce: BigInt!
+  recipientRand: BigInt!
+  auxData: Bytes!
+}
+
+type DepositFundedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  sender: Broadcaster!
+  amount: BigDecimal!
+}
+
+type ReserveFundedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  reserveHolder: Broadcaster!
+  amount: BigDecimal!
+}
+
+type ReserveClaimedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  reserveHolder: Broadcaster!
+  claimant: Transcoder!
+  amount: BigDecimal!
+}
+
+type WithdrawalEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  sender: Broadcaster!
+  deposit: BigDecimal!
+  reserve: BigDecimal!
+}
+
+type SetCurrentRewardTokensEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  currentMintableTokens: BigDecimal!
+  currentInflation: BigInt!
+}
+
+type PauseEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+}
+
+type UnpauseEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+}
+
+type ParameterUpdateEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  param: String!
+}
+
+type VoteEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  voter: String!
+  choiceID: BigInt!
+  poll: Poll!
+}
+
+type PollCreatedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  poll: Poll!
+  proposal: Bytes!
+  endBlock: BigInt!
+  quorum: BigInt!
+  quota: BigInt!
+}
+
+type ServiceURIUpdateEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  addr: String!
+  serviceURI: String!
+}
+
+type MintEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  to: String!
+  amount: BigDecimal!
+}
+
+type BurnEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  value: BigDecimal!
+}
+
+type MigrateDelegatorFinalizedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  l1Addr: String!
+  l2Addr: String!
+  stake: BigDecimal!
+  delegatedStake: BigDecimal!
+  fees: BigDecimal!
+  delegate: String!
+}
+
+type StakeClaimedEvent implements Event @entity {
+  id: ID!
+  transaction: Transaction!
+  timestamp: Int!
+  round: Round!
+  delegator: String!
+  delegate: String!
+  stake: BigDecimal!
+  fees: BigDecimal!
+}

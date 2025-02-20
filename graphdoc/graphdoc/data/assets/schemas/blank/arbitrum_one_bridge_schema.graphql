@@ -1,0 +1,594 @@
+enum Network {
+  ARBITRUM_ONE
+  ARWEAVE_MAINNET
+  AURORA
+  AVALANCHE
+  BOBA
+  BSC
+  CELO
+  COSMOS
+  CRONOS
+  MAINNET
+  FANTOM
+  FUSE
+  HARMONY
+  JUNO
+  MOONBEAM
+  MOONRIVER
+  NEAR_MAINNET
+  OPTIMISM
+  OSMOSIS
+  MATIC
+  GNOSIS
+  UBIQ
+  SONGBIRD
+  ELASTOS
+  KARDIACHAIN
+  RSK
+  TELOS
+  XDC
+  ZYX
+  CSC
+  SYSCOIN
+  GOCHAIN
+  ETHEREUMCLASSIC
+  OKEXCHAIN
+  HOO
+  METER
+  NOVA_NETWORK
+  TOMOCHAIN
+  VELAS
+  THUNDERCORE
+  HECO
+  XDAIARB
+  ENERGYWEB
+  HPB
+  BOBA
+  KUCOIN
+  SHIDEN
+  THETA
+  SX
+  CANDLE
+  ASTAR
+  CALLISTO
+  WANCHAIN
+  METIS
+  ULTRON
+  STEP
+  DOGECHAIN
+  RONIN
+  KAVA
+  IOTEX
+  XLC
+  NAHMII
+  TOMBCHAIN
+  CANTO
+  KLAYTN
+  EVMOS
+  SMARTBCH
+  BITGERT
+  FUSION
+  OHO
+  ARB_NOVA
+  OASIS
+  REI
+  REICHAIN
+  GODWOKEN
+  POLIS
+  KEKCHAIN
+  VISION
+  HARMONY
+  PALM
+  CURIO
+  UNKNOWN_NETWORK
+}
+
+enum ProtocolType {
+  EXCHANGE
+  LENDING
+  YIELD
+  BRIDGE
+  GENERIC
+}
+
+enum CrosschainTokenType {
+  WRAPPED
+  CANONICAL
+}
+
+enum BridgePoolType {
+  LOCK_RELEASE
+  BURN_MINT
+  LIQUIDITY
+}
+
+enum BridgePermissionType {
+  PERMISSIONLESS
+  WHITELIST
+  PRIVATE
+}
+
+type Token @entity @regularPolling {
+  id: Bytes!
+  name: String!
+  symbol: String!
+  decimals: Int!
+  lastPriceUSD: BigDecimal
+  lastPriceBlockNumber: BigInt
+}
+
+type CrosschainToken @entity(immutable: true) @regularPolling {
+  id: Bytes!
+  chainID: BigInt!
+  network: Network!
+  address: Bytes!
+  type: CrosschainTokenType!
+  token: Token
+}
+
+enum RewardTokenType {
+  DEPOSIT
+  BORROW
+}
+
+type RewardToken @entity(immutable: true) @regularPolling {
+  id: Bytes!
+  token: Token!
+  type: RewardTokenType!
+}
+
+interface Protocol {
+  id: Bytes!
+  name: String!
+  slug: String!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  network: Network!
+  type: ProtocolType!
+  totalValueLockedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  cumulativeUniqueUsers: Int!
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+  pools: [Pool!]! @derivedFrom(field: "protocol")
+}
+
+type BridgeProtocol implements Protocol @entity @regularPolling {
+  id: Bytes!
+  name: String!
+  slug: String!
+  schemaVersion: String!
+  subgraphVersion: String!
+  methodologyVersion: String!
+  network: Network!
+  type: ProtocolType!
+  permissionType: BridgePermissionType!
+  totalValueLockedUSD: BigDecimal!
+  totalValueExportedUSD: BigDecimal!
+  totalValueImportedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  cumulativeVolumeInUSD: BigDecimal!
+  cumulativeVolumeOutUSD: BigDecimal!
+  cumulativeTotalVolumeUSD: BigDecimal!
+  netVolumeUSD: BigDecimal!
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueTransferSenders: Int!
+  cumulativeUniqueTransferReceivers: Int!
+  cumulativeUniqueLiquidityProviders: Int!
+  cumulativeUniqueMessageSenders: Int!
+  cumulativeTransactionCount: Int!
+  cumulativeTransferOutCount: Int!
+  cumulativeTransferInCount: Int!
+  cumulativeLiquidityDepositCount: Int!
+  cumulativeLiquidityWithdrawCount: Int!
+  cumulativeMessageSentCount: Int!
+  cumulativeMessageReceivedCount: Int!
+  supportedNetworks: [Network!]!
+  totalPoolCount: Int!
+  totalPoolRouteCount: Int!
+  totalCanonicalRouteCount: Int!
+  totalWrappedRouteCount: Int!
+  totalSupportedTokenCount: Int!
+  dailyUsageMetrics: [UsageMetricsDailySnapshot!]! @derivedFrom(field: "protocol")
+  hourlyUsageMetrics: [UsageMetricsHourlySnapshot!]! @derivedFrom(field: "protocol")
+  financialMetrics: [FinancialsDailySnapshot!]! @derivedFrom(field: "protocol")
+  pools: [Pool!]! @derivedFrom(field: "protocol")
+}
+
+type UsageMetricsDailySnapshot @entity(immutable: true) @dailySnapshot {
+  id: Bytes!
+  day: Int!
+  protocol: BridgeProtocol!
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueTransferSenders: Int!
+  cumulativeUniqueTransferReceivers: Int!
+  cumulativeUniqueLiquidityProviders: Int!
+  cumulativeUniqueMessageSenders: Int!
+  dailyActiveUsers: Int!
+  dailyActiveTransferSenders: Int!
+  dailyActiveTransferReceivers: Int!
+  dailyActiveLiquidityProviders: Int!
+  dailyActiveMessageSenders: Int!
+  cumulativeTransactionCount: Int!
+  dailyTransactionCount: Int!
+  cumulativeTransferOutCount: Int!
+  dailyTransferOutCount: Int!
+  cumulativeTransferInCount: Int!
+  dailyTransferInCount: Int!
+  cumulativeLiquidityDepositCount: Int!
+  dailyLiquidityDepositCount: Int!
+  cumulativeLiquidityWithdrawCount: Int!
+  dailyLiquidityWithdrawCount: Int!
+  cumulativeMessageSentCount: Int!
+  dailyMessageSentCount: Int!
+  cumulativeMessageReceivedCount: Int!
+  dailyMessageReceivedCount: Int!
+  totalPoolCount: Int!
+  totalPoolRouteCount: Int!
+  totalCanonicalRouteCount: Int!
+  totalWrappedRouteCount: Int!
+  totalSupportedTokenCount: Int!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type UsageMetricsHourlySnapshot @entity(immutable: true) @hourlySnapshot {
+  id: Bytes!
+  hour: Int!
+  protocol: BridgeProtocol!
+  cumulativeUniqueUsers: Int!
+  cumulativeUniqueTransferSenders: Int!
+  cumulativeUniqueTransferReceivers: Int!
+  cumulativeUniqueLiquidityProviders: Int!
+  cumulativeUniqueMessageSenders: Int!
+  hourlyActiveUsers: Int!
+  hourlyActiveTransferSenders: Int!
+  hourlyActiveTransferReceivers: Int!
+  hourlyActiveLiquidityProviders: Int!
+  hourlyActiveMessageSenders: Int!
+  cumulativeTransactionCount: Int!
+  hourlyTransactionCount: Int!
+  cumulativeTransferOutCount: Int!
+  hourlyTransferOutCount: Int!
+  cumulativeTransferInCount: Int!
+  hourlyTransferInCount: Int!
+  cumulativeLiquidityDepositCount: Int!
+  hourlyLiquidityDepositCount: Int!
+  cumulativeLiquidityWithdrawCount: Int!
+  hourlyLiquidityWithdrawCount: Int!
+  cumulativeMessageSentCount: Int!
+  hourlyMessageSentCount: Int!
+  cumulativeMessageReceivedCount: Int!
+  hourlyMessageReceivedCount: Int!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type FinancialsDailySnapshot @entity(immutable: true) @dailySnapshot {
+  id: Bytes!
+  day: Int!
+  protocol: BridgeProtocol!
+  totalValueLockedUSD: BigDecimal!
+  totalValueExportedUSD: BigDecimal!
+  totalValueImportedUSD: BigDecimal!
+  protocolControlledValueUSD: BigDecimal
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  dailyVolumeInUSD: BigDecimal!
+  cumulativeVolumeInUSD: BigDecimal!
+  dailyVolumeOutUSD: BigDecimal!
+  cumulativeVolumeOutUSD: BigDecimal!
+  dailyNetVolumeUSD: BigDecimal!
+  cumulativeNetVolumeUSD: BigDecimal!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type Pool @entity @regularPolling {
+  id: Bytes!
+  protocol: BridgeProtocol!
+  name: String
+  symbol: String
+  relation: Bytes
+  type: BridgePoolType!
+  inputToken: Token!
+  destinationTokens: [CrosschainToken!]!
+  routes: [PoolRoute!]!
+  outputToken: Token
+  rewardTokens: [RewardToken!]
+  createdTimestamp: BigInt!
+  createdBlockNumber: BigInt!
+  mintSupply: BigInt
+  inputTokenBalance: BigInt!
+  totalValueLockedUSD: BigDecimal!
+  netValueExportedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  cumulativeVolumeIn: BigInt!
+  cumulativeVolumeOut: BigInt!
+  netVolume: BigInt!
+  cumulativeVolumeInUSD: BigDecimal!
+  cumulativeVolumeOutUSD: BigDecimal!
+  netVolumeUSD: BigDecimal!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+  dailySnapshots: [PoolDailySnapshot!]! @derivedFrom(field: "pool")
+  hourlySnapshots: [PoolHourlySnapshot!]! @derivedFrom(field: "pool")
+  _lastDailySnapshotTimestamp: BigInt
+  _lastHourlySnapshotTimestamp: BigInt
+  _inputTokenLiquidityBalance: BigInt
+}
+
+type PoolRoute @entity @regularPolling {
+  id: Bytes!
+  pool: Pool!
+  counterType: BridgePoolType
+  inputToken: Token!
+  crossToken: CrosschainToken!
+  isSwap: Boolean!
+  cumulativeVolumeIn: BigInt!
+  cumulativeVolumeOut: BigInt!
+  cumulativeVolumeInUSD: BigDecimal!
+  cumulativeVolumeOutUSD: BigDecimal!
+  createdTimestamp: BigInt!
+  createdBlockNumber: BigInt!
+}
+
+type PoolDailySnapshot @entity(immutable: true) @dailySnapshot {
+  id: Bytes!
+  day: Int!
+  protocol: BridgeProtocol!
+  pool: Pool!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  totalValueLockedUSD: BigDecimal!
+  netValueExportedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  dailySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  dailyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  dailyTotalRevenueUSD: BigDecimal!
+  cumulativeVolumeIn: BigInt!
+  dailyVolumeIn: BigInt!
+  cumulativeVolumeInUSD: BigDecimal!
+  dailyVolumeInUSD: BigDecimal!
+  cumulativeVolumeOut: BigInt!
+  dailyVolumeOut: BigInt!
+  cumulativeVolumeOutUSD: BigDecimal!
+  dailyVolumeOutUSD: BigDecimal!
+  netCumulativeVolume: BigInt!
+  netCumulativeVolumeUSD: BigDecimal!
+  netDailyVolume: BigInt!
+  netDailyVolumeUSD: BigDecimal!
+  routes: [PoolRouteSnapshot!]!
+  mintSupply: BigInt
+  inputTokenBalance: BigInt!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+}
+
+type PoolHourlySnapshot @entity(immutable: true) @hourlySnapshot {
+  id: Bytes!
+  hour: Int!
+  protocol: BridgeProtocol!
+  pool: Pool!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+  totalValueLockedUSD: BigDecimal!
+  netValueExportedUSD: BigDecimal!
+  cumulativeSupplySideRevenueUSD: BigDecimal!
+  hourlySupplySideRevenueUSD: BigDecimal!
+  cumulativeProtocolSideRevenueUSD: BigDecimal!
+  hourlyProtocolSideRevenueUSD: BigDecimal!
+  cumulativeTotalRevenueUSD: BigDecimal!
+  hourlyTotalRevenueUSD: BigDecimal!
+  cumulativeVolumeIn: BigInt!
+  hourlyVolumeIn: BigInt!
+  cumulativeVolumeInUSD: BigDecimal!
+  hourlyVolumeInUSD: BigDecimal!
+  cumulativeVolumeOut: BigInt!
+  hourlyVolumeOut: BigInt!
+  cumulativeVolumeOutUSD: BigDecimal!
+  hourlyVolumeOutUSD: BigDecimal!
+  netCumulativeVolume: BigInt!
+  netCumulativeVolumeUSD: BigDecimal!
+  netHourlyVolume: BigInt!
+  netHourlyVolumeUSD: BigDecimal!
+  routes: [PoolRouteSnapshot!]!
+  mintSupply: BigInt
+  inputTokenBalance: BigInt!
+  outputTokenSupply: BigInt
+  outputTokenPriceUSD: BigDecimal
+  stakedOutputTokenAmount: BigInt
+  rewardTokenEmissionsAmount: [BigInt!]
+  rewardTokenEmissionsUSD: [BigDecimal!]
+}
+
+type PoolRouteSnapshot @entity(immutable: true) @hourlySnapshot {
+  id: Bytes!
+  poolRoute: PoolRoute!
+  timestamp: BigInt!
+  blockNumber: BigInt!
+  snapshotVolumeIn: BigInt!
+  cumulativeVolumeIn: BigInt!
+  snapshotVolumeOut: BigInt!
+  cumulativeVolumeOut: BigInt!
+  snapshotVolumeInUSD: BigDecimal!
+  cumulativeVolumeInUSD: BigDecimal!
+  snapshotVolumeOutUSD: BigDecimal!
+  cumulativeVolumeOutUSD: BigDecimal!
+}
+
+interface Event {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: BridgeProtocol!
+  to: Bytes!
+  from: Bytes!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type LiquidityDeposit implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: BridgeProtocol!
+  account: Account!
+  to: Bytes!
+  from: Bytes!
+  pool: Pool!
+  token: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  chainID: BigInt!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type LiquidityWithdraw implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: BridgeProtocol!
+  account: Account!
+  to: Bytes!
+  from: Bytes!
+  pool: Pool!
+  token: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  chainID: BigInt!
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+enum TransferType {
+  MINT
+  BURN
+  LOCK
+  RELEASE
+}
+
+type BridgeTransfer implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: BridgeProtocol!
+  account: Account!
+  to: Bytes!
+  from: Bytes!
+  isOutgoing: Boolean!
+  fromChainID: BigInt!
+  toChainID: BigInt!
+  transferTo: Bytes!
+  transferFrom: Bytes
+  type: TransferType!
+  pool: Pool!
+  route: PoolRoute!
+  token: Token!
+  amount: BigInt!
+  amountUSD: BigDecimal!
+  crosschainToken: CrosschainToken!
+  isSwap: Boolean!
+  crossTransactionID: Bytes
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type BridgeMessage implements Event @entity(immutable: true) @transaction {
+  id: Bytes!
+  hash: Bytes!
+  logIndex: Int!
+  protocol: BridgeProtocol!
+  account: Account!
+  to: Bytes!
+  from: Bytes!
+  isOutgoing: Boolean!
+  fromChainID: BigInt!
+  toChainID: BigInt!
+  transferFrom: Bytes
+  transferTo: Bytes
+  data: Bytes!
+  crossTransactionID: Bytes
+  blockNumber: BigInt!
+  timestamp: BigInt!
+}
+
+type Account @entity @regularPolling {
+  id: Bytes!
+  chains: [BigInt!]!
+  transferOutCount: Int!
+  transferInCount: Int!
+  transfers: [BridgeTransfer!]! @derivedFrom(field: "account")
+  depositCount: Int!
+  deposits: [LiquidityDeposit!]! @derivedFrom(field: "account")
+  withdrawCount: Int!
+  withdraws: [LiquidityWithdraw!]! @derivedFrom(field: "account")
+  messageSentCount: Int!
+  messageReceivedCount: Int!
+  messages: [BridgeMessage!]! @derivedFrom(field: "account")
+}
+
+type SupportedToken @entity(immutable: true) {
+  id: Bytes!
+}
+
+type ActiveAccount @entity(immutable: true) {
+  id: Bytes!
+}
+
+type _ActivityHelper @entity {
+  id: Bytes!
+  hourlyActiveUsers: Int!
+  dailyActiveUsers: Int!
+  hourlyActiveTransferSenders: Int!
+  dailyActiveTransferSenders: Int!
+  hourlyActiveTransferReceivers: Int!
+  dailyActiveTransferReceivers: Int!
+  hourlyActiveMessageSenders: Int!
+  dailyActiveMessageSenders: Int!
+  hourlyActiveLiquidityProviders: Int!
+  dailyActiveLiquidityProviders: Int!
+}
+
+type _ProtocolSnapshotHelper @entity {
+  id: Bytes!
+  lastDailyFinancialsTimestamp: BigInt!
+  lastDailyUsageTimestamp: BigInt!
+  lastHourlyUsageTimestamp: BigInt!
+  lastDailyFinancialsSnapshot: Bytes!
+  lastDailyUsageSnapshot: Bytes!
+  lastHourlyUsageSnapshot: Bytes!
+  lastActivityTimestamp: BigInt!
+}
+
+type _CircularBuffer @entity {
+  id: ID!
+  blocks: [Int!]!
+  windowStartIndex: Int!
+  nextIndex: Int!
+  bufferSize: Int!
+  blocksPerDay: BigDecimal!
+}

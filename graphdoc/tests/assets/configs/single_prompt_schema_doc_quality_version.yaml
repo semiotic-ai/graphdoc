@@ -1,0 +1,39 @@
+language_model: 
+  lm_model_name: openai/gpt-4o # Must be a valid dspy language model
+  lm_api_key: !env OPENAI_API_KEY # Must be a valid dspy language model API key
+  cache: true # Whether to cache the calls to the language model
+
+data: 
+  hf_api_key: !env HF_DATASET_KEY # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
+  load_from_hf: true # Whether to load the dataset from Hugging Face
+  load_from_local: false # Whether to load the dataset from a local directory
+  load_local_specific_category: false # Whether to load all categories or a specific category (if load_from_local is true)
+  local_specific_category: perfect # The specific category to load from the dataset (if load_from_local is true)
+  local_parse_objects: True # Whether to parse the objects in the dataset (if load_from_local is true)
+
+prompt:
+  prompt: doc_quality # Which prompt signature to use
+  class: SchemaDocQualityPrompt # Must be a child of SinglePrompt (we will use an enum to map this)
+  type: predict # The type of prompt to use (predict, chain_of_thought)
+  metric: rating # The type of metric to use (rating, category)
+  load_from_uri: true # Whether to load the prompt from an MLFlow URI
+  mlflow_uri: null # The tracking URI for MLflow
+  mlflow_model_name: doc_quality_model # The name of the model in MLflow
+  mlflow_model_version: 1 # The version of the model in MLflow
+
+trainer: 
+  class: DocQualityTrainer # The type of trainer to use (DocQualityTrainer)
+  optimizer_type: miprov2 # The type of optimizer to use (miprov2)
+  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI # The tracking URI for MLflow
+  mlflow_model_name: doc_quality_model_zero_shot # The name of the model in MLflow
+  mlflow_experiment_name: doc_quality_experiment_zero_shot # The name of the experiment in MLflow
+  mlflow_load_model: true # Whether to load the most recent model from MLflow
+
+optimizer: 
+  optimizer_type: miprov2
+  # metric: this is set in the prompt
+  auto: light # miprov2 setting
+  # student: this is the prompt.infer object
+  # trainset: this is the dataset we are working with 
+  max_labeled_demos: 0
+  max_bootstrapped_demos: 4

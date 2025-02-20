@@ -23,6 +23,16 @@ lint_command() {
     poetry run pyright .
 }
 
+test_command() {
+    poetry run pytest -p no:warnings
+}
+
+commit_command() {
+    format_command
+    lint_command
+    test_command
+}
+
 # help menu
 show_help() {
     echo "Usage: ./nli [option]"
@@ -35,6 +45,8 @@ show_help() {
     echo "  dev                    Install dependencies with dev"
     echo "  format                 Format the code"
     echo "  lint                   Lint the code"
+    echo "  test                   Run the tests"
+    echo "  commit                 Format, lint, and test the code"
 }
 
 # handle command line arguments
@@ -50,6 +62,8 @@ else
         "dev") dev_command ;;
         "format") format_command ;;
         "lint") lint_command ;;
+        "test") test_command ;;
+        "commit") commit_command ;;
         *) show_help ;;
     esac
 fi

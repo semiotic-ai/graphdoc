@@ -1,0 +1,1332 @@
+"Description for table: GraphNetwork"
+type GraphNetwork @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: controller"
+  controller: Bytes!
+  "Description for column: graphToken"
+  graphToken: Bytes!
+  "Description for column: epochManager"
+  epochManager: Bytes!
+  "Description for column: epochManagerImplementations"
+  epochManagerImplementations: [Bytes!]!
+  "Description for column: curation"
+  curation: Bytes!
+  "Description for column: curationImplementations"
+  curationImplementations: [Bytes!]!
+  "Description for column: staking"
+  staking: Bytes!
+  "Description for column: stakingImplementations"
+  stakingImplementations: [Bytes!]!
+  "Description for column: disputeManager"
+  disputeManager: Bytes!
+  "Description for column: gns"
+  gns: Bytes!
+  "Description for column: serviceRegistry"
+  serviceRegistry: Bytes!
+  "Description for column: rewardsManager"
+  rewardsManager: Bytes!
+  "Description for column: rewardsManagerImplementations"
+  rewardsManagerImplementations: [Bytes!]!
+  "Description for column: isPaused"
+  isPaused: Boolean!
+  "Description for column: isPartialPaused"
+  isPartialPaused: Boolean!
+  "Description for column: governor"
+  governor: Bytes!
+  "Description for column: pauseGuardian"
+  pauseGuardian: Bytes!
+  "Description for column: curationPercentage"
+  curationPercentage: Int!
+  "Description for column: protocolFeePercentage"
+  protocolFeePercentage: Int!
+  "Description for column: delegationRatio"
+  delegationRatio: Int!
+  "Description for column: channelDisputeEpochs"
+  channelDisputeEpochs: Int!
+  "Description for column: maxAllocationEpochs"
+  maxAllocationEpochs: Int!
+  "Description for column: thawingPeriod"
+  thawingPeriod: Int!
+  "Description for column: delegationParametersCooldown"
+  delegationParametersCooldown: Int!
+  "Description for column: minimumIndexerStake"
+  minimumIndexerStake: BigInt!
+  "Description for column: slashers"
+  slashers: [Bytes!]
+  "Description for column: delegationUnbondingPeriod"
+  delegationUnbondingPeriod: Int!
+  "Description for column: rebateRatio"
+  rebateRatio: BigDecimal!
+  "Description for column: rebateAlpha"
+  rebateAlpha: BigDecimal!
+  "Description for column: rebateLambda"
+  rebateLambda: BigDecimal!
+  "Description for column: delegationTaxPercentage"
+  delegationTaxPercentage: Int!
+  "Description for column: assetHolders"
+  assetHolders: [Bytes!]
+  "Description for column: totalTokensStakedTransferredToL2"
+  totalTokensStakedTransferredToL2: BigInt!
+  "Description for column: totalDelegatedTokensTransferredToL2"
+  totalDelegatedTokensTransferredToL2: BigInt!
+  "Description for column: totalSignalledTokensTransferredToL2"
+  totalSignalledTokensTransferredToL2: BigInt!
+  "Description for column: totalTokensStaked"
+  totalTokensStaked: BigInt!
+  "Description for column: totalTokensClaimable"
+  totalTokensClaimable: BigInt!
+  "Description for column: totalUnstakedTokensLocked"
+  totalUnstakedTokensLocked: BigInt!
+  "Description for column: totalTokensAllocated"
+  totalTokensAllocated: BigInt!
+  "Description for column: totalDelegatedTokens"
+  totalDelegatedTokens: BigInt!
+  "Description for column: totalTokensSignalled"
+  totalTokensSignalled: BigInt!
+  "Description for column: totalTokensSignalledAutoMigrate"
+  totalTokensSignalledAutoMigrate: BigDecimal!
+  "Description for column: totalTokensSignalledDirectly"
+  totalTokensSignalledDirectly: BigDecimal!
+  "Description for column: totalQueryFees"
+  totalQueryFees: BigInt!
+  "Description for column: totalIndexerQueryFeesCollected"
+  totalIndexerQueryFeesCollected: BigInt!
+  "Description for column: totalIndexerQueryFeeRebates"
+  totalIndexerQueryFeeRebates: BigInt!
+  "Description for column: totalDelegatorQueryFeeRebates"
+  totalDelegatorQueryFeeRebates: BigInt!
+  "Description for column: totalCuratorQueryFees"
+  totalCuratorQueryFees: BigInt!
+  "Description for column: totalTaxedQueryFees"
+  totalTaxedQueryFees: BigInt!
+  "Description for column: totalUnclaimedQueryFeeRebates"
+  totalUnclaimedQueryFeeRebates: BigInt!
+  "Description for column: totalIndexingRewards"
+  totalIndexingRewards: BigInt!
+  "Description for column: totalIndexingDelegatorRewards"
+  totalIndexingDelegatorRewards: BigInt!
+  "Description for column: totalIndexingIndexerRewards"
+  totalIndexingIndexerRewards: BigInt!
+  "Description for column: networkGRTIssuance"
+  networkGRTIssuance: BigInt!
+  "Description for column: networkGRTIssuancePerBlock"
+  networkGRTIssuancePerBlock: BigInt!
+  "Description for column: subgraphAvailabilityOracle"
+  subgraphAvailabilityOracle: Bytes!
+  "Description for column: defaultReserveRatio"
+  defaultReserveRatio: Int!
+  "Description for column: minimumCurationDeposit"
+  minimumCurationDeposit: BigInt!
+  "Description for column: curationTaxPercentage"
+  curationTaxPercentage: Int!
+  "Description for column: ownerTaxPercentage"
+  ownerTaxPercentage: Int!
+  "Description for column: totalSupply"
+  totalSupply: BigInt!
+  "Description for column: GRTinUSD"
+  GRTinUSD: BigDecimal!
+  "Description for column: GRTinETH"
+  GRTinETH: BigDecimal
+  "Description for column: totalGRTMinted"
+  totalGRTMinted: BigInt!
+  "Description for column: totalGRTBurned"
+  totalGRTBurned: BigInt!
+  "Description for column: epochLength"
+  epochLength: Int!
+  "Description for column: lastRunEpoch"
+  lastRunEpoch: Int!
+  "Description for column: lastLengthUpdateEpoch"
+  lastLengthUpdateEpoch: Int!
+  "Description for column: lastLengthUpdateBlock"
+  lastLengthUpdateBlock: Int!
+  "Description for column: currentEpoch"
+  currentEpoch: Int!
+  "Description for column: indexerCount"
+  indexerCount: Int!
+  "Description for column: stakedIndexersCount"
+  stakedIndexersCount: Int!
+  "Description for column: delegatorCount"
+  delegatorCount: Int!
+  "Description for column: activeDelegatorCount"
+  activeDelegatorCount: Int!
+  "Description for column: delegationCount"
+  delegationCount: Int!
+  "Description for column: activeDelegationCount"
+  activeDelegationCount: Int!
+  "Description for column: curatorCount"
+  curatorCount: Int!
+  "Description for column: activeCuratorCount"
+  activeCuratorCount: Int!
+  "Description for column: subgraphCount"
+  subgraphCount: Int!
+  "Description for column: activeSubgraphCount"
+  activeSubgraphCount: Int!
+  "Description for column: subgraphDeploymentCount"
+  subgraphDeploymentCount: Int!
+  "Description for column: epochCount"
+  epochCount: Int!
+  "Description for column: allocationCount"
+  allocationCount: Int!
+  "Description for column: activeAllocationCount"
+  activeAllocationCount: Int!
+  "Description for column: arbitrator"
+  arbitrator: Bytes!
+  "Description for column: querySlashingPercentage"
+  querySlashingPercentage: Int!
+  "Description for column: indexingSlashingPercentage"
+  indexingSlashingPercentage: Int!
+  "Description for column: slashingPercentage"
+  slashingPercentage: Int!
+  "Description for column: minimumDisputeDeposit"
+  minimumDisputeDeposit: BigInt!
+  "Description for column: fishermanRewardPercentage"
+  fishermanRewardPercentage: Int!
+  "Description for column: totalGRTDeposited"
+  totalGRTDeposited: BigInt!
+  "Description for column: totalGRTWithdrawnConfirmed"
+  totalGRTWithdrawnConfirmed: BigInt!
+  "Description for column: totalGRTMintedFromL2"
+  totalGRTMintedFromL2: BigInt!
+  "Description for column: totalGRTDepositedConfirmed"
+  totalGRTDepositedConfirmed: BigInt!
+  "Description for column: totalGRTWithdrawn"
+  totalGRTWithdrawn: BigInt!
+  "Description for column: currentL1BlockNumber"
+  currentL1BlockNumber: BigInt
+}
+
+"Description for table: GraphAccount"
+type GraphAccount @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: names"
+  names: [GraphAccountName!]! @derivedFrom(field: "graphAccount")
+  "Description for column: defaultName"
+  defaultName: GraphAccountName
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: defaultDisplayName"
+  defaultDisplayName: String
+  "Description for column: metadata"
+  metadata: GraphAccountMeta
+  "Description for column: operatorOf"
+  operatorOf: [GraphAccount!]! @derivedFrom(field: "operators")
+  "Description for column: operators"
+  operators: [GraphAccount!]!
+  "Description for column: balance"
+  balance: BigInt!
+  "Description for column: balanceReceivedFromL1Signalling"
+  balanceReceivedFromL1Signalling: BigInt!
+  "Description for column: balanceReceivedFromL1Delegation"
+  balanceReceivedFromL1Delegation: BigInt!
+  "Description for column: curationApproval"
+  curationApproval: BigInt!
+  "Description for column: stakingApproval"
+  stakingApproval: BigInt!
+  "Description for column: gnsApproval"
+  gnsApproval: BigInt!
+  "Description for column: subgraphs"
+  subgraphs: [Subgraph!]! @derivedFrom(field: "owner")
+  "Description for column: developerCreatedAt"
+  developerCreatedAt: Int
+  "Description for column: subgraphQueryFees"
+  subgraphQueryFees: BigInt!
+  "Description for column: createdDisputes"
+  createdDisputes: [Dispute!]! @derivedFrom(field: "fisherman")
+  "Description for column: disputesAgainst"
+  disputesAgainst: [Dispute!]! @derivedFrom(field: "indexer")
+  "Description for column: curator"
+  curator: Curator
+  "Description for column: indexer"
+  indexer: Indexer
+  "Description for column: delegator"
+  delegator: Delegator
+  "Description for column: nameSignalTransactions"
+  nameSignalTransactions: [NameSignalTransaction!]! @derivedFrom(field: "signer")
+  "Description for column: bridgeWithdrawalTransactions"
+  bridgeWithdrawalTransactions: [BridgeWithdrawalTransaction!]! @derivedFrom(field: "signer")
+  "Description for column: bridgeDepositTransactions"
+  bridgeDepositTransactions: [BridgeDepositTransaction!]! @derivedFrom(field: "signer")
+  "Description for column: tokenLockWallets"
+  tokenLockWallets: [TokenLockWallet!]!
+}
+
+"Description for table: GraphAccountMeta"
+type GraphAccountMeta @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: graphAccount"
+  graphAccount: GraphAccount @derivedFrom(field: "metadata")
+  "Description for column: graphAccounts"
+  graphAccounts: [GraphAccount!]! @derivedFrom(field: "metadata")
+  "Description for column: isOrganization"
+  isOrganization: Boolean
+  "Description for column: codeRepository"
+  codeRepository: String
+  "Description for column: description"
+  description: String
+  "Description for column: image"
+  image: String
+  "Description for column: website"
+  website: String
+  "Description for column: displayName"
+  displayName: String
+}
+
+"Description for table: GraphAccountName"
+type GraphAccountName @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: nameSystem"
+  nameSystem: NameSystem!
+  "Description for column: name"
+  name: String!
+  "Description for column: graphAccount"
+  graphAccount: GraphAccount
+}
+
+"Description for enum type: NameSystem"
+enum NameSystem {
+  "Description for column: ENS"
+  ENS
+}
+
+"Description for table: Subgraph"
+type Subgraph @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: owner"
+  owner: GraphAccount!
+  "Description for column: currentVersion"
+  currentVersion: SubgraphVersion
+  "Description for column: pastVersions"
+  pastVersions: [SubgraphVersion!]! @derivedFrom(field: "subgraph")
+  "Description for column: versions"
+  versions: [SubgraphVersion!]! @derivedFrom(field: "subgraph")
+  "Description for column: versionCount"
+  versionCount: BigInt!
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: updatedAt"
+  updatedAt: Int!
+  "Description for column: active"
+  active: Boolean!
+  "Description for column: migrated"
+  migrated: Boolean!
+  "Description for column: startedTransferToL2"
+  startedTransferToL2: Boolean!
+  "Description for column: startedTransferToL2At"
+  startedTransferToL2At: BigInt
+  "Description for column: startedTransferToL2AtBlockNumber"
+  startedTransferToL2AtBlockNumber: BigInt
+  "Description for column: startedTransferToL2AtTx"
+  startedTransferToL2AtTx: String
+  "Description for column: transferredToL2"
+  transferredToL2: Boolean!
+  "Description for column: transferredToL2At"
+  transferredToL2At: BigInt
+  "Description for column: transferredToL2AtBlockNumber"
+  transferredToL2AtBlockNumber: BigInt
+  "Description for column: transferredToL2AtTx"
+  transferredToL2AtTx: String
+  "Description for column: signalledTokensSentToL2"
+  signalledTokensSentToL2: BigInt!
+  "Description for column: signalledTokensReceivedOnL2"
+  signalledTokensReceivedOnL2: BigInt!
+  "Description for column: idOnL2"
+  idOnL2: String
+  "Description for column: idOnL1"
+  idOnL1: String
+  "Description for column: nftID"
+  nftID: String
+  "Description for column: oldID"
+  oldID: String
+  "Description for column: creatorAddress"
+  creatorAddress: Bytes
+  "Description for column: subgraphNumber"
+  subgraphNumber: BigInt
+  "Description for column: initializing"
+  initializing: Boolean!
+  "Description for column: entityVersion"
+  entityVersion: Int!
+  "Description for column: linkedEntity"
+  linkedEntity: Subgraph
+  "Description for column: signalledTokens"
+  signalledTokens: BigInt!
+  "Description for column: unsignalledTokens"
+  unsignalledTokens: BigInt!
+  "Description for column: currentSignalledTokens"
+  currentSignalledTokens: BigInt!
+  "Description for column: nameSignalAmount"
+  nameSignalAmount: BigInt!
+  "Description for column: signalAmount"
+  signalAmount: BigInt!
+  "Description for column: reserveRatio"
+  reserveRatio: Int!
+  "Description for column: withdrawableTokens"
+  withdrawableTokens: BigInt!
+  "Description for column: withdrawnTokens"
+  withdrawnTokens: BigInt!
+  "Description for column: nameSignals"
+  nameSignals: [NameSignal!]! @derivedFrom(field: "subgraph")
+  "Description for column: nameSignalCount"
+  nameSignalCount: Int!
+  "Description for column: metadataHash"
+  metadataHash: Bytes
+  "Description for column: metadata"
+  metadata: SubgraphMeta
+  "Description for column: currentVersionRelationEntity"
+  currentVersionRelationEntity: CurrentSubgraphDeploymentRelation
+}
+
+"Description for table: SubgraphMeta"
+type SubgraphMeta @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: subgraph"
+  subgraph: Subgraph @derivedFrom(field: "metadata")
+  "Description for column: subgraphs"
+  subgraphs: [Subgraph!]! @derivedFrom(field: "metadata")
+  "Description for column: description"
+  description: String
+  "Description for column: image"
+  image: String
+  "Description for column: nftImage"
+  nftImage: String
+  "Description for column: codeRepository"
+  codeRepository: String
+  "Description for column: website"
+  website: String
+  "Description for column: displayName"
+  displayName: String
+  "Description for column: categories"
+  categories: [String!]
+}
+
+"Description for table: CurrentSubgraphDeploymentRelation"
+type CurrentSubgraphDeploymentRelation @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: subgraph"
+  subgraph: Subgraph!
+  "Description for column: deployment"
+  deployment: SubgraphDeployment!
+  "Description for column: active"
+  active: Boolean!
+}
+
+"Description for table: SubgraphVersion"
+type SubgraphVersion @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: subgraph"
+  subgraph: Subgraph!
+  "Description for column: subgraphDeployment"
+  subgraphDeployment: SubgraphDeployment!
+  "Description for column: version"
+  version: Int!
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: metadataHash"
+  metadataHash: Bytes
+  "Description for column: metadata"
+  metadata: SubgraphVersionMeta
+  "Description for column: entityVersion"
+  entityVersion: Int!
+  "Description for column: linkedEntity"
+  linkedEntity: SubgraphVersion
+}
+
+"Description for table: SubgraphVersionMeta"
+type SubgraphVersionMeta @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: subgraphVersion"
+  subgraphVersion: SubgraphVersion @derivedFrom(field: "metadata")
+  "Description for column: subgraphVersions"
+  subgraphVersions: [SubgraphVersion!]! @derivedFrom(field: "metadata")
+  "Description for column: description"
+  description: String
+  "Description for column: label"
+  label: String
+}
+
+"Description for table: SubgraphDeployment"
+type SubgraphDeployment @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: ipfsHash"
+  ipfsHash: String!
+  "Description for column: versions"
+  versions: [SubgraphVersion!]! @derivedFrom(field: "subgraphDeployment")
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: deniedAt"
+  deniedAt: Int!
+  "Description for column: originalName"
+  originalName: String
+  "Description for column: stakedTokens"
+  stakedTokens: BigInt!
+  "Description for column: indexerAllocations"
+  indexerAllocations: [Allocation!]! @derivedFrom(field: "subgraphDeployment")
+  "Description for column: indexingRewardAmount"
+  indexingRewardAmount: BigInt!
+  "Description for column: indexingIndexerRewardAmount"
+  indexingIndexerRewardAmount: BigInt!
+  "Description for column: indexingDelegatorRewardAmount"
+  indexingDelegatorRewardAmount: BigInt!
+  "Description for column: queryFeesAmount"
+  queryFeesAmount: BigInt!
+  "Description for column: queryFeeRebates"
+  queryFeeRebates: BigInt!
+  "Description for column: curatorFeeRewards"
+  curatorFeeRewards: BigInt!
+  "Description for column: signalledTokens"
+  signalledTokens: BigInt!
+  "Description for column: unsignalledTokens"
+  unsignalledTokens: BigInt!
+  "Description for column: signalAmount"
+  signalAmount: BigInt!
+  "Description for column: pricePerShare"
+  pricePerShare: BigDecimal!
+  "Description for column: curatorSignals"
+  curatorSignals: [Signal!]! @derivedFrom(field: "subgraphDeployment")
+  "Description for column: reserveRatio"
+  reserveRatio: Int!
+  "Description for column: manifest"
+  manifest: SubgraphDeploymentManifest
+  "Description for column: subgraphCount"
+  subgraphCount: Int!
+  "Description for column: activeSubgraphCount"
+  activeSubgraphCount: Int!
+  "Description for column: deprecatedSubgraphCount"
+  deprecatedSubgraphCount: Int!
+  "Description for column: transferredToL2"
+  transferredToL2: Boolean!
+  "Description for column: transferredToL2At"
+  transferredToL2At: BigInt
+  "Description for column: transferredToL2AtBlockNumber"
+  transferredToL2AtBlockNumber: BigInt
+  "Description for column: transferredToL2AtTx"
+  transferredToL2AtTx: String
+  "Description for column: signalledTokensSentToL2"
+  signalledTokensSentToL2: BigInt!
+  "Description for column: signalledTokensReceivedOnL2"
+  signalledTokensReceivedOnL2: BigInt!
+}
+
+"Description for table: SubgraphDeploymentSchema"
+type SubgraphDeploymentSchema @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: manifest"
+  manifest: SubgraphDeploymentManifest @derivedFrom(field: "schema")
+  "Description for column: manifests"
+  manifests: [SubgraphDeploymentManifest!]! @derivedFrom(field: "schema")
+  "Description for column: schema"
+  schema: String
+}
+
+"Description for table: SubgraphDeploymentManifest"
+type SubgraphDeploymentManifest @entity(immutable: true) {
+  "Description for column: id"
+  id: ID!
+  "Description for column: deployment"
+  deployment: SubgraphDeployment @derivedFrom(field: "manifest")
+  "Description for column: schema"
+  schema: SubgraphDeploymentSchema
+  "Description for column: schemaIpfsHash"
+  schemaIpfsHash: String
+  "Description for column: manifest"
+  manifest: String
+  "Description for column: network"
+  network: String
+  "Description for column: poweredBySubstreams"
+  poweredBySubstreams: Boolean
+  "Description for column: startBlock"
+  startBlock: BigInt
+}
+
+"Description for table: Indexer"
+type Indexer @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: account"
+  account: GraphAccount!
+  "Description for column: url"
+  url: String
+  "Description for column: geoHash"
+  geoHash: String
+  "Description for column: defaultDisplayName"
+  defaultDisplayName: String
+  "Description for column: stakedTokens"
+  stakedTokens: BigInt!
+  "Description for column: allocatedTokens"
+  allocatedTokens: BigInt!
+  "Description for column: unstakedTokens"
+  unstakedTokens: BigInt!
+  "Description for column: lockedTokens"
+  lockedTokens: BigInt!
+  "Description for column: tokensLockedUntil"
+  tokensLockedUntil: Int!
+  "Description for column: allocations"
+  allocations: [Allocation!]! @derivedFrom(field: "activeForIndexer")
+  "Description for column: totalAllocations"
+  totalAllocations: [Allocation!]! @derivedFrom(field: "indexer")
+  "Description for column: allocationCount"
+  allocationCount: Int!
+  "Description for column: totalAllocationCount"
+  totalAllocationCount: BigInt!
+  "Description for column: queryFeesCollected"
+  queryFeesCollected: BigInt!
+  "Description for column: queryFeeRebates"
+  queryFeeRebates: BigInt!
+  "Description for column: rewardsEarned"
+  rewardsEarned: BigInt!
+  "Description for column: indexerIndexingRewards"
+  indexerIndexingRewards: BigInt!
+  "Description for column: delegatorIndexingRewards"
+  delegatorIndexingRewards: BigInt!
+  "Description for column: indexerRewardsOwnGenerationRatio"
+  indexerRewardsOwnGenerationRatio: BigDecimal!
+  "Description for column: transferredToL2"
+  transferredToL2: Boolean!
+  "Description for column: firstTransferredToL2At"
+  firstTransferredToL2At: BigInt
+  "Description for column: firstTransferredToL2AtBlockNumber"
+  firstTransferredToL2AtBlockNumber: BigInt
+  "Description for column: firstTransferredToL2AtTx"
+  firstTransferredToL2AtTx: String
+  "Description for column: lastTransferredToL2At"
+  lastTransferredToL2At: BigInt
+  "Description for column: lastTransferredToL2AtBlockNumber"
+  lastTransferredToL2AtBlockNumber: BigInt
+  "Description for column: lastTransferredToL2AtTx"
+  lastTransferredToL2AtTx: String
+  "Description for column: stakedTokensTransferredToL2"
+  stakedTokensTransferredToL2: BigInt!
+  "Description for column: idOnL2"
+  idOnL2: String
+  "Description for column: idOnL1"
+  idOnL1: String
+  "Description for column: delegatedCapacity"
+  delegatedCapacity: BigInt!
+  "Description for column: tokenCapacity"
+  tokenCapacity: BigInt!
+  "Description for column: availableStake"
+  availableStake: BigInt!
+  "Description for column: delegators"
+  delegators: [DelegatedStake!]! @derivedFrom(field: "indexer")
+  "Description for column: delegatedTokens"
+  delegatedTokens: BigInt!
+  "Description for column: ownStakeRatio"
+  ownStakeRatio: BigDecimal!
+  "Description for column: delegatedStakeRatio"
+  delegatedStakeRatio: BigDecimal!
+  "Description for column: delegatorShares"
+  delegatorShares: BigInt!
+  "Description for column: delegationExchangeRate"
+  delegationExchangeRate: BigDecimal!
+  "Description for column: indexingRewardCut"
+  indexingRewardCut: Int!
+  "Description for column: indexingRewardEffectiveCut"
+  indexingRewardEffectiveCut: BigDecimal!
+  "Description for column: overDelegationDilution"
+  overDelegationDilution: BigDecimal!
+  "Description for column: delegatorQueryFees"
+  delegatorQueryFees: BigInt!
+  "Description for column: queryFeeCut"
+  queryFeeCut: Int!
+  "Description for column: queryFeeEffectiveCut"
+  queryFeeEffectiveCut: BigDecimal!
+  "Description for column: delegatorParameterCooldown"
+  delegatorParameterCooldown: Int!
+  "Description for column: lastDelegationParameterUpdate"
+  lastDelegationParameterUpdate: Int!
+  "Description for column: forcedClosures"
+  forcedClosures: Int!
+  "Description for column: totalReturn"
+  totalReturn: BigDecimal!
+  "Description for column: annualizedReturn"
+  annualizedReturn: BigDecimal!
+  "Description for column: stakingEfficiency"
+  stakingEfficiency: BigDecimal!
+}
+
+"Description for table: Allocation"
+type Allocation @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: indexer"
+  indexer: Indexer!
+  "Description for column: creator"
+  creator: Bytes!
+  "Description for column: activeForIndexer"
+  activeForIndexer: Indexer
+  "Description for column: subgraphDeployment"
+  subgraphDeployment: SubgraphDeployment!
+  "Description for column: allocatedTokens"
+  allocatedTokens: BigInt!
+  "Description for column: effectiveAllocation"
+  effectiveAllocation: BigInt!
+  "Description for column: createdAtEpoch"
+  createdAtEpoch: Int!
+  "Description for column: createdAtBlockHash"
+  createdAtBlockHash: Bytes!
+  "Description for column: createdAtBlockNumber"
+  createdAtBlockNumber: Int!
+  "Description for column: closedAtEpoch"
+  closedAtEpoch: Int
+  "Description for column: closedAtBlockHash"
+  closedAtBlockHash: Bytes
+  "Description for column: closedAtBlockNumber"
+  closedAtBlockNumber: Int
+  "Description for column: queryFeesCollected"
+  queryFeesCollected: BigInt!
+  "Description for column: queryFeeRebates"
+  queryFeeRebates: BigInt!
+  "Description for column: distributedRebates"
+  distributedRebates: BigInt!
+  "Description for column: curatorRewards"
+  curatorRewards: BigInt!
+  "Description for column: indexingRewards"
+  indexingRewards: BigInt!
+  "Description for column: indexingIndexerRewards"
+  indexingIndexerRewards: BigInt!
+  "Description for column: indexingDelegatorRewards"
+  indexingDelegatorRewards: BigInt!
+  "Description for column: poolClosedIn"
+  poolClosedIn: Pool
+  "Description for column: delegationFees"
+  delegationFees: BigInt!
+  "Description for column: status"
+  status: AllocationStatus!
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: closedAt"
+  closedAt: Int
+  "Description for column: poi"
+  poi: Bytes
+  "Description for column: indexingRewardCutAtStart"
+  indexingRewardCutAtStart: Int!
+  "Description for column: indexingRewardEffectiveCutAtStart"
+  indexingRewardEffectiveCutAtStart: BigDecimal!
+  "Description for column: queryFeeCutAtStart"
+  queryFeeCutAtStart: Int!
+  "Description for column: queryFeeEffectiveCutAtStart"
+  queryFeeEffectiveCutAtStart: BigDecimal!
+  "Description for column: indexingRewardCutAtClose"
+  indexingRewardCutAtClose: Int
+  "Description for column: indexingRewardEffectiveCutAtClose"
+  indexingRewardEffectiveCutAtClose: BigDecimal
+  "Description for column: queryFeeCutAtClose"
+  queryFeeCutAtClose: Int
+  "Description for column: queryFeeEffectiveCutAtClose"
+  queryFeeEffectiveCutAtClose: BigDecimal
+  "Description for column: totalReturn"
+  totalReturn: BigDecimal!
+  "Description for column: annualizedReturn"
+  annualizedReturn: BigDecimal!
+}
+
+"Description for enum type: AllocationStatus"
+enum AllocationStatus {
+  "Description for column: Null"
+  Null
+  "Description for column: Active"
+  Active
+  "Description for column: Closed"
+  Closed
+  "Description for column: Finalized"
+  Finalized
+  "Description for column: Claimed"
+  Claimed
+}
+
+"Description for table: Pool"
+type Pool @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: allocation"
+  allocation: BigInt!
+  "Description for column: totalQueryFees"
+  totalQueryFees: BigInt!
+  "Description for column: claimedFees"
+  claimedFees: BigInt!
+  "Description for column: curatorRewards"
+  curatorRewards: BigInt!
+  "Description for column: closedAllocations"
+  closedAllocations: [Allocation!]! @derivedFrom(field: "poolClosedIn")
+}
+
+"Description for table: Delegator"
+type Delegator @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: account"
+  account: GraphAccount!
+  "Description for column: stakes"
+  stakes: [DelegatedStake!]! @derivedFrom(field: "delegator")
+  "Description for column: totalStakedTokens"
+  totalStakedTokens: BigInt!
+  "Description for column: totalUnstakedTokens"
+  totalUnstakedTokens: BigInt!
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: totalRealizedRewards"
+  totalRealizedRewards: BigDecimal!
+  "Description for column: stakesCount"
+  stakesCount: Int!
+  "Description for column: activeStakesCount"
+  activeStakesCount: Int!
+  "Description for column: defaultDisplayName"
+  defaultDisplayName: String
+}
+
+"Description for table: DelegatedStake"
+type DelegatedStake @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: indexer"
+  indexer: Indexer!
+  "Description for column: delegator"
+  delegator: Delegator!
+  "Description for column: stakedTokens"
+  stakedTokens: BigInt!
+  "Description for column: unstakedTokens"
+  unstakedTokens: BigInt!
+  "Description for column: lockedTokens"
+  lockedTokens: BigInt!
+  "Description for column: lockedUntil"
+  lockedUntil: Int!
+  "Description for column: shareAmount"
+  shareAmount: BigInt!
+  "Description for column: personalExchangeRate"
+  personalExchangeRate: BigDecimal!
+  "Description for column: realizedRewards"
+  realizedRewards: BigDecimal!
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: lastDelegatedAt"
+  lastDelegatedAt: Int
+  "Description for column: lastUndelegatedAt"
+  lastUndelegatedAt: Int
+  "Description for column: transferredToL2"
+  transferredToL2: Boolean!
+  "Description for column: transferredToL2At"
+  transferredToL2At: BigInt
+  "Description for column: transferredToL2AtBlockNumber"
+  transferredToL2AtBlockNumber: BigInt
+  "Description for column: transferredToL2AtTx"
+  transferredToL2AtTx: String
+  "Description for column: stakedTokensTransferredToL2"
+  stakedTokensTransferredToL2: BigInt!
+  "Description for column: idOnL2"
+  idOnL2: String
+  "Description for column: idOnL1"
+  idOnL1: String
+}
+
+"Description for table: Curator"
+type Curator @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: account"
+  account: GraphAccount!
+  "Description for column: totalSignalledTokens"
+  totalSignalledTokens: BigInt!
+  "Description for column: totalUnsignalledTokens"
+  totalUnsignalledTokens: BigInt!
+  "Description for column: signals"
+  signals: [Signal!]! @derivedFrom(field: "curator")
+  "Description for column: defaultDisplayName"
+  defaultDisplayName: String
+  "Description for column: totalNameSignalledTokens"
+  totalNameSignalledTokens: BigInt!
+  "Description for column: totalNameUnsignalledTokens"
+  totalNameUnsignalledTokens: BigInt!
+  "Description for column: totalWithdrawnTokens"
+  totalWithdrawnTokens: BigInt!
+  "Description for column: nameSignals"
+  nameSignals: [NameSignal!]! @derivedFrom(field: "curator")
+  "Description for column: realizedRewards"
+  realizedRewards: BigInt!
+  "Description for column: annualizedReturn"
+  annualizedReturn: BigDecimal!
+  "Description for column: totalReturn"
+  totalReturn: BigDecimal!
+  "Description for column: signalingEfficiency"
+  signalingEfficiency: BigDecimal!
+  "Description for column: totalNameSignal"
+  totalNameSignal: BigDecimal!
+  "Description for column: totalNameSignalAverageCostBasis"
+  totalNameSignalAverageCostBasis: BigDecimal!
+  "Description for column: totalAverageCostBasisPerNameSignal"
+  totalAverageCostBasisPerNameSignal: BigDecimal!
+  "Description for column: totalSignal"
+  totalSignal: BigDecimal!
+  "Description for column: totalSignalAverageCostBasis"
+  totalSignalAverageCostBasis: BigDecimal!
+  "Description for column: totalAverageCostBasisPerSignal"
+  totalAverageCostBasisPerSignal: BigDecimal!
+  "Description for column: signalCount"
+  signalCount: Int!
+  "Description for column: activeSignalCount"
+  activeSignalCount: Int!
+  "Description for column: nameSignalCount"
+  nameSignalCount: Int!
+  "Description for column: activeNameSignalCount"
+  activeNameSignalCount: Int!
+  "Description for column: combinedSignalCount"
+  combinedSignalCount: Int!
+  "Description for column: activeCombinedSignalCount"
+  activeCombinedSignalCount: Int!
+}
+
+"Description for table: Signal"
+type Signal @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: curator"
+  curator: Curator!
+  "Description for column: subgraphDeployment"
+  subgraphDeployment: SubgraphDeployment!
+  "Description for column: signalledTokens"
+  signalledTokens: BigInt!
+  "Description for column: unsignalledTokens"
+  unsignalledTokens: BigInt!
+  "Description for column: signal"
+  signal: BigInt!
+  "Description for column: averageCostBasis"
+  averageCostBasis: BigDecimal!
+  "Description for column: averageCostBasisPerSignal"
+  averageCostBasisPerSignal: BigDecimal!
+  "Description for column: lastSignalChange"
+  lastSignalChange: Int!
+  "Description for column: realizedRewards"
+  realizedRewards: BigInt!
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: lastUpdatedAt"
+  lastUpdatedAt: Int!
+  "Description for column: createdAtBlock"
+  createdAtBlock: Int!
+  "Description for column: lastUpdatedAtBlock"
+  lastUpdatedAtBlock: Int!
+}
+
+"Description for table: NameSignal"
+type NameSignal @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: curator"
+  curator: Curator!
+  "Description for column: subgraph"
+  subgraph: Subgraph!
+  "Description for column: signalledTokens"
+  signalledTokens: BigInt!
+  "Description for column: unsignalledTokens"
+  unsignalledTokens: BigInt!
+  "Description for column: withdrawnTokens"
+  withdrawnTokens: BigInt!
+  "Description for column: nameSignal"
+  nameSignal: BigInt!
+  "Description for column: signal"
+  signal: BigDecimal!
+  "Description for column: signalledTokensSentToL2"
+  signalledTokensSentToL2: BigInt!
+  "Description for column: signalledTokensReceivedOnL2"
+  signalledTokensReceivedOnL2: BigInt!
+  "Description for column: transferredToL2"
+  transferredToL2: Boolean!
+  "Description for column: transferredToL2At"
+  transferredToL2At: BigInt
+  "Description for column: transferredToL2AtBlockNumber"
+  transferredToL2AtBlockNumber: BigInt
+  "Description for column: transferredToL2AtTx"
+  transferredToL2AtTx: String
+  "Description for column: idOnL2"
+  idOnL2: String
+  "Description for column: idOnL1"
+  idOnL1: String
+  "Description for column: lastNameSignalChange"
+  lastNameSignalChange: Int!
+  "Description for column: realizedRewards"
+  realizedRewards: BigInt!
+  "Description for column: averageCostBasis"
+  averageCostBasis: BigDecimal!
+  "Description for column: averageCostBasisPerSignal"
+  averageCostBasisPerSignal: BigDecimal!
+  "Description for column: nameSignalAverageCostBasis"
+  nameSignalAverageCostBasis: BigDecimal!
+  "Description for column: nameSignalAverageCostBasisPerSignal"
+  nameSignalAverageCostBasisPerSignal: BigDecimal!
+  "Description for column: signalAverageCostBasis"
+  signalAverageCostBasis: BigDecimal!
+  "Description for column: signalAverageCostBasisPerSignal"
+  signalAverageCostBasisPerSignal: BigDecimal!
+  "Description for column: entityVersion"
+  entityVersion: Int!
+  "Description for column: linkedEntity"
+  linkedEntity: NameSignal
+}
+
+"Description for table: NameSignalSubgraphRelation"
+type NameSignalSubgraphRelation @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: nameSignal"
+  nameSignal: NameSignal!
+  "Description for column: subgraph"
+  subgraph: Subgraph!
+}
+
+"Description for table: Dispute"
+type Dispute @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: subgraphDeployment"
+  subgraphDeployment: SubgraphDeployment!
+  "Description for column: fisherman"
+  fisherman: GraphAccount!
+  "Description for column: deposit"
+  deposit: BigInt!
+  "Description for column: createdAt"
+  createdAt: Int!
+  "Description for column: closedAt"
+  closedAt: Int!
+  "Description for column: status"
+  status: DisputeStatus!
+  "Description for column: tokensSlashed"
+  tokensSlashed: BigDecimal!
+  "Description for column: tokensBurned"
+  tokensBurned: BigDecimal!
+  "Description for column: tokensRewarded"
+  tokensRewarded: BigInt!
+  "Description for column: type"
+  type: DisputeType!
+  "Description for column: indexer"
+  indexer: GraphAccount!
+  "Description for column: attestation"
+  attestation: Attestation
+  "Description for column: linkedDispute"
+  linkedDispute: Dispute
+  "Description for column: allocation"
+  allocation: Allocation
+}
+
+"Description for table: Attestation"
+type Attestation @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: subgraphDeployment"
+  subgraphDeployment: SubgraphDeployment!
+  "Description for column: requestCID"
+  requestCID: String!
+  "Description for column: responseCID"
+  responseCID: String!
+  "Description for column: gasUsed"
+  gasUsed: BigInt
+  "Description for column: responseNumBytes"
+  responseNumBytes: BigInt
+  "Description for column: v"
+  v: Int!
+  "Description for column: r"
+  r: String!
+  "Description for column: s"
+  s: String!
+}
+
+"Description for enum type: DisputeType"
+enum DisputeType {
+  "Description for column: SingleQuery"
+  SingleQuery
+  "Description for column: Conflicting"
+  Conflicting
+  "Description for column: Indexing"
+  Indexing
+}
+
+"Description for enum type: DisputeStatus"
+enum DisputeStatus {
+  "Description for column: Undecided"
+  Undecided
+  "Description for column: Accepted"
+  Accepted
+  "Description for column: Rejected"
+  Rejected
+  "Description for column: Draw"
+  Draw
+}
+
+"Description for table: Epoch"
+type Epoch @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: startBlock"
+  startBlock: Int!
+  "Description for column: endBlock"
+  endBlock: Int!
+  "Description for column: signalledTokens"
+  signalledTokens: BigInt!
+  "Description for column: stakeDeposited"
+  stakeDeposited: BigInt!
+  "Description for column: totalQueryFees"
+  totalQueryFees: BigInt!
+  "Description for column: taxedQueryFees"
+  taxedQueryFees: BigInt!
+  "Description for column: queryFeesCollected"
+  queryFeesCollected: BigInt!
+  "Description for column: curatorQueryFees"
+  curatorQueryFees: BigInt!
+  "Description for column: queryFeeRebates"
+  queryFeeRebates: BigInt!
+  "Description for column: totalRewards"
+  totalRewards: BigInt!
+  "Description for column: totalIndexerRewards"
+  totalIndexerRewards: BigInt!
+  "Description for column: totalDelegatorRewards"
+  totalDelegatorRewards: BigInt!
+}
+
+"Description for column: Epoch"
+interface Transaction {
+  "Description for column: id"
+  id: ID!
+  "Description for column: blockNumber"
+  blockNumber: Int!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: signer"
+  signer: GraphAccount!
+  "Description for column: type"
+  type: TransactionType!
+}
+
+"Description for table: NameSignalTransaction"
+type NameSignalTransaction implements Transaction @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: blockNumber"
+  blockNumber: Int!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: signer"
+  signer: GraphAccount!
+  "Description for column: type"
+  type: TransactionType!
+  "Description for column: nameSignal"
+  nameSignal: BigInt!
+  "Description for column: versionSignal"
+  versionSignal: BigInt!
+  "Description for column: tokens"
+  tokens: BigInt!
+  "Description for column: subgraph"
+  subgraph: Subgraph!
+}
+
+"Description for table: SignalTransaction"
+type SignalTransaction implements Transaction @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: blockNumber"
+  blockNumber: Int!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: signer"
+  signer: GraphAccount!
+  "Description for column: type"
+  type: TransactionType!
+  "Description for column: signal"
+  signal: BigInt!
+  "Description for column: tokens"
+  tokens: BigInt!
+  "Description for column: subgraphDeployment"
+  subgraphDeployment: SubgraphDeployment!
+  "Description for column: withdrawalFees"
+  withdrawalFees: BigInt!
+}
+
+"Description for table: BridgeWithdrawalTransaction"
+type BridgeWithdrawalTransaction implements Transaction @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: blockNumber"
+  blockNumber: Int!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: signer"
+  signer: GraphAccount!
+  "Description for column: type"
+  type: TransactionType!
+  "Description for column: txHash"
+  txHash: Bytes
+  "Description for column: from"
+  from: Bytes
+  "Description for column: to"
+  to: Bytes
+  "Description for column: amount"
+  amount: BigInt
+  "Description for column: l1Token"
+  l1Token: Bytes
+  "Description for column: transactionIndex"
+  transactionIndex: BigInt
+}
+
+"Description for table: BridgeDepositTransaction"
+type BridgeDepositTransaction implements Transaction @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: blockNumber"
+  blockNumber: Int!
+  "Description for column: timestamp"
+  timestamp: Int!
+  "Description for column: signer"
+  signer: GraphAccount!
+  "Description for column: type"
+  type: TransactionType!
+  "Description for column: txHash"
+  txHash: Bytes!
+  "Description for column: from"
+  from: Bytes
+  "Description for column: to"
+  to: Bytes
+  "Description for column: amount"
+  amount: BigInt
+  "Description for column: l1Token"
+  l1Token: Bytes
+  "Description for column: retryableTicketId"
+  retryableTicketId: String
+  "Description for column: routed"
+  routed: Boolean
+}
+
+"Description for table: RetryableTicket"
+type RetryableTicket @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: txHash"
+  txHash: Bytes
+  "Description for column: redeemAttempts"
+  redeemAttempts: [RetryableTicketRedeemAttempt!]! @derivedFrom(field: "ticketId")
+  "Description for column: redeemCount"
+  redeemCount: Int
+}
+
+"Description for table: RetryableTicketRedeemAttempt"
+type RetryableTicketRedeemAttempt @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: ticketId"
+  ticketId: RetryableTicket!
+  "Description for column: txHash"
+  txHash: Bytes
+  "Description for column: sequenceNumber"
+  sequenceNumber: Int
+}
+
+"Description for enum type: TransactionType"
+enum TransactionType {
+  "Description for column: Stake"
+  Stake
+  "Description for column: Unstake"
+  Unstake
+  "Description for column: MintSignal"
+  MintSignal
+  "Description for column: BurnSignal"
+  BurnSignal
+  "Description for column: MintNSignal"
+  MintNSignal
+  "Description for column: BurnNSignal"
+  BurnNSignal
+  "Description for column: BridgeWithdrawal"
+  BridgeWithdrawal
+  "Description for column: BridgeDeposit"
+  BridgeDeposit
+}
+
+"Description for table: TokenManager"
+type TokenManager @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: masterCopy"
+  masterCopy: Bytes!
+  "Description for column: tokens"
+  tokens: BigInt!
+  "Description for column: tokenDestinations"
+  tokenDestinations: [Bytes!]
+  "Description for column: authorizedFunctions"
+  authorizedFunctions: [AuthorizedFunction!] @derivedFrom(field: "manager")
+  "Description for column: tokenLockCount"
+  tokenLockCount: BigInt!
+}
+
+"Description for table: AuthorizedFunction"
+type AuthorizedFunction @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: target"
+  target: Bytes!
+  "Description for column: sigHash"
+  sigHash: Bytes!
+  "Description for column: manager"
+  manager: TokenManager!
+}
+
+"Description for table: TokenLockWallet"
+type TokenLockWallet @entity {
+  "Description for column: id"
+  id: ID!
+  "Description for column: manager"
+  manager: Bytes!
+  "Description for column: initHash"
+  initHash: Bytes!
+  "Description for column: beneficiary"
+  beneficiary: Bytes!
+  "Description for column: token"
+  token: Bytes!
+  "Description for column: managedAmount"
+  managedAmount: BigInt!
+  "Description for column: startTime"
+  startTime: BigInt!
+  "Description for column: endTime"
+  endTime: BigInt!
+  "Description for column: periods"
+  periods: BigInt!
+  "Description for column: releaseStartTime"
+  releaseStartTime: BigInt!
+  "Description for column: vestingCliffTime"
+  vestingCliffTime: BigInt!
+  "Description for column: revocable"
+  revocable: Revocability
+  "Description for column: tokenDestinationsApproved"
+  tokenDestinationsApproved: Boolean!
+  "Description for column: tokensReleased"
+  tokensReleased: BigInt!
+  "Description for column: tokensWithdrawn"
+  tokensWithdrawn: BigInt!
+  "Description for column: tokensRevoked"
+  tokensRevoked: BigInt!
+  "Description for column: blockNumberCreated"
+  blockNumberCreated: BigInt!
+  "Description for column: txHash"
+  txHash: Bytes!
+}
+
+"Description for enum type: Revocability"
+enum Revocability {
+  "Description for column: NotSet"
+  NotSet
+  "Description for column: Enabled"
+  Enabled
+  "Description for column: Disabled"
+  Disabled
+}
+
+"Description for table: _Schema_"
+type _Schema_ @fulltext(name: "subgraphMetadataSearch", language: en, algorithm: rank, include: [{entity: "SubgraphMeta", fields: [{name: "displayName"}, {name: "description"}]}]) @fulltext(name: "curatorSearch", language: en, algorithm: rank, include: [{entity: "Curator", fields: [{name: "defaultDisplayName"}, {name: "id"}]}]) @fulltext(name: "delegatorSearch", language: en, algorithm: rank, include: [{entity: "Delegator", fields: [{name: "defaultDisplayName"}, {name: "id"}]}])
