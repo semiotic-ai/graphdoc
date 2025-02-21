@@ -158,7 +158,7 @@ class DocGeneratorPrompt(SinglePrompt):
     def evaluate_metric(
         self, example: dspy.Example, prediction: dspy.Prediction, trace=None
     ) -> Any:
-        pass
+        return self.evaluate_documentation_quality(example, prediction, trace)
 
     def format_metric(
         self,
