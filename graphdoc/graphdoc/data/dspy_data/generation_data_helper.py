@@ -32,14 +32,14 @@ class GenerationDataHelper(DspyDataHelper):
         return dspy.Example(
             database_schema=inputs.get("database_schema", ""),
             documented_schema=inputs.get("documented_schema", ""),
-        )
+        ).with_inputs("database_schema")
 
     @staticmethod
     def example_example(inputs: dict[str, Any] = {}) -> dspy.Example:
         return dspy.Example(
             database_schema=inputs.get("database_schema", "test database schema"),
             documented_schema=inputs.get("documented_schema", "test documented schema"),
-        )
+        ).with_inputs("database_schema")
 
     @staticmethod
     def prediction(inputs: dict[str, Any]) -> dspy.Prediction:

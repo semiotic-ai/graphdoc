@@ -36,7 +36,7 @@ class QualityDataHelper(DspyDataHelper):
             database_schema=inputs.get("database_schema", ""),
             category=inputs.get("category", ""),
             rating=inputs.get("rating", 0),
-        )
+        ).with_inputs("database_schema")
 
     @staticmethod
     def example_example(inputs: dict[str, Any] = {}) -> dspy.Example:
@@ -44,7 +44,7 @@ class QualityDataHelper(DspyDataHelper):
             database_schema=inputs.get("database_schema", "test database schema"),
             category=inputs.get("category", "perfect"),
             rating=inputs.get("rating", 4),
-        )
+        ).with_inputs("database_schema")
 
     @staticmethod
     def prediction(inputs: dict[str, Any]) -> dspy.Prediction:
