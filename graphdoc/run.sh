@@ -24,7 +24,7 @@ lint_command() {
 }
 
 test_command() {
-    poetry run pytest -p no:warnings
+    poetry run pytest --testmon -p no:warnings
 }
 
 commit_command() {

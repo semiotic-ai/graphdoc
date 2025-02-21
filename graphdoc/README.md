@@ -17,3 +17,9 @@ chmod +x run.sh
 # install dependencies (including dev dependencies)
 ./run.sh dev # use `./run.sh install` to install dependencies excluding dev dependencies
 ```
+
+### Future Work
+
+- [ ] Add [pytest-watch](https://github.com/joeyespo/pytest-watch) to dev dependencies
+
+While there could be some benefit of using something such as [vcrpy]([text](https://github.com/kevin1024/vcrpy?tab=readme-ov-file)), we are going to get a majority of our benefit from using [pytest-testmon]([text](https://github.com/joeyespo/pytest-watch)). Once we start adding more compute intensive tests and functionality (like having a test for optimization runs), we will want to consider using `vcrpy`, or better caching for reproducibility.
