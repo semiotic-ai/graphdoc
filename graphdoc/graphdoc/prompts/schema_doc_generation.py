@@ -97,7 +97,7 @@ def doc_gen_factory(
     if isinstance(key, dspy.Signature) or isinstance(key, dspy.SignatureMeta):
         return key
     factory = {
-        "zero_shot_doc_gen": DocGeneratorSignature,
+        "base_doc_gen": DocGeneratorSignature,
         "doc_gen_helper": DocGeneratorHelperSignature,
         "bad_doc_gen": BadDocGeneratorSignature,
     }
@@ -113,7 +113,7 @@ def doc_gen_factory(
 class DocGeneratorPrompt(SinglePrompt):
     def __init__(
         self,
-        prompt: Union[dspy.Signature, dspy.SignatureMeta],
+        prompt: Union[str, dspy.Signature, dspy.SignatureMeta],
         prompt_type: Union[Literal["predict", "chain_of_thought"], Callable],
         prompt_metric: DocQualityPrompt,
     ) -> None:
@@ -155,24 +155,24 @@ class DocGeneratorPrompt(SinglePrompt):
     #######################
     # Abstract Methods    #
     #######################
-    # def evaluate_metric(
-    #     self, example: dspy.Example, prediction: dspy.Prediction, trace=None
-    # ) -> Any:
-    #     pass
+    def evaluate_metric(
+        self, example: dspy.Example, prediction: dspy.Prediction, trace=None
+    ) -> Any:
+        pass
 
-    # def format_metric(
-    #     self,
-    #     examples: List[dspy.Example],
-    #     overall_score: float,
-    #     results: List,
-    #     scores: List,
-    # ) -> Dict[str, Any]:
-    #     pass
+    def format_metric(
+        self,
+        examples: List[dspy.Example],
+        overall_score: float,
+        results: List,
+        scores: List,
+    ) -> Dict[str, Any]:
+        pass
 
-    # def compare_metrics(
-    #     self,
-    #     base_metrics: Any,
-    #     optimized_metrics: Any,
-    #     comparison_value: str = "overall_score",
-    # ) -> bool:
-    #     pass
+    def compare_metrics(
+        self,
+        base_metrics: Any,
+        optimized_metrics: Any,
+        comparison_value: str = "overall_score",
+    ) -> bool:
+        pass
