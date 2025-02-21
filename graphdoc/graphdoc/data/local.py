@@ -23,6 +23,7 @@ from datasets import Dataset, concatenate_datasets
 # logging
 log = logging.getLogger(__name__)
 
+
 # TODO: we can make this a base class to enable better separation of our enum values and set up a factory pattern so that everything can be defined at the config level
 # check out how pytorch etc. handles loading in something like imagenet
 class LocalDataHelper:

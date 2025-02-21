@@ -128,6 +128,7 @@ class DocQualityPrompt(SinglePrompt):
             prompt_type=prompt_type,
             prompt_metric=prompt_metric,
         )
+
     #######################
     # Internal Methods    #
     #######################
