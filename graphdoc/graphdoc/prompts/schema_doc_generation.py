@@ -155,24 +155,24 @@ class DocGeneratorPrompt(SinglePrompt):
     #######################
     # Abstract Methods    #
     #######################
-    def evaluate_metric(
-        self, example: dspy.Example, prediction: dspy.Prediction, trace=None
-    ) -> Any:
-        pass
+    # def evaluate_metric(
+    #     self, example: dspy.Example, prediction: dspy.Prediction, trace=None
+    # ) -> Any:
+    #     pass
 
-    def format_metric(
-        self,
-        examples: List[dspy.Example],
-        overall_score: float,
-        results: List,
-        scores: List,
-    ) -> Dict[str, Any]:
-        pass
+    # def format_metric(
+    #     self,
+    #     examples: List[dspy.Example],
+    #     overall_score: float,
+    #     results: List,
+    #     scores: List,
+    # ) -> Dict[str, Any]:
+    #     pass
 
-    def compare_metrics(
-        self,
-        base_metrics: Any,
-        optimized_metrics: Any,
-        comparison_value: str = "overall_score",
-    ) -> bool:
-        pass
+    # def compare_metrics(
+    #     self,
+    #     base_metrics: Any,
+    #     optimized_metrics: Any,
+    #     comparison_value: str = "overall_score",
+    # ) -> bool:
+    #     pass
