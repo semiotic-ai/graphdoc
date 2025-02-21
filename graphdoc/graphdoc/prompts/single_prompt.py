@@ -20,6 +20,7 @@ class SinglePrompt(ABC):
         prompt: Union[dspy.Signature, dspy.SignatureMeta],
         prompt_type: Union[Literal["predict", "chain_of_thought"], Callable],
         prompt_metric: Any,
+        # TODO: we should consider adding a DspyDataHelper object here for convenience and tighter coupling
     ) -> None:
         """
         Initialize a single prompt.
