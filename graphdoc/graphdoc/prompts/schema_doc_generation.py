@@ -130,6 +130,20 @@ class DocGeneratorPrompt(SinglePrompt):
     def evaluate_documentation_quality(
         self, schema: dspy.Example, pred: dspy.Prediction, trace=None, scalar=True
     ) -> int:
+        """
+        Evaluate the quality of the documentation. Utilizes the instantiated metric type to evaluate the quality of the documentation.
+
+        :param schema: The schema to evaluate the documentation for.
+        :type schema: dspy.Example
+        :param pred: The predicted documentation.
+        :type pred: dspy.Prediction
+        :param trace: The trace of the prediction.
+        :type trace: Any
+        :param scalar: Whether to return a squared score or the full evaluation object.
+        :type scalar: bool
+        :return: The squared score or the full evaluation object.
+        :rtype: int
+        """
         try:
             gold_schema = parse(schema.database_schema)
             pred_schema = parse(pred.documented_schema)
@@ -150,7 +164,7 @@ class DocGeneratorPrompt(SinglePrompt):
         if scalar:
             return evaluation.rating**2
         else:
-            return evaluation
+            return evaluation.rating
 
     #######################
     # Abstract Methods    #
@@ -167,7 +181,24 @@ class DocGeneratorPrompt(SinglePrompt):
         results: List,
         scores: List,
     ) -> Dict[str, Any]:
-        pass
+        """
+        Format the metric results into a dictionary.
+
+        :param examples: The examples used to evaluate the metric.
+        :type examples: List[dspy.Example]
+        :param overall_score: The overall score of the metric.
+        :type overall_score: float
+        :param results: The results of the metric.
+        :type results: List
+        :param scores: The scores of the metric.
+        :type scores: List
+        """
+        # TODO: we can expand this to further parse out the results and scores
+        return {
+            "overall_score": overall_score,
+            "scores": scores,
+            "results": results,
+        }
 
     def compare_metrics(
         self,
@@ -175,4 +206,14 @@ class DocGeneratorPrompt(SinglePrompt):
         optimized_metrics: Any,
         comparison_value: str = "overall_score",
     ) -> bool:
-        pass
+        """
+        Compare the base and optimized metrics.
+
+        :param base_metrics: The base metrics.
+        :type base_metrics: Any
+        :param optimized_metrics: The optimized metrics.
+        """
+        if comparison_value == "overall_score":
+            return optimized_metrics.get("overall_score", 0) > base_metrics.get("overall_score", 0)
+        else:
+            raise ValueError(f"Invalid comparison value: {comparison_value}")
