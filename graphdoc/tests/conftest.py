@@ -8,6 +8,7 @@ from pathlib import Path
 from graphdoc import Parser
 from graphdoc import GraphDoc
 from graphdoc import LocalDataHelper
+from graphdoc import DocGeneratorPrompt, DocQualityPrompt
 
 # external packages
 from pytest import fixture
@@ -76,4 +77,17 @@ def gd() -> GraphDoc:
             "api_key": os.getenv("OPENAI_API_KEY"),
             "cache": True,
         }
+    )
+
+
+@fixture
+def dgp():
+    return DocGeneratorPrompt(
+        prompt="base_doc_gen",
+        prompt_type="chain_of_thought",
+        prompt_metric=DocQualityPrompt(
+            prompt="doc_quality",
+            prompt_type="predict",
+            prompt_metric="rating",
+        ),
     )

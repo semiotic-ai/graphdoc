@@ -214,6 +214,8 @@ class DocGeneratorPrompt(SinglePrompt):
         :param optimized_metrics: The optimized metrics.
         """
         if comparison_value == "overall_score":
-            return optimized_metrics.get("overall_score", 0) > base_metrics.get("overall_score", 0)
+            return optimized_metrics.get("overall_score", 0) > base_metrics.get(
+                "overall_score", 0
+            )
         else:
             raise ValueError(f"Invalid comparison value: {comparison_value}")

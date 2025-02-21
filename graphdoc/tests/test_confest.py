@@ -8,6 +8,7 @@ from pathlib import Path
 from graphdoc import Parser
 from graphdoc import GraphDoc
 from graphdoc import LocalDataHelper
+from graphdoc import DocGeneratorPrompt, DocQualityPrompt
 from .conftest import (
     OverwriteSchemaCategory,
     OverwriteSchemaRating,
@@ -45,3 +46,8 @@ class TestFixtures:
     def test_gd(self, gd: GraphDoc):
         assert gd is not None
         assert isinstance(gd, GraphDoc)
+
+    def test_dgp(self, dgp):
+        assert isinstance(dgp, DocGeneratorPrompt)
+        assert dgp.prompt_type == "chain_of_thought"
+        assert isinstance(dgp.prompt_metric, DocQualityPrompt)
