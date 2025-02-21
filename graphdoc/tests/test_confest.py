@@ -6,6 +6,7 @@ from pathlib import Path
 
 # internal packages
 from graphdoc import Parser
+from graphdoc import GraphDoc
 from graphdoc import LocalDataHelper
 from .conftest import (
     OverwriteSchemaCategory,
@@ -40,3 +41,7 @@ class TestFixtures:
             overwrite_ldh.categories_ratings
             == OverwriteSchemaCategoryRatingMapping.get_rating
         )
+
+    def test_gd(self, gd: GraphDoc):
+        assert gd is not None
+        assert isinstance(gd, GraphDoc)
