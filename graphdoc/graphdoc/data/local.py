@@ -24,9 +24,11 @@ from datasets import Dataset, concatenate_datasets
 log = logging.getLogger(__name__)
 
 
+# TODO: we can make this a base class to enable better separation of our enum values and set up a factory pattern so that everything can be defined at the config level
+# check out how pytorch etc. handles loading in something like imagenet
 class LocalDataHelper:
     """
-    A helper class for loading data from a local directory.
+    A helper class for loading data from a directory.
 
     :param schema_directory_path: The path to the directory containing the schemas
     :type schema_directory_path: Union[str, Path]. Defaults to the path to the schemas in the graphdoc package.
@@ -45,6 +47,7 @@ class LocalDataHelper:
         categories: Type[Enum] = SchemaCategory,
         ratings: Type[Enum] = SchemaRating,
         categories_ratings: Callable = SchemaCategoryRatingMapping.get_rating,
+        # TODO: potentially add a category_path object here (defaulting to SchemaCategoryPath)
     ):
         if schema_directory_path:
             check_directory_path(schema_directory_path)
@@ -199,7 +202,7 @@ class LocalDataHelper:
         :type folder_paths: Type[Enum]
         :param parse_objects: Whether to parse the objects from the schemas
         :type parse_objects: bool
-        :param type_mapping: A dictionary mapping types to strings
+        :param type_mapping: A dictionary mapping graphql-ast node values to strings
         """
         schema_objects = self.schema_objects_from_folder_of_folders(
             folder_paths=folder_paths

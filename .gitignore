@@ -169,3 +169,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Ignore the testmon files
+.testmondata
+.testmondata-shm 
+.testmondata-wal

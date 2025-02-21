@@ -6,7 +6,9 @@ from pathlib import Path
 
 # internal packages
 from graphdoc import Parser
+from graphdoc import GraphDoc
 from graphdoc import LocalDataHelper
+from graphdoc import DocGeneratorPrompt, DocQualityPrompt
 
 # external packages
 from pytest import fixture
@@ -14,6 +16,9 @@ from dotenv import load_dotenv
 
 # logging
 log = logging.getLogger(__name__)
+
+# load environment variables
+load_dotenv("../../.env")
 
 
 # global variables
@@ -64,22 +69,25 @@ def overwrite_ldh() -> LocalDataHelper:
     )
 
 
-class TestFixtures:
+@fixture
+def gd() -> GraphDoc:
+    return GraphDoc(
+        model_args={
+            "model": "gpt-4o-mini",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+            "cache": True,
+        }
+    )
 
-    def test_parser(self, par: Parser):
-        assert par is not None
-        assert isinstance(par, Parser)
 
-    def test_default_ldh(self, default_ldh: LocalDataHelper):
-        assert default_ldh is not None
-        assert isinstance(default_ldh, LocalDataHelper)
-
-    def test_overwrite_ldh(self, overwrite_ldh: LocalDataHelper):
-        assert overwrite_ldh is not None
-        assert isinstance(overwrite_ldh, LocalDataHelper)
-        assert overwrite_ldh.categories == OverwriteSchemaCategory
-        assert overwrite_ldh.ratings == OverwriteSchemaRating
-        assert (
-            overwrite_ldh.categories_ratings
-            == OverwriteSchemaCategoryRatingMapping.get_rating
-        )
+@fixture
+def dgp():
+    return DocGeneratorPrompt(
+        prompt="base_doc_gen",
+        prompt_type="chain_of_thought",
+        prompt_metric=DocQualityPrompt(
+            prompt="doc_quality",
+            prompt_type="predict",
+            prompt_metric="rating",
+        ),
+    )

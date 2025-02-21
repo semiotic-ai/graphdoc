@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>graphdoc.data.schema &mdash; GraphDoc 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            GraphDoc
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GraphDoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">graphdoc.data.schema</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for graphdoc.data.schema</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This file is used for defining our schema data class.</span>
+
+<span class="c1"># system packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">enum</span><span class="w"> </span><span class="kn">import</span> <span class="n">Enum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Type</span>
+
+<span class="c1"># internal packages</span>
+
+<span class="c1"># external packages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphql</span><span class="w"> </span><span class="kn">import</span> <span class="n">Node</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Features</span><span class="p">,</span> <span class="n">Value</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">concatenate_datasets</span>
+
+<span class="c1"># logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SchemaCategory">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaCategory">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchemaCategory</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">PERFECT</span> <span class="o">=</span> <span class="s2">&quot;perfect&quot;</span>
+    <span class="n">ALMOST_PERFECT</span> <span class="o">=</span> <span class="s2">&quot;almost perfect&quot;</span>
+    <span class="n">POOR_BUT_CORRECT</span> <span class="o">=</span> <span class="s2">&quot;poor but correct&quot;</span>
+    <span class="n">INCORRECT</span> <span class="o">=</span> <span class="s2">&quot;incorrect&quot;</span>
+    <span class="n">BLANK</span> <span class="o">=</span> <span class="s2">&quot;blank&quot;</span>
+
+<div class="viewcode-block" id="SchemaCategory.from_str">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaCategory.from_str">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;SchemaCategory&quot;</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SchemaRating">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaRating">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchemaRating</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">FOUR</span> <span class="o">=</span> <span class="s2">&quot;4&quot;</span>
+    <span class="n">THREE</span> <span class="o">=</span> <span class="s2">&quot;3&quot;</span>
+    <span class="n">TWO</span> <span class="o">=</span> <span class="s2">&quot;2&quot;</span>
+    <span class="n">ONE</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+    <span class="n">ZERO</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span>
+
+<div class="viewcode-block" id="SchemaRating.from_value">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaRating.from_value">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_value</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;SchemaRating&quot;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SchemaCategoryRatingMapping">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaCategoryRatingMapping">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchemaCategoryRatingMapping</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps SchemaCategory to SchemaRating.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SchemaCategoryRatingMapping.get_rating">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaCategoryRatingMapping.get_rating">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_rating</span><span class="p">(</span><span class="n">category</span><span class="p">:</span> <span class="n">SchemaCategory</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SchemaRating</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the corresponding rating for a given schema category.</span>
+
+<span class="sd">        :param category: The schema category</span>
+<span class="sd">        :return: The corresponding rating</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">PERFECT</span><span class="p">:</span> <span class="n">SchemaRating</span><span class="o">.</span><span class="n">FOUR</span><span class="p">,</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">ALMOST_PERFECT</span><span class="p">:</span> <span class="n">SchemaRating</span><span class="o">.</span><span class="n">THREE</span><span class="p">,</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">POOR_BUT_CORRECT</span><span class="p">:</span> <span class="n">SchemaRating</span><span class="o">.</span><span class="n">TWO</span><span class="p">,</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">INCORRECT</span><span class="p">:</span> <span class="n">SchemaRating</span><span class="o">.</span><span class="n">ONE</span><span class="p">,</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">BLANK</span><span class="p">:</span> <span class="n">SchemaRating</span><span class="o">.</span><span class="n">ZERO</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="n">SchemaRating</span><span class="o">.</span><span class="n">ZERO</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchemaCategoryRatingMapping.get_category">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaCategoryRatingMapping.get_category">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_category</span><span class="p">(</span><span class="n">rating</span><span class="p">:</span> <span class="n">SchemaRating</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SchemaCategory</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the corresponding category for a given schema rating.</span>
+
+<span class="sd">        :param rating: The schema rating</span>
+<span class="sd">        :return: The corresponding category</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">SchemaRating</span><span class="o">.</span><span class="n">FOUR</span><span class="p">:</span> <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">PERFECT</span><span class="p">,</span>
+            <span class="n">SchemaRating</span><span class="o">.</span><span class="n">THREE</span><span class="p">:</span> <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">ALMOST_PERFECT</span><span class="p">,</span>
+            <span class="n">SchemaRating</span><span class="o">.</span><span class="n">TWO</span><span class="p">:</span> <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">POOR_BUT_CORRECT</span><span class="p">,</span>
+            <span class="n">SchemaRating</span><span class="o">.</span><span class="n">ONE</span><span class="p">:</span> <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">INCORRECT</span><span class="p">,</span>
+            <span class="n">SchemaRating</span><span class="o">.</span><span class="n">ZERO</span><span class="p">:</span> <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">BLANK</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">rating</span><span class="p">,</span> <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">BLANK</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SchemaType">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaType">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchemaType</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+    <span class="n">FULL_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;full schema&quot;</span>
+    <span class="n">TABLE_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;table schema&quot;</span>
+    <span class="n">ENUM_SCHEMA</span> <span class="o">=</span> <span class="s2">&quot;enum schema&quot;</span>
+
+<div class="viewcode-block" id="SchemaType.from_str">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaType.from_str">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_str</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="s2">&quot;SchemaType&quot;</span><span class="p">]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SchemaCategoryPath">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaCategoryPath">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchemaCategoryPath</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Enum</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Maps schema categories to their folder names.&quot;&quot;&quot;</span>
+
+    <span class="n">PERFECT</span> <span class="o">=</span> <span class="s2">&quot;perfect&quot;</span>
+    <span class="n">ALMOST_PERFECT</span> <span class="o">=</span> <span class="s2">&quot;almost_perfect&quot;</span>
+    <span class="n">POOR_BUT_CORRECT</span> <span class="o">=</span> <span class="s2">&quot;poor_but_correct&quot;</span>
+    <span class="n">INCORRECT</span> <span class="o">=</span> <span class="s2">&quot;incorrect&quot;</span>
+    <span class="n">BLANK</span> <span class="o">=</span> <span class="s2">&quot;blank&quot;</span>
+
+<div class="viewcode-block" id="SchemaCategoryPath.get_path">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaCategoryPath.get_path">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_path</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">category</span><span class="p">:</span> <span class="n">SchemaCategory</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Path</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the folder path for a given schema category and folder path.</span>
+
+<span class="sd">        :param category: The schema category</span>
+<span class="sd">        :return: The corresponding folder path</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">PERFECT</span><span class="p">:</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span> <span class="o">/</span> <span class="bp">cls</span><span class="o">.</span><span class="n">PERFECT</span><span class="p">,</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">ALMOST_PERFECT</span><span class="p">:</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span> <span class="o">/</span> <span class="bp">cls</span><span class="o">.</span><span class="n">ALMOST_PERFECT</span><span class="p">,</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">POOR_BUT_CORRECT</span><span class="p">:</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span> <span class="o">/</span> <span class="bp">cls</span><span class="o">.</span><span class="n">POOR_BUT_CORRECT</span><span class="p">,</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">INCORRECT</span><span class="p">:</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span> <span class="o">/</span> <span class="bp">cls</span><span class="o">.</span><span class="n">INCORRECT</span><span class="p">,</span>
+            <span class="n">SchemaCategory</span><span class="o">.</span><span class="n">BLANK</span><span class="p">:</span> <span class="n">Path</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span> <span class="o">/</span> <span class="bp">cls</span><span class="o">.</span><span class="n">BLANK</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">mapping</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">category</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SchemaObject">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaObject">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchemaObject</span><span class="p">:</span>
+    <span class="n">key</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">category</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Enum</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Enum</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">schema_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">schema_type</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Enum</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">schema_str</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">schema_ast</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Node</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="SchemaObject.from_dict">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaObject.from_dict">[docs]</a>
+    <span class="nd">@classmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_dict</span><span class="p">(</span>
+        <span class="bp">cls</span><span class="p">,</span>
+        <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">category_enum</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Enum</span><span class="p">]</span> <span class="o">=</span> <span class="n">SchemaCategory</span><span class="p">,</span>
+        <span class="n">rating_enum</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Enum</span><span class="p">]</span> <span class="o">=</span> <span class="n">SchemaRating</span><span class="p">,</span>
+        <span class="n">type_enum</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">Enum</span><span class="p">]</span> <span class="o">=</span> <span class="n">SchemaType</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;SchemaObject&quot;</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create SchemaObject from dictionary with validation.</span>
+
+<span class="sd">        :param data: The data dictionary</span>
+<span class="sd">        :param category_enum: Custom Enum class for categories</span>
+<span class="sd">        :param rating_enum: Custom Enum class for ratings</span>
+<span class="sd">        :param type_enum: Custom Enum class for schema types</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="s2">&quot;key&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Missing required field: key&quot;</span><span class="p">)</span>
+
+        <span class="n">category</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;category&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">category</span> <span class="o">=</span> <span class="n">category_enum</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;category&quot;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Invalid category. Must be one of: </span><span class="si">{</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">category_enum</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+        <span class="n">rating</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;rating&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">rating_enum</span><span class="p">,</span> <span class="s2">&quot;from_value&quot;</span><span class="p">):</span>
+                    <span class="c1"># we ignore the type because we know that the from_value method exists</span>
+                    <span class="n">rating</span> <span class="o">=</span> <span class="n">rating_enum</span><span class="o">.</span><span class="n">from_value</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">])</span>  <span class="c1"># type: ignore</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">rating</span> <span class="o">=</span> <span class="n">rating_enum</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Invalid rating. Must be one of: </span><span class="si">{</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">rating_enum</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+        <span class="n">schema_type</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_type&quot;</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">schema_type</span> <span class="o">=</span> <span class="n">type_enum</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;schema_type&quot;</span><span class="p">])</span>
+            <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Invalid schema type. Must be one of: </span><span class="si">{</span><span class="p">[</span><span class="n">e</span><span class="o">.</span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">e</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">type_enum</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span>
+            <span class="n">key</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;key&quot;</span><span class="p">],</span>
+            <span class="n">category</span><span class="o">=</span><span class="n">category</span><span class="p">,</span>
+            <span class="n">rating</span><span class="o">=</span><span class="n">rating</span><span class="p">,</span>
+            <span class="n">schema_name</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_name&quot;</span><span class="p">),</span>
+            <span class="n">schema_type</span><span class="o">=</span><span class="n">schema_type</span><span class="p">,</span>
+            <span class="n">schema_str</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_str&quot;</span><span class="p">),</span>
+            <span class="n">schema_ast</span><span class="o">=</span><span class="n">data</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_ast&quot;</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchemaObject.to_dict">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaObject.to_dict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the SchemaObject to a dictionary, excluding the key field.</span>
+
+<span class="sd">        :return: Dictionary representation of the SchemaObject without the key</span>
+<span class="sd">        :rtype: dict</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;schema_name&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_name</span><span class="p">,</span>
+            <span class="s2">&quot;schema_type&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_type</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_type</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="s2">&quot;schema_str&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_str</span><span class="p">,</span>
+            <span class="s2">&quot;schema_ast&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_ast</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="SchemaObject._hf_schema_object_columns">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaObject._hf_schema_object_columns">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_hf_schema_object_columns</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Features</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the columns for the graph_doc dataset, based on the SchemaObject fields.</span>
+
+<span class="sd">        :return: The columns for the graph_doc dataset</span>
+<span class="sd">        :rtype: Features</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Features</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;schema_name&quot;</span><span class="p">:</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;schema_type&quot;</span><span class="p">:</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">),</span>
+                <span class="s2">&quot;schema_str&quot;</span><span class="p">:</span> <span class="n">Value</span><span class="p">(</span><span class="s2">&quot;string&quot;</span><span class="p">),</span>
+            <span class="p">}</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SchemaObject.to_dataset">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.SchemaObject.to_dataset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert the SchemaObject to a Hugging Face Dataset.</span>
+
+<span class="sd">        :return: The Hugging Face Dataset</span>
+<span class="sd">        :rtype: Dataset</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dictionary</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;category&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">category</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">category</span> <span class="k">else</span> <span class="kc">None</span><span class="p">],</span>
+            <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rating</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating</span> <span class="k">else</span> <span class="kc">None</span><span class="p">],</span>
+            <span class="s2">&quot;schema_name&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">schema_name</span><span class="p">],</span>
+            <span class="s2">&quot;schema_type&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">schema_type</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">schema_type</span> <span class="k">else</span> <span class="kc">None</span><span class="p">],</span>
+            <span class="s2">&quot;schema_str&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">schema_str</span><span class="p">],</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">Dataset</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+            <span class="n">dictionary</span><span class="p">,</span> <span class="n">features</span><span class="o">=</span><span class="n">SchemaObject</span><span class="o">.</span><span class="n">_hf_schema_object_columns</span><span class="p">()</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<span class="c1"># TODO: we may end up wanting to both abstract and/or move this elsewhere</span>
+<div class="viewcode-block" id="schema_objects_to_dataset">
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.schema.schema_objects_to_dataset">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">schema_objects_to_dataset</span><span class="p">(</span><span class="n">schema_objects</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">SchemaObject</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Dataset</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a list of SchemaObjects to a Hugging Face Dataset.</span>
+
+<span class="sd">    :param schema_objects: The list of SchemaObjects</span>
+<span class="sd">    :return: The Hugging Face Dataset</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">concatenate_datasets</span><span class="p">(</span>
+        <span class="p">[</span><span class="n">schema_object</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">()</span> <span class="k">for</span> <span class="n">schema_object</span> <span class="ow">in</span> <span class="n">schema_objects</span><span class="p">]</span>
+    <span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Semiotic Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
