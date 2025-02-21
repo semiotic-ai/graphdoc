@@ -62,24 +62,3 @@ def overwrite_ldh() -> LocalDataHelper:
         ratings=OverwriteSchemaRating,
         categories_ratings=OverwriteSchemaCategoryRatingMapping.get_rating,
     )
-
-
-class TestFixtures:
-
-    def test_parser(self, par: Parser):
-        assert par is not None
-        assert isinstance(par, Parser)
-
-    def test_default_ldh(self, default_ldh: LocalDataHelper):
-        assert default_ldh is not None
-        assert isinstance(default_ldh, LocalDataHelper)
-
-    def test_overwrite_ldh(self, overwrite_ldh: LocalDataHelper):
-        assert overwrite_ldh is not None
-        assert isinstance(overwrite_ldh, LocalDataHelper)
-        assert overwrite_ldh.categories == OverwriteSchemaCategory
-        assert overwrite_ldh.ratings == OverwriteSchemaRating
-        assert (
-            overwrite_ldh.categories_ratings
-            == OverwriteSchemaCategoryRatingMapping.get_rating
-        )
