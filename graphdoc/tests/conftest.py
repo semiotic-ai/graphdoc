@@ -81,6 +81,15 @@ def gd() -> GraphDoc:
 
 
 @fixture
+def dqp():
+    return DocQualityPrompt(
+        prompt="doc_quality",
+        prompt_type="predict",
+        prompt_metric="rating",
+    )
+
+
+@fixture
 def dgp():
     return DocGeneratorPrompt(
         prompt="base_doc_gen",
