@@ -15,6 +15,13 @@ pytest = "8.3.4"
 black = "24.10.0"
 pyright = "1.1.392.post0"
 
+[tool.poetry.group.docs]
+optional = true
+
+[tool.poetry.group.docs.dependencies]
+Sphinx = "^7.2.6"
+sphinx-rtd-theme = "^2.0.0"
+sphinx-autodoc-typehints = "^1.25.2"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../../../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>graphdoc.prompts.schema_doc_generation &#8212; GraphDoc 1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css?v=12dfc556" />
+    <script src="../../../_static/documentation_options.js?v=f2a433a1"></script>
+    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for graphdoc.prompts.schema_doc_generation</h1><div class="highlight"><pre>
+<span></span><span class="c1"># system packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="c1"># internal packages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.single_prompt</span><span class="w"> </span><span class="kn">import</span> <span class="n">SinglePrompt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.schema_doc_quality</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocQualityPrompt</span>
+
+<span class="c1"># external packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dspy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphql</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span>
+
+<span class="c1"># logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<span class="c1">###################</span>
+<span class="c1"># DSPy Signatures #</span>
+<span class="c1">###################</span>
+<div class="viewcode-block" id="DocGeneratorSignature">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DocGeneratorSignature</span><span class="p">(</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ### TASK:</span>
+<span class="sd">    Given a GraphQL Schema, generate a precise description for the columns of the tables in the database.</span>
+
+<span class="sd">    ### Requirements:</span>
+<span class="sd">    - Focus solely on confirmed details from the provided schema.</span>
+<span class="sd">    - Keep the description concise and factual.</span>
+<span class="sd">    - Exclude any speculative or additional commentary.</span>
+<span class="sd">    - DO NOT return the phrase &quot;in the { table } table&quot; in your description.</span>
+
+<span class="sd">    ### Formatting</span>
+<span class="sd">    - Ensure that the schema maintains proper documentation formatting, as is provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">InputField</span><span class="p">()</span>
+    <span class="n">documented_schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">OutputField</span><span class="p">(</span>
+        <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;The database schema with proper documentation, ensuring that the underlying schema is not altered.&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="DocGeneratorHelperSignature">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DocGeneratorHelperSignature</span><span class="p">(</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ### TASK:</span>
+<span class="sd">    Analyze the provided GraphQL Schema and generate detailed yet concise descriptions for each field within the database tables and enums.</span>
+
+<span class="sd">    ### Requirements:</span>
+<span class="sd">    - If the field is unclear, and the documentation result is ambiguous, request additional information: &quot;WARNING: Please provide additional information to avoid confusion&quot;.</span>
+<span class="sd">    - Utilize only the verified information from the schema to ensure accuracy.</span>
+<span class="sd">    - Descriptions should be factual, straightforward, and avoid any speculative language.</span>
+<span class="sd">    - Refrain from using the phrase &quot;in the { table } table&quot; within your descriptions.</span>
+<span class="sd">    - Ensure that the documentation adheres to standard schema formatting without modifying the underlying schema structure.</span>
+
+<span class="sd">    ### Formatting:</span>
+<span class="sd">    - Maintain consistency with the existing documentation style and structure.</span>
+<span class="sd">    - Focus on clarity and precision to aid developers and system architects in understanding the schema&#39;s components effectively.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">InputField</span><span class="p">()</span>
+    <span class="n">documented_schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">OutputField</span><span class="p">(</span>
+        <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;The database schema with proper documentation, ensuring that the underlying schema is not altered.&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="BadDocGeneratorSignature">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BadDocGeneratorSignature</span><span class="p">(</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    ### TASK:</span>
+<span class="sd">    Given a GraphQL Schema, generate intentionally incorrect documentation for the columns of the tables in the database.</span>
+
+<span class="sd">    ### Requirements:</span>
+<span class="sd">    - Every table, entity, enum, etc. must have at least one column with a description that is obviosly incorrect.</span>
+<span class="sd">    - The documentation must be incorrect and misleading.</span>
+<span class="sd">    - The documentation should be scattered, with only some columns having documentation.</span>
+
+<span class="sd">    ### Formatting</span>
+<span class="sd">    - Ensure that the schema maintains proper documentation formatting, as is provided.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">InputField</span><span class="p">()</span>
+    <span class="n">documented_schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">OutputField</span><span class="p">(</span>
+        <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;The database schema with intentionally incorrect documentation, ensuring that the underlying schema is not altered.&quot;</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="doc_gen_factory">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_generation.doc_gen_factory">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">doc_gen_factory</span><span class="p">(</span>
+    <span class="n">key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Factory function to return the correct signature based on the key. Currently only supports three signatures (zero_shot_doc_gen, doc_gen_helper, bad_doc_gen).</span>
+
+<span class="sd">    :param key: The key to return the signature for.</span>
+<span class="sd">    :type key: Union[str, dspy.Signature]</span>
+<span class="sd">    :return: The signature for the given key.</span>
+<span class="sd">    :rtype: Union[dspy.Signature, dspy.SignatureMeta]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># allow the user to pass in their own dspy signature</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">key</span>
+    <span class="n">factory</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;zero_shot_doc_gen&quot;</span><span class="p">:</span> <span class="n">DocGeneratorSignature</span><span class="p">,</span>
+        <span class="s2">&quot;doc_gen_helper&quot;</span><span class="p">:</span> <span class="n">DocGeneratorHelperSignature</span><span class="p">,</span>
+        <span class="s2">&quot;bad_doc_gen&quot;</span><span class="p">:</span> <span class="n">BadDocGeneratorSignature</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">factory</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">signature</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid signature (type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">key</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">signature</span></div>
+
+
+
+<span class="c1">#######################</span>
+<span class="c1"># Single Prompt Class #</span>
+<span class="c1">#######################</span>
+<div class="viewcode-block" id="DocGeneratorPrompt">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DocGeneratorPrompt</span><span class="p">(</span><span class="n">SinglePrompt</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">],</span>
+        <span class="n">prompt_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span> <span class="s2">&quot;chain_of_thought&quot;</span><span class="p">],</span> <span class="n">Callable</span><span class="p">],</span>
+        <span class="n">prompt_metric</span><span class="p">:</span> <span class="n">DocQualityPrompt</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">prompt_signature</span> <span class="o">=</span> <span class="n">doc_gen_factory</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">prompt</span><span class="o">=</span><span class="n">prompt_signature</span><span class="p">,</span>
+            <span class="n">prompt_type</span><span class="o">=</span><span class="n">prompt_type</span><span class="p">,</span>
+            <span class="n">prompt_metric</span><span class="o">=</span><span class="n">prompt_metric</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1">#######################</span>
+    <span class="c1"># Class Methods       #</span>
+    <span class="c1">#######################</span>
+<div class="viewcode-block" id="DocGeneratorPrompt.evaluate_documentation_quality">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_documentation_quality">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_documentation_quality</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">,</span> <span class="n">pred</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scalar</span><span class="o">=</span><span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">gold_schema</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">database_schema</span><span class="p">)</span>
+            <span class="n">pred_schema</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">documented_schema</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;evaluate_documentation_quality: An exception occurred while parsing the schema: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">Parser</span><span class="o">.</span><span class="n">schema_equality_check</span><span class="p">(</span><span class="n">gold_schema</span><span class="p">,</span> <span class="n">pred_schema</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;evaluate_documentation_quality: Schema equality check failed&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">1</span>
+
+        <span class="c1"># we use the instantiated metric type to evaluate the quality of the documentation</span>
+        <span class="c1"># TODO: we could add a check to make sure an LM object is initialized</span>
+        <span class="n">evaluation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_metric</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">database_schema</span><span class="o">=</span><span class="n">pred</span><span class="o">.</span><span class="n">documented_schema</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;evaluate_documentation_quality: Evaluation: </span><span class="si">{</span><span class="n">evaluation</span><span class="o">.</span><span class="n">rating</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">scalar</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">rating</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">evaluation</span></div>
+</div>
+
+
+    <span class="c1">#######################</span>
+    <span class="c1"># Abstract Methods    #</span>
+    <span class="c1">#######################</span>
+    <span class="c1"># def evaluate_metric(</span>
+    <span class="c1">#     self, example: dspy.Example, prediction: dspy.Prediction, trace=None</span>
+    <span class="c1"># ) -&gt; Any:</span>
+    <span class="c1">#     pass</span>
+
+    <span class="c1"># def format_metric(</span>
+    <span class="c1">#     self,</span>
+    <span class="c1">#     examples: List[dspy.Example],</span>
+    <span class="c1">#     overall_score: float,</span>
+    <span class="c1">#     results: List,</span>
+    <span class="c1">#     scores: List,</span>
+    <span class="c1"># ) -&gt; Dict[str, Any]:</span>
+    <span class="c1">#     pass</span>
+
+    <span class="c1"># def compare_metrics(</span>
+    <span class="c1">#     self,</span>
+    <span class="c1">#     base_metrics: Any,</span>
+    <span class="c1">#     optimized_metrics: Any,</span>
+    <span class="c1">#     comparison_value: str = &quot;overall_score&quot;,</span>
+    <span class="c1"># ) -&gt; bool:</span>
+    <span class="c1">#     pass</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">GraphDoc</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Semiotic Labs.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 7.4.7</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 0.7.16</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
