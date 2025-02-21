@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>graphdoc.prompts.single_prompt &mdash; GraphDoc 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            GraphDoc
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GraphDoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">graphdoc.prompts.single_prompt</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for graphdoc.prompts.single_prompt</h1><div class="highlight"><pre>
+<span></span><span class="c1"># useful tutorial on dspy signatures: https://dspy.ai/tutorials/multihop_search/</span>
+
+<span class="c1"># system packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="c1"># internal packages</span>
+
+<span class="c1"># external packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dspy</span>
+
+<span class="c1"># logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="SinglePrompt">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.single_prompt.SinglePrompt">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SinglePrompt</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+<div class="viewcode-block" id="SinglePrompt.__init__">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.single_prompt.SinglePrompt.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">],</span>
+        <span class="n">prompt_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span> <span class="s2">&quot;chain_of_thought&quot;</span><span class="p">],</span> <span class="n">Callable</span><span class="p">],</span>
+        <span class="n">prompt_metric</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a single prompt.</span>
+
+<span class="sd">        :param prompt: The prompt to use.</span>
+<span class="sd">        :type prompt: dspy.Signature</span>
+<span class="sd">        :param prompt_type: The type of prompt to use. Can be &quot;predict&quot; or &quot;chain_of_thought&quot;. Optionally, pass another dspy.Module.</span>
+<span class="sd">        :type prompt_type: Union[Literal[&quot;predict&quot;, &quot;chain_of_thought&quot;], Callable]</span>
+<span class="sd">        :param prompt_metric: The metric to use. Marked as Any for flexibility (as metrics can be other prompts).</span>
+<span class="sd">        :type prompt_metric: Any</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt_type</span> <span class="o">=</span> <span class="n">prompt_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt_metric</span> <span class="o">=</span> <span class="n">prompt_metric</span>
+
+        <span class="n">module_mapping</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;predict&quot;</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Predict</span><span class="p">,</span>
+            <span class="s2">&quot;chain_of_thought&quot;</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">ChainOfThought</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="c1"># functools.singledispatch - less oop approach</span>
+        <span class="c1"># oop: make two classes for passing the callable</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_type</span> <span class="ow">in</span> <span class="n">module_mapping</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">infer</span> <span class="o">=</span> <span class="n">module_mapping</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">prompt_type</span><span class="p">](</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span>
+            <span class="p">)</span>  <span class="c1"># .get and then we can remove the error</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prompt_type</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Using alternative dspy.Module for inference, please know what you are doing&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">infer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt_type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid prompt type: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">prompt_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1">#######################################</span>
+    <span class="c1"># methods for evaluating the prompt   #</span>
+    <span class="c1">#######################################</span>
+<div class="viewcode-block" id="SinglePrompt.evaluate_metric">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.single_prompt.SinglePrompt.evaluate_metric">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_metric</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">example</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">,</span> <span class="n">prediction</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This is the metric used to evalaute the prompt.</span>
+
+<span class="sd">        :param example: The example to evaluate the metric on.</span>
+<span class="sd">        :type example: dspy.Example</span>
+<span class="sd">        :param prediction: The prediction to evaluate the metric on.</span>
+<span class="sd">        :type prediction: dspy.Prediction</span>
+<span class="sd">        :param trace: The trace to evaluate the metric on. This is for DSPy.</span>
+<span class="sd">        :type trace: Any</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SinglePrompt.format_metric">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.single_prompt.SinglePrompt.format_metric">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_metric</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">examples</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">],</span>
+        <span class="n">overall_score</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+        <span class="n">scores</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;This takes the results from the evaluate_evalset and does any necessary formatting, taking into account the metric type.</span>
+
+<span class="sd">        :param examples: The examples to evaluate the metric on.</span>
+<span class="sd">        :type examples: List[dspy.Example]</span>
+<span class="sd">        :param overall_score: The overall score of the metric.</span>
+<span class="sd">        :type overall_score: float</span>
+<span class="sd">        :param results: The results from the evaluate_evalset.</span>
+<span class="sd">        :type results: List</span>
+<span class="sd">        :param scores: The scores from the evaluate_evalset.</span>
+<span class="sd">        :type scores: List</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SinglePrompt.compare_metrics">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.single_prompt.SinglePrompt.compare_metrics">[docs]</a>
+    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compare_metrics</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">base_metrics</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">optimized_metrics</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">comparison_value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;overall_score&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare the metrics of the base and optimized models. Return true if the optimized model is better than the base model.</span>
+
+<span class="sd">        :param base_metrics: The metrics of the base model.</span>
+<span class="sd">        :type base_metrics: Any</span>
+<span class="sd">        :param optimized_metrics: The metrics of the optimized model.</span>
+<span class="sd">        :type optimized_metrics: Any</span>
+<span class="sd">        :param comparison_value: The value to compare the metrics on. Determines which metric is used to compare the models.</span>
+<span class="sd">        :type comparison_value: str</span>
+<span class="sd">        :return: True if the optimized model is better than the base model, False otherwise.</span>
+<span class="sd">        :rtype: bool</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="SinglePrompt.evaluate_evalset">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.single_prompt.SinglePrompt.evaluate_evalset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_evalset</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">examples</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">],</span>
+        <span class="n">num_threads</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">display_progress</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">display_table</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Take in a list of examples and evaluate the results.</span>
+
+<span class="sd">        :param examples: The examples to evaluate the results on.</span>
+<span class="sd">        :type examples: List[dspy.Example]</span>
+<span class="sd">        :param num_threads: The number of threads to use for evaluation.</span>
+<span class="sd">        :type num_threads: int</span>
+<span class="sd">        :param display_progress: Whether to display the progress of the evaluation.</span>
+<span class="sd">        :type display_progress: bool</span>
+<span class="sd">        :param display_table: Whether to display the table of the evaluation.</span>
+<span class="sd">        :type display_table: bool</span>
+<span class="sd">        :return: A dictionary containing the overall score, results, and scores.</span>
+<span class="sd">        :rtype: Dict[str, Any]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">evaluator</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Evaluate</span><span class="p">(</span>
+            <span class="n">devset</span><span class="o">=</span><span class="n">examples</span><span class="p">,</span>
+            <span class="n">num_threads</span><span class="o">=</span><span class="n">num_threads</span><span class="p">,</span>
+            <span class="n">display_progress</span><span class="o">=</span><span class="n">display_progress</span><span class="p">,</span>
+            <span class="n">display_table</span><span class="o">=</span><span class="n">display_table</span><span class="p">,</span>
+            <span class="n">return_all_scores</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">return_outputs</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">overall_score</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">scores</span> <span class="o">=</span> <span class="n">evaluator</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">infer</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_metric</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_format_metric</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">overall_score</span><span class="p">,</span> <span class="n">results</span><span class="p">,</span> <span class="n">scores</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error evaluating evalset: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="n">e</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Semiotic Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
