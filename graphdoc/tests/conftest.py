@@ -6,6 +6,7 @@ from pathlib import Path
 
 # internal packages
 from graphdoc import Parser
+from graphdoc import GraphDoc
 from graphdoc import LocalDataHelper
 
 # external packages
@@ -14,6 +15,9 @@ from dotenv import load_dotenv
 
 # logging
 log = logging.getLogger(__name__)
+
+# load environment variables
+load_dotenv("../../.env")
 
 
 # global variables
@@ -61,4 +65,15 @@ def overwrite_ldh() -> LocalDataHelper:
         categories=OverwriteSchemaCategory,
         ratings=OverwriteSchemaRating,
         categories_ratings=OverwriteSchemaCategoryRatingMapping.get_rating,
+    )
+
+
+@fixture
+def gd() -> GraphDoc:
+    return GraphDoc(
+        model_args={
+            "model": "gpt-4o-mini",
+            "api_key": os.getenv("OPENAI_API_KEY"),
+            "cache": True,
+        }
     )

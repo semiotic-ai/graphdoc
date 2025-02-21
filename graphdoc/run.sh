@@ -24,13 +24,42 @@ lint_command() {
 }
 
 test_command() {
-    poetry run pytest -p no:warnings
+    poetry run pytest --testmon -p no:warnings
 }
 
 commit_command() {
     format_command
     lint_command
     test_command
+}
+
+# Documentation commands
+docs() {
+    echo "Building documentation..."
+    cd docs && make clean html
+    echo "Documentation built in docs/build/html"
+}
+
+docs_init() {
+    echo "Initializing Sphinx documentation..."
+    # Remove existing docs directory if it exists
+    rm -rf docs
+    # Create fresh docs directory
+    mkdir -p docs
+    cd docs
+    sphinx-quickstart -q \
+        -p GraphDoc \
+        -a "Semiotic Labs" \
+        -v 1.0 \
+        -r 1.0 \
+        -l en \
+        --ext-autodoc \
+        --ext-viewcode \
+        --makefile \
+        --batchfile
+    # Create necessary directories
+    mkdir -p source/_static source/_templates
+    echo "Sphinx documentation initialized"
 }
 
 # help menu
@@ -47,6 +76,8 @@ show_help() {
     echo "  lint                   Lint the code"
     echo "  test                   Run the tests"
     echo "  commit                 Format, lint, and test the code"
+    echo "  docs                   Build the documentation"
+    echo "  docs-init              Initialize the Sphinx documentation"
 }
 
 # handle command line arguments
@@ -64,6 +95,15 @@ else
         "lint") lint_command ;;
         "test") test_command ;;
         "commit") commit_command ;;
-        *) show_help ;;
+        "docs")
+            docs
+            ;;
+        "docs-init")
+            docs_init
+            ;;
+        *)
+            echo "Usage: $0 {test|lint|format|docs|docs-init}"
+            exit 1
+            ;;
     esac
 fi

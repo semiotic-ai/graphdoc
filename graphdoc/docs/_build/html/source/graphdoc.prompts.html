@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>graphdoc.prompts package &mdash; GraphDoc 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            GraphDoc
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">graphdoc.prompts package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-graphdoc.prompts.schema_doc_generation">graphdoc.prompts.schema_doc_generation module</a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature"><code class="docutils literal notranslate"><span class="pre">BadDocGeneratorSignature</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature.database_schema"><code class="docutils literal notranslate"><span class="pre">BadDocGeneratorSignature.database_schema</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature.documented_schema"><code class="docutils literal notranslate"><span class="pre">BadDocGeneratorSignature.documented_schema</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature.model_config"><code class="docutils literal notranslate"><span class="pre">BadDocGeneratorSignature.model_config</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature"><code class="docutils literal notranslate"><span class="pre">DocGeneratorHelperSignature</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature.database_schema"><code class="docutils literal notranslate"><span class="pre">DocGeneratorHelperSignature.database_schema</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature.documented_schema"><code class="docutils literal notranslate"><span class="pre">DocGeneratorHelperSignature.documented_schema</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature.model_config"><code class="docutils literal notranslate"><span class="pre">DocGeneratorHelperSignature.model_config</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt"><code class="docutils literal notranslate"><span class="pre">DocGeneratorPrompt</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_documentation_quality"><code class="docutils literal notranslate"><span class="pre">DocGeneratorPrompt.evaluate_documentation_quality()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature"><code class="docutils literal notranslate"><span class="pre">DocGeneratorSignature</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature.database_schema"><code class="docutils literal notranslate"><span class="pre">DocGeneratorSignature.database_schema</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature.documented_schema"><code class="docutils literal notranslate"><span class="pre">DocGeneratorSignature.documented_schema</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature.model_config"><code class="docutils literal notranslate"><span class="pre">DocGeneratorSignature.model_config</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.doc_gen_factory"><code class="docutils literal notranslate"><span class="pre">doc_gen_factory()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphdoc.prompts.schema_doc_quality">graphdoc.prompts.schema_doc_quality module</a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature"><code class="docutils literal notranslate"><span class="pre">DocQualityDemonstrationSignature</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.category"><code class="docutils literal notranslate"><span class="pre">DocQualityDemonstrationSignature.category</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.database_schema"><code class="docutils literal notranslate"><span class="pre">DocQualityDemonstrationSignature.database_schema</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.model_config"><code class="docutils literal notranslate"><span class="pre">DocQualityDemonstrationSignature.model_config</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.rating"><code class="docutils literal notranslate"><span class="pre">DocQualityDemonstrationSignature.rating</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt"><code class="docutils literal notranslate"><span class="pre">DocQualityPrompt</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.__init__"><code class="docutils literal notranslate"><span class="pre">DocQualityPrompt.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.compare_metrics"><code class="docutils literal notranslate"><span class="pre">DocQualityPrompt.compare_metrics()</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.evaluate_metric"><code class="docutils literal notranslate"><span class="pre">DocQualityPrompt.evaluate_metric()</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.format_metric"><code class="docutils literal notranslate"><span class="pre">DocQualityPrompt.format_metric()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature"><code class="docutils literal notranslate"><span class="pre">DocQualitySignature</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature.category"><code class="docutils literal notranslate"><span class="pre">DocQualitySignature.category</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature.database_schema"><code class="docutils literal notranslate"><span class="pre">DocQualitySignature.database_schema</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature.model_config"><code class="docutils literal notranslate"><span class="pre">DocQualitySignature.model_config</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature.rating"><code class="docutils literal notranslate"><span class="pre">DocQualitySignature.rating</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.doc_quality_factory"><code class="docutils literal notranslate"><span class="pre">doc_quality_factory()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphdoc.prompts.single_prompt">graphdoc.prompts.single_prompt module</a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt"><code class="docutils literal notranslate"><span class="pre">SinglePrompt</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt.__init__"><code class="docutils literal notranslate"><span class="pre">SinglePrompt.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt.compare_metrics"><code class="docutils literal notranslate"><span class="pre">SinglePrompt.compare_metrics()</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt.evaluate_evalset"><code class="docutils literal notranslate"><span class="pre">SinglePrompt.evaluate_evalset()</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt.evaluate_metric"><code class="docutils literal notranslate"><span class="pre">SinglePrompt.evaluate_metric()</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt.format_metric"><code class="docutils literal notranslate"><span class="pre">SinglePrompt.format_metric()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphdoc.prompts">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">GraphDoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">graphdoc.prompts package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/graphdoc.prompts.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="graphdoc-prompts-package">
+<h1>graphdoc.prompts package<a class="headerlink" href="#graphdoc-prompts-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-graphdoc.prompts.schema_doc_generation">
+<span id="graphdoc-prompts-schema-doc-generation-module"></span><h2>graphdoc.prompts.schema_doc_generation module<a class="headerlink" href="#module-graphdoc.prompts.schema_doc_generation" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_generation.</span></span><span class="sig-name descname"><span class="pre">BadDocGeneratorSignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">documented_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#BadDocGeneratorSignature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Signature</span></code></p>
+<p>### TASK:
+Given a GraphQL Schema, generate intentionally incorrect documentation for the columns of the tables in the database.</p>
+<p>### Requirements:
+- Every table, entity, enum, etc. must have at least one column with a description that is obviosly incorrect.
+- The documentation must be incorrect and misleading.
+- The documentation should be scattered, with only some columns having documentation.</p>
+<p>### Formatting
+- Ensure that the schema maintains proper documentation formatting, as is provided.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature.database_schema">
+<span class="sig-name descname"><span class="pre">database_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature.database_schema" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature.documented_schema">
+<span class="sig-name descname"><span class="pre">documented_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature.documented_schema" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.BadDocGeneratorSignature.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_generation.</span></span><span class="sig-name descname"><span class="pre">DocGeneratorHelperSignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">documented_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorHelperSignature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Signature</span></code></p>
+<p>### TASK:
+Analyze the provided GraphQL Schema and generate detailed yet concise descriptions for each field within the database tables and enums.</p>
+<p>### Requirements:
+- If the field is unclear, and the documentation result is ambiguous, request additional information: “WARNING: Please provide additional information to avoid confusion”.
+- Utilize only the verified information from the schema to ensure accuracy.
+- Descriptions should be factual, straightforward, and avoid any speculative language.
+- Refrain from using the phrase “in the { table } table” within your descriptions.
+- Ensure that the documentation adheres to standard schema formatting without modifying the underlying schema structure.</p>
+<p>### Formatting:
+- Maintain consistency with the existing documentation style and structure.
+- Focus on clarity and precision to aid developers and system architects in understanding the schema’s components effectively.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature.database_schema">
+<span class="sig-name descname"><span class="pre">database_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature.database_schema" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature.documented_schema">
+<span class="sig-name descname"><span class="pre">documented_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature.documented_schema" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorHelperSignature.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_generation.</span></span><span class="sig-name descname"><span class="pre">DocGeneratorPrompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'predict'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'chain_of_thought'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt" title="graphdoc.prompts.schema_doc_quality.DocQualityPrompt"><span class="pre">DocQualityPrompt</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorPrompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt" title="graphdoc.prompts.single_prompt.SinglePrompt"><code class="xref py py-class docutils literal notranslate"><span class="pre">SinglePrompt</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_documentation_quality">
+<span class="sig-name descname"><span class="pre">evaluate_documentation_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Example</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scalar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorPrompt.evaluate_documentation_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_documentation_quality" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorSignature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_generation.</span></span><span class="sig-name descname"><span class="pre">DocGeneratorSignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">documented_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorSignature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Signature</span></code></p>
+<p>### TASK:
+Given a GraphQL Schema, generate a precise description for the columns of the tables in the database.</p>
+<p>### Requirements:
+- Focus solely on confirmed details from the provided schema.
+- Keep the description concise and factual.
+- Exclude any speculative or additional commentary.
+- DO NOT return the phrase “in the { table } table” in your description.</p>
+<p>### Formatting
+- Ensure that the schema maintains proper documentation formatting, as is provided.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorSignature.database_schema">
+<span class="sig-name descname"><span class="pre">database_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature.database_schema" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorSignature.documented_schema">
+<span class="sig-name descname"><span class="pre">documented_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature.documented_schema" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorSignature.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.doc_gen_factory">
+<span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_generation.</span></span><span class="sig-name descname"><span class="pre">doc_gen_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#doc_gen_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.doc_gen_factory" title="Link to this definition"></a></dt>
+<dd><p>Factory function to return the correct signature based on the key. Currently only supports three signatures (zero_shot_doc_gen, doc_gen_helper, bad_doc_gen).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>dspy.Signature</em><em>]</em>) – The key to return the signature for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The signature for the given key.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Union[dspy.Signature, dspy.SignatureMeta]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-graphdoc.prompts.schema_doc_quality">
+<span id="graphdoc-prompts-schema-doc-quality-module"></span><h2>graphdoc.prompts.schema_doc_quality module<a class="headerlink" href="#module-graphdoc.prompts.schema_doc_quality" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_quality.</span></span><span class="sig-name descname"><span class="pre">DocQualityDemonstrationSignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'perfect'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'almost</span> <span class="pre">perfect'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'poor</span> <span class="pre">but</span> <span class="pre">correct'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'incorrect'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_quality.html#DocQualityDemonstrationSignature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Signature</span></code></p>
+<p>You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
+The categories are described as:
+- perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.</p>
+<blockquote>
+<div><p>perfect (4) example:
+type Domain &#64;entity {</p>
+<blockquote>
+<div><p>“ The namehash (id) of the parent name. References the Domain entity that is the parent of the current domain. Type: Domain ”
+parent: Domain</p>
+</div></blockquote>
+<p>}</p>
+</div></blockquote>
+<ul>
+<li><dl>
+<dt>almost perfect (3): The documentation is almost perfect and free from ambiguity, but there is room for improvement.</dt><dd><p>almost perfect (3) example:
+type Token &#64;entity {</p>
+<blockquote>
+<div><p>“ Name of the token, mirrored from the smart contract ”
+name: String!</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>poor but correct (2): The documentation is poor but correct and has room for improvement due to missing information. The documentation is not incorrect.</dt><dd><p>poor but correct (2) example:
+type InterestRate &#64;entity {</p>
+<blockquote>
+<div><p>“Description for column: id”
+id: ID!</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt>incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.</dt><dd><p>incorrect (1) example:
+type BridgeProtocol implements Protocol &#64;entity {</p>
+<blockquote>
+<div><p>“ Social Security Number of the protocol’s main developer ”
+id: Bytes!</p>
+</div></blockquote>
+<p>}</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Output a number rating that corresponds to the categories described above.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.category">
+<span class="sig-name descname"><span class="pre">category</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'perfect'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'almost</span> <span class="pre">perfect'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'poor</span> <span class="pre">but</span> <span class="pre">correct'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'incorrect'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.category" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.database_schema">
+<span class="sig-name descname"><span class="pre">database_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.database_schema" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.rating">
+<span class="sig-name descname"><span class="pre">rating</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature.rating" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityPrompt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_quality.</span></span><span class="sig-name descname"><span class="pre">DocQualityPrompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'doc_quality'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'doc_quality_demo'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'doc_quality'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'predict'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'chain_of_thought'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'predict'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'rating'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'category'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rating'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_quality.html#DocQualityPrompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt" title="graphdoc.prompts.single_prompt.SinglePrompt"><code class="xref py py-class docutils literal notranslate"><span class="pre">SinglePrompt</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityPrompt.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'doc_quality'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'doc_quality_demo'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'doc_quality'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'predict'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'chain_of_thought'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'predict'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'rating'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'category'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'rating'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_quality.html#DocQualityPrompt.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize the DocQualityPrompt. This is a single prompt that can be used to evaluate the quality of the documentation for a given schema. This is a wrapper around the SinglePrompt class that implements the abstract methods.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>dspy.Signature</em><em>]</em>) – The prompt to use. Can either be a string that maps to a defined signature, as set in the doc_quality_factory, or a dspy.Signature.</p></li>
+<li><p><strong>prompt_type</strong> (<em>Union</em><em>[</em><em>Literal</em><em>[</em><em>&quot;predict&quot;</em><em>, </em><em>&quot;chain_of_thought&quot;</em><em>]</em><em>, </em><em>Callable</em><em>]</em>) – The type of prompt to use.</p></li>
+<li><p><strong>prompt_metric</strong> (<em>Union</em><em>[</em><em>Literal</em><em>[</em><em>&quot;rating&quot;</em><em>, </em><em>&quot;category&quot;</em><em>]</em><em>, </em><em>Callable</em><em>]</em>) – The metric to use. Can either be a string that maps to a defined metric, as set in the doc_quality_factory, or a custom callable function. Function must have the signature (example: dspy.Example, prediction: dspy.Prediction) -&gt; bool.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityPrompt.compare_metrics">
+<span class="sig-name descname"><span class="pre">compare_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimized_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'overall_score'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_quality.html#DocQualityPrompt.compare_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.compare_metrics" title="Link to this definition"></a></dt>
+<dd><p>Compare the metrics of the base and optimized models. Returns true if the optimized model is better than the base model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_metrics</strong> (<em>Any</em>) – The metrics of the base model.</p></li>
+<li><p><strong>optimized_metrics</strong> (<em>Any</em>) – The metrics of the optimized model.</p></li>
+<li><p><strong>comparison_value</strong> – The value to compare.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityPrompt.evaluate_metric">
+<span class="sig-name descname"><span class="pre">evaluate_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">example</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Example</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prediction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_quality.html#DocQualityPrompt.evaluate_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.evaluate_metric" title="Link to this definition"></a></dt>
+<dd><p>Evaluate the metric for the given example and prediction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>example</strong> (<em>dspy.Example</em>) – The example to evaluate the metric on.</p></li>
+<li><p><strong>prediction</strong> (<em>dspy.Prediction</em>) – The prediction to evaluate the metric on.</p></li>
+<li><p><strong>trace</strong> (<em>Any</em>) – Used for DSPy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result of the evaluation. A boolean for if the metric is correct.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualityPrompt.format_metric">
+<span class="sig-name descname"><span class="pre">format_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">examples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overall_score</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_quality.html#DocQualityPrompt.format_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.format_metric" title="Link to this definition"></a></dt>
+<dd><p>Formats evaluation metrics into a structured report containing:
+- Overall score across all categories
+- Percentage correct per category
+- Detailed results for each evaluation</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>examples</strong> (<em>List</em><em>[</em><em>dspy.Example</em><em>]</em>) – The examples to evaluate the metric on.</p></li>
+<li><p><strong>overall_score</strong> (<em>float</em>) – The overall score across all categories.</p></li>
+<li><p><strong>results</strong> (<em>List</em>) – The results of the evaluation.</p></li>
+<li><p><strong>scores</strong> (<em>List</em>) – The scores of the evaluation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the overall score, per category scores, and details. { “overall_score”: 0, “per_category_scores”: {}, “details”: [], “results”: [] }</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualitySignature">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_quality.</span></span><span class="sig-name descname"><span class="pre">DocQualitySignature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">database_schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">category</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'perfect'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'almost</span> <span class="pre">perfect'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'poor</span> <span class="pre">but</span> <span class="pre">correct'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'incorrect'</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_quality.html#DocQualitySignature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Signature</span></code></p>
+<p>You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
+The categories are described as:
+- perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
+- almost perfect (3): The documentation is almost perfect and free from ambiguity, but there is room for improvement.
+- poor but correct (2): The documentation is poor but correct and has room for improvement due to missing information. The documentation is not incorrect.
+- incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.
+Output a number rating that corresponds to the categories described above.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualitySignature.category">
+<span class="sig-name descname"><span class="pre">category</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'perfect'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'almost</span> <span class="pre">perfect'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'poor</span> <span class="pre">but</span> <span class="pre">correct'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'incorrect'</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature.category" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualitySignature.database_schema">
+<span class="sig-name descname"><span class="pre">database_schema</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature.database_schema" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualitySignature.model_config">
+<span class="sig-name descname"><span class="pre">model_config</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ClassVar</span><span class="p"><span class="pre">[</span></span><span class="pre">ConfigDict</span><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature.model_config" title="Link to this definition"></a></dt>
+<dd><p>Configuration for the model, should be a dictionary conforming to [<cite>ConfigDict</cite>][pydantic.config.ConfigDict].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.DocQualitySignature.rating">
+<span class="sig-name descname"><span class="pre">rating</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">4</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">3</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">2</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.DocQualitySignature.rating" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_quality.doc_quality_factory">
+<span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_quality.</span></span><span class="sig-name descname"><span class="pre">doc_quality_factory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_quality.html#doc_quality_factory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_quality.doc_quality_factory" title="Link to this definition"></a></dt>
+<dd><p>Factory function to return the correct signature based on the key. Currently only supports two signatures (doc_quality and doc_quality_demo).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>key</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>dspy.Signature</em><em>]</em>) – The key to return the signature for.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The signature for the given key.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-graphdoc.prompts.single_prompt">
+<span id="graphdoc-prompts-single-prompt-module"></span><h2>graphdoc.prompts.single_prompt module<a class="headerlink" href="#module-graphdoc.prompts.single_prompt" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.prompts.single_prompt.SinglePrompt">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.single_prompt.</span></span><span class="sig-name descname"><span class="pre">SinglePrompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'predict'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'chain_of_thought'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/single_prompt.html#SinglePrompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.single_prompt.SinglePrompt" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.single_prompt.SinglePrompt.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'predict'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'chain_of_thought'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/single_prompt.html#SinglePrompt.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.single_prompt.SinglePrompt.__init__" title="Link to this definition"></a></dt>
+<dd><p>Initialize a single prompt.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> (<em>dspy.Signature</em>) – The prompt to use.</p></li>
+<li><p><strong>prompt_type</strong> (<em>Union</em><em>[</em><em>Literal</em><em>[</em><em>&quot;predict&quot;</em><em>, </em><em>&quot;chain_of_thought&quot;</em><em>]</em><em>, </em><em>Callable</em><em>]</em>) – The type of prompt to use. Can be “predict” or “chain_of_thought”. Optionally, pass another dspy.Module.</p></li>
+<li><p><strong>prompt_metric</strong> (<em>Any</em>) – The metric to use. Marked as Any for flexibility (as metrics can be other prompts).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.single_prompt.SinglePrompt.compare_metrics">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">compare_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimized_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'overall_score'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/single_prompt.html#SinglePrompt.compare_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.single_prompt.SinglePrompt.compare_metrics" title="Link to this definition"></a></dt>
+<dd><p>Compare the metrics of the base and optimized models. Return true if the optimized model is better than the base model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_metrics</strong> (<em>Any</em>) – The metrics of the base model.</p></li>
+<li><p><strong>optimized_metrics</strong> (<em>Any</em>) – The metrics of the optimized model.</p></li>
+<li><p><strong>comparison_value</strong> (<em>str</em>) – The value to compare the metrics on. Determines which metric is used to compare the models.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the optimized model is better than the base model, False otherwise.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.single_prompt.SinglePrompt.evaluate_evalset">
+<span class="sig-name descname"><span class="pre">evaluate_evalset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">examples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_threads</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_progress</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_table</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/single_prompt.html#SinglePrompt.evaluate_evalset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.single_prompt.SinglePrompt.evaluate_evalset" title="Link to this definition"></a></dt>
+<dd><p>Take in a list of examples and evaluate the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>examples</strong> (<em>List</em><em>[</em><em>dspy.Example</em><em>]</em>) – The examples to evaluate the results on.</p></li>
+<li><p><strong>num_threads</strong> (<em>int</em>) – The number of threads to use for evaluation.</p></li>
+<li><p><strong>display_progress</strong> (<em>bool</em>) – Whether to display the progress of the evaluation.</p></li>
+<li><p><strong>display_table</strong> (<em>bool</em>) – Whether to display the table of the evaluation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the overall score, results, and scores.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.single_prompt.SinglePrompt.evaluate_metric">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">evaluate_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">example</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Example</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prediction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/single_prompt.html#SinglePrompt.evaluate_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.single_prompt.SinglePrompt.evaluate_metric" title="Link to this definition"></a></dt>
+<dd><p>This is the metric used to evalaute the prompt.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>example</strong> (<em>dspy.Example</em>) – The example to evaluate the metric on.</p></li>
+<li><p><strong>prediction</strong> (<em>dspy.Prediction</em>) – The prediction to evaluate the metric on.</p></li>
+<li><p><strong>trace</strong> (<em>Any</em>) – The trace to evaluate the metric on. This is for DSPy.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.single_prompt.SinglePrompt.format_metric">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">format_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">examples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overall_score</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/single_prompt.html#SinglePrompt.format_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.single_prompt.SinglePrompt.format_metric" title="Link to this definition"></a></dt>
+<dd><p>This takes the results from the evaluate_evalset and does any necessary formatting, taking into account the metric type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>examples</strong> (<em>List</em><em>[</em><em>dspy.Example</em><em>]</em>) – The examples to evaluate the metric on.</p></li>
+<li><p><strong>overall_score</strong> (<em>float</em>) – The overall score of the metric.</p></li>
+<li><p><strong>results</strong> (<em>List</em>) – The results from the evaluate_evalset.</p></li>
+<li><p><strong>scores</strong> (<em>List</em>) – The scores from the evaluate_evalset.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-graphdoc.prompts">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-graphdoc.prompts" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Semiotic Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
