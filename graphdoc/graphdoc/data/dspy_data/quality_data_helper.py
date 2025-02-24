@@ -8,6 +8,7 @@ from .dspy_data_helper import DspyDataHelper
 # external packages
 import dspy
 from datasets import Dataset
+from mlflow.models import ModelSignature, infer_signature
 
 # logging
 log = logging.getLogger(__name__)
@@ -39,12 +40,22 @@ class QualityDataHelper(DspyDataHelper):
         ).with_inputs("database_schema")
 
     @staticmethod
-    def example_example(inputs: dict[str, Any] = {}) -> dspy.Example:
-        return dspy.Example(
-            database_schema=inputs.get("database_schema", "test database schema"),
-            category=inputs.get("category", "perfect"),
-            rating=inputs.get("rating", 4),
-        ).with_inputs("database_schema")
+    def example_example() -> dspy.Example:
+        return QualityDataHelper.example(
+            {
+                "database_schema": "test database schema",
+                "category": "perfect",
+                "rating": 4,
+            }
+        )
+
+    @staticmethod
+    def model_signature() -> ModelSignature:
+        # TODO: decide if this should be here or in the mlflow_data_helper
+        example = QualityDataHelper.example_example().toDict()
+        example.pop("category")
+        example.pop("rating")
+        return infer_signature(example)
 
     @staticmethod
     def prediction(inputs: dict[str, Any]) -> dspy.Prediction:
@@ -55,11 +66,13 @@ class QualityDataHelper(DspyDataHelper):
         )
 
     @staticmethod
-    def prediction_example(inputs: dict[str, Any] = {}) -> dspy.Prediction:
-        return dspy.Prediction(
-            database_schema=inputs.get("database_schema", "test database schema"),
-            category=inputs.get("category", "perfect"),
-            rating=inputs.get("rating", 4),
+    def prediction_example() -> dspy.Prediction:
+        return QualityDataHelper.prediction(
+            {
+                "database_schema": "test database schema",
+                "category": "perfect",
+                "rating": 4,
+            }
         )
 
     @staticmethod
