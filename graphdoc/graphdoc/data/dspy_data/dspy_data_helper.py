@@ -59,7 +59,7 @@ class DspyDataHelper(ABC):
 
     @staticmethod
     def formatted_signature(
-        signature: dspy.Signature,
+        signature: Union[dspy.Signature, dspy.SignatureMeta],
         example: dspy.Example,
     ) -> str:
         """
@@ -74,7 +74,7 @@ class DspyDataHelper(ABC):
         """
         adapter = dspy.ChatAdapter()
         prompt = adapter.format(
-            signature=signature,
+            signature=signature,  # type: ignore # TODO: we should only accept dspy.Signature objects, not dspy.SignatureMeta
             demos=[example.toDict()],
             inputs=example.toDict(),
         )
