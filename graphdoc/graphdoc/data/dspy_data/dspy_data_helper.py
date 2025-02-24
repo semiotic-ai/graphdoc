@@ -31,7 +31,7 @@ class DspyDataHelper(ABC):
     @staticmethod
     def prompt_signature(
         prompt: Any,
-    ) -> Union[dspy.Signature, dspy.SignatureMeta, None]:
+    ) -> Union[dspy.Signature, dspy.SignatureMeta]:
         """
         Given a prompt, return a dspy.Signature object.
 
@@ -39,7 +39,7 @@ class DspyDataHelper(ABC):
         :type prompt: Any
         """
         log.warning("No prompt signature found for the given prompt.")
-        return None
+        raise ValueError("No prompt signature found for the given prompt.")
 
     @prompt_signature.register(dspy.ChainOfThought)
     @staticmethod
@@ -56,6 +56,29 @@ class DspyDataHelper(ABC):
         Given a dspy.Predict object, return a dspy.Signature object.
         """
         return prompt.signature
+
+    @staticmethod
+    def formatted_signature(
+        signature: dspy.Signature,
+        example: dspy.Example,
+    ) -> str:
+        """
+        Given a dspy.Signature and a dspy.Example, return a formatted signature as a string.
+
+        :param signature: A dspy.Signature object.
+        :type signature: dspy.Signature
+        :param example: A dspy.Example object.
+        :type example: dspy.Example
+        :return: A formatted signature as a string.
+        :rtype: str
+        """
+        adapter = dspy.ChatAdapter()
+        prompt = adapter.format(
+            signature=signature,
+            demos=[example.toDict()],
+            inputs=example.toDict(),
+        )
+        return f"------\nSystem\n------\n {prompt[0]['content']} \n------\nUser\n------\n {prompt[1]['content']}"
 
     #######################
     # Abstract Methods    #
