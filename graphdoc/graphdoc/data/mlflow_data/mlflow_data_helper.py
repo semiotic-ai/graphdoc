@@ -2,7 +2,7 @@
 import ast
 import logging
 from pathlib import Path
-from typing import Any, Union
+from typing import Any, Dict, Union
 
 # internal packages
 
@@ -68,6 +68,26 @@ class MlflowDataHelper:
         :return: The loaded model.
         """
         return mlflow.dspy.load_model(model_uri)
+
+    def model_by_args(self, load_model_args: Dict[str, str]):
+        # TODO: refactor this to use a more elegant method
+        """
+        Given a dictionary of arguments, load a model from mlflow. Ordering is model_by_uri, model_by_name_and_version, latest_model_version.
+
+        :param load_model_args: A dictionary of arguments.
+        :type load_model_args: Dict[str, str]
+        :return: The loaded model.
+        """
+        if "model_uri" in load_model_args:
+            return self.model_by_uri(load_model_args["model_uri"])
+        elif "model_name" in load_model_args and "model_version" in load_model_args:
+            return self.model_by_name_and_version(
+                load_model_args["model_name"], load_model_args["model_version"]
+            )
+        elif "model_name" in load_model_args:
+            return self.latest_model_version(load_model_args["model_name"])
+        else:
+            raise ValueError("No valid model arguments provided.")
 
     #########################
     # Model Saving Methods  #
