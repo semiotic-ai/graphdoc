@@ -24,8 +24,10 @@ class MlflowDataHelper:
         :type mlflow_tracking_uri: Union[str, Path]
         """
         self.mlflow_tracking_uri = mlflow_tracking_uri
-        self.mlflow_client = mlflow.MlflowClient(tracking_uri=str(mlflow_tracking_uri))
         mlflow.set_tracking_uri(str(mlflow_tracking_uri))
+        self.mlflow_client = mlflow.MlflowClient(
+            tracking_uri=str(self.mlflow_tracking_uri)
+        )
 
     #########################
     # Model Loading Methods #
