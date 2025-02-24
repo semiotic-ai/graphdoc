@@ -7,6 +7,7 @@ from graphdoc import GenerationDataHelper
 # external packages
 import dspy
 import pytest
+from mlflow.models import ModelSignature
 
 # logging
 log = logging.getLogger(__name__)
@@ -28,6 +29,10 @@ class TestGenerationDataHelper:
         assert isinstance(example, dspy.Example)
         assert example.database_schema == "test database schema"
         assert example.documented_schema == "test documented schema"
+
+    def test_model_signature(self):
+        signature = GenerationDataHelper.model_signature()
+        assert isinstance(signature, ModelSignature)
 
     def test_prediction(self):
         inputs = {

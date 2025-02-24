@@ -7,6 +7,7 @@ from graphdoc import QualityDataHelper
 # external packages
 import dspy
 import pytest
+from mlflow.models import ModelSignature
 
 # logging
 log = logging.getLogger(__name__)
@@ -28,6 +29,10 @@ class TestQualityDataHelper:
         assert example.database_schema == "test database schema"
         assert example.category == "perfect"
         assert example.rating == 4
+
+    def test_model_signature(self):
+        signature = QualityDataHelper.model_signature()
+        assert isinstance(signature, ModelSignature)
 
     def test_prediction(self):
         inputs = {
