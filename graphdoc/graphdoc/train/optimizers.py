@@ -54,6 +54,9 @@ def optimizer_class(optimizer_type: str, optimizer_kwargs: Dict[str, Any]):
 
 
 def optimizer_compile(optimizer_type: str, optimizer_kwargs: Dict[str, Any]):
+    """
+    Compiles the optimizer given the optimizer type and optimizer kwargs. Optimizer kwargs are optimizer specific, and must include a student field that maps to a dspy.ChainOfThought, dspy.Predict, etc.
+    """
     optimizer = optimizer_class(optimizer_type, optimizer_kwargs)
     # miprov2
     # student: dspy.ChainOfThought, dspy.Predict, etc.
