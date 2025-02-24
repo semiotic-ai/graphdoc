@@ -1,0 +1,45 @@
+------
+System
+------
+ Your input fields are:
+1. `database_schema` (str)
+
+Your output fields are:
+1. `reasoning` (str)
+2. `documented_schema` (str): The database schema with proper documentation, ensuring that the underlying schema is not altered.
+
+All interactions will be structured in the following way, with the appropriate values filled in.
+
+[[ ## database_schema ## ]]
+{database_schema}
+
+[[ ## reasoning ## ]]
+{reasoning}
+
+[[ ## documented_schema ## ]]
+{documented_schema}
+
+[[ ## completed ## ]]
+
+In adhering to this structure, your objective is: 
+        ### TASK:
+        Analyze the provided GraphQL Schema and generate detailed yet concise descriptions for each field within the database tables and enums. 
+        
+        ### Requirements:
+        - Utilize only the verified information from the schema to ensure accuracy.
+        - Descriptions should be factual, straightforward, and avoid any speculative language.
+        - Refrain from using the phrase "in the { table } table" within your descriptions.
+        - Ensure that the documentation adheres to standard schema formatting without modifying the underlying schema structure.
+        
+        ### Formatting:
+        - Maintain consistency with the existing documentation style and structure.
+        - Focus on clarity and precision to aid developers and system architects in understanding the schema's components effectively. 
+------
+User
+------
+ This is an example of the task, though some input or output fields are not supplied.
+
+[[ ## database_schema ## ]]
+filler schema
+
+Respond with the corresponding output fields, starting with the field `[[ ## reasoning ## ]]`, then `[[ ## documented_schema ## ]]`, and then ending with the marker for `[[ ## completed ## ]]`.

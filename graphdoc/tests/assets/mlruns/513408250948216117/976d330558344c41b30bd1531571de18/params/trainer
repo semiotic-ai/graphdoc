@@ -1,0 +1,1 @@
+{'class': 'DocGeneratorTrainer', 'optimizer_type': 'miprov2', 'mlflow_tracking_uri': 'REDACTED', 'mlflow_model_name': 'doc_generator_model', 'mlflow_experiment_name': 'doc_generator_experiment', 'mlflow_load_model': False}

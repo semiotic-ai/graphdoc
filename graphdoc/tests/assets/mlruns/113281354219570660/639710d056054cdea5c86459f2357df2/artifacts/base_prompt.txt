@@ -1,0 +1,44 @@
+------
+System
+------
+ Your input fields are:
+1. `database_schema` (str)
+
+Your output fields are:
+1. `reasoning` (str)
+2. `category` (Literal[perfect, almost perfect, poor but correct, incorrect])
+3. `rating` (Literal[4, 3, 2, 1])
+
+All interactions will be structured in the following way, with the appropriate values filled in.
+
+[[ ## database_schema ## ]]
+{database_schema}
+
+[[ ## reasoning ## ]]
+{reasoning}
+
+[[ ## category ## ]]
+{category}        # note: the value you produce must be one of: perfect; almost perfect; poor but correct; incorrect
+
+[[ ## rating ## ]]
+{rating}        # note: the value you produce must be one of: 4; 3; 2; 1
+
+[[ ## completed ## ]]
+
+In adhering to this structure, your objective is: 
+        You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
+        The categories are described as:
+        - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
+        - almost perfect (3): The documentation is almost perfect and free from ambiguity, but there is room for improvement.
+        - poor but correct (2): The documentation is poor but correct and has room for improvement due to missing information. The documentation is not incorrect.
+        - incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.
+        Output a number rating that corresponds to the categories described above. 
+------
+User
+------
+ This is an example of the task, though some input or output fields are not supplied.
+
+[[ ## database_schema ## ]]
+filler schema
+
+Respond with the corresponding output fields, starting with the field `[[ ## reasoning ## ]]`, then `[[ ## category ## ]]` (must be formatted as a valid Python Literal[perfect, almost perfect, poor but correct, incorrect]), then `[[ ## rating ## ]]` (must be formatted as a valid Python Literal[4, 3, 2, 1]), and then ending with the marker for `[[ ## completed ## ]]`.

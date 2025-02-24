@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/denver/Documents/code/graph/graphdoc/mlruns/113281354219570660/639710d056054cdea5c86459f2357df2/artifacts
+end_time: 1738824320092
+entry_point_name: ''
+experiment_id: '113281354219570660'
+lifecycle_stage: active
+run_id: 639710d056054cdea5c86459f2357df2
+run_name: capricious-cub-25
+run_uuid: 639710d056054cdea5c86459f2357df2
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1738822020077
+status: 3
+tags: []
+user_id: denver

@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1738865664651
+current_stage: None
+description: null
+last_updated_timestamp: 1738865664651
+name: doc_generator_model
+run_id: 976d330558344c41b30bd1531571de18
+run_link: null
+source: file:///Users/denver/Documents/code/graph/graphdoc/mlruns/513408250948216117/976d330558344c41b30bd1531571de18/artifacts/model
+status: READY
+status_message: null
+storage_location: file:///Users/denver/Documents/code/graph/graphdoc/mlruns/513408250948216117/976d330558344c41b30bd1531571de18/artifacts/model
+user_id: null
+version: 1

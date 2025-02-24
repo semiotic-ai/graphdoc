@@ -1,0 +1,1 @@
+{'prompt': 'zero_shot_doc_gen', 'class': 'DocGeneratorPrompt', 'type': 'chain_of_thought', 'metric': 'DocQualityPrompt'}
