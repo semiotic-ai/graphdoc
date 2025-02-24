@@ -6,9 +6,9 @@ last_updated_timestamp: 1738824320078
 name: doc_quality_model
 run_id: 639710d056054cdea5c86459f2357df2
 run_link: null
-source: file:///Users/denver/Documents/code/graph/graphdoc/mlruns/113281354219570660/639710d056054cdea5c86459f2357df2/artifacts/model
+source: file:///Users/denver/Documents/code/graph/graphdoc-mono/graphdoc/graphdoc/tests/assets/mlruns/113281354219570660/639710d056054cdea5c86459f2357df2/artifacts/model
 status: READY
 status_message: null
-storage_location: file:///Users/denver/Documents/code/graph/graphdoc/mlruns/113281354219570660/639710d056054cdea5c86459f2357df2/artifacts/model
+storage_location: file:///Users/denver/Documents/code/graph/graphdoc-mono/graphdoc/graphdoc/tests/assets/mlruns/113281354219570660/639710d056054cdea5c86459f2357df2/artifacts/model
 user_id: null
 version: 1
