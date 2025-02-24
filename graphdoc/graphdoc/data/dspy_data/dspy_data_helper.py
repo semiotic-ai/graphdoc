@@ -1,6 +1,7 @@
 # system packages
 import logging
 from abc import ABC, abstractmethod
+from functools import singledispatch
 from typing import Any, Optional, Union
 
 # internal packages
@@ -22,6 +23,39 @@ class DspyDataHelper(ABC):
     def __init__(self):
         # TODO: we should consider adding a signature object here
         pass
+
+    #######################
+    # Class Methods       #
+    #######################
+    @singledispatch
+    @staticmethod
+    def prompt_signature(
+        prompt: Any,
+    ) -> Union[dspy.Signature, dspy.SignatureMeta, None]:
+        """
+        Given a prompt, return a dspy.Signature object.
+
+        :param prompt: A prompt.
+        :type prompt: Any
+        """
+        log.warning("No prompt signature found for the given prompt.")
+        return None
+
+    @prompt_signature.register(dspy.ChainOfThought)
+    @staticmethod
+    def _(prompt: dspy.ChainOfThought) -> Union[dspy.Signature, dspy.SignatureMeta]:
+        """
+        Given a dspy.ChainOfThought object, return a dspy.Signature object.
+        """
+        return prompt.predict.signature
+
+    @prompt_signature.register(dspy.Predict)
+    @staticmethod
+    def _(prompt: dspy.Predict) -> Union[dspy.Signature, dspy.SignatureMeta]:
+        """
+        Given a dspy.Predict object, return a dspy.Signature object.
+        """
+        return prompt.signature
 
     #######################
     # Abstract Methods    #
