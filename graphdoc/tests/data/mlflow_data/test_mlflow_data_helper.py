@@ -52,6 +52,36 @@ class TestMlflowDataHelper:
         assert model is not None
         assert isinstance(model, dspy.ChainOfThought)
 
+    def test_model_by_args(self):
+        model_uri = (
+            Path(MLFLOW_DIR)
+            / "513408250948216117"
+            / "976d330558344c41b30bd1531571de18"
+            / "artifacts"
+            / "model"
+        )
+        mdh = MlflowDataHelper(mlflow_tracking_uri=MLFLOW_DIR)
+        model = mdh.model_by_args(load_model_args={"model_name": "doc_generator_model"})
+        assert model is not None
+        assert isinstance(model, dspy.ChainOfThought)
+        model = mdh.model_by_args(
+            load_model_args={"model_name": "doc_generator_model", "model_version": "1"}
+        )
+        assert model is not None
+        assert isinstance(model, dspy.ChainOfThought)
+        model = mdh.model_by_args(load_model_args={"model_uri": str(model_uri)})
+        assert model is not None
+        assert isinstance(model, dspy.ChainOfThought)
+        model = mdh.model_by_args(
+            load_model_args={
+                "model_uri": str(model_uri),
+                "model_name": "doc_generator_model",
+                "model_version": "1",
+            }
+        )
+        assert model is not None
+        assert isinstance(model, dspy.ChainOfThought)
+
     # def test_save_model(self):
-    
+
     # def test_run_parameters(self):
