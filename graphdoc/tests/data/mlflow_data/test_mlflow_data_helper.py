@@ -33,7 +33,6 @@ class TestMlflowDataHelper:
 
     def test_model_by_name_and_version(self):
         mdh = MlflowDataHelper(mlflow_tracking_uri=MLFLOW_DIR)
-        tracking_uri = mlflow.get_tracking_uri()
         model = mdh.model_by_name_and_version(
             model_name="doc_generator_model", model_version="1"
         )
