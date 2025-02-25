@@ -6,6 +6,7 @@ from typing import Literal, Optional, Union
 # internal packages
 from .prompts import SinglePrompt, PromptFactory
 from .data import setup_logging, load_yaml_config
+from .train import TrainerFactory, SinglePromptTrainer
 
 # external packages
 import dspy
@@ -120,3 +121,60 @@ class GraphDoc:
             prompt_metric = config["prompt"]["metric"]
         prompt = self.single_prompt_from_dict(config["prompt"], prompt_metric)
         return prompt
+
+    #######################
+    # Trainer Methods     #
+    #######################
+    def single_trainer_from_dict(
+        self, trainer_dict: dict, prompt: SinglePrompt
+    ) -> SinglePromptTrainer:
+        """
+        Load a single trainer from a dictionary of parameters.
+
+        :param trainer_dict: Dictionary containing trainer parameters.
+        :type trainer_dict: dict
+        :param prompt: The prompt to use for this trainer.
+        :type prompt: SinglePrompt
+        :return: A SinglePromptTrainer object.
+        :rtype: SinglePromptTrainer
+        """
+        try:
+            return TrainerFactory.single_trainer(
+                trainer_class=trainer_dict["trainer"]["class"],
+                prompt=prompt,
+                optimizer_type=trainer_dict["optimizer"]["optimizer_type"],
+                optimizer_kwargs=trainer_dict["optimizer"],
+                mlflow_model_name=trainer_dict["trainer"]["mlflow_model_name"],
+                mlflow_experiment_name=trainer_dict["trainer"][
+                    "mlflow_experiment_name"
+                ],
+                mlflow_tracking_uri=trainer_dict["trainer"]["mlflow_tracking_uri"],
+                trainset=[
+                    dspy.Example()
+                ],  # TODO: we will need to add a method to load the trainset and evalset based on the config
+                evalset=[
+                    dspy.Example()
+                ],  # TODO: we will need to add a method to load the trainset and evalset based on the config
+            )
+        except Exception as e:
+            log.error(f"Error creating single trainer: {e}")
+            raise e
+
+    def single_trainer_from_yaml(
+        self, yaml_path: Union[str, Path]
+    ) -> SinglePromptTrainer:
+        """
+        Load a single trainer from a YAML file.
+
+        :param yaml_path: Path to the YAML file.
+        :type yaml_path: Union[str, Path]
+        :return: A SinglePromptTrainer object.
+        :rtype: SinglePromptTrainer
+        """
+        try:
+            config = load_yaml_config(yaml_path)
+            prompt = self.single_prompt_from_yaml(yaml_path)
+            return self.single_trainer_from_dict(config, prompt)
+        except Exception as e:
+            log.error(f"Error creating trainer from YAML: {e}")
+            raise e
