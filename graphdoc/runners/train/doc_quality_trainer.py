@@ -21,3 +21,26 @@ log = logging.getLogger(__name__)
 load_dotenv("../.env")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 HF_DATASET_KEY = os.getenv("HF_DATASET_KEY")
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Train a document quality model.")
+    parser.add_argument(
+        "--config-path",
+        type=str,
+        required=True,
+        help="Path to the configuration YAML file.",
+    )
+    args = parser.parse_args()
+
+    # load config
+    gd = GraphDoc.from_yaml(args.config_path)
+
+    # load the trainer object (including trainset and evalset)
+    trainer = gd.single_trainer_from_yaml(args.config_path)
+
+    # train the model
+    trainer.train()
+
+if __name__ == "__main__":
+    main()
