@@ -5,6 +5,7 @@ import logging
 from .optimizers import *
 from .single_prompt_trainer import *
 from .doc_quality_trainer import *
+from .doc_generator_trainer import *
 
 # external packages
 import dspy
@@ -36,7 +37,7 @@ class TrainerFactory:
 
         trainer_classes = {
             "DocQualityTrainer": DocQualityTrainer,
-            # "DocGeneratorTrainer": DocGeneratorTrainer,
+            "DocGeneratorTrainer": DocGeneratorTrainer,
         }
         if trainer_class not in trainer_classes:
             raise ValueError(f"Unknown trainer class: {trainer_class}")
