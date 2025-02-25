@@ -24,9 +24,12 @@ ASSETS_DIR = TEST_DIR / "assets"
 MLRUNS_DIR = ASSETS_DIR / "mlruns"
 ENV_PATH = TEST_DIR / ".env"
 
-# load environment variables
-# load_dotenv(ENV_FILE)
-load_dotenv(ENV_PATH)
+# Check if .env file exists
+if not ENV_PATH.exists():
+    log.error(f".env file not found at {ENV_PATH}")
+else:
+    log.info(f".env file found at {ENV_PATH}")
+    load_dotenv(dotenv_path=ENV_PATH, override=True)
 
 
 # Set default environment variables if not present
@@ -40,9 +43,14 @@ def ensure_env_vars():
     log.info(f"Environment variable path: {ENV_PATH}")
 
     for key in env_defaults:
-        log.info(
-            f"Environment variable {key}: {'SET' if key in os.environ else 'NOT SET'}"
-        )
+        value = os.environ.get(key, "NOT SET")
+        if value != "NOT SET":
+            if "API_KEY" in key or "DATASET_KEY" in key:
+                log.info(f"Environment variable {key}: SET (value masked)")
+            else:
+                log.info(f"Environment variable {key}: SET to {value}")
+        else:
+            log.info(f"Environment variable {key}: NOT SET")
 
     for key, default in env_defaults.items():
         if key not in os.environ and default is not None:
@@ -52,13 +60,14 @@ def ensure_env_vars():
             log.warning(f"Required environment variable {key} not set")
 
 
-@fixture(autouse=True)
+@fixture(autouse=True, scope="session")
 def setup_env():
     """Fixture to ensure environment is properly set up before each test."""
+    if ENV_PATH.exists():
+        load_dotenv(dotenv_path=ENV_PATH, override=True)
     ensure_env_vars()
 
 
-# global variables
 class OverwriteSchemaCategory(Enum):
     PERFECT = "perfect (TEST)"
     ALMOST_PERFECT = "almost perfect (TEST)"
@@ -109,11 +118,19 @@ def overwrite_ldh() -> LocalDataHelper:
 @fixture
 def gd() -> GraphDoc:
     """Fixture for GraphDoc with proper environment setup."""
+    # Ensure environment is set up correctly
+    if ENV_PATH.exists():
+        load_dotenv(dotenv_path=ENV_PATH, override=True)
     ensure_env_vars()
+
+    api_key = os.environ.get("OPENAI_API_KEY")
+    if not api_key:
+        log.error("OPENAI_API_KEY still not available after loading .env file")
+
     return GraphDoc(
         model_args={
             "model": "gpt-4o-mini",
-            "api_key": os.getenv("OPENAI_API_KEY"),
+            "api_key": api_key,
             "cache": True,
         }
     )
