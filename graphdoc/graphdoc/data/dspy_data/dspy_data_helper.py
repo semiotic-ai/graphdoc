@@ -145,7 +145,10 @@ class DspyDataHelper(ABC):
 
     @staticmethod
     @abstractmethod
-    def trainset(inputs: Union[dict[str, Any], Dataset], filter_args: Optional[dict[str, Any]] = None) -> list[dspy.Example]:
+    def trainset(
+        inputs: Union[dict[str, Any], Dataset],
+        filter_args: Optional[dict[str, Any]] = None,
+    ) -> list[dspy.Example]:
         """
         Given a dictionary of inputs or a datasets.Dataset object, return a list of dspy.Example objects.
 

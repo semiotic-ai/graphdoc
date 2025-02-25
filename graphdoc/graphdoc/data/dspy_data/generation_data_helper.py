@@ -68,6 +68,30 @@ class GenerationDataHelper(DspyDataHelper):
         )
 
     @staticmethod
-    def trainset(inputs: Union[dict[str, Any], Dataset], filter_args: Optional[dict[str, Any]] = None) -> list[dspy.Example]:
-        # TODO: implement this
-        raise NotImplementedError("trainset is not implemented")
+    def trainset(
+        inputs: Union[dict[str, Any], Dataset],
+        filter_args: Optional[dict[str, Any]] = None,
+    ) -> list[dspy.Example]:
+        if isinstance(inputs, dict):
+            # TODO: implement this
+            raise NotImplementedError("from dictionary is not implemented")
+        if isinstance(inputs, Dataset):
+            # TODO: here is where we will want to enable post-processing of the inputs
+            examples = []
+            for i in range(len(inputs)):
+                item = inputs[i]
+                database_schema = item.get("schema_str", None)
+                documented_schema = item.get("schema_str", None)
+                if database_schema is None or documented_schema is None:
+                    raise ValueError(
+                        f"dataset item {i} is missing one or more required fields"
+                    )
+                example_dict = {
+                    "database_schema": database_schema,
+                    "documented_schema": documented_schema,
+                }
+                examples.append(GenerationDataHelper.example(example_dict))
+            return examples
+        raise ValueError(
+            f"inputs must be a dictionary or a datasets, not: {type(inputs)}"
+        )

@@ -85,8 +85,6 @@ class QualityDataHelper(DspyDataHelper):
             raise NotImplementedError("from dictionary is not implemented")
         if isinstance(inputs, Dataset):
             examples = []
-
-            # convert each dataset item to a dictionary and then to a dspy.Example
             for i in range(len(inputs)):
                 item = inputs[i]
                 database_schema = item.get("schema_str", None)
@@ -103,7 +101,6 @@ class QualityDataHelper(DspyDataHelper):
                 }
                 examples.append(QualityDataHelper.example(example_dict))
             return examples
-        else:
-            raise ValueError(
-                f"inputs must be a dictionary or a datasets, not: {type(inputs)}"
-            )
+        raise ValueError(
+            f"inputs must be a dictionary or a datasets, not: {type(inputs)}"
+        )
