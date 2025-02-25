@@ -1,5 +1,6 @@
 # system packages
 import logging
+from typing import List
 from pathlib import Path
 
 # internal packages
@@ -10,7 +11,7 @@ from graphdoc import DocGeneratorPrompt, DocQualityPrompt
 from graphdoc import SinglePromptTrainer, DocQualityTrainer, DocGeneratorTrainer
 
 # external packages
-
+import dspy
 
 # logging
 log = logging.getLogger(__name__)
@@ -22,6 +23,25 @@ CONFIG_DIR = BASE_DIR / "tests" / "assets" / "configs"
 
 
 class TestGraphDoc:
+
+    ############################################################
+    # data tests                                               #
+    ############################################################
+
+    def test_trainset_from_dict(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
+        config_dict = load_yaml_config(config_path)
+        data_dict = config_dict["data"]
+
+        trainset = gd.trainset_from_dict(data_dict)
+        assert isinstance(trainset, list)
+        assert len(trainset) > 0
+        assert isinstance(trainset[0], dspy.Example)
+
+    ############################################################
+    # prompt tests                                             #
+    ############################################################
+
     def test_single_prompt_from_dict(self, gd: GraphDoc):
         config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
         prompt_dict = load_yaml_config(config_path)["prompt"]
@@ -44,6 +64,10 @@ class TestGraphDoc:
         config_path = CONFIG_DIR / "single_prompt_doc_generator_trainer.yaml"
         prompt = gd.single_prompt_from_yaml(config_path)
         assert isinstance(prompt, DocGeneratorPrompt)
+
+    ############################################################
+    # trainer tests                                            #
+    ############################################################
 
     def test_single_trainer_from_yaml(self, gd: GraphDoc):
         config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
