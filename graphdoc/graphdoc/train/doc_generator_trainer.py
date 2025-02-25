@@ -1,5 +1,6 @@
 # system packages
 import logging
+import math
 from typing import Dict, Any, List, Optional, Tuple
 
 # internal packages
@@ -65,6 +66,22 @@ class DocGeneratorTrainer(SinglePromptTrainer):
             raise TypeError(f"Expected DocGeneratorPrompt, got {type(prompt)}")
         self.doc_generator_prompt = prompt
 
+    def _calculate_average_score(self, evaluation: dict) -> float:
+        """
+        Given a dictionary of evaluation results, calculate the average score.
+
+        :param evaluation: The evaluation results.
+        :type evaluation: Dict[str, Any]
+        :return: The average score.
+        :rtype: float
+        """
+        examples = evaluation["results"]
+        total = 0
+        for ex in examples:
+            rating = math.sqrt(ex[2]) * 25
+            total += rating
+        return round(total / len(examples), 6)
+
     def evaluation_metrics(
         self, base_evaluation: Dict[str, Any], optimized_evaluation: Dict[str, Any]
     ) -> None:
@@ -76,21 +93,21 @@ class DocGeneratorTrainer(SinglePromptTrainer):
         :param optimized_evaluation: The evaluation metrics of the optimized model.
         :type optimized_evaluation: Dict[str, Any]
         """
-        # Log metrics to MLflow
-        for metric_name, metric_value in base_evaluation.items():
-            mlflow.log_metric(f"base_{metric_name}", metric_value)
+        base_evaluation_overall_score = self._calculate_average_score(base_evaluation)
+        optimized_evaluation_overall_score = self._calculate_average_score(
+            optimized_evaluation
+        )
 
-        for metric_name, metric_value in optimized_evaluation.items():
-            mlflow.log_metric(f"optimized_{metric_name}", metric_value)
-
-        # Log improvement as percentage
-        for metric_name in base_evaluation.keys():
-            if metric_name in optimized_evaluation:
-                base_value = base_evaluation[metric_name]
-                optimized_value = optimized_evaluation[metric_name]
-                if base_value != 0:  # Avoid division by zero
-                    improvement = ((optimized_value - base_value) / base_value) * 100
-                    mlflow.log_metric(f"improvement_{metric_name}_percent", improvement)
+        mlflow.log_metrics(
+            {
+                "base_evaluation_overall_score": base_evaluation_overall_score,
+                "optimized_evaluation_overall_score": optimized_evaluation_overall_score,
+            }
+        )
+        log.info(f"Base Evaluation: {base_evaluation}")
+        log.info(f"Optimized Evaluation: {optimized_evaluation}")
+        mlflow.log_dict(base_evaluation, "base_evaluation.json")
+        mlflow.log_dict(optimized_evaluation, "optimized_evaluation.json")
 
     def evaluate_training(
         self, base_model, optimized_model
@@ -157,10 +174,10 @@ class DocGeneratorTrainer(SinglePromptTrainer):
         optimized_signature = DspyDataHelper.prompt_signature(optimized_model)
 
         base_prompt = DspyDataHelper.formatted_signature(
-            base_signature, self.evalset[0]
+            base_signature, GenerationDataHelper.example_example()
         )
         optimized_prompt = DspyDataHelper.formatted_signature(
-            optimized_signature, self.evalset[0]
+            optimized_signature, GenerationDataHelper.example_example()
         )
 
         mlflow.log_text(base_prompt, "base_prompt.txt")
