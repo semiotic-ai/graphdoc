@@ -2,8 +2,8 @@ graphdoc:
   log_level: INFO                                        # The log level to use
 
 language_model: 
-  model: openai/gpt-4o                          # Must be a valid dspy language model
-  api_key: !env OPENAI_API_KEY                       # Must be a valid dspy language model API key
+  model: openai/gpt-4o                                  # Must be a valid dspy language model
+  api_key: !env OPENAI_API_KEY                          # Must be a valid dspy language model API key
   cache: true                                           # Whether to cache the calls to the language model
 
 data: 
@@ -14,7 +14,7 @@ data:
   local_specific_category: perfect                      # The specific category to load from the dataset (if load_from_local is true)
   local_parse_objects: True                             # Whether to parse the objects in the dataset (if load_from_local is true)
   split_for_eval: True                                  # Whether to split the dataset into trainset and evalset 
-  trainset_size: 1000                                   # The size of the trainset
+  trainset_size: 10                                     # The size of the trainset
   evalset_ratio: 0.1                                    # The proportionate size of the evalset
   data_helper_type: quality                             # Type of data helper to use (quality, generation)
 
@@ -48,10 +48,10 @@ trainer:
 
 optimizer: 
   optimizer_type: miprov2                               # BootstrapFewShotWithRandomSearch, miprov2
-  auto: medium                                          # miprov2 setting
+  auto: light                                           # miprov2 setting
   # student: this is the prompt.infer object
   # trainset: this is the dataset we are working with 
   max_labeled_demos: 2
   max_bootstrapped_demos: 4
-  num_trials: 25
+  num_trials: 2
   minibatch: true                                       # default true

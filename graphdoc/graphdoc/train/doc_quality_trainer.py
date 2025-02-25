@@ -170,10 +170,10 @@ class DocQualityTrainer(SinglePromptTrainer):
         optimized_signature = DspyDataHelper.prompt_signature(optimized_model)
 
         base_prompt = DspyDataHelper.formatted_signature(
-            base_signature, self.evalset[0]
+            base_signature, QualityDataHelper.example_example()
         )
         optimized_prompt = DspyDataHelper.formatted_signature(
-            optimized_signature, self.evalset[0]
+            optimized_signature, QualityDataHelper.example_example()
         )
 
         mlflow.log_text(base_prompt, "base_prompt.txt")

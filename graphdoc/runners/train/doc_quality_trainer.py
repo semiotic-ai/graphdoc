@@ -39,8 +39,20 @@ def main():
     # load the trainer object (including trainset and evalset)
     trainer = gd.single_trainer_from_yaml(args.config_path)
 
+    # trainer trainset and evalset can be modified here if needed
+    # trainer.trainset = ...
+    # trainer.evalset = ...
+
     # train the model
     trainer.train()
+
+    # log the parameters
+    config = load_yaml_config(args.config_path)
+    report_config = copy.deepcopy(config)
+    report_config["language_model"]["api_key"] = "REDACTED"
+    report_config["data"]["hf_api_key"] = "REDACTED"
+    report_config["trainer"]["mlflow_tracking_uri"] = "REDACTED"
+    mlflow.log_params(report_config)
 
 if __name__ == "__main__":
     main()
