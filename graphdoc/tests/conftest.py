@@ -13,12 +13,51 @@ from graphdoc import DocGeneratorPrompt, DocQualityPrompt
 # external packages
 from pytest import fixture
 from dotenv import load_dotenv
+import mlflow
 
 # logging
 log = logging.getLogger(__name__)
 
+# define test asset paths
+TEST_DIR = Path(__file__).resolve().parent
+ASSETS_DIR = TEST_DIR / "assets"
+MLRUNS_DIR = ASSETS_DIR / "mlruns"
+
+# set the .env path and verify
+ENV_FILE = Path(__file__).resolve().parent.parent.parent / ".env"
+log.info(f"Looking for .env file at: {ENV_FILE}")
+log.info(f".env file exists: {ENV_FILE.exists()}")
+
 # load environment variables
-load_dotenv("../../.env")
+load_dotenv(ENV_FILE)
+
+
+# Set default environment variables if not present
+def ensure_env_vars():
+    """Ensure all required environment variables are set with defaults if needed."""
+    env_defaults = {
+        "OPENAI_API_KEY": None,  # No default, must be provided
+        "HF_DATASET_KEY": None,  # No default, must be provided
+        "MLFLOW_TRACKING_URI": str(MLRUNS_DIR),
+    }
+
+    for key in env_defaults:
+        log.info(
+            f"Environment variable {key}: {'SET' if key in os.environ else 'NOT SET'}"
+        )
+
+    for key, default in env_defaults.items():
+        if key not in os.environ and default is not None:
+            os.environ[key] = default
+            log.info(f"Setting default for {key}: {default}")
+        elif key not in os.environ and default is None:
+            log.warning(f"Required environment variable {key} not set")
+
+
+@fixture(autouse=True)
+def setup_env():
+    """Fixture to ensure environment is properly set up before each test."""
+    ensure_env_vars()
 
 
 # global variables
@@ -71,6 +110,8 @@ def overwrite_ldh() -> LocalDataHelper:
 
 @fixture
 def gd() -> GraphDoc:
+    """Fixture for GraphDoc with proper environment setup."""
+    ensure_env_vars()
     return GraphDoc(
         model_args={
             "model": "gpt-4o-mini",

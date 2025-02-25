@@ -1,0 +1,52 @@
+language_model: 
+  lm_model_name: openai/gpt-4o                          # Must be a valid dspy language model
+  lm_api_key: !env OPENAI_API_KEY                       # Must be a valid dspy language model API key
+  cache: true                                           # Whether to cache the calls to the language model
+
+data: 
+  hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
+  load_from_hf: false                                   # Whether to load the dataset from Hugging Face
+  load_from_local: true                                 # Whether to load the dataset from a local directory
+  load_local_specific_category: false                   # Whether to load all categories or a specific category (if load_from_local is true)
+  local_specific_category: perfect                      # The specific category to load from the dataset (if load_from_local is true)
+  local_parse_objects: True                             # Whether to parse the objects in the dataset (if load_from_local is true)
+  split_for_eval: True                                  # Whether to split the dataset into trainset and evalset 
+  evalset_ratio: 0.1                                    # The proportionate size of the evalset
+
+prompt:
+  prompt: doc_quality                                   # Which prompt signature to use
+  class: DocQualityPrompt                               # Must be a child of SinglePrompt (we will use an enum to map this)
+  type: predict                                         # The type of prompt to use (predict, chain_of_thought)
+  metric: rating                                        # The type of metric to use (rating, category)
+  load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
+  model_uri: null                                       # The tracking URI for MLflow
+  model_name: null                                      # The name of the model in MLflow
+  model_version: null                                   # The version of the model in MLflow
+  prompt_metric: False                                  # Whether another prompt is used to calculate the metric (in which case we must also load that prompt)
+
+prompt_metric:
+  prompt: null                                          # The prompt to use to calculate the metric
+  class: null                                           # The class of the prompt to use to calculate the metric
+  type: null                                            # The type of prompt to use to calculate the metric
+  metric: null                                          # The metric to use to calculate the metric
+  load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
+  model_uri: null                                       # The tracking URI for MLflow
+  model_name: null                                      # The name of the model in MLflow
+  model_version: null                                   # The version of the model in MLflow
+
+trainer: 
+  class: DocQualityTrainer                              # The type of trainer to use (DocQualityTrainer)
+  optimizer_type: miprov2                               # The type of optimizer to use (miprov2, BootstrapFewShotWithRandomSearch)
+  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
+  mlflow_model_name: doc_quality_model                  # The name of the model in MLflow
+  mlflow_experiment_name: doc_quality_experiment        # The name of the experiment in MLflow
+
+optimizer: 
+  optimizer_type: miprov2                               # BootstrapFewShotWithRandomSearch, miprov2
+  auto: medium                                          # miprov2 setting
+  # student: this is the prompt.infer object
+  # trainset: this is the dataset we are working with 
+  max_labeled_demos: 2
+  max_bootstrapped_demos: 4
+  num_trials: 25
+  minibatch: true                                       # default true
