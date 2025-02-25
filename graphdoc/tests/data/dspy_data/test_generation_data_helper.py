@@ -7,6 +7,8 @@ from graphdoc import GenerationDataHelper
 # external packages
 import dspy
 import pytest
+from datasets import Dataset
+from mlflow.models import ModelSignature
 
 # logging
 log = logging.getLogger(__name__)
@@ -29,6 +31,10 @@ class TestGenerationDataHelper:
         assert example.database_schema == "test database schema"
         assert example.documented_schema == "test documented schema"
 
+    def test_model_signature(self):
+        signature = GenerationDataHelper.model_signature()
+        assert isinstance(signature, ModelSignature)
+
     def test_prediction(self):
         inputs = {
             "database_schema": "example database schema",
@@ -48,3 +54,16 @@ class TestGenerationDataHelper:
     def test_trainset(self):
         with pytest.raises(NotImplementedError):
             GenerationDataHelper.trainset({})
+
+    def test_trainset_from_dataset(self):
+        dataset = Dataset.from_dict(
+            {
+                "schema_str": ["example database schema"],
+            }
+        )
+        trainset = GenerationDataHelper.trainset(dataset)
+        assert isinstance(trainset, list)
+        assert len(trainset) == 1
+        assert isinstance(trainset[0], dspy.Example)
+        assert trainset[0].database_schema == "example database schema"
+        assert trainset[0].documented_schema == "example database schema"

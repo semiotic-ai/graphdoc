@@ -47,6 +47,11 @@ class TestFixtures:
         assert gd is not None
         assert isinstance(gd, GraphDoc)
 
+    def test_dqp(self, dqp):
+        assert isinstance(dqp, DocQualityPrompt)
+        assert dqp.prompt_type == "predict"
+        assert dqp.prompt_metric == "rating"
+
     def test_dgp(self, dgp):
         assert isinstance(dgp, DocGeneratorPrompt)
         assert dgp.prompt_type == "chain_of_thought"

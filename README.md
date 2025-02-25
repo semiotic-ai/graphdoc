@@ -44,6 +44,17 @@ To setup the mlflow-manager services, run the following command:
 ./run.sh mlflow-setup
 ```
 
+Below, we provide an overview of the commands available in the `run.sh` script. 
+
+| Command | Description |
+|---------|-------------|
+| `./run.sh dev` | Install both packages (graphdoc and mlflow-manager) in development mode |
+| `./run.sh install` | Install both packages (graphdoc and mlflow-manager) in production mode |
+| `./run.sh mlflow-setup` | Setup the mlflow-manager services |
+| `./run.sh mlflow-teardown` | Teardown the mlflow-manager services |
+| `./run.sh doc-quality-train` | Train a document quality model (using the default config in `graphdoc/assets/configs/single_prompt_doc_quality_trainer.yaml`) |
+| `./run.sh build-and-run-doc-quality-trainer` | Build and run the document quality trainer (./run.sh mlflow-setup && ./run.sh doc-quality-train) |
+
 ### python 
 
 We utilize `python==3.13.0` for this project. Please see the [python documentation](https://www.python.org/downloads/) for more information. We recommend using [pyenv](https://github.com/pyenv/pyenv) to install python.

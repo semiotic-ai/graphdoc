@@ -62,6 +62,15 @@ docs_init() {
     echo "Sphinx documentation initialized"
 }
 
+# train commands
+doc_quality_train_command() {
+    poetry run python runners/train/single_prompt_trainer.py --config-path assets/configs/single_prompt_doc_quality_trainer.yaml
+}
+
+doc_generator_train_command() {
+    poetry run python runners/train/single_prompt_trainer.py --config-path assets/configs/single_prompt_doc_generator_trainer.yaml
+}
+
 # help menu
 show_help() {
     echo "Usage: ./nli [option]"
@@ -78,6 +87,10 @@ show_help() {
     echo "  commit                 Format, lint, and test the code"
     echo "  docs                   Build the documentation"
     echo "  docs-init              Initialize the Sphinx documentation"
+
+    # train commands
+    echo "  doc-quality-train      Train a document quality model"
+    echo "  doc-generator-train    Train a document generator model"
 }
 
 # handle command line arguments
@@ -95,14 +108,12 @@ else
         "lint") lint_command ;;
         "test") test_command ;;
         "commit") commit_command ;;
-        "docs")
-            docs
-            ;;
-        "docs-init")
-            docs_init
-            ;;
+        "docs") docs ;;
+        "docs-init") docs_init ;;
+        "doc-quality-train") doc_quality_train_command ;;
+        "doc-generator-train") doc_generator_train_command ;;
         *)
-            echo "Usage: $0 {test|lint|format|docs|docs-init}"
+            echo "Usage: $0 {test|lint|format|docs|docs-init|doc-quality-train|doc-generator-train}"
             exit 1
             ;;
     esac

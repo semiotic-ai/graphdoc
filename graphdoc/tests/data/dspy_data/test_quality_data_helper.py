@@ -7,6 +7,8 @@ from graphdoc import QualityDataHelper
 # external packages
 import dspy
 import pytest
+from datasets import Dataset
+from mlflow.models import ModelSignature
 
 # logging
 log = logging.getLogger(__name__)
@@ -29,6 +31,10 @@ class TestQualityDataHelper:
         assert example.category == "perfect"
         assert example.rating == 4
 
+    def test_model_signature(self):
+        signature = QualityDataHelper.model_signature()
+        assert isinstance(signature, ModelSignature)
+
     def test_prediction(self):
         inputs = {
             "database_schema": "example database schema",
@@ -48,3 +54,19 @@ class TestQualityDataHelper:
     def test_trainset(self):
         with pytest.raises(NotImplementedError):
             QualityDataHelper.trainset({})
+
+    def test_trainset_from_dataset(self):
+        dataset = Dataset.from_dict(
+            {
+                "schema_str": ["example database schema"],
+                "category": ["perfect"],
+                "rating": [4],
+            }
+        )
+        trainset = QualityDataHelper.trainset(dataset)
+        assert isinstance(trainset, list)
+        assert len(trainset) == 1
+        assert isinstance(trainset[0], dspy.Example)
+        assert trainset[0].database_schema == "example database schema"
+        assert trainset[0].category == "perfect"
+        assert trainset[0].rating == 4

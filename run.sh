@@ -36,15 +36,53 @@ install() {
     cd ..
 }
 
+mlflow_teardown() {
+    echo "Teardown mlflow-manager..."
+    cd mlflow-manager && ./run.sh make-clean
+    cd ..
+}
+
+# train commands
+doc_quality_train() {
+    echo "Training a document quality model..."
+    cd graphdoc && ./run.sh dev && ./run.sh doc-quality-train
+    cd ..
+}
+
+doc_generator_train() {
+    echo "Training a document generator model..."
+    cd graphdoc && ./run.sh dev && ./run.sh doc-generator-train
+    cd ..
+}
+
+build_and_run_doc_quality_trainer() {
+    mlflow_setup
+    doc_quality_train
+}
+
+build_and_run_doc_generator_trainer() {
+    mlflow_setup
+    doc_generator_train
+}
+
 # help command
 show_help() {
     echo "Usage: ./nli [option]"
     echo "Options:"
-    echo "  dev                    Install all package dependencies in development mode"
-    echo "  install                Install all package dependencies in production mode"
+    echo "  dev                             Install all package dependencies in development mode"
+    echo "  install                         Install all package dependencies in production mode"
 
     # make commands
-    echo "  mlflow-setup           Install mlflow-manager dependencies and run the services"
+    echo "  mlflow-setup                    Install mlflow-manager dependencies and run the services"
+    echo "  mlflow-teardown                 Teardown mlflow-manager services"
+
+    # train commands
+    echo "  doc-quality-train               Train a document quality model"
+    echo "  doc-generator-train             Train a document generator model"
+
+    # build and run commands
+    echo "  build-and-run-doc-quality-train Build and run the document quality trainer"
+    echo "  build-and-run-doc-generator-train Build and run the document generator trainer"
 }
 
 # run the script
@@ -57,6 +95,15 @@ else
 
         # make commands
         "mlflow-setup") mlflow_setup ;;
+        "mlflow-teardown") mlflow_teardown ;;
+
+        # train commands
+        "doc-quality-train") doc_quality_train ;;
+        "doc-generator-train") doc_generator_train ;;
+
+        # build and run commands
+        "build-and-run-doc-quality-train") build_and_run_doc_quality_trainer ;;
+        "build-and-run-doc-generator-train") build_and_run_doc_generator_trainer ;;
         *) show_help ;;
     esac
 fi

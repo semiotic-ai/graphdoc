@@ -1,0 +1,1 @@
+{'prompt': 'doc_quality', 'class': 'SchemaDocQualityPrompt', 'type': 'chain_of_thought', 'metric': 'rating'}

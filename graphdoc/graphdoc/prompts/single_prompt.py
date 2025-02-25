@@ -143,7 +143,7 @@ class SinglePrompt(ABC):
         )
         try:
             overall_score, results, scores = evaluator(self.infer, self.evaluate_metric)  # type: ignore
-            return self._format_metric(examples, overall_score, results, scores)  # type: ignore
+            return self.format_metric(examples, overall_score, results, scores)  # type: ignore
         except Exception as e:
             log.error(f"Error evaluating evalset: {e}")
             raise e
