@@ -25,6 +25,21 @@ CONFIG_DIR = BASE_DIR / "tests" / "assets" / "configs"
 class TestGraphDoc:
 
     ############################################################
+    # class methods                                            #
+    ############################################################
+
+    def test_from_dict(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
+        config_dict = load_yaml_config(config_path)
+        gd = GraphDoc.from_dict(config_dict)
+        assert isinstance(gd, GraphDoc)
+
+    def test_from_yaml(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
+        gd = GraphDoc.from_yaml(config_path)
+        assert isinstance(gd, GraphDoc)
+
+    ############################################################
     # data tests                                               #
     ############################################################
 
