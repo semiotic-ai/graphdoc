@@ -49,9 +49,20 @@ doc_quality_train() {
     cd ..
 }
 
+doc_generator_train() {
+    echo "Training a document generator model..."
+    cd graphdoc && ./run.sh dev && ./run.sh doc-generator-train
+    cd ..
+}
+
 build_and_run_doc_quality_trainer() {
     mlflow_setup
     doc_quality_train
+}
+
+build_and_run_doc_generator_trainer() {
+    mlflow_setup
+    doc_generator_train
 }
 
 # help command
@@ -67,9 +78,11 @@ show_help() {
 
     # train commands
     echo "  doc-quality-train               Train a document quality model"
+    echo "  doc-generator-train             Train a document generator model"
 
     # build and run commands
     echo "  build-and-run-doc-quality-train Build and run the document quality trainer"
+    echo "  build-and-run-doc-generator-train Build and run the document generator trainer"
 }
 
 # run the script
@@ -86,9 +99,11 @@ else
 
         # train commands
         "doc-quality-train") doc_quality_train ;;
+        "doc-generator-train") doc_generator_train ;;
 
         # build and run commands
         "build-and-run-doc-quality-train") build_and_run_doc_quality_trainer ;;
+        "build-and-run-doc-generator-train") build_and_run_doc_generator_trainer ;;
         *) show_help ;;
     esac
 fi

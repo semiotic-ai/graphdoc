@@ -64,7 +64,11 @@ docs_init() {
 
 # train commands
 doc_quality_train_command() {
-    poetry run python runners/train/doc_quality_trainer.py --config-path assets/configs/single_prompt_doc_quality_trainer.yaml
+    poetry run python runners/train/single_prompt_trainer.py --config-path assets/configs/single_prompt_doc_quality_trainer.yaml
+}
+
+doc_generator_train_command() {
+    poetry run python runners/train/single_prompt_trainer.py --config-path assets/configs/single_prompt_doc_generator_trainer.yaml
 }
 
 # help menu
@@ -86,6 +90,7 @@ show_help() {
 
     # train commands
     echo "  doc-quality-train      Train a document quality model"
+    echo "  doc-generator-train    Train a document generator model"
 }
 
 # handle command line arguments
@@ -106,8 +111,9 @@ else
         "docs") docs ;;
         "docs-init") docs_init ;;
         "doc-quality-train") doc_quality_train_command ;;
+        "doc-generator-train") doc_generator_train_command ;;
         *)
-            echo "Usage: $0 {test|lint|format|docs|docs-init|doc-quality-train}"
+            echo "Usage: $0 {test|lint|format|docs|docs-init|doc-quality-train|doc-generator-train}"
             exit 1
             ;;
     esac
