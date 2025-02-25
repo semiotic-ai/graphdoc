@@ -6,7 +6,13 @@ from typing import List, Literal, Optional, Union
 # internal packages
 from .prompts import SinglePrompt, PromptFactory
 from .train import TrainerFactory, SinglePromptTrainer
-from .data import setup_logging, load_yaml_config, LocalDataHelper
+from .data import (
+    setup_logging,
+    load_yaml_config,
+    LocalDataHelper,
+    QualityDataHelper,
+    GenerationDataHelper,
+)
 
 # external packages
 import dspy
@@ -66,7 +72,39 @@ class GraphDoc:
         :return: A trainset.
         :rtype: List[dspy.Example]
         """
-        pass
+        # TODO: refactor to enable the passing of alternative schema_directory_path, and the related enums that must be passed in turn
+        ldh = LocalDataHelper()
+
+        if trainset_dict["data_helper_type"] == "quality":
+            dh = QualityDataHelper()
+        elif trainset_dict["data_helper_type"] == "generation":
+            dh = GenerationDataHelper()
+        else:
+            raise ValueError(
+                f"Invalid data helper type: {trainset_dict['data_helper_type']}"
+            )
+
+        # TODO: refactor to be more ergonomic once we have more data sources implemented
+        if trainset_dict["load_from_hf"]:
+            raise NotImplementedError("loading from Hugging Face is not implemented")
+        if trainset_dict["load_from_local"]:
+            if trainset_dict["load_local_specific_category"]:
+                raise NotImplementedError(
+                    "loading a specific category is not implemented"
+                )
+            dataset = ldh.folder_of_folders_to_dataset(
+                parse_objects=trainset_dict["local_parse_objects"]
+            )
+            trainset = dh.trainset(dataset)
+            if trainset_dict["trainset_size"] and isinstance(
+                trainset_dict["trainset_size"], int
+            ):
+                trainset = trainset[: trainset_dict["trainset_size"]]
+            return trainset
+        else:
+            raise ValueError(
+                f"Current implementation only supports loading from local directory"
+            )
 
     def trainset_from_yaml(self, yaml_path: Union[str, Path]) -> List[dspy.Example]:
         """
