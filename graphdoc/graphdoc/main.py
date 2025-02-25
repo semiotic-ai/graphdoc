@@ -52,6 +52,45 @@ class GraphDoc:
             raise e
 
     #######################
+    # Class Methods       #
+    #######################
+    @classmethod
+    def from_dict(cls, config_dict: dict) -> "GraphDoc":
+        """
+        Create a GraphDoc object from a dictionary of parameters.
+
+        {
+            "graphdoc": {
+                "log_level": "INFO"
+            },
+            "language_model": {
+                "model": "openai/gpt-4o",
+                "api_key": "!env OPENAI_API_KEY",
+            }
+        }
+        """
+        return GraphDoc(
+            model_args=config_dict["language_model"],
+            log_level=config_dict["graphdoc"]["log_level"],
+        )
+
+    @classmethod
+    def from_yaml(cls, yaml_path: Union[str, Path]) -> "GraphDoc":
+        """
+        Create a GraphDoc object from a YAML file.
+
+        graphdoc:
+            log_level: INFO                                       # The log level to use
+
+        language_model:
+            model: openai/gpt-4o                                  # Must be a valid dspy language model
+            api_key: !env OPENAI_API_KEY                          # Must be a valid dspy language model API key
+            cache: true                                           # Whether to cache the calls to the language model
+        """
+        config = load_yaml_config(yaml_path)
+        return GraphDoc.from_dict(config)
+
+    #######################
     # Data Methods        #
     #######################
     def trainset_from_dict(self, trainset_dict: dict) -> List[dspy.Example]:
