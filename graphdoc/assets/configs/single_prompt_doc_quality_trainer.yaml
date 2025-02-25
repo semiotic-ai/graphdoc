@@ -15,7 +15,7 @@ data:
 
 prompt:
   prompt: doc_quality                                   # Which prompt signature to use
-  class: SchemaDocQualityPrompt                         # Must be a child of SinglePrompt (we will use an enum to map this)
+  class: DocQualityPrompt                               # Must be a child of SinglePrompt (we will use an enum to map this)
   type: predict                                         # The type of prompt to use (predict, chain_of_thought)
   metric: rating                                        # The type of metric to use (rating, category)
   load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
