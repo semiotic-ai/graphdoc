@@ -45,6 +45,21 @@ class TestGraphDoc:
         assert len(trainset) > 0
         assert isinstance(trainset[0], dspy.Example)
 
+    def test_split_trainset(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
+        config_dict = load_yaml_config(config_path)
+        config_dict["data"]["trainset_size"] = 10
+        config_dict["data"]["evalset_ratio"] = 0.2
+        trainset = gd.trainset_from_dict(config_dict["data"])
+        trainset, evalset = gd.split_trainset(
+            trainset, config_dict["data"]["evalset_ratio"]
+        )
+        assert isinstance(trainset, list)
+        assert len(trainset) == 8
+        assert isinstance(trainset[0], dspy.Example)
+        assert isinstance(evalset, list)
+        assert len(evalset) == 2
+
     ############################################################
     # prompt tests                                             #
     ############################################################

@@ -1,5 +1,6 @@
 # system packages
 import logging
+import random
 from pathlib import Path
 from typing import List, Literal, Optional, Union
 
@@ -19,6 +20,9 @@ import dspy
 
 # logging
 log = logging.getLogger(__name__)
+
+# global variables
+random.seed(42)
 
 
 class GraphDoc:
@@ -136,8 +140,19 @@ class GraphDoc:
     ) -> tuple[List[dspy.Example], List[dspy.Example]]:
         """
         Split a trainset into a trainset and evalset.
+
+        :param trainset: The trainset to split.
+        :type trainset: List[dspy.Example]
+        :param evalset_ratio: The proportionate size of the evalset.
+        :type evalset_ratio: float
+        :return: A tuple of trainset and evalset.
+        :rtype: tuple[List[dspy.Example], List[dspy.Example]]
         """
-        pass
+        split_idx = int(len(trainset) * (1 - evalset_ratio))
+        random.shuffle(trainset)
+        evalset = trainset[split_idx:]
+        trainset = trainset[:split_idx]
+        return trainset, evalset
 
     def trainset_and_evalset_from_yaml(
         self, yaml_path: Union[str, Path]
