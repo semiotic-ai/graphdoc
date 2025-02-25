@@ -35,7 +35,7 @@ prompt_metric:
   model_version: null                                   # The version of the model in MLflow
 
 trainer: 
-  class: DocQualityTrainer                              # The type of trainer to use (DocQualityTrainer)
+  class: DocGeneratorTrainer                              # The type of trainer to use (DocQualityTrainer)
   optimizer_type: miprov2                               # The type of optimizer to use (miprov2, BootstrapFewShotWithRandomSearch)
   mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
   mlflow_model_name: doc_quality_model                  # The name of the model in MLflow
