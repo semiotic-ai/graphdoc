@@ -156,4 +156,5 @@ class DspyDataHelper(ABC):
         :return: A list of dspy.Example objects.
         :rtype: list[dspy.Example]
         """
+        # TODO: we should consider tighter coupling between DspyDataHelper and SchemaObject (turning SchemaObject into a base class for all data objects) so that we can have guarantees on the formatting and contents of the inputs
         pass
