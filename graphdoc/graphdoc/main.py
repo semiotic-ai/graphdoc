@@ -305,7 +305,11 @@ class GraphDoc:
     # Trainer Methods     #
     #######################
     def single_trainer_from_dict(
-        self, trainer_dict: dict, prompt: SinglePrompt
+        self,
+        trainer_dict: dict,
+        prompt: SinglePrompt,
+        trainset: List[dspy.Example] = [dspy.Example()],
+        evalset: List[dspy.Example] = [dspy.Example()],
     ) -> SinglePromptTrainer:
         """
         Load a single trainer from a dictionary of parameters.
@@ -328,12 +332,8 @@ class GraphDoc:
                     "mlflow_experiment_name"
                 ],
                 mlflow_tracking_uri=trainer_dict["trainer"]["mlflow_tracking_uri"],
-                trainset=[
-                    dspy.Example()
-                ],  # TODO: we will need to add a method to load the trainset and evalset based on the config
-                evalset=[
-                    dspy.Example()
-                ],  # TODO: we will need to add a method to load the trainset and evalset based on the config
+                trainset=trainset,
+                evalset=evalset,
             )
         except Exception as e:
             log.error(f"Error creating single trainer: {e}")
@@ -353,7 +353,8 @@ class GraphDoc:
         try:
             config = load_yaml_config(yaml_path)
             prompt = self.single_prompt_from_yaml(yaml_path)
-            return self.single_trainer_from_dict(config, prompt)
+            trainset, evalset = self.trainset_and_evalset_from_yaml(yaml_path)
+            return self.single_trainer_from_dict(config, prompt, trainset, evalset)
         except Exception as e:
             log.error(f"Error creating trainer from YAML: {e}")
             raise e
