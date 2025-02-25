@@ -38,6 +38,13 @@ class TestGraphDoc:
         assert len(trainset) > 0
         assert isinstance(trainset[0], dspy.Example)
 
+    def test_trainset_from_yaml(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
+        trainset = gd.trainset_from_yaml(config_path)
+        assert isinstance(trainset, list)
+        assert len(trainset) > 0
+        assert isinstance(trainset[0], dspy.Example)
+
     ############################################################
     # prompt tests                                             #
     ############################################################

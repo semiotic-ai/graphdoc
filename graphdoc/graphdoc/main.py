@@ -127,7 +127,9 @@ class GraphDoc:
         :return: A trainset.
         :rtype: List[dspy.Example]
         """
-        pass
+        config = load_yaml_config(yaml_path)
+        trainset = self.trainset_from_dict(config["data"])
+        return trainset
 
     def split_trainset(
         self, trainset: List[dspy.Example], evalset_ratio: float
