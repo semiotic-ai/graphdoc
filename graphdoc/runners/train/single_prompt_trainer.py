@@ -1,13 +1,10 @@
 # system packages
 import os
 import copy
-import random
 import argparse
 
 # internal packages
 import logging
-from graphdoc.train import DocQualityTrainer
-from graphdoc.prompts import DocQualityPrompt
 from graphdoc import GraphDoc, load_yaml_config
 
 # external packages
@@ -24,7 +21,7 @@ HF_DATASET_KEY = os.getenv("HF_DATASET_KEY")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Train a document quality model.")
+    parser = argparse.ArgumentParser(description="Train a single prompt model.")
     parser.add_argument(
         "--config-path",
         type=str,
