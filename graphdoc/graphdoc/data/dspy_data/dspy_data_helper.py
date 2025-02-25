@@ -145,12 +145,14 @@ class DspyDataHelper(ABC):
 
     @staticmethod
     @abstractmethod
-    def trainset(inputs: Union[dict[str, Any], Dataset]) -> list[dspy.Example]:
+    def trainset(inputs: Union[dict[str, Any], Dataset], filter_args: Optional[dict[str, Any]] = None) -> list[dspy.Example]:
         """
         Given a dictionary of inputs or a datasets.Dataset object, return a list of dspy.Example objects.
 
         :param inputs: A dictionary of inputs or a datasets.Dataset object.
         :type inputs: Union[dict[str, Any], datasets.Dataset]
+        :param filter_args: A dictionary of filter arguments. These are instructions for how we will filter and / or transform the inputs.
+        :type filter_args: Optional[dict[str, Any]]
         :return: A list of dspy.Example objects.
         :rtype: list[dspy.Example]
         """
