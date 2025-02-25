@@ -76,6 +76,34 @@ class QualityDataHelper(DspyDataHelper):
         )
 
     @staticmethod
-    def trainset(inputs: Union[dict[str, Any], Dataset], filter_args: Optional[dict[str, Any]] = None) -> list[dspy.Example]:
-        # TODO: implement this
-        raise NotImplementedError("trainset is not implemented")
+    def trainset(
+        inputs: Union[dict[str, Any], Dataset],
+        filter_args: Optional[dict[str, Any]] = None,
+    ) -> list[dspy.Example]:
+        if isinstance(inputs, dict):
+            # TODO: implement this
+            raise NotImplementedError("from dictionary is not implemented")
+        if isinstance(inputs, Dataset):
+            examples = []
+
+            # convert each dataset item to a dictionary and then to a dspy.Example
+            for i in range(len(inputs)):
+                item = inputs[i]
+                database_schema = item.get("schema_str", None)
+                category = item.get("category", None)
+                rating = int(item.get("rating", None))
+                if database_schema is None or category is None or rating is None:
+                    raise ValueError(
+                        f"dataset item {i} is missing one or more required fields"
+                    )
+                example_dict = {
+                    "database_schema": database_schema,
+                    "category": category,
+                    "rating": rating,
+                }
+                examples.append(QualityDataHelper.example(example_dict))
+            return examples
+        else:
+            raise ValueError(
+                f"inputs must be a dictionary or a datasets, not: {type(inputs)}"
+            )
