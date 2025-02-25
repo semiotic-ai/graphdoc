@@ -159,8 +159,27 @@ class GraphDoc:
     ) -> tuple[List[dspy.Example], List[dspy.Example]]:
         """
         Load a trainset and evalset from a YAML file.
+
+        data:
+            hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
+            load_from_hf: false                                   # Whether to load the dataset from Hugging Face
+            load_from_local: true                                 # Whether to load the dataset from a local directory
+            load_local_specific_category: false                   # Whether to load all categories or a specific category (if load_from_local is true)
+            local_specific_category: perfect                      # The specific category to load from the dataset (if load_from_local is true)
+            local_parse_objects: True                             # Whether to parse the objects in the dataset (if load_from_local is true)
+            split_for_eval: True                                  # Whether to split the dataset into trainset and evalset
+            trainset_size: 1000                                   # The size of the trainset
+            evalset_ratio: 0.1                                    # The proportionate size of the evalset
+            data_helper_type: quality                             # Type of data helper to use (quality, generation)
+
+        :param yaml_path: Path to the YAML file.
+        :type yaml_path: Union[str, Path]
+        :return: A tuple of trainset and evalset.
+        :rtype: tuple[List[dspy.Example], List[dspy.Example]]
         """
-        pass
+        config = load_yaml_config(yaml_path)
+        trainset = self.trainset_from_dict(config["data"])
+        return self.split_trainset(trainset, config["data"]["evalset_ratio"])
 
     #######################
     # Prompt Methods      #
