@@ -22,14 +22,11 @@ log = logging.getLogger(__name__)
 TEST_DIR = Path(__file__).resolve().parent
 ASSETS_DIR = TEST_DIR / "assets"
 MLRUNS_DIR = ASSETS_DIR / "mlruns"
-
-# set the .env path and verify
-ENV_FILE = Path(__file__).resolve().parent.parent.parent / ".env"
-log.info(f"Looking for .env file at: {ENV_FILE}")
-log.info(f".env file exists: {ENV_FILE.exists()}")
+ENV_PATH = TEST_DIR / ".env"
 
 # load environment variables
-load_dotenv(ENV_FILE)
+# load_dotenv(ENV_FILE)
+load_dotenv(ENV_PATH)
 
 
 # Set default environment variables if not present
@@ -40,6 +37,7 @@ def ensure_env_vars():
         "HF_DATASET_KEY": None,  # No default, must be provided
         "MLFLOW_TRACKING_URI": str(MLRUNS_DIR),
     }
+    log.info(f"Environment variable path: {ENV_PATH}")
 
     for key in env_defaults:
         log.info(

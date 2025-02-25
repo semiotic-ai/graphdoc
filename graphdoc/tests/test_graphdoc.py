@@ -7,6 +7,7 @@ from graphdoc import GraphDoc
 from graphdoc import SinglePrompt
 from graphdoc import load_yaml_config
 from graphdoc import DocGeneratorPrompt, DocQualityPrompt
+from graphdoc import SinglePromptTrainer, DocQualityTrainer
 
 # external packages
 
@@ -43,3 +44,10 @@ class TestGraphDoc:
         config_path = CONFIG_DIR / "single_prompt_doc_generator_trainer.yaml"
         prompt = gd.single_prompt_from_yaml(config_path)
         assert isinstance(prompt, DocGeneratorPrompt)
+
+    def test_single_trainer_from_yaml(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
+        trainer = gd.single_trainer_from_yaml(config_path)
+        assert isinstance(trainer, SinglePromptTrainer)
+        assert isinstance(trainer, DocQualityTrainer)
+        assert isinstance(trainer.prompt, DocQualityPrompt)
