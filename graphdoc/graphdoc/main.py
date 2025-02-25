@@ -1,12 +1,12 @@
 # system packages
 import logging
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import List, Literal, Optional, Union
 
 # internal packages
 from .prompts import SinglePrompt, PromptFactory
-from .data import setup_logging, load_yaml_config
 from .train import TrainerFactory, SinglePromptTrainer
+from .data import setup_logging, load_yaml_config, LocalDataHelper
 
 # external packages
 import dspy
@@ -40,6 +40,72 @@ class GraphDoc:
         except Exception as e:
             log.error(f"Error initializing LM: {e}")
             raise e
+
+    #######################
+    # Data Methods        #
+    #######################
+    def trainset_from_dict(self, trainset_dict: dict) -> List[dspy.Example]:
+        """
+        Load a trainset from a dictionary of parameters.
+
+        {
+            "hf_api_key": !env HF_DATASET_KEY,                    # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
+            "load_from_hf": false,                                # Whether to load the dataset from Hugging Face
+            "load_from_local": true,                              # Whether to load the dataset from a local directory
+            "load_local_specific_category": false,                # Whether to load all categories or a specific category (if load_from_local is true)
+            "local_specific_category": perfect,                   # The specific category to load from the dataset (if load_from_local is true)
+            "local_parse_objects": true,                          # Whether to parse the objects in the dataset (if load_from_local is true)
+            "split_for_eval": true,                               # Whether to split the dataset into trainset and evalset
+            "trainset_size": 1000,                                # The size of the trainset
+            "evalset_ratio": 0.1,                                 # The proportionate size of the evalset
+            "data_helper_type": "quality"                         # Type of data helper to use (quality, generation)
+        }
+
+        :param trainset_dict: Dictionary containing trainset parameters.
+        :type trainset_dict: dict
+        :return: A trainset.
+        :rtype: List[dspy.Example]
+        """
+        pass
+
+    def trainset_from_yaml(self, yaml_path: Union[str, Path]) -> List[dspy.Example]:
+        """
+        Load a trainset from a YAML file.
+
+        data:
+            hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
+            load_from_hf: false                                   # Whether to load the dataset from Hugging Face
+            load_from_local: true                                 # Whether to load the dataset from a local directory
+            load_local_specific_category: false                   # Whether to load all categories or a specific category (if load_from_local is true)
+            local_specific_category: perfect                      # The specific category to load from the dataset (if load_from_local is true)
+            local_parse_objects: True                             # Whether to parse the objects in the dataset (if load_from_local is true)
+            split_for_eval: True                                  # Whether to split the dataset into trainset and evalset
+            trainset_size: 1000                                   # The size of the trainset
+            evalset_ratio: 0.1                                    # The proportionate size of the evalset
+            data_helper_type: quality                             # Type of data helper to use (quality, generation)
+
+        :param yaml_path: Path to the YAML file.
+        :type yaml_path: Union[str, Path]
+        :return: A trainset.
+        :rtype: List[dspy.Example]
+        """
+        pass
+
+    def split_trainset(
+        self, trainset: List[dspy.Example], evalset_ratio: float
+    ) -> tuple[List[dspy.Example], List[dspy.Example]]:
+        """
+        Split a trainset into a trainset and evalset.
+        """
+        pass
+
+    def trainset_and_evalset_from_yaml(
+        self, yaml_path: Union[str, Path]
+    ) -> tuple[List[dspy.Example], List[dspy.Example]]:
+        """
+        Load a trainset and evalset from a YAML file.
+        """
+        pass
 
     #######################
     # Prompt Methods      #
