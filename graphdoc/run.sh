@@ -18,7 +18,7 @@ dev_command() {
 }
 
 requirements_command() {
-    poetry run pip freeze > requirements.txt
+    poetry export -f requirements.txt --output requirements.txt
 }
 
 format_command() {
@@ -37,6 +37,7 @@ commit_command() {
     format_command
     lint_command
     test_command
+    requirements_command
 }
 
 # Documentation commands
