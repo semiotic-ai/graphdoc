@@ -14,6 +14,8 @@ you will find a `mlflow-manager <mlflow_manager_>`_ directory that can help you 
 find a `run.sh <run_script_>`_ script that can help you get started with a majority of common workflows that you may want to run. Just reach open an issue, or 
 submit a PR, if you have any questions or feedback. Thanks!
 
+License: `Apache License 2.0 <Apache License 2.0_>`_
+
 
 .. toctree::
    :maxdepth: 2
