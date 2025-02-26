@@ -17,6 +17,10 @@ dev_command() {
     poetry install --with dev
 }
 
+requirements_command() {
+    poetry run pip freeze > requirements.txt
+}
+
 format_command() {
     poetry run black .
 }
@@ -88,6 +92,7 @@ show_help() {
     echo "  shell                  Run shell"
     echo "  install                Install dependencies"
     echo "  dev                    Install dependencies with dev"
+    echo "  requirements           Generate requirements.txt"
     echo "  format                 Format the code"
     echo "  lint                   Lint the code"
     echo "  test                   Run the tests"
@@ -114,6 +119,7 @@ else
         "shell") shell_command ;;
         "install") install_command ;;
         "dev") dev_command ;;
+        "requirements") requirements_command ;;
         "format") format_command ;;
         "lint") lint_command ;;
         "test") test_command ;;

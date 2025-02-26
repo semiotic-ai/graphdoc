@@ -18,5 +18,4 @@ jobs:
       uses: sphinx-notes/pages@v3
       with:
         documentation_path: ./graphdoc/docs
-        requirements_path: ./graphdoc/pyproject.toml 
-        pyproject_extras: docs
+        requirements_path: ./graphdoc/requirements.txt
