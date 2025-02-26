@@ -63,7 +63,10 @@
 </ul>
 </li>
 <li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt"><code class="docutils literal notranslate"><span class="pre">DocGeneratorPrompt</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.compare_metrics"><code class="docutils literal notranslate"><span class="pre">DocGeneratorPrompt.compare_metrics()</span></code></a></li>
 <li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_documentation_quality"><code class="docutils literal notranslate"><span class="pre">DocGeneratorPrompt.evaluate_documentation_quality()</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_metric"><code class="docutils literal notranslate"><span class="pre">DocGeneratorPrompt.evaluate_metric()</span></code></a></li>
+<li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.format_metric"><code class="docutils literal notranslate"><span class="pre">DocGeneratorPrompt.format_metric()</span></code></a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorSignature"><code class="docutils literal notranslate"><span class="pre">DocGeneratorSignature</span></code></a><ul>
@@ -111,7 +114,13 @@
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-graphdoc.prompts">Module contents</a></li>
+<li><a class="reference internal" href="#module-graphdoc.prompts">Module contents</a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.PromptFactory"><code class="docutils literal notranslate"><span class="pre">PromptFactory</span></code></a><ul>
+<li><a class="reference internal" href="#graphdoc.prompts.PromptFactory.single_prompt"><code class="docutils literal notranslate"><span class="pre">PromptFactory.single_prompt()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -212,12 +221,74 @@ Analyze the provided GraphQL Schema and generate detailed yet concise descriptio
 
 <dl class="py class">
 <dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_generation.</span></span><span class="sig-name descname"><span class="pre">DocGeneratorPrompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'predict'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'chain_of_thought'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt" title="graphdoc.prompts.schema_doc_quality.DocQualityPrompt"><span class="pre">DocQualityPrompt</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorPrompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt" title="Link to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.schema_doc_generation.</span></span><span class="sig-name descname"><span class="pre">DocGeneratorPrompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'predict'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'chain_of_thought'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Callable</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt" title="graphdoc.prompts.schema_doc_quality.DocQualityPrompt"><span class="pre">DocQualityPrompt</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorPrompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt" title="Link to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt" title="graphdoc.prompts.single_prompt.SinglePrompt"><code class="xref py py-class docutils literal notranslate"><span class="pre">SinglePrompt</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.compare_metrics">
+<span class="sig-name descname"><span class="pre">compare_metrics</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optimized_metrics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comparison_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'overall_score'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorPrompt.compare_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.compare_metrics" title="Link to this definition"></a></dt>
+<dd><p>Compare the base and optimized metrics.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>base_metrics</strong> (<em>Any</em>) – The base metrics.</p></li>
+<li><p><strong>optimized_metrics</strong> – The optimized metrics.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_documentation_quality">
 <span class="sig-name descname"><span class="pre">evaluate_documentation_quality</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">schema</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Example</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pred</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scalar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorPrompt.evaluate_documentation_quality"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_documentation_quality" title="Link to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Evaluate the quality of the documentation. Utilizes the instantiated metric type to evaluate the quality of the documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>schema</strong> (<em>dspy.Example</em>) – The schema to evaluate the documentation for.</p></li>
+<li><p><strong>pred</strong> (<em>dspy.Prediction</em>) – The predicted documentation.</p></li>
+<li><p><strong>trace</strong> (<em>Any</em>) – The trace of the prediction.</p></li>
+<li><p><strong>scalar</strong> (<em>bool</em>) – Whether to return a squared score or the full evaluation object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The squared score or the full evaluation object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_metric">
+<span class="sig-name descname"><span class="pre">evaluate_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">example</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Example</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prediction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Prediction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trace</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorPrompt.evaluate_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_metric" title="Link to this definition"></a></dt>
+<dd><p>This is the metric used to evalaute the prompt.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>example</strong> (<em>dspy.Example</em>) – The example to evaluate the metric on.</p></li>
+<li><p><strong>prediction</strong> (<em>dspy.Prediction</em>) – The prediction to evaluate the metric on.</p></li>
+<li><p><strong>trace</strong> (<em>Any</em>) – The trace to evaluate the metric on. This is for DSPy.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.format_metric">
+<span class="sig-name descname"><span class="pre">format_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">examples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overall_score</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/graphdoc/prompts/schema_doc_generation.html#DocGeneratorPrompt.format_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.format_metric" title="Link to this definition"></a></dt>
+<dd><p>Format the metric results into a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>examples</strong> (<em>List</em><em>[</em><em>dspy.Example</em><em>]</em>) – The examples used to evaluate the metric.</p></li>
+<li><p><strong>overall_score</strong> (<em>float</em>) – The overall score of the metric.</p></li>
+<li><p><strong>results</strong> (<em>List</em>) – The results of the metric.</p></li>
+<li><p><strong>scores</strong> (<em>List</em>) – The scores of the metric.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -578,6 +649,34 @@ Output a number rating that corresponds to the categories described above.</p>
 </section>
 <section id="module-graphdoc.prompts">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-graphdoc.prompts" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.prompts.PromptFactory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.prompts.</span></span><span class="sig-name descname"><span class="pre">PromptFactory</span></span><a class="reference internal" href="../_modules/graphdoc/prompts.html#PromptFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.PromptFactory" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.prompts.PromptFactory.single_prompt">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">single_prompt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prompt_metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt" title="graphdoc.prompts.schema_doc_quality.DocQualityPrompt"><span class="pre">DocQualityPrompt</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt" title="graphdoc.prompts.single_prompt.SinglePrompt"><span class="pre">SinglePrompt</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt" title="graphdoc.prompts.single_prompt.SinglePrompt"><span class="pre">SinglePrompt</span></a></span></span><a class="reference internal" href="../_modules/graphdoc/prompts.html#PromptFactory.single_prompt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.prompts.PromptFactory.single_prompt" title="Link to this definition"></a></dt>
+<dd><p>Returns an instance of the specified prompt class. Allows for the user to pass in their own dspy signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>prompt</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>dspy.Signature</em><em>]</em>) – The prompt to use.</p></li>
+<li><p><strong>prompt_class</strong> (<em>str</em>) – The class of the prompt to use.</p></li>
+<li><p><strong>prompt_type</strong> (<em>str</em>) – The type of the prompt to use.</p></li>
+<li><p><strong>prompt_metric</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><a class="reference internal" href="#graphdoc.prompts.schema_doc_quality.DocQualityPrompt" title="graphdoc.prompts.schema_doc_quality.DocQualityPrompt"><em>DocQualityPrompt</em></a><em>, </em><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt" title="graphdoc.prompts.single_prompt.SinglePrompt"><em>SinglePrompt</em></a><em>]</em>) – The metric to use for the prompt.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An instance of the specified prompt class.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#graphdoc.prompts.single_prompt.SinglePrompt" title="graphdoc.prompts.single_prompt.SinglePrompt">SinglePrompt</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
