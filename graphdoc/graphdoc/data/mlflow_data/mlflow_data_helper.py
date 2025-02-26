@@ -78,13 +78,13 @@ class MlflowDataHelper:
         :type load_model_args: Dict[str, str]
         :return: The loaded model.
         """
-        if "model_uri" in load_model_args:
+        if load_model_args.get("model_uri"):
             return self.model_by_uri(load_model_args["model_uri"])
-        elif "model_name" in load_model_args and "model_version" in load_model_args:
+        elif load_model_args.get("model_name") and load_model_args.get("model_version"):
             return self.model_by_name_and_version(
                 load_model_args["model_name"], load_model_args["model_version"]
             )
-        elif "model_name" in load_model_args:
+        elif load_model_args.get("model_name"):
             return self.latest_model_version(load_model_args["model_name"])
         else:
             raise ValueError("No valid model arguments provided.")

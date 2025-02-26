@@ -13,6 +13,7 @@ from .data import (
     QualityDataHelper,
     GenerationDataHelper,
     MlflowDataHelper,
+    DspyDataHelper,
 )
 from .prompts import SinglePrompt, PromptFactory, DocGeneratorPrompt
 from .modules import DocGeneratorModule
@@ -31,7 +32,7 @@ class GraphDoc:
     def __init__(
         self,
         model_args: dict,
-        mlflow_tracking_uri: Optional[str] = None,
+        mlflow_tracking_uri: Optional[Union[str, Path]] = None,
         log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO",
     ):
         """
@@ -55,6 +56,8 @@ class GraphDoc:
 
         if mlflow_tracking_uri:
             self.mdh = MlflowDataHelper(mlflow_tracking_uri)
+        else:
+            self.mdh = None
 
     #######################
     # Class Methods       #
@@ -258,6 +261,17 @@ class GraphDoc:
         :rtype: SinglePrompt
         """
         try:
+            # if we are loading from mlflow, modify the prompt_dict with the loaded model
+            if prompt_dict["load_from_mlflow"]:
+                if self.mdh:
+                    log.info(f"Loading prompt from MLflow: {prompt_dict}")
+                    prompt = self.mdh.model_by_args(prompt_dict)
+                    log.info(f"Prompt loaded from MLflow: {prompt}")
+                    prompt_signature = DspyDataHelper.prompt_signature(prompt)
+                    prompt_dict["prompt"] = prompt_signature
+                else:
+                    raise ValueError("MLflow tracking URI not provided")
+
             return PromptFactory.single_prompt(
                 prompt=prompt_dict["prompt"],
                 prompt_class=prompt_dict["class"],
