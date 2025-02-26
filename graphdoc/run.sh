@@ -18,7 +18,7 @@ dev_command() {
 }
 
 requirements_command() {
-    poetry export -f requirements.txt --output requirements.txt
+    poetry export -f requirements.txt --without-hashes --with dev,docs --output requirements.txt
 }
 
 format_command() {
