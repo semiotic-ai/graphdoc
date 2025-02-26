@@ -1,3 +1,6 @@
+# Copyright 2025-, Semiotic AI, Inc.
+# SPDX-License-Identifier: Apache-2.0
+
 # useful tutorial on dspy signatures: https://dspy.ai/tutorials/multihop_search/
 
 # system packages

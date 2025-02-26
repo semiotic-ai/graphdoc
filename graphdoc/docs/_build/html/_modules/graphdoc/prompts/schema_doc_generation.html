@@ -61,6 +61,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../prompts.html">graphdoc.prompts</a></li>
       <li class="breadcrumb-item active">graphdoc.prompts.schema_doc_generation</li>
       <li class="wy-breadcrumbs-aside">
       </li>
@@ -181,7 +182,7 @@
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">key</span>
     <span class="n">factory</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s2">&quot;zero_shot_doc_gen&quot;</span><span class="p">:</span> <span class="n">DocGeneratorSignature</span><span class="p">,</span>
+        <span class="s2">&quot;base_doc_gen&quot;</span><span class="p">:</span> <span class="n">DocGeneratorSignature</span><span class="p">,</span>
         <span class="s2">&quot;doc_gen_helper&quot;</span><span class="p">:</span> <span class="n">DocGeneratorHelperSignature</span><span class="p">,</span>
         <span class="s2">&quot;bad_doc_gen&quot;</span><span class="p">:</span> <span class="n">BadDocGeneratorSignature</span><span class="p">,</span>
     <span class="p">}</span>
@@ -200,7 +201,7 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">DocGeneratorPrompt</span><span class="p">(</span><span class="n">SinglePrompt</span><span class="p">):</span>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">],</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">],</span>
         <span class="n">prompt_type</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;predict&quot;</span><span class="p">,</span> <span class="s2">&quot;chain_of_thought&quot;</span><span class="p">],</span> <span class="n">Callable</span><span class="p">],</span>
         <span class="n">prompt_metric</span><span class="p">:</span> <span class="n">DocQualityPrompt</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -219,6 +220,20 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_documentation_quality</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">schema</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">,</span> <span class="n">pred</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scalar</span><span class="o">=</span><span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Evaluate the quality of the documentation. Utilizes the instantiated metric type to evaluate the quality of the documentation.</span>
+
+<span class="sd">        :param schema: The schema to evaluate the documentation for.</span>
+<span class="sd">        :type schema: dspy.Example</span>
+<span class="sd">        :param pred: The predicted documentation.</span>
+<span class="sd">        :type pred: dspy.Prediction</span>
+<span class="sd">        :param trace: The trace of the prediction.</span>
+<span class="sd">        :type trace: Any</span>
+<span class="sd">        :param scalar: Whether to return a squared score or the full evaluation object.</span>
+<span class="sd">        :type scalar: bool</span>
+<span class="sd">        :return: The squared score or the full evaluation object.</span>
+<span class="sd">        :rtype: int</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">gold_schema</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">schema</span><span class="o">.</span><span class="n">database_schema</span><span class="p">)</span>
             <span class="n">pred_schema</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">documented_schema</span><span class="p">)</span>
@@ -239,34 +254,73 @@
         <span class="k">if</span> <span class="n">scalar</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">rating</span><span class="o">**</span><span class="mi">2</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">evaluation</span></div>
-</div>
+            <span class="k">return</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">rating</span></div>
 
 
     <span class="c1">#######################</span>
     <span class="c1"># Abstract Methods    #</span>
     <span class="c1">#######################</span>
-    <span class="c1"># def evaluate_metric(</span>
-    <span class="c1">#     self, example: dspy.Example, prediction: dspy.Prediction, trace=None</span>
-    <span class="c1"># ) -&gt; Any:</span>
-    <span class="c1">#     pass</span>
+<div class="viewcode-block" id="DocGeneratorPrompt.evaluate_metric">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.evaluate_metric">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_metric</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">example</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">,</span> <span class="n">prediction</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+        <span class="c1"># TODO: we should expose a way to adjust the scalar value if we want to</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">evaluate_documentation_quality</span><span class="p">(</span><span class="n">example</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">trace</span><span class="p">)</span></div>
 
-    <span class="c1"># def format_metric(</span>
-    <span class="c1">#     self,</span>
-    <span class="c1">#     examples: List[dspy.Example],</span>
-    <span class="c1">#     overall_score: float,</span>
-    <span class="c1">#     results: List,</span>
-    <span class="c1">#     scores: List,</span>
-    <span class="c1"># ) -&gt; Dict[str, Any]:</span>
-    <span class="c1">#     pass</span>
 
-    <span class="c1"># def compare_metrics(</span>
-    <span class="c1">#     self,</span>
-    <span class="c1">#     base_metrics: Any,</span>
-    <span class="c1">#     optimized_metrics: Any,</span>
-    <span class="c1">#     comparison_value: str = &quot;overall_score&quot;,</span>
-    <span class="c1"># ) -&gt; bool:</span>
-    <span class="c1">#     pass</span>
+<div class="viewcode-block" id="DocGeneratorPrompt.format_metric">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.format_metric">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">format_metric</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">examples</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">],</span>
+        <span class="n">overall_score</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+        <span class="n">scores</span><span class="p">:</span> <span class="n">List</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Format the metric results into a dictionary.</span>
+
+<span class="sd">        :param examples: The examples used to evaluate the metric.</span>
+<span class="sd">        :type examples: List[dspy.Example]</span>
+<span class="sd">        :param overall_score: The overall score of the metric.</span>
+<span class="sd">        :type overall_score: float</span>
+<span class="sd">        :param results: The results of the metric.</span>
+<span class="sd">        :type results: List</span>
+<span class="sd">        :param scores: The scores of the metric.</span>
+<span class="sd">        :type scores: List</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: we can expand this to further parse out the results and scores</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;overall_score&quot;</span><span class="p">:</span> <span class="n">overall_score</span><span class="p">,</span>
+            <span class="s2">&quot;scores&quot;</span><span class="p">:</span> <span class="n">scores</span><span class="p">,</span>
+            <span class="s2">&quot;results&quot;</span><span class="p">:</span> <span class="n">results</span><span class="p">,</span>
+        <span class="p">}</span></div>
+
+
+<div class="viewcode-block" id="DocGeneratorPrompt.compare_metrics">
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_generation.DocGeneratorPrompt.compare_metrics">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compare_metrics</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">base_metrics</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">optimized_metrics</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+        <span class="n">comparison_value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;overall_score&quot;</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compare the base and optimized metrics.</span>
+
+<span class="sd">        :param base_metrics: The base metrics.</span>
+<span class="sd">        :type base_metrics: Any</span>
+<span class="sd">        :param optimized_metrics: The optimized metrics.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">comparison_value</span> <span class="o">==</span> <span class="s2">&quot;overall_score&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">optimized_metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;overall_score&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">base_metrics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+                <span class="s2">&quot;overall_score&quot;</span><span class="p">,</span> <span class="mi">0</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid comparison value: </span><span class="si">{</span><span class="n">comparison_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+</div>
+
 </pre></div>
 
            </div>

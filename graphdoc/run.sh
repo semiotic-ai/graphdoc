@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # development and installation commands
 python_command() {
     poetry run python
@@ -13,6 +15,10 @@ install_command() {
 
 dev_command() {
     poetry install --with dev
+}
+
+requirements_command() {
+    poetry export -f requirements.txt --without-hashes --with dev,docs --output requirements.txt
 }
 
 format_command() {
@@ -31,6 +37,7 @@ commit_command() {
     format_command
     lint_command
     test_command
+    requirements_command
 }
 
 # Documentation commands
@@ -86,6 +93,7 @@ show_help() {
     echo "  shell                  Run shell"
     echo "  install                Install dependencies"
     echo "  dev                    Install dependencies with dev"
+    echo "  requirements           Generate requirements.txt"
     echo "  format                 Format the code"
     echo "  lint                   Lint the code"
     echo "  test                   Run the tests"
@@ -112,6 +120,7 @@ else
         "shell") shell_command ;;
         "install") install_command ;;
         "dev") dev_command ;;
+        "requirements") requirements_command ;;
         "format") format_command ;;
         "lint") lint_command ;;
         "test") test_command ;;
