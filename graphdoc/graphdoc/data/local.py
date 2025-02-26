@@ -62,21 +62,6 @@ class LocalDataHelper:
         self.ratings = ratings
         self.categories_ratings = categories_ratings
 
-    # def _categories # we will get rid of this
-
-    # def _blank_schema_folder(self) -> Path: # we will get rid of this
-
-    # def _folder_paths(self) -> dict: # we will get rid of this
-
-    # def _category_ratings(self) -> dict: # we will get rid of this
-
-    # def _check_category_validity(self, category: str) -> bool: # we will get rid of this
-
-    # def _check_node_type(self, node: Node) -> str: # this is now in the parser.py file
-
-    # def _parse_objects_from_full_schema_object(self, schema: SchemaObject) -> dict[str, SchemaObject]: # this is now in the parser.py file
-
-    # def schemas_folder
     def schema_objects_from_folder(
         self, category: str, rating: int, folder_path: Union[str, Path]
     ) -> dict[str, SchemaObject]:
@@ -247,11 +232,3 @@ class LocalDataHelper:
     # def _create_repo_card # we should move this to a huggingface file
 
     # def _create_and_upload_repo_card # we should move this to a huggingface file
-
-    # def _create_graph_doc_example_trainset # we should move this to a dspy file
-
-    # def _create_doc_generator_example_trainset # we should move this to a dspy file
-
-    # def create_graph_doc_example_trainset # we should move this to a dspy file
-
-    # def blank_trainset # we should move this to a dspy file
