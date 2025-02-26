@@ -1,4 +1,5 @@
-# this file is for loading data from a local directory
+# Copyright 2025-, Semiotic AI, Inc.
+# SPDX-License-Identifier: Apache-2.0
 
 # system packages
 import logging

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # development and installation commands
 python_command() {
     poetry run python
