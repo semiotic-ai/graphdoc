@@ -1,9 +1,10 @@
 # system packages
 import logging
+from typing import Union
 
 # internal packages
 from ..data import Parser
-from ..prompts import DocGeneratorPrompt
+from ..prompts import DocGeneratorPrompt, SinglePrompt
 
 # external packages
 import dspy
@@ -16,7 +17,7 @@ log = logging.getLogger(__name__)
 class DocGeneratorModule(dspy.Module):
     def __init__(
         self,
-        prompt: DocGeneratorPrompt,
+        prompt: Union[DocGeneratorPrompt, SinglePrompt],
         retry: bool = True,
         retry_limit: int = 1,
         rating_threshold: int = 3,

@@ -436,7 +436,7 @@ class GraphDoc:
     # Module Methods      #
     #######################
     def doc_generator_module_from_dict(
-        self, module_dict: dict, prompt: DocGeneratorPrompt
+        self, module_dict: dict, prompt: Union[DocGeneratorPrompt, SinglePrompt]
     ) -> DocGeneratorModule:
         """
         Load a doc generator module from a dictionary of parameters.
@@ -469,6 +469,33 @@ class GraphDoc:
         """
         Load a doc generator module from a YAML file.
 
+        prompt:
+            prompt: base_doc_gen                                  # Which prompt signature to use
+            class: DocGeneratorPrompt                             # Must be a child of SinglePrompt (we will use an enum to map this)
+            type: chain_of_thought                                # The type of prompt to use (predict, chain_of_thought)
+            metric: rating                                        # The type of metric to use (rating, category)
+            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
+            model_uri: null                                       # The tracking URI for MLflow
+            model_name: null                                      # The name of the model in MLflow
+            model_version: null                                   # The version of the model in MLflow
+            prompt_metric: true                                   # Whether another prompt is used to calculate the metric (in which case we must also load that prompt)
 
+        prompt_metric:
+            prompt: doc_quality                                   # The prompt to use to calculate the metric
+            class: DocQualityPrompt                               # The class of the prompt to use to calculate the metric
+            type: predict                                         # The type of prompt to use to calculate the metric
+            metric: rating                                        # The metric to use to calculate the metric
+            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
+            model_uri: null                                       # The tracking URI for MLflow
+            model_name: null                                      # The name of the model in MLflow
+            model_version: null                                   # The version of the model in MLflow
+
+        module:
+            retry: true                                           # Whether to retry the generation if the quality check fails
+            retry_limit: 1                                        # The maximum number of retries
+            rating_threshold: 3                                   # The rating threshold for the quality check
+            fill_empty_descriptions: true                         # Whether to fill the empty descriptions in the schema
         """
-        pass
+        config = load_yaml_config(yaml_path)["module"]
+        prompt = self.single_prompt_from_yaml(yaml_path)
+        return self.doc_generator_module_from_dict(config, prompt)
