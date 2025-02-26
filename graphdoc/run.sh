@@ -71,6 +71,11 @@ doc_generator_train_command() {
     poetry run python runners/train/single_prompt_trainer.py --config-path assets/configs/single_prompt_doc_generator_trainer.yaml
 }
 
+# eval commands
+doc_generator_eval_command() {
+    poetry run python runners/eval/eval_doc_generator_module.py --config-path assets/configs/single_prompt_doc_generator_module_eval.yaml
+}
+
 # help menu
 show_help() {
     echo "Usage: ./nli [option]"
@@ -91,6 +96,9 @@ show_help() {
     # train commands
     echo "  doc-quality-train      Train a document quality model"
     echo "  doc-generator-train    Train a document generator model"
+
+    # eval commands
+    echo "  doc-generator-eval     Evaluate a document generator model"
 }
 
 # handle command line arguments
@@ -112,8 +120,9 @@ else
         "docs-init") docs_init ;;
         "doc-quality-train") doc_quality_train_command ;;
         "doc-generator-train") doc_generator_train_command ;;
+        "doc-generator-eval") doc_generator_eval_command ;;
         *)
-            echo "Usage: $0 {test|lint|format|docs|docs-init|doc-quality-train|doc-generator-train}"
+            echo "Usage: $0 {test|lint|format|docs|docs-init|doc-quality-train|doc-generator-train|doc-generator-eval}"
             exit 1
             ;;
     esac

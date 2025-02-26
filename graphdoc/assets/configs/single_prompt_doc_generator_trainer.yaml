@@ -1,5 +1,6 @@
 graphdoc: 
   log_level: INFO                                        # The log level to use (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
 
 language_model: 
   model: openai/gpt-4o                          # Must be a valid dspy language model

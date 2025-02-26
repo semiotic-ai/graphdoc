@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import List, Literal, Optional, Union
 
 # internal packages
-from .prompts import SinglePrompt, PromptFactory
 from .train import TrainerFactory, SinglePromptTrainer
 from .data import (
     setup_logging,
@@ -13,7 +12,12 @@ from .data import (
     LocalDataHelper,
     QualityDataHelper,
     GenerationDataHelper,
+    MlflowDataHelper,
+    DspyDataHelper,
 )
+from .prompts import SinglePrompt, PromptFactory, DocGeneratorPrompt
+from .modules import DocGeneratorModule
+from .eval import DocGeneratorEvaluator
 
 # external packages
 import dspy
@@ -29,7 +33,7 @@ class GraphDoc:
     def __init__(
         self,
         model_args: dict,
-        mlflow_tracking_uri: Optional[str] = None,
+        mlflow_tracking_uri: Optional[Union[str, Path]] = None,
         log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO",
     ):
         """
@@ -51,6 +55,12 @@ class GraphDoc:
             log.error(f"Error initializing LM: {e}")
             raise e
 
+        if mlflow_tracking_uri:
+            self.mdh = MlflowDataHelper(mlflow_tracking_uri)
+        else:
+            self.mdh = None
+        self.mlflow_tracking_uri = mlflow_tracking_uri
+
     #######################
     # Class Methods       #
     #######################
@@ -61,7 +71,8 @@ class GraphDoc:
 
         {
             "graphdoc": {
-                "log_level": "INFO"
+                "log_level": "INFO",
+                "mlflow_tracking_uri": "http://localhost:5001"
             },
             "language_model": {
                 "model": "openai/gpt-4o",
@@ -71,7 +82,10 @@ class GraphDoc:
         """
         return GraphDoc(
             model_args=config_dict["language_model"],
-            log_level=config_dict["graphdoc"]["log_level"],
+            mlflow_tracking_uri=config_dict["graphdoc"].get(
+                "mlflow_tracking_uri", None
+            ),
+            log_level=config_dict["graphdoc"].get("log_level", "INFO"),
         )
 
     @classmethod
@@ -249,6 +263,17 @@ class GraphDoc:
         :rtype: SinglePrompt
         """
         try:
+            # if we are loading from mlflow, modify the prompt_dict with the loaded model
+            if prompt_dict["load_from_mlflow"]:
+                if self.mdh:
+                    log.info(f"Loading prompt from MLflow: {prompt_dict}")
+                    prompt = self.mdh.model_by_args(prompt_dict)
+                    log.info(f"Prompt loaded from MLflow: {prompt}")
+                    prompt_signature = DspyDataHelper.prompt_signature(prompt)
+                    prompt_dict["prompt"] = prompt_signature
+                else:
+                    raise ValueError("MLflow tracking URI not provided")
+
             return PromptFactory.single_prompt(
                 prompt=prompt_dict["prompt"],
                 prompt_class=prompt_dict["class"],
@@ -314,6 +339,23 @@ class GraphDoc:
         """
         Load a single trainer from a dictionary of parameters.
 
+        {
+            "trainer": {
+                "class": "DocQualityTrainer",
+                "mlflow_model_name": "doc_quality_model",
+                "mlflow_experiment_name": "doc_quality_experiment",
+                "mlflow_tracking_uri": "http://localhost:5000"
+            },
+            "optimizer": {
+                "optimizer_type": "miprov2",
+                "auto": "light",
+                "max_labeled_demos": 2,
+                "max_bootstrapped_demos": 4,
+                "num_trials": 2,
+                "minibatch": true
+            },
+        }
+
         :param trainer_dict: Dictionary containing trainer parameters.
         :type trainer_dict: dict
         :param prompt: The prompt to use for this trainer.
@@ -345,6 +387,39 @@ class GraphDoc:
         """
         Load a single trainer from a YAML file.
 
+        data:
+            hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
+            load_from_hf: false                                   # Whether to load the dataset from Hugging Face
+            load_from_local: true                                 # Whether to load the dataset from a local directory
+            load_local_specific_category: false                   # Whether to load all categories or a specific category (if load_from_local is true)
+            local_specific_category: perfect                      # The specific category to load from the dataset (if load_from_local is true)
+            local_parse_objects: True                             # Whether to parse the objects in the dataset (if load_from_local is true)
+            split_for_eval: True                                  # Whether to split the dataset into trainset and evalset
+            trainset_size: 10                                     # The size of the trainset
+            evalset_ratio: 0.1                                    # The proportionate size of the evalset
+            data_helper_type: generation                          # Type of data helper to use (quality, generation)
+
+        prompt:
+            prompt: base_doc_gen                                  # Which prompt signature to use
+            class: DocGeneratorPrompt                             # Must be a child of SinglePrompt (we will use an enum to map this)
+            type: chain_of_thought                                # The type of prompt to use (predict, chain_of_thought)
+            metric: rating                                        # The type of metric to use (rating, category)
+            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
+            model_uri: null                                       # The tracking URI for MLflow
+            model_name: null                                      # The name of the model in MLflow
+            model_version: null                                   # The version of the model in MLflow
+            prompt_metric: true                                   # Whether another prompt is used to calculate the metric (in which case we must also load that prompt)
+
+        prompt_metric:
+            prompt: doc_quality                                   # The prompt to use to calculate the metric
+            class: DocQualityPrompt                               # The class of the prompt to use to calculate the metric
+            type: predict                                         # The type of prompt to use to calculate the metric
+            metric: rating                                        # The metric to use to calculate the metric
+            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
+            model_uri: null                                       # The tracking URI for MLflow
+            model_name: null                                      # The name of the model in MLflow
+            model_version: null                                   # The version of the model in MLflow
+
         :param yaml_path: Path to the YAML file.
         :type yaml_path: Union[str, Path]
         :return: A SinglePromptTrainer object.
@@ -358,3 +433,113 @@ class GraphDoc:
         except Exception as e:
             log.error(f"Error creating trainer from YAML: {e}")
             raise e
+
+    #######################
+    # Module Methods      #
+    #######################
+    def doc_generator_module_from_dict(
+        self, module_dict: dict, prompt: Union[DocGeneratorPrompt, SinglePrompt]
+    ) -> DocGeneratorModule:
+        """
+        Load a doc generator module from a dictionary of parameters.
+
+        {
+            "retry": true,
+            "retry_limit": 1,
+            "rating_threshold": 3,
+            "fill_empty_descriptions": true
+        }
+
+        :param module_dict: Dictionary containing module parameters.
+        :type module_dict: dict
+        :param prompt: The prompt to use for this module.
+        :type prompt: DocGeneratorPrompt
+        :return: A DocGeneratorModule object.
+        :rtype: DocGeneratorModule
+        """
+        return DocGeneratorModule(
+            prompt=prompt,
+            retry=module_dict["retry"],
+            retry_limit=module_dict["retry_limit"],
+            rating_threshold=module_dict["rating_threshold"],
+            fill_empty_descriptions=module_dict["fill_empty_descriptions"],
+        )
+
+    def doc_generator_module_from_yaml(
+        self, yaml_path: Union[str, Path]
+    ) -> DocGeneratorModule:
+        """
+        Load a doc generator module from a YAML file.
+
+        prompt:
+            prompt: base_doc_gen                                  # Which prompt signature to use
+            class: DocGeneratorPrompt                             # Must be a child of SinglePrompt (we will use an enum to map this)
+            type: chain_of_thought                                # The type of prompt to use (predict, chain_of_thought)
+            metric: rating                                        # The type of metric to use (rating, category)
+            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
+            model_uri: null                                       # The tracking URI for MLflow
+            model_name: null                                      # The name of the model in MLflow
+            model_version: null                                   # The version of the model in MLflow
+            prompt_metric: true                                   # Whether another prompt is used to calculate the metric (in which case we must also load that prompt)
+
+        prompt_metric:
+            prompt: doc_quality                                   # The prompt to use to calculate the metric
+            class: DocQualityPrompt                               # The class of the prompt to use to calculate the metric
+            type: predict                                         # The type of prompt to use to calculate the metric
+            metric: rating                                        # The metric to use to calculate the metric
+            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
+            model_uri: null                                       # The tracking URI for MLflow
+            model_name: null                                      # The name of the model in MLflow
+            model_version: null                                   # The version of the model in MLflow
+
+        module:
+            retry: true                                           # Whether to retry the generation if the quality check fails
+            retry_limit: 1                                        # The maximum number of retries
+            rating_threshold: 3                                   # The rating threshold for the quality check
+            fill_empty_descriptions: true                         # Whether to fill the empty descriptions in the schema
+        """
+        config = load_yaml_config(yaml_path)["module"]
+        prompt = self.single_prompt_from_yaml(yaml_path)
+        return self.doc_generator_module_from_dict(config, prompt)
+
+    #######################
+    # Eval Methods        #
+    #######################
+    def doc_generator_eval_from_yaml(
+        self, yaml_path: Union[str, Path]
+    ) -> DocGeneratorEvaluator:
+        """
+        Load a doc generator evaluator from a YAML file.
+        """
+        # load the generator
+        generator = self.doc_generator_module_from_yaml(yaml_path)
+        config = load_yaml_config(yaml_path)
+
+        # load the evaluator
+        metric_config = config["prompt_metric"]
+        evaluator = self.single_prompt_from_dict(metric_config, metric_config["metric"])
+
+        # load the eval config
+        if self.mdh is not None:
+            mlflow_tracking_uri = self.mdh.mlflow_tracking_uri
+        else:
+            mlflow_tracking_uri = config["eval"]["mlflow_tracking_uri"]
+        mlflow_experiment_name = config["eval"]["mlflow_experiment_name"]
+        generator_prediction_field = config["eval"]["generator_prediction_field"]
+        evaluator_prediction_field = config["eval"]["evaluator_prediction_field"]
+        readable_value = config["eval"]["readable_value"]
+
+        # load the evalset
+        evalset = self.trainset_from_yaml(yaml_path)
+
+        # return the evaluator
+        return DocGeneratorEvaluator(
+            generator=generator,
+            evaluator=evaluator,
+            evalset=evalset,
+            mlflow_tracking_uri=mlflow_tracking_uri,
+            mlflow_experiment_name=mlflow_experiment_name,
+            generator_prediction_field=generator_prediction_field,
+            evaluator_prediction_field=evaluator_prediction_field,
+            readable_value=readable_value,
+        )

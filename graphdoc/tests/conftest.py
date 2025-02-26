@@ -132,7 +132,9 @@ def gd() -> GraphDoc:
             "model": "gpt-4o-mini",
             "api_key": api_key,
             "cache": True,
-        }
+        },
+        mlflow_tracking_uri=MLRUNS_DIR,
+        log_level="INFO",
     )
 
 

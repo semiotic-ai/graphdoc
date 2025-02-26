@@ -7,6 +7,8 @@ from pathlib import Path
 from graphdoc import GraphDoc
 from graphdoc import SinglePrompt
 from graphdoc import load_yaml_config
+from graphdoc import DocGeneratorModule
+from graphdoc import DocGeneratorEvaluator
 from graphdoc import DocGeneratorPrompt, DocQualityPrompt
 from graphdoc import SinglePromptTrainer, DocQualityTrainer, DocGeneratorTrainer
 
@@ -102,6 +104,17 @@ class TestGraphDoc:
         assert isinstance(generator_prompt, DocGeneratorPrompt)
         assert isinstance(generator_prompt.prompt_metric, DocQualityPrompt)
 
+    def test_single_prompt_by_version_from_dict(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
+        prompt_dict = load_yaml_config(config_path)["prompt"]
+        prompt_dict["load_from_mlflow"] = True
+        prompt_dict["model_name"] = "doc_quality_model"
+        prompt_dict["model_version"] = "1"
+        prompt_dict["type"] = "predict"
+        prompt_metric = prompt_dict["metric"]
+        prompt = gd.single_prompt_from_dict(prompt_dict, prompt_metric)
+        assert isinstance(prompt, DocQualityPrompt)
+
     def test_single_prompt_from_yaml(self, gd: GraphDoc):
         config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
         prompt = gd.single_prompt_from_yaml(config_path)
@@ -127,3 +140,29 @@ class TestGraphDoc:
         assert isinstance(trainer, SinglePromptTrainer)
         assert isinstance(trainer, DocGeneratorTrainer)
         assert isinstance(trainer.prompt, DocGeneratorPrompt)
+
+    ############################################################
+    # module tests                                             #
+    ############################################################
+
+    def test_doc_generator_module_from_dict(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_generator_module.yaml"
+        prompt = gd.single_prompt_from_yaml(config_path)
+        config_dict = load_yaml_config(config_path)
+        module_dict = config_dict["module"]
+        module = gd.doc_generator_module_from_dict(module_dict, prompt)
+        assert isinstance(module, DocGeneratorModule)
+
+    def test_doc_generator_module_from_yaml(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_generator_module.yaml"
+        module = gd.doc_generator_module_from_yaml(config_path)
+        assert isinstance(module, DocGeneratorModule)
+
+    ############################################################
+    # eval tests                                               #
+    ############################################################
+
+    def test_doc_generator_eval_from_yaml(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_generator_module_eval.yaml"
+        evaluator = gd.doc_generator_eval_from_yaml(config_path)
+        assert isinstance(evaluator, DocGeneratorEvaluator)
