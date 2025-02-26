@@ -96,8 +96,8 @@ class DocGeneratorEvaluator(dspy.Module):
         """
         mlflow.set_experiment(self.mlflow_experiment_name)
         with mlflow.start_run():
-            evalset = [x.database_schema for x in self.evalset]
-            evaluation_results = self.batch(evalset, num_threads=32)
+            # evalset = [x.database_schema for x in self.evalset]
+            evaluation_results = self.batch(self.evalset, num_threads=32)
             avg_overall_rating = sum(
                 [x["overall_rating"] for x in evaluation_results]
             ) / len(evaluation_results)

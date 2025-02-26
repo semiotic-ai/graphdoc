@@ -13,8 +13,8 @@ data:
   load_from_local: true                                 # Whether to load the dataset from a local directory
   load_local_specific_category: false                   # Whether to load all categories or a specific category (if load_from_local is true)
   local_specific_category: perfect                      # The specific category to load from the dataset (if load_from_local is true)
-  local_parse_objects: True                             # Whether to parse the objects in the dataset (if load_from_local is true)
-  split_for_eval: True                                  # Whether to split the dataset into trainset and evalset 
+  local_parse_objects: false                            # Whether to parse the objects in the dataset (if load_from_local is true)
+  split_for_eval: false                                 # Whether to split the dataset into trainset and evalset 
   trainset_size: 10                                     # The size of the trainset
   evalset_ratio: 0.1                                    # The proportionate size of the evalset
   data_helper_type: generation                          # Type of data helper to use (quality, generation)
@@ -65,7 +65,7 @@ module:
 
 eval:
   mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
-  mlflow_experiment_name: doc_generator_eval           # The name of the experiment in MLflow
-  generator_prediction_field: documented_schema        # The field in the generator prediction to use
+  mlflow_experiment_name: doc_generator_eval            # The name of the experiment in MLflow
+  generator_prediction_field: documented_schema         # The field in the generator prediction to use
   evaluator_prediction_field: rating                    # The field in the evaluator prediction to use
-  readable_value: 25                                     # The value to make the ratings readable
+  readable_value: 25                                    # The value to make the ratings readable
