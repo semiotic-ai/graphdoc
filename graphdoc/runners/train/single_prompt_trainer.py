@@ -51,5 +51,6 @@ def main():
     report_config["trainer"]["mlflow_tracking_uri"] = "REDACTED"
     mlflow.log_params(report_config)
 
+
 if __name__ == "__main__":
     main()

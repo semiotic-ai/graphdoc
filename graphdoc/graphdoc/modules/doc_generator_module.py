@@ -1,11 +1,11 @@
-# system packages 
+# system packages
 import logging
 
 # internal packages
 from ..data import Parser
 from ..prompts import DocGeneratorPrompt
 
-# external packages 
+# external packages
 import dspy
 from graphql import parse, print_ast
 
@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 
 class DocGeneratorModule(dspy.Module):
     def __init__(
-        self, 
+        self,
         prompt: DocGeneratorPrompt,
         retry: bool = True,
         retry_limit: int = 1,
@@ -48,9 +48,11 @@ class DocGeneratorModule(dspy.Module):
         self.fill_empty_descriptions = fill_empty_descriptions
         self.par = Parser()
 
-        # ensure that the doc generator prompt metric is set to rating 
+        # ensure that the doc generator prompt metric is set to rating
         if self.prompt.prompt_metric.prompt_metric != "rating":
-            log.warning("DocGeneratorModule: prompt metric is not set to rating. Setting to rating.")
+            log.warning(
+                "DocGeneratorModule: prompt metric is not set to rating. Setting to rating."
+            )
             self.prompt.prompt_metric.prompt_metric = "rating"
 
     def _retry_by_rating(self, database_schema: str) -> str:
@@ -62,15 +64,18 @@ class DocGeneratorModule(dspy.Module):
         :return: The generated documentation.
         :rtype: str
         """
-        def _try_rating(database_schema: str) -> str:
+
+        def _try_rating(database_schema: str) -> dspy.Prediction:
             try:
-                return self.prompt.metric_type.infer(
-                    database_schema=database_schema
-                )
+                return self.prompt.prompt_metric.infer(database_schema=database_schema)
             except Exception as e:
-                log.warning(f"DocGeneratorModule: error while attempting to compute rating: {e}")
-                return dspy.Prediction(rating=self.rating_threshold) # TODO: we could have better handling here, but the exponential decay on retries is a good fallback that is already built into the retry logic
-        
+                log.warning(
+                    f"DocGeneratorModule: error while attempting to compute rating: {e}"
+                )
+                return dspy.Prediction(
+                    rating=self.rating_threshold
+                )  # TODO: we could have better handling here, but the exponential decay on retries is a good fallback that is already built into the retry logic
+
         retries = 0
         rating = 0
         pred_database_schema = None
@@ -91,7 +96,9 @@ class DocGeneratorModule(dspy.Module):
                         f"Retry improved rating quality to meet threshold (attempt #{retries + 1})"
                     )
                 return pred_database_schema
-            log.info(f"The rating prediction is (attempt #{retries + 1}): {rating_prediction}")
+            log.info(
+                f"The rating prediction is (attempt #{retries + 1}): {rating_prediction}"
+            )
 
             # if the rating is below the threshold, prepare for a retry
             if self.prompt.prompt_metric.prompt_type == "chain_of_thought":
@@ -119,9 +126,7 @@ class DocGeneratorModule(dspy.Module):
             return database_schema
         return pred_database_schema
 
-    def _predict(
-        self, database_schema: str
-    ) -> dspy.Prediction:
+    def _predict(self, database_schema: str) -> dspy.Prediction:
         """
         Given a database schema, generate a documented schema. Performs the following steps:
         - Check that the graphql is valid
@@ -166,9 +171,7 @@ class DocGeneratorModule(dspy.Module):
             return dspy.Prediction(documented_schema=prediction.documented_schema)
         else:
             log.warning(f"Generated schema does not match the original schema")
-            return dspy.Prediction(
-                documented_schema=database_schema
-            ) 
+            return dspy.Prediction(documented_schema=database_schema)
 
     def forward(self, database_schema: str) -> dspy.Prediction:
         """
@@ -185,9 +188,7 @@ class DocGeneratorModule(dspy.Module):
         else:
             return self._predict(database_schema=database_schema)
 
-    def document_full_schema(
-        self, database_schema: str
-    ) -> dspy.Prediction:
+    def document_full_schema(self, database_schema: str) -> dspy.Prediction:
         """
         Given a database schema, parse out the underlying components and document on a per-component basis.
 
@@ -226,6 +227,3 @@ class DocGeneratorModule(dspy.Module):
                 updated_ast = self.par.fill_empty_descriptions(document_ast)
                 return dspy.Prediction(documented_schema=print_ast(updated_ast))
             return dspy.Prediction(documented_schema=database_schema)
-                
-        
-        

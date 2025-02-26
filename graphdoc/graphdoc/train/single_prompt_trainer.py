@@ -1,7 +1,7 @@
 # system packages
 import logging
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List, Optional, Tuple
 
 # internal packages
 from ..prompts import SinglePrompt
@@ -102,7 +102,9 @@ class SinglePromptTrainer(ABC):
         pass
 
     @abstractmethod
-    def train(self, load_model_args: Dict[str, Any], save_model: bool = True):
+    def train(
+        self, load_model_args: Optional[Dict[str, Any]] = None, save_model: bool = True
+    ):
         """
         Train the model.
 
