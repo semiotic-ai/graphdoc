@@ -1,1 +1,1 @@
-from .schema_doc_generator import *
+from .doc_generator_module import *
