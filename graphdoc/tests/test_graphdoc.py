@@ -8,6 +8,7 @@ from graphdoc import GraphDoc
 from graphdoc import SinglePrompt
 from graphdoc import load_yaml_config
 from graphdoc import DocGeneratorModule
+from graphdoc import DocGeneratorEvaluator
 from graphdoc import DocGeneratorPrompt, DocQualityPrompt
 from graphdoc import SinglePromptTrainer, DocQualityTrainer, DocGeneratorTrainer
 
@@ -156,3 +157,12 @@ class TestGraphDoc:
         config_path = CONFIG_DIR / "single_prompt_doc_generator_module.yaml"
         module = gd.doc_generator_module_from_yaml(config_path)
         assert isinstance(module, DocGeneratorModule)
+
+    ############################################################
+    # eval tests                                               #
+    ############################################################
+
+    def test_doc_generator_eval_from_yaml(self, gd: GraphDoc):
+        config_path = CONFIG_DIR / "single_prompt_doc_generator_module_eval.yaml"
+        evaluator = gd.doc_generator_eval_from_yaml(config_path)
+        assert isinstance(evaluator, DocGeneratorEvaluator)
