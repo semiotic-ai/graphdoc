@@ -59,6 +59,7 @@ services:
       --host 0.0.0.0
       --serve-artifacts
       --artifacts-destination s3://mlflow
+      --app-name basic-auth
     depends_on:
       - postgres
       - minio-setup

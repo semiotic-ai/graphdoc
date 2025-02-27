@@ -2,10 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 
 # system packages
+import os
 import ast
 import logging
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Any, Dict, Optional, Union
 
 # internal packages
 
@@ -19,18 +20,48 @@ log = logging.getLogger(__name__)
 
 
 class MlflowDataHelper:
-    def __init__(self, mlflow_tracking_uri: Union[str, Path]):
+    def __init__(
+        self,
+        mlflow_tracking_uri: Union[str, Path],
+        mlflow_tracking_username: Optional[str] = None,
+        mlflow_tracking_password: Optional[str] = None,
+    ):
         """
         A helper class for loading and saving models and metadata from mlflow.
 
         :param mlflow_tracking_uri: The uri of the mlflow tracking server.
         :type mlflow_tracking_uri: Union[str, Path]
+        :param mlflow_tracking_username: The username for the mlflow tracking server.
+        :type mlflow_tracking_username: str
+        :param mlflow_tracking_password: The password for the mlflow tracking server.
+        :type mlflow_tracking_password: str
         """
         self.mlflow_tracking_uri = mlflow_tracking_uri
         mlflow.set_tracking_uri(str(mlflow_tracking_uri))
         self.mlflow_client = mlflow.MlflowClient(
             tracking_uri=str(self.mlflow_tracking_uri)
         )
+        if mlflow_tracking_username:
+            os.environ["MLFLOW_TRACKING_USERNAME"] = mlflow_tracking_username
+        if mlflow_tracking_password:
+            os.environ["MLFLOW_TRACKING_PASSWORD"] = mlflow_tracking_password
+
+    #########################
+    # Auth Methods          #
+    #########################
+    def update_auth_env_vars(
+        self, mlflow_tracking_username: str, mlflow_tracking_password: str
+    ):
+        """
+        Update the authentication environment variables.
+
+        :param mlflow_tracking_username: The username for the mlflow tracking server.
+        :type mlflow_tracking_username: str
+        :param mlflow_tracking_password: The password for the mlflow tracking server.
+        :type mlflow_tracking_password: str
+        """
+        os.environ["MLFLOW_TRACKING_USERNAME"] = mlflow_tracking_username
+        os.environ["MLFLOW_TRACKING_PASSWORD"] = mlflow_tracking_password
 
     #########################
     # Model Loading Methods #

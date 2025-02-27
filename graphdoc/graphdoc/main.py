@@ -37,6 +37,8 @@ class GraphDoc:
         self,
         model_args: dict,
         mlflow_tracking_uri: Optional[Union[str, Path]] = None,
+        mlflow_tracking_username: Optional[str] = None,
+        mlflow_tracking_password: Optional[str] = None,
         log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO",
     ):
         """
@@ -59,7 +61,9 @@ class GraphDoc:
             raise e
 
         if mlflow_tracking_uri:
-            self.mdh = MlflowDataHelper(mlflow_tracking_uri)
+            self.mdh = MlflowDataHelper(
+                mlflow_tracking_uri, mlflow_tracking_username, mlflow_tracking_password
+            )
         else:
             self.mdh = None
         self.mlflow_tracking_uri = mlflow_tracking_uri
@@ -75,7 +79,9 @@ class GraphDoc:
         {
             "graphdoc": {
                 "log_level": "INFO",
-                "mlflow_tracking_uri": "http://localhost:5001"
+                "mlflow_tracking_uri": "http://localhost:5001",
+                "mlflow_tracking_username": "admin",
+                "mlflow_tracking_password": "password"
             },
             "language_model": {
                 "model": "openai/gpt-4o",
@@ -87,6 +93,12 @@ class GraphDoc:
             model_args=config_dict["language_model"],
             mlflow_tracking_uri=config_dict["graphdoc"].get(
                 "mlflow_tracking_uri", None
+            ),
+            mlflow_tracking_username=config_dict["graphdoc"].get(
+                "mlflow_tracking_username", None
+            ),
+            mlflow_tracking_password=config_dict["graphdoc"].get(
+                "mlflow_tracking_password", None
             ),
             log_level=config_dict["graphdoc"].get("log_level", "INFO"),
         )
