@@ -127,6 +127,8 @@ def gd() -> GraphDoc:
     ensure_env_vars()
 
     api_key = os.environ.get("OPENAI_API_KEY")
+    mlflow_tracking_username = os.environ.get("MLFLOW_TRACKING_USERNAME")
+    mlflow_tracking_password = os.environ.get("MLFLOW_TRACKING_PASSWORD")
     if not api_key:
         log.error("OPENAI_API_KEY still not available after loading .env file")
 
@@ -137,6 +139,8 @@ def gd() -> GraphDoc:
             "cache": True,
         },
         mlflow_tracking_uri=MLRUNS_DIR,
+        mlflow_tracking_username=mlflow_tracking_username,
+        mlflow_tracking_password=mlflow_tracking_password,
         log_level="INFO",
     )
 
