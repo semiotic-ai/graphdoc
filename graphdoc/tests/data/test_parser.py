@@ -27,7 +27,6 @@ SCHEMA_DIR = BASE_DIR / "tests" / "assets" / "schemas"
 
 
 class TestParser:
-
     def test__check_node_type(self, par: Parser):
 
         # DEFAULT_NODE_TYPES = {

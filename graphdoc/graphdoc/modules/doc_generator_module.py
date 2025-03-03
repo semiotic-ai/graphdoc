@@ -3,7 +3,7 @@
 
 # system packages
 import logging
-from typing import Union
+from typing import Any, Literal, Optional, Union
 
 # internal packages
 from ..data import Parser
@@ -11,6 +11,7 @@ from ..prompts import DocGeneratorPrompt, SinglePrompt
 
 # external packages
 import dspy
+import mlflow
 from graphql import parse, print_ast
 
 # logging
@@ -192,7 +193,65 @@ class DocGeneratorModule(dspy.Module):
         else:
             return self._predict(database_schema=database_schema)
 
-    def document_full_schema(self, database_schema: str) -> dspy.Prediction:
+    #######################
+    # MLFLOW TRACING      #
+    #######################
+    # TODO: we will break this out into a separate class later when we have need for it elsewhere
+
+    def _start_trace(
+        self,
+        client: mlflow.MlflowClient,
+        expirement_name: str,
+        trace_name: str,
+        inputs: dict,
+        attributes: dict,
+    ):
+        # set the experiment name so that everything is logged to the same experiment
+        # mlflow.set_experiment(expirement_name)
+
+        # start the trace
+        trace = client.start_trace(
+            name=trace_name,
+            inputs=inputs,
+            attributes=attributes,
+            experiment_id=expirement_name,
+        )
+
+        return trace
+
+    def _end_trace(
+        self,
+        client: mlflow.MlflowClient,
+        trace: Any,  # TODO: trace: mlflow.Span, E   AttributeError: module 'mlflow' has no attribute 'Span'
+        outputs: dict,
+        status: Literal["OK", "ERROR"],
+    ):
+        client.end_trace(request_id=trace.request_id, outputs=outputs, status=status)
+
+    # def _start_child_span(self, client: mlflow.MlflowClient, trace: mlflow.Span, span_name: str, inputs: dict, attributes: dict):
+    #     child_span = client.start_span(
+    #         name=span_name,
+    #         parent_id=trace.span_id,
+    #         inputs=inputs,
+    #         attributes=attributes
+    #     )
+    #     return child_span
+
+    # def _end_child_span(self, client: mlflow.MlflowClient, child_span: mlflow.Span, outputs: dict):
+    #     client.end_span(
+    #         request_id=child_span.request_id,
+    #         span_id=child_span.span_id,
+    #         outputs=outputs,
+    #     )
+
+    def document_full_schema(
+        self,
+        database_schema: str,
+        trace: bool = False,
+        client: Optional[mlflow.MlflowClient] = None,
+        expirement_name: Optional[str] = None,
+        api_key: Optional[str] = None,
+    ) -> dspy.Prediction:
         """
         Given a database schema, parse out the underlying components and document on a per-component basis.
 
@@ -201,6 +260,15 @@ class DocGeneratorModule(dspy.Module):
         :return: The generated documentation.
         :rtype: dspy.Prediction
         """
+        # if we are tracing, make sure make sure we have everything needed to log to mlflow
+        if trace:
+            if client is None:
+                raise ValueError("client must be provided if trace is True")
+            if expirement_name is None:
+                raise ValueError("expirement_name must be provided if trace is True")
+            if api_key is None:
+                raise ValueError("api_key must be provided if trace is True")
+
         # check that the graphql is valid
         try:
             document_ast = parse(database_schema)
@@ -215,6 +283,25 @@ class DocGeneratorModule(dspy.Module):
             ).with_inputs("database_schema")
             examples.append(example)
 
+        # start the span
+        # if trace:
+        #     child_span = self._start_child_span(
+        #         client=client,
+        #         trace=root_span,
+        #         span_name="document_full_schema",
+        #         inputs={"database_schema": database_schema},
+        #         attributes={"api_key": api_key}
+        #     )
+        if trace:
+            # start the trace
+            root_trace = self._start_trace(
+                client=client,  # type: ignore # TODO: we should have better type handling, but we check at the top
+                expirement_name=expirement_name,  # type: ignore # TODO: we should have better type handling, but we check at the top
+                trace_name="document_full_schema",
+                inputs={"database_schema": database_schema},
+                attributes={"api_key": api_key},
+            )
+
         # batch generate the documentation
         documented_examples = self.batch(examples, num_threads=32)
         document_ast.definitions = tuple(
@@ -224,10 +311,32 @@ class DocGeneratorModule(dspy.Module):
         # check that the generated schema matches the original schema
         if self.par.schema_equality_check(parse(database_schema), document_ast):
             log.info("Schema equality check passed, returning documented schema")
-            return dspy.Prediction(documented_schema=print_ast(document_ast))
+            return_schema = print_ast(document_ast)
+            status = "OK"
+            # return dspy.Prediction(documented_schema=print_ast(document_ast))
         else:
             log.warning(f"Generated schema does not match the original schema")
             if self.fill_empty_descriptions:
                 updated_ast = self.par.fill_empty_descriptions(document_ast)
-                return dspy.Prediction(documented_schema=print_ast(updated_ast))
-            return dspy.Prediction(documented_schema=database_schema)
+                return_schema = print_ast(updated_ast)
+                # return dspy.Prediction(documented_schema=print_ast(updated_ast))
+            else:
+                return_schema = database_schema
+            status = "ERROR"
+            # return dspy.Prediction(documented_schema=database_schema)
+
+        # if trace:
+        #     self._end_child_span(
+        #         client=client,
+        #         child_span=child_span,
+        #         outputs={"documented_schema": return_schema}
+        #     )
+        if trace:
+            self._end_trace(
+                client=client,  # type: ignore # TODO: we should have better type handling, but we check at the top
+                trace=root_trace,  # type: ignore # TODO: we should have better type handling, but i believe we will get an error if root_trace has an issue during the start_trace call
+                outputs={"documented_schema": return_schema},
+                status=status,
+            )
+
+        return dspy.Prediction(documented_schema=return_schema)
