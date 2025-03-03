@@ -27,7 +27,6 @@ log = logging.getLogger(__name__)
 
 
 class TestFixtures:
-
     def test_parser(self, par: Parser):
         assert par is not None
         assert isinstance(par, Parser)

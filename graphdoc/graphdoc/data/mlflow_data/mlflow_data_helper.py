@@ -42,8 +42,10 @@ class MlflowDataHelper:
             tracking_uri=str(self.mlflow_tracking_uri)
         )
         if mlflow_tracking_username:
+            self.mlflow_tracking_username = mlflow_tracking_username
             os.environ["MLFLOW_TRACKING_USERNAME"] = mlflow_tracking_username
         if mlflow_tracking_password:
+            self.mlflow_tracking_password = mlflow_tracking_password
             os.environ["MLFLOW_TRACKING_PASSWORD"] = mlflow_tracking_password
 
     #########################
@@ -62,6 +64,13 @@ class MlflowDataHelper:
         """
         os.environ["MLFLOW_TRACKING_USERNAME"] = mlflow_tracking_username
         os.environ["MLFLOW_TRACKING_PASSWORD"] = mlflow_tracking_password
+
+    def set_auth_env_vars(self):
+        """
+        Set the authentication environment variables.
+        """
+        os.environ["MLFLOW_TRACKING_USERNAME"] = self.mlflow_tracking_username
+        os.environ["MLFLOW_TRACKING_PASSWORD"] = self.mlflow_tracking_password
 
     #########################
     # Model Loading Methods #
