@@ -966,6 +966,25 @@ trio = ["trio (>=0.23)"]
 wmi = ["wmi (>=1.5.1)"]
 
 [[package]]
+name = "docformatter"
+version = "1.7.5"
+description = "Formats docstrings to follow PEP 257"
+optional = false
+python-versions = ">=3.7,<4.0"
+groups = ["main"]
+files = [
+    {file = "docformatter-1.7.5-py3-none-any.whl", hash = "sha256:a24f5545ed1f30af00d106f5d85dc2fce4959295687c24c8f39f5263afaf9186"},
+    {file = "docformatter-1.7.5.tar.gz", hash = "sha256:ffed3da0daffa2e77f80ccba4f0e50bfa2755e1c10e130102571c890a61b246e"},
+]
+
+[package.dependencies]
+charset_normalizer = ">=3.0.0,<4.0.0"
+untokenize = ">=0.1.1,<0.2.0"
+
+[package.extras]
+tomli = ["tomli (>=2.0.0,<3.0.0) ; python_version < \"3.11\""]
+
+[[package]]
 name = "docker"
 version = "7.1.0"
 description = "A Python library for the Docker Engine API."
@@ -4768,6 +4787,17 @@ files = [
 ]
 
 [[package]]
+name = "untokenize"
+version = "0.1.1"
+description = "Transforms tokens into original source code (while preserving whitespace)."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "untokenize-0.1.1.tar.gz", hash = "sha256:3865dbbbb8efb4bb5eaa72f1be7f3e0be00ea8b7f125c69cbd1f5fda926f37a2"},
+]
+
+[[package]]
 name = "urllib3"
 version = "2.3.0"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
@@ -5233,4 +5263,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.1"
 python-versions = "3.13.0"
-content-hash = "85815635f622dd75c2e785526dd2cd3a4317ed3c5a1d5c3b2ef99973e54e00b9"
+content-hash = "a4d89a17053ed168d8cff47c9b46c50febb503bb62548e73af8fd98cc18f422f"
