@@ -5,12 +5,12 @@
 import logging
 from pathlib import Path
 
-# internal packages
-from graphdoc import MlflowDataHelper
-
 # external packages
 import dspy
 import mlflow
+
+# internal packages
+from graphdoc import MlflowDataHelper
 
 # logging
 log = logging.getLogger(__name__)

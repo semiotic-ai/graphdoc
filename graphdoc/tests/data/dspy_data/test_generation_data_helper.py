@@ -4,14 +4,14 @@
 # system packages
 import logging
 
-# internal packages
-from graphdoc import GenerationDataHelper
-
 # external packages
 import dspy
 import pytest
 from datasets import Dataset
 from mlflow.models import ModelSignature
+
+# internal packages
+from graphdoc import GenerationDataHelper
 
 # logging
 log = logging.getLogger(__name__)

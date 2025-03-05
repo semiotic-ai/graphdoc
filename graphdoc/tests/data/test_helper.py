@@ -6,6 +6,9 @@ import logging
 import os
 from pathlib import Path
 
+# external packages
+import pytest
+
 # internal packages
 from graphdoc import (
     check_directory_path,
@@ -13,9 +16,6 @@ from graphdoc import (
     load_yaml_config,
     setup_logging,
 )
-
-# external packages
-import pytest
 
 # logging
 log = logging.getLogger(__name__)

@@ -4,13 +4,14 @@
 # system packages
 import logging
 
-# internal packages
-from .single_prompt import *
-from .schema_doc_quality import *
-from .schema_doc_generation import *
-
 # external packages
 import dspy
+
+from .schema_doc_generation import *
+from .schema_doc_quality import *
+
+# internal packages
+from .single_prompt import *
 
 
 class PromptFactory:

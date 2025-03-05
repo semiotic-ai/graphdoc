@@ -8,10 +8,11 @@ import logging
 from abc import ABC, abstractmethod
 from typing import Any, Callable, Dict, List, Literal, Union
 
-# internal packages
-
 # external packages
 import dspy
+
+# internal packages
+
 
 # logging
 log = logging.getLogger(__name__)

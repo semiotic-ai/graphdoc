@@ -1,16 +1,17 @@
 # Copyright 2025-, Semiotic AI, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
+import argparse
+import logging
+
 # system packages
 import os
-import logging
-import argparse
-
-# internal packages
-from graphdoc import GraphDoc
 
 # external packages
 from dotenv import load_dotenv
+
+# internal packages
+from graphdoc import GraphDoc
 
 # logging
 log = logging.getLogger(__name__)

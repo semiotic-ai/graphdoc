@@ -1,13 +1,15 @@
 # Copyright 2025-, Semiotic AI, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
+import logging
+
 # system packages
 import os
-import yaml
-import logging
 from pathlib import Path
-from yaml import SafeLoader
 from typing import Literal, Union
+
+import yaml
+from yaml import SafeLoader
 
 # internal packages
 

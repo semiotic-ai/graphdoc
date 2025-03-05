@@ -4,11 +4,11 @@
 # system packages
 import logging
 
-# internal packages
-from graphdoc.prompts import DocQualityPrompt
-
 # external packages
 import dspy
+
+# internal packages
+from graphdoc.prompts import DocQualityPrompt
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)

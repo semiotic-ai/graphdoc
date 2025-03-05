@@ -7,10 +7,6 @@ import logging
 from pathlib import Path
 from typing import Optional, Union
 
-# internal packages
-from .schema import SchemaObject
-from .helper import check_directory_path, check_file_path
-
 # external packages
 from graphql import (
     DocumentNode,
@@ -23,6 +19,11 @@ from graphql import (
     parse,
     print_ast,
 )
+
+from .helper import check_directory_path, check_file_path
+
+# internal packages
+from .schema import SchemaObject
 
 # logging
 log = logging.getLogger(__name__)

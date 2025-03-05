@@ -5,13 +5,13 @@
 import logging
 from pathlib import Path
 
-# internal packages
-from graphdoc import LocalDataHelper
-from graphdoc import SchemaObject
+from datasets import Dataset
 
 # external packages
 from graphql import DocumentNode
-from datasets import Dataset
+
+# internal packages
+from graphdoc import LocalDataHelper, SchemaObject
 
 # logging
 log = logging.getLogger(__name__)

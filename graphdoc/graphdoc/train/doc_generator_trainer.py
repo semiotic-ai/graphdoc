@@ -4,19 +4,20 @@
 # system packages
 import logging
 import math
-from typing import Dict, Any, List, Optional, Tuple
-
-# internal packages
-from ..prompts import DocGeneratorPrompt
-from .optimizers import optimizer_compile
-from ..data import DspyDataHelper
-from ..data.dspy_data import GenerationDataHelper
-from .single_prompt_trainer import SinglePromptTrainer
+from typing import Any, Dict, List, Optional, Tuple
 
 # external packages
 import dspy
 import mlflow
 from mlflow.models import ModelSignature
+
+from ..data import DspyDataHelper
+from ..data.dspy_data import GenerationDataHelper
+
+# internal packages
+from ..prompts import DocGeneratorPrompt
+from .optimizers import optimizer_compile
+from .single_prompt_trainer import SinglePromptTrainer
 
 # logging
 log = logging.getLogger(__name__)

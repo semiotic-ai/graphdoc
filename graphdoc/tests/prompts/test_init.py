@@ -5,8 +5,7 @@
 import logging
 
 # internal packages
-from graphdoc import PromptFactory
-from graphdoc import DocQualityPrompt, DocGeneratorPrompt
+from graphdoc import DocGeneratorPrompt, DocQualityPrompt, PromptFactory
 
 # external packages
 

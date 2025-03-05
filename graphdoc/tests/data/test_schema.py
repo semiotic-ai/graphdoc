@@ -4,19 +4,20 @@
 # system packages
 import logging
 
-# internal packages
-from graphdoc import (
-    SchemaCategory,
-    SchemaRating,
-    SchemaType,
-    SchemaObject,
-    SchemaCategoryRatingMapping,
-    schema_objects_to_dataset,
-)
+from datasets import Dataset
 
 # external packages
 from graphql import parse
-from datasets import Dataset
+
+# internal packages
+from graphdoc import (
+    SchemaCategory,
+    SchemaCategoryRatingMapping,
+    SchemaObject,
+    SchemaRating,
+    SchemaType,
+    schema_objects_to_dataset,
+)
 
 # logging
 log = logging.getLogger(__name__)

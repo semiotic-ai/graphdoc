@@ -1,18 +1,20 @@
 # Copyright 2025-, Semiotic AI, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-# system packages
-import os
-import copy
 import argparse
+import copy
 
 # internal packages
 import logging
-from graphdoc import GraphDoc, load_yaml_config
+
+# system packages
+import os
 
 # external packages
 import mlflow
 from dotenv import load_dotenv
+
+from graphdoc import GraphDoc, load_yaml_config
 
 # logging
 log = logging.getLogger(__name__)

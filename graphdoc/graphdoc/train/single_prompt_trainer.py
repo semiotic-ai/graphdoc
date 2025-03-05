@@ -4,15 +4,16 @@
 # system packages
 import logging
 from abc import ABC, abstractmethod
-from typing import Dict, Any, List, Optional, Tuple
-
-# internal packages
-from ..prompts import SinglePrompt
-from ..data import MlflowDataHelper
+from typing import Any, Dict, List, Optional, Tuple
 
 # external packages
 import dspy
 import mlflow
+
+from ..data import MlflowDataHelper
+
+# internal packages
+from ..prompts import SinglePrompt
 
 # logging
 log = logging.getLogger(__name__)

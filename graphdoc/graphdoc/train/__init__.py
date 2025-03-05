@@ -4,14 +4,15 @@
 # system packages
 import logging
 
+# external packages
+import dspy
+
+from .doc_generator_trainer import *
+from .doc_quality_trainer import *
+
 # internal packages
 from .optimizers import *
 from .single_prompt_trainer import *
-from .doc_quality_trainer import *
-from .doc_generator_trainer import *
-
-# external packages
-import dspy
 
 # logging
 log = logging.getLogger(__name__)
