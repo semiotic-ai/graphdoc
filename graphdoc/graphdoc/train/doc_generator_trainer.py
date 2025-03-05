@@ -35,25 +35,19 @@ class DocGeneratorTrainer(SinglePromptTrainer):
         trainset: List[dspy.Example],
         evalset: List[dspy.Example],
     ):
-        """
-        Initialize the DocGeneratorTrainer.
+        """Initialize the DocGeneratorTrainer.
 
-        :param prompt: The prompt to train.
-        :type prompt: DocGeneratorPrompt
-        :param optimizer_type: The type of optimizer to use.
-        :type optimizer_type: str
-        :param optimizer_kwargs: The keyword arguments for the optimizer.
-        :type optimizer_kwargs: Dict[str, Any]
-        :param mlflow_model_name: The name of the model in mlflow.
-        :type mlflow_model_name: str
-        :param mlflow_experiment_name: The name of the experiment in mlflow.
-        :type mlflow_experiment_name: str
-        :param mlflow_tracking_uri: The uri of the mlflow tracking server.
-        :type mlflow_tracking_uri: str
-        :param trainset: The training set.
-        :type trainset: List[dspy.Example]
-        :param evalset: The evaluation set.
-        :type evalset: List[dspy.Example]
+        :param prompt: The prompt to train. :type prompt: DocGeneratorPrompt :param
+        optimizer_type: The type of optimizer to use. :type optimizer_type: str :param
+        optimizer_kwargs: The keyword arguments for the optimizer. :type
+        optimizer_kwargs: Dict[str, Any] :param mlflow_model_name: The name of the model
+        in mlflow. :type mlflow_model_name: str :param mlflow_experiment_name: The name
+        of the experiment in mlflow. :type mlflow_experiment_name: str :param
+        mlflow_tracking_uri: The uri of the mlflow tracking server. :type
+        mlflow_tracking_uri: str :param trainset: The training set. :type trainset:
+        List[dspy.Example] :param evalset: The evaluation set. :type evalset:
+        List[dspy.Example]
+
         """
         super().__init__(
             prompt,
@@ -71,13 +65,11 @@ class DocGeneratorTrainer(SinglePromptTrainer):
         self.doc_generator_prompt = prompt
 
     def _calculate_average_score(self, evaluation: dict) -> float:
-        """
-        Given a dictionary of evaluation results, calculate the average score.
+        """Given a dictionary of evaluation results, calculate the average score.
 
-        :param evaluation: The evaluation results.
-        :type evaluation: Dict[str, Any]
-        :return: The average score.
-        :rtype: float
+        :param evaluation: The evaluation results. :type evaluation: Dict[str, Any]
+        :return: The average score. :rtype: float
+
         """
         examples = evaluation["results"]
         total = 0
@@ -89,13 +81,12 @@ class DocGeneratorTrainer(SinglePromptTrainer):
     def evaluation_metrics(
         self, base_evaluation: Dict[str, Any], optimized_evaluation: Dict[str, Any]
     ) -> None:
-        """
-        Log evaluation metrics to mlflow.
+        """Log evaluation metrics to mlflow.
 
-        :param base_evaluation: The evaluation metrics of the base model.
-        :type base_evaluation: Dict[str, Any]
-        :param optimized_evaluation: The evaluation metrics of the optimized model.
-        :type optimized_evaluation: Dict[str, Any]
+        :param base_evaluation: The evaluation metrics of the base model. :type
+        base_evaluation: Dict[str, Any] :param optimized_evaluation: The evaluation
+        metrics of the optimized model. :type optimized_evaluation: Dict[str, Any]
+
         """
         base_evaluation_overall_score = self._calculate_average_score(base_evaluation)
         optimized_evaluation_overall_score = self._calculate_average_score(
@@ -116,13 +107,11 @@ class DocGeneratorTrainer(SinglePromptTrainer):
     def evaluate_training(
         self, base_model, optimized_model
     ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-        """
-        Evaluate the training of the model. Comparing the base and optimized models.
+        """Evaluate the training of the model. Comparing the base and optimized models.
 
-        :param base_model: The base model.
-        :type base_model: Any
-        :param optimized_model: The optimized model.
-        :type optimized_model: Any
+        :param base_model: The base model. :type base_model: Any :param optimized_model:
+        The optimized model. :type optimized_model: Any
+
         """
         base_prompt = DocGeneratorPrompt(
             prompt=DspyDataHelper.prompt_signature(base_model),
@@ -145,15 +134,12 @@ class DocGeneratorTrainer(SinglePromptTrainer):
     def train(
         self, load_model_args: Optional[Dict[str, Any]] = None, save_model: bool = True
     ):
-        """
-        Train the document generator model.
+        """Train the document generator model.
 
-        :param load_model_args: The arguments to load the model.
-        :type load_model_args: Optional[Dict[str, Any]]
-        :param save_model: Whether to save the model.
-        :type save_model: bool
-        :return: The trained model.
-        :rtype: dspy.ChainOfThought
+        :param load_model_args: The arguments to load the model. :type load_model_args:
+        Optional[Dict[str, Any]] :param save_model: Whether to save the model. :type
+        save_model: bool :return: The trained model. :rtype: dspy.ChainOfThought
+
         """
         # if model args are provided, load the model from mlflow
         if load_model_args:

@@ -28,16 +28,16 @@ log = logging.getLogger(__name__)
 # TODO: we can make this a base class to enable better separation of our enum values and set up a factory pattern so that everything can be defined at the config level
 # check out how pytorch etc. handles loading in something like imagenet
 class LocalDataHelper:
-    """
-    A helper class for loading data from a directory.
+    """A helper class for loading data from a directory.
 
-    :param schema_directory_path: The path to the directory containing the schemas
-    :type schema_directory_path: Union[str, Path]. Defaults to the path to the schemas in the graphdoc package.
-    :param categories: The categories of the schemas. Defaults to SchemaCategory.
-    :type categories: Type[Enum]
-    :param ratings: The ratings of the schemas. Defaults to SchemaRating.
-    :type ratings: Type[Enum]
-    :param categories_ratings: A callable that maps categories to ratings. Defaults to SchemaCategoryRatingMapping.get_rating.
+    :param schema_directory_path: The path to the directory containing the schemas :type
+    schema_directory_path: Union[str, Path]. Defaults to the path to the schemas in the
+    graphdoc package. :param categories: The categories of the schemas. Defaults to
+    SchemaCategory. :type categories: Type[Enum] :param ratings: The ratings of the
+    schemas. Defaults to SchemaRating. :type ratings: Type[Enum] :param
+    categories_ratings: A callable that maps categories to ratings. Defaults to
+    SchemaCategoryRatingMapping.get_rating.
+
     """
 
     def __init__(
@@ -65,17 +65,13 @@ class LocalDataHelper:
     def schema_objects_from_folder(
         self, category: str, rating: int, folder_path: Union[str, Path]
     ) -> dict[str, SchemaObject]:
-        """
-        Load schemas from a folder, keeping the difficulty tag.
+        """Load schemas from a folder, keeping the difficulty tag.
 
-        :param folder_path: The path to the folder containing the schemas
-        :type folder_path: Union[str, Path]
-        :param category: The category of the schemas
-        :type category: str
-        :param rating: The rating of the schemas
-        :type rating: int
-        :return: A dictionary of schemas
-        :rtype: dict[str, SchemaObject]
+        :param folder_path: The path to the folder containing the schemas :type
+        folder_path: Union[str, Path] :param category: The category of the schemas :type
+        category: str :param rating: The rating of the schemas :type rating: int
+        :return: A dictionary of schemas :rtype: dict[str, SchemaObject]
+
         """
         check_directory_path(folder_path)
         schemas = {}
@@ -95,13 +91,13 @@ class LocalDataHelper:
         self,
         folder_paths: Optional[Type[Enum]] = SchemaCategoryPath,
     ) -> Union[Dict[str, SchemaObject], None]:
-        """
-        Load a folder of folders containing schemas, keeping the difficulty tag.
+        """Load a folder of folders containing schemas, keeping the difficulty tag.
 
-        :param folder_paths: Enum class defining folder paths, defaults to SchemaCategoryPath. Must have a get_path method.
-        :type folder_paths: Optional[Type[Enum]]
-        :return: Dictionary of loaded schemas
-        :rtype: Union[Dict[str, SchemaObject], None]
+        :param folder_paths: Enum class defining folder paths, defaults to
+        SchemaCategoryPath. Must have a get_path method. :type folder_paths:
+        Optional[Type[Enum]] :return: Dictionary of loaded schemas :rtype:
+        Union[Dict[str, SchemaObject], None]
+
         """
         schemas = {}
 
@@ -143,17 +139,14 @@ class LocalDataHelper:
         parse_objects: bool = True,
         type_mapping: Optional[dict[type, str]] = None,
     ) -> Dataset:
-        """
-        Load a folder of schemas, keeping the difficulty tag.
+        """Load a folder of schemas, keeping the difficulty tag.
 
-        :param category: The category of the schemas
-        :type category: str
-        :param folder_path: The path to the folder containing the schemas
-        :type folder_path: Union[str, Path]
-        :param parse_objects: Whether to parse the objects from the schemas
-        :type parse_objects: bool
-        :param type_mapping: A dictionary mapping types to strings
-        :type type_mapping: Optional[dict[type, str]]
+        :param category: The category of the schemas :type category: str :param
+        folder_path: The path to the folder containing the schemas :type folder_path:
+        Union[str, Path] :param parse_objects: Whether to parse the objects from the
+        schemas :type parse_objects: bool :param type_mapping: A dictionary mapping
+        types to strings :type type_mapping: Optional[dict[type, str]]
+
         """
         objects = []
         rating = self.categories_ratings(self.categories(category))
@@ -181,14 +174,14 @@ class LocalDataHelper:
         parse_objects: bool = True,
         type_mapping: Optional[dict[type, str]] = None,
     ) -> Dataset:
-        """
-        Load a folder of folders containing schemas, keeping the difficulty tag.
+        """Load a folder of folders containing schemas, keeping the difficulty tag.
 
-        :param folder_paths: Enum class defining folder paths, defaults to SchemaCategoryPath. Must have a get_path method.
-        :type folder_paths: Type[Enum]
-        :param parse_objects: Whether to parse the objects from the schemas
-        :type parse_objects: bool
-        :param type_mapping: A dictionary mapping graphql-ast node values to strings
+        :param folder_paths: Enum class defining folder paths, defaults to
+        SchemaCategoryPath. Must have a get_path method. :type folder_paths: Type[Enum]
+        :param parse_objects: Whether to parse the objects from the schemas :type
+        parse_objects: bool :param type_mapping: A dictionary mapping graphql-ast node
+        values to strings
+
         """
         schema_objects = self.schema_objects_from_folder_of_folders(
             folder_paths=folder_paths

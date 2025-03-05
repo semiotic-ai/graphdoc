@@ -42,14 +42,13 @@ class GraphDoc:
         mlflow_tracking_password: Optional[str] = None,
         log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"] = "INFO",
     ):
-        """
-        Main entry point for the GraphDoc class. Refer to DSPy for a complete list of model arguments.
+        """Main entry point for the GraphDoc class. Refer to DSPy for a complete list of
+        model arguments.
 
-        :param model_args: Dictionary containing model arguments.
-        :type model_args: dict
-        :param mlflow_tracking_uri: MLflow tracking URI.
-        :type mlflow_tracking_uri: Optional[str]
-        :param log_level: Logging level.
+        :param model_args: Dictionary containing model arguments. :type model_args: dict
+        :param mlflow_tracking_uri: MLflow tracking URI. :type mlflow_tracking_uri:
+        Optional[str] :param log_level: Logging level.
+
         """
         setup_logging(log_level)
         log.info(f"GraphDoc initialized with model_args: {model_args}")
@@ -106,8 +105,7 @@ class GraphDoc:
 
     @classmethod
     def from_yaml(cls, yaml_path: Union[str, Path]) -> "GraphDoc":
-        """
-        Create a GraphDoc object from a YAML file.
+        """Create a GraphDoc object from a YAML file.
 
         graphdoc:
             log_level: INFO                                       # The log level to use
@@ -116,6 +114,7 @@ class GraphDoc:
             model: openai/gpt-4o                                  # Must be a valid dspy language model
             api_key: !env OPENAI_API_KEY                          # Must be a valid dspy language model API key
             cache: true                                           # Whether to cache the calls to the language model
+
         """
         config = load_yaml_config(yaml_path)
         return GraphDoc.from_dict(config)
@@ -180,8 +179,7 @@ class GraphDoc:
             )
 
     def trainset_from_yaml(self, yaml_path: Union[str, Path]) -> List[dspy.Example]:
-        """
-        Load a trainset from a YAML file.
+        """Load a trainset from a YAML file.
 
         data:
             hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
@@ -199,6 +197,7 @@ class GraphDoc:
         :type yaml_path: Union[str, Path]
         :return: A trainset.
         :rtype: List[dspy.Example]
+
         """
         config = load_yaml_config(yaml_path)
         trainset = self.trainset_from_dict(config["data"])
@@ -207,15 +206,13 @@ class GraphDoc:
     def split_trainset(
         self, trainset: List[dspy.Example], evalset_ratio: float
     ) -> tuple[List[dspy.Example], List[dspy.Example]]:
-        """
-        Split a trainset into a trainset and evalset.
+        """Split a trainset into a trainset and evalset.
 
-        :param trainset: The trainset to split.
-        :type trainset: List[dspy.Example]
-        :param evalset_ratio: The proportionate size of the evalset.
-        :type evalset_ratio: float
-        :return: A tuple of trainset and evalset.
-        :rtype: tuple[List[dspy.Example], List[dspy.Example]]
+        :param trainset: The trainset to split. :type trainset: List[dspy.Example]
+        :param evalset_ratio: The proportionate size of the evalset. :type
+        evalset_ratio: float :return: A tuple of trainset and evalset. :rtype:
+        tuple[List[dspy.Example], List[dspy.Example]]
+
         """
         split_idx = int(len(trainset) * (1 - evalset_ratio))
         random.shuffle(trainset)
@@ -226,8 +223,7 @@ class GraphDoc:
     def trainset_and_evalset_from_yaml(
         self, yaml_path: Union[str, Path]
     ) -> tuple[List[dspy.Example], List[dspy.Example]]:
-        """
-        Load a trainset and evalset from a YAML file.
+        """Load a trainset and evalset from a YAML file.
 
         data:
             hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
@@ -245,6 +241,7 @@ class GraphDoc:
         :type yaml_path: Union[str, Path]
         :return: A tuple of trainset and evalset.
         :rtype: tuple[List[dspy.Example], List[dspy.Example]]
+
         """
         config = load_yaml_config(yaml_path)
         trainset = self.trainset_from_dict(config["data"])
@@ -301,8 +298,7 @@ class GraphDoc:
             raise e
 
     def single_prompt_from_yaml(self, yaml_path: Union[str, Path]) -> SinglePrompt:
-        """
-        Load a single prompt from a YAML file.
+        """Load a single prompt from a YAML file.
 
         prompt:
             prompt: doc_quality                                   # Which prompt signature to use
@@ -329,6 +325,7 @@ class GraphDoc:
         :type yaml_path: str
         :return: A SinglePrompt object.
         :rtype: SinglePrompt
+
         """
         config = load_yaml_config(yaml_path)
         if config["prompt"]["prompt_metric"]:
@@ -400,8 +397,7 @@ class GraphDoc:
     def single_trainer_from_yaml(
         self, yaml_path: Union[str, Path]
     ) -> SinglePromptTrainer:
-        """
-        Load a single trainer from a YAML file.
+        """Load a single trainer from a YAML file.
 
         data:
             hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
@@ -440,6 +436,7 @@ class GraphDoc:
         :type yaml_path: Union[str, Path]
         :return: A SinglePromptTrainer object.
         :rtype: SinglePromptTrainer
+
         """
         try:
             config = load_yaml_config(yaml_path)
@@ -484,8 +481,7 @@ class GraphDoc:
     def doc_generator_module_from_yaml(
         self, yaml_path: Union[str, Path]
     ) -> DocGeneratorModule:
-        """
-        Load a doc generator module from a YAML file.
+        """Load a doc generator module from a YAML file.
 
         prompt:
             prompt: base_doc_gen                                  # Which prompt signature to use
@@ -513,6 +509,7 @@ class GraphDoc:
             retry_limit: 1                                        # The maximum number of retries
             rating_threshold: 3                                   # The rating threshold for the quality check
             fill_empty_descriptions: true                         # Whether to fill the empty descriptions in the schema
+
         """
         config = load_yaml_config(yaml_path)["module"]
         prompt = self.single_prompt_from_yaml(yaml_path)
@@ -524,9 +521,7 @@ class GraphDoc:
     def doc_generator_eval_from_yaml(
         self, yaml_path: Union[str, Path]
     ) -> DocGeneratorEvaluator:
-        """
-        Load a doc generator evaluator from a YAML file.
-        """
+        """Load a doc generator evaluator from a YAML file."""
         # load the generator
         generator = self.doc_generator_module_from_yaml(yaml_path)
         config = load_yaml_config(yaml_path)

@@ -32,9 +32,7 @@ class TrainerFactory:
         trainset: List[dspy.Example],
         evalset: List[dspy.Example],
     ):
-        """
-        Returns an instance of the specified trainer class.
-        """
+        """Returns an instance of the specified trainer class."""
         # update any potentially missing or conflicting values
         optimizer_kwargs["metric"] = prompt.evaluate_metric
         optimizer_kwargs["student"] = prompt.infer

@@ -27,8 +27,9 @@ class DocGeneratorModule(dspy.Module):
         rating_threshold: int = 3,
         fill_empty_descriptions: bool = True,
     ) -> None:
-        """
-        Initialize the DocGeneratorModule. A module for generating documentation for a given GraphQL schema. Schemas are decomposed and individually used to generate documentation, with a quality check after each generation.
+        """Initialize the DocGeneratorModule. A module for generating documentation for
+        a given GraphQL schema. Schemas are decomposed and individually used to generate
+        documentation, with a quality check after each generation.
 
         signature fields are:
             - database_schema: str = dspy.InputField()
@@ -42,6 +43,7 @@ class DocGeneratorModule(dspy.Module):
         :type retry_limit: int
         :param rating_threshold: The minimum rating for a generated document to be considered valid.
         :type rating_threshold: int
+
         """
         super().__init__()
 
@@ -61,13 +63,12 @@ class DocGeneratorModule(dspy.Module):
             self.prompt.prompt_metric.prompt_metric = "rating"
 
     def _retry_by_rating(self, database_schema: str) -> str:
-        """
-        Retry the generation if the quality check fails. Rating threshold is determined at initialization.
+        """Retry the generation if the quality check fails. Rating threshold is
+        determined at initialization.
 
-        :param database_schema: The database schema to generate documentation for.
-        :type database_schema: str
-        :return: The generated documentation.
-        :rtype: str
+        :param database_schema: The database schema to generate documentation for. :type
+        database_schema: str :return: The generated documentation. :rtype: str
+
         """
 
         def _try_rating(database_schema: str) -> dspy.Prediction:
@@ -132,8 +133,9 @@ class DocGeneratorModule(dspy.Module):
         return pred_database_schema
 
     def _predict(self, database_schema: str) -> dspy.Prediction:
-        """
-        Given a database schema, generate a documented schema. Performs the following steps:
+        """Given a database schema, generate a documented schema. Performs the following
+        steps:
+
         - Check that the graphql is valid
         - Fill the empty descriptions (if fill_empty_descriptions is True)
         - Generate the documentation
@@ -144,6 +146,7 @@ class DocGeneratorModule(dspy.Module):
         :type database_schema: str
         :return: The generated documentation.
         :rtype: dspy.Prediction
+
         """
         # check that the graphql is valid
         try:
@@ -179,13 +182,13 @@ class DocGeneratorModule(dspy.Module):
             return dspy.Prediction(documented_schema=database_schema)
 
     def forward(self, database_schema: str) -> dspy.Prediction:
-        """
-        Given a database schema, generate a documented schema. If retry is True, the generation will be retried if the quality check fails.
+        """Given a database schema, generate a documented schema. If retry is True, the
+        generation will be retried if the quality check fails.
 
-        :param database_schema: The database schema to generate documentation for.
-        :type database_schema: str
-        :return: The generated documentation.
-        :rtype: dspy.Prediction
+        :param database_schema: The database schema to generate documentation for. :type
+        database_schema: str :return: The generated documentation. :rtype:
+        dspy.Prediction
+
         """
         if self.retry:
             database_schema = self._retry_by_rating(database_schema=database_schema)
@@ -235,13 +238,13 @@ class DocGeneratorModule(dspy.Module):
         expirement_name: Optional[str] = None,
         api_key: Optional[str] = None,
     ) -> dspy.Prediction:
-        """
-        Given a database schema, parse out the underlying components and document on a per-component basis.
+        """Given a database schema, parse out the underlying components and document on
+        a per-component basis.
 
-        :param database_schema: The database schema to generate documentation for.
-        :type database_schema: str
-        :return: The generated documentation.
-        :rtype: dspy.Prediction
+        :param database_schema: The database schema to generate documentation for. :type
+        database_schema: str :return: The generated documentation. :rtype:
+        dspy.Prediction
+
         """
         # if we are tracing, make sure make sure we have everything needed to log to mlflow
         if trace:

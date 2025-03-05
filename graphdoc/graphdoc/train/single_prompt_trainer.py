@@ -31,23 +31,19 @@ class SinglePromptTrainer(ABC):
         trainset: List[dspy.Example],
         evalset: List[dspy.Example],
     ):
-        """
-        Initialize the SinglePromptTrainer. This is the base class for implementing a trainer for a single prompt.
+        """Initialize the SinglePromptTrainer. This is the base class for implementing a
+        trainer for a single prompt.
 
-        :param prompt: The prompt to train.
-        :type prompt: SinglePrompt
-        :param optimizer_type: The type of optimizer to use.
-        :type optimizer_type: str
-        :param optimizer_kwargs: The keyword arguments for the optimizer.
-        :type optimizer_kwargs: Dict[str, Any]
-        :param mlflow_model_name: The name of the model in mlflow.
-        :type mlflow_model_name: str
-        :param mlflow_experiment_name: The name of the experiment in mlflow.
-        :type mlflow_experiment_name: str
-        :param mlflow_tracking_uri: The uri of the mlflow tracking server.
-        :type mlflow_tracking_uri: str
-        :param trainset: The training set.
-        :type trainset: List[dspy.Example]
+        :param prompt: The prompt to train. :type prompt: SinglePrompt :param
+        optimizer_type: The type of optimizer to use. :type optimizer_type: str :param
+        optimizer_kwargs: The keyword arguments for the optimizer. :type
+        optimizer_kwargs: Dict[str, Any] :param mlflow_model_name: The name of the model
+        in mlflow. :type mlflow_model_name: str :param mlflow_experiment_name: The name
+        of the experiment in mlflow. :type mlflow_experiment_name: str :param
+        mlflow_tracking_uri: The uri of the mlflow tracking server. :type
+        mlflow_tracking_uri: str :param trainset: The training set. :type trainset:
+        List[dspy.Example]
+
         """
         self.prompt = prompt
         self.optimizer_type = optimizer_type
@@ -81,13 +77,12 @@ class SinglePromptTrainer(ABC):
     # TODO: decide on a return type and implement better type checking for parameters
     @abstractmethod
     def evaluation_metrics(self, base_evaluation, optimized_evaluation):
-        """
-        Log evaluation metrics to mlflow.
+        """Log evaluation metrics to mlflow.
 
-        :param base_evaluation: The evaluation metrics of the base model.
-        :type base_evaluation: Any
-        :param optimized_evaluation: The evaluation metrics of the optimized model.
-        :type optimized_evaluation: Any
+        :param base_evaluation: The evaluation metrics of the base model. :type
+        base_evaluation: Any :param optimized_evaluation: The evaluation metrics of the
+        optimized model. :type optimized_evaluation: Any
+
         """
         pass
 
@@ -95,13 +90,11 @@ class SinglePromptTrainer(ABC):
     def evaluate_training(
         self, base_model, optimized_model
     ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-        """
-        Evaluate the training of the model. Comparing the base and optimized models.
+        """Evaluate the training of the model. Comparing the base and optimized models.
 
-        :param base_model: The base model.
-        :type base_model: Any
-        :param optimized_model: The optimized model.
-        :type optimized_model: Any
+        :param base_model: The base model. :type base_model: Any :param optimized_model:
+        The optimized model. :type optimized_model: Any
+
         """
         pass
 
@@ -109,12 +102,11 @@ class SinglePromptTrainer(ABC):
     def train(
         self, load_model_args: Optional[Dict[str, Any]] = None, save_model: bool = True
     ):
-        """
-        Train the model.
+        """Train the model.
 
-        :param load_model_args: The arguments to load the model.
-        :type load_model_args: Dict[str, Any]
-        :param save_model: Whether to save the model.
-        :type save_model: bool
+        :param load_model_args: The arguments to load the model. :type load_model_args:
+        Dict[str, Any] :param save_model: Whether to save the model. :type save_model:
+        bool
+
         """
         pass

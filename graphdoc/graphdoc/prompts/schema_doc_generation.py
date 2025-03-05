@@ -23,9 +23,8 @@ log = logging.getLogger(__name__)
 # DSPy Signatures #
 ###################
 class DocGeneratorSignature(dspy.Signature):
-    """
-    ### TASK:
-    Given a GraphQL Schema, generate a precise description for the columns of the tables in the database.
+    """### TASK: Given a GraphQL Schema, generate a precise description for the columns
+    of the tables in the database.
 
     ### Requirements:
     - Focus solely on confirmed details from the provided schema.
@@ -35,6 +34,7 @@ class DocGeneratorSignature(dspy.Signature):
 
     ### Formatting
     - Ensure that the schema maintains proper documentation formatting, as is provided.
+
     """
 
     database_schema: str = dspy.InputField()
@@ -44,9 +44,8 @@ class DocGeneratorSignature(dspy.Signature):
 
 
 class DocGeneratorHelperSignature(dspy.Signature):
-    """
-    ### TASK:
-    Analyze the provided GraphQL Schema and generate detailed yet concise descriptions for each field within the database tables and enums.
+    """### TASK: Analyze the provided GraphQL Schema and generate detailed yet concise
+    descriptions for each field within the database tables and enums.
 
     ### Requirements:
     - If the field is unclear, and the documentation result is ambiguous, request additional information: "WARNING: Please provide additional information to avoid confusion".
@@ -58,6 +57,7 @@ class DocGeneratorHelperSignature(dspy.Signature):
     ### Formatting:
     - Maintain consistency with the existing documentation style and structure.
     - Focus on clarity and precision to aid developers and system architects in understanding the schema's components effectively.
+
     """
 
     database_schema: str = dspy.InputField()
@@ -67,9 +67,8 @@ class DocGeneratorHelperSignature(dspy.Signature):
 
 
 class BadDocGeneratorSignature(dspy.Signature):
-    """
-    ### TASK:
-    Given a GraphQL Schema, generate intentionally incorrect documentation for the columns of the tables in the database.
+    """### TASK: Given a GraphQL Schema, generate intentionally incorrect documentation
+    for the columns of the tables in the database.
 
     ### Requirements:
     - Every table, entity, enum, etc. must have at least one column with a description that is obviosly incorrect.
@@ -78,6 +77,7 @@ class BadDocGeneratorSignature(dspy.Signature):
 
     ### Formatting
     - Ensure that the schema maintains proper documentation formatting, as is provided.
+
     """
 
     database_schema: str = dspy.InputField()
@@ -89,13 +89,13 @@ class BadDocGeneratorSignature(dspy.Signature):
 def doc_gen_factory(
     key: Union[str, dspy.Signature, dspy.SignatureMeta]
 ) -> Union[dspy.Signature, dspy.SignatureMeta]:
-    """
-    Factory function to return the correct signature based on the key. Currently only supports three signatures (zero_shot_doc_gen, doc_gen_helper, bad_doc_gen).
+    """Factory function to return the correct signature based on the key. Currently only
+    supports three signatures (zero_shot_doc_gen, doc_gen_helper, bad_doc_gen).
 
-    :param key: The key to return the signature for.
-    :type key: Union[str, dspy.Signature]
-    :return: The signature for the given key.
-    :rtype: Union[dspy.Signature, dspy.SignatureMeta]
+    :param key: The key to return the signature for. :type key: Union[str,
+    dspy.Signature] :return: The signature for the given key. :rtype:
+    Union[dspy.Signature, dspy.SignatureMeta]
+
     """
     # allow the user to pass in their own dspy signature
     if isinstance(key, dspy.Signature) or isinstance(key, dspy.SignatureMeta):
@@ -134,19 +134,16 @@ class DocGeneratorPrompt(SinglePrompt):
     def evaluate_documentation_quality(
         self, schema: dspy.Example, pred: dspy.Prediction, trace=None, scalar=True
     ) -> int:
-        """
-        Evaluate the quality of the documentation. Utilizes the instantiated metric type to evaluate the quality of the documentation.
+        """Evaluate the quality of the documentation. Utilizes the instantiated metric
+        type to evaluate the quality of the documentation.
 
-        :param schema: The schema to evaluate the documentation for.
-        :type schema: dspy.Example
-        :param pred: The predicted documentation.
-        :type pred: dspy.Prediction
-        :param trace: The trace of the prediction.
-        :type trace: Any
+        :param schema: The schema to evaluate the documentation for. :type schema:
+        dspy.Example :param pred: The predicted documentation. :type pred:
+        dspy.Prediction :param trace: The trace of the prediction. :type trace: Any
         :param scalar: Whether to return a squared score or the full evaluation object.
-        :type scalar: bool
-        :return: The squared score or the full evaluation object.
+        :type scalar: bool :return: The squared score or the full evaluation object.
         :rtype: int
+
         """
         try:
             gold_schema = parse(schema.database_schema)
@@ -186,17 +183,13 @@ class DocGeneratorPrompt(SinglePrompt):
         results: List,
         scores: List,
     ) -> Dict[str, Any]:
-        """
-        Format the metric results into a dictionary.
+        """Format the metric results into a dictionary.
 
-        :param examples: The examples used to evaluate the metric.
-        :type examples: List[dspy.Example]
-        :param overall_score: The overall score of the metric.
-        :type overall_score: float
-        :param results: The results of the metric.
-        :type results: List
-        :param scores: The scores of the metric.
-        :type scores: List
+        :param examples: The examples used to evaluate the metric. :type examples:
+        List[dspy.Example] :param overall_score: The overall score of the metric. :type
+        overall_score: float :param results: The results of the metric. :type results:
+        List :param scores: The scores of the metric. :type scores: List
+
         """
         # TODO: we can expand this to further parse out the results and scores
         return {
@@ -211,12 +204,11 @@ class DocGeneratorPrompt(SinglePrompt):
         optimized_metrics: Any,
         comparison_value: str = "overall_score",
     ) -> bool:
-        """
-        Compare the base and optimized metrics.
+        """Compare the base and optimized metrics.
 
-        :param base_metrics: The base metrics.
-        :type base_metrics: Any
-        :param optimized_metrics: The optimized metrics.
+        :param base_metrics: The base metrics. :type base_metrics: Any :param
+        optimized_metrics: The optimized metrics.
+
         """
         if comparison_value == "overall_score":
             return optimized_metrics.get("overall_score", 0) > base_metrics.get(

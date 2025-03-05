@@ -59,8 +59,8 @@ class SchemaCategoryRatingMapping:
     def get_rating(category: SchemaCategory) -> SchemaRating:
         """Get the corresponding rating for a given schema category.
 
-        :param category: The schema category
-        :return: The corresponding rating
+        :param category: The schema category :return: The corresponding rating
+
         """
         mapping = {
             SchemaCategory.PERFECT: SchemaRating.FOUR,
@@ -75,8 +75,8 @@ class SchemaCategoryRatingMapping:
     def get_category(rating: SchemaRating) -> SchemaCategory:
         """Get the corresponding category for a given schema rating.
 
-        :param rating: The schema rating
-        :return: The corresponding category
+        :param rating: The schema rating :return: The corresponding category
+
         """
         mapping = {
             SchemaRating.FOUR: SchemaCategory.PERFECT,
@@ -116,8 +116,8 @@ class SchemaCategoryPath(str, Enum):
     ) -> Optional[Path]:
         """Get the folder path for a given schema category and folder path.
 
-        :param category: The schema category
-        :return: The corresponding folder path
+        :param category: The schema category :return: The corresponding folder path
+
         """
         mapping = {
             SchemaCategory.PERFECT: Path(folder_path) / cls.PERFECT,
@@ -149,10 +149,10 @@ class SchemaObject:
     ) -> "SchemaObject":
         """Create SchemaObject from dictionary with validation.
 
-        :param data: The data dictionary
-        :param category_enum: Custom Enum class for categories
-        :param rating_enum: Custom Enum class for ratings
-        :param type_enum: Custom Enum class for schema types
+        :param data: The data dictionary :param category_enum: Custom Enum class for
+        categories :param rating_enum: Custom Enum class for ratings :param type_enum:
+        Custom Enum class for schema types
+
         """
         if "key" not in data:
             raise ValueError("Missing required field: key")
@@ -199,11 +199,11 @@ class SchemaObject:
         )
 
     def to_dict(self) -> dict:
-        """
-        Convert the SchemaObject to a dictionary, excluding the key field.
+        """Convert the SchemaObject to a dictionary, excluding the key field.
 
-        :return: Dictionary representation of the SchemaObject without the key
-        :rtype: dict
+        :return: Dictionary representation of the SchemaObject without the key :rtype:
+        dict
+
         """
         return {
             "category": self.category.value if self.category else None,
@@ -216,11 +216,11 @@ class SchemaObject:
 
     @staticmethod
     def _hf_schema_object_columns() -> Features:
-        """
-        Return the columns for the graph_doc dataset, based on the SchemaObject fields.
+        """Return the columns for the graph_doc dataset, based on the SchemaObject
+        fields.
 
-        :return: The columns for the graph_doc dataset
-        :rtype: Features
+        :return: The columns for the graph_doc dataset :rtype: Features
+
         """
         return Features(
             {
@@ -233,11 +233,10 @@ class SchemaObject:
         )
 
     def to_dataset(self) -> Dataset:
-        """
-        Convert the SchemaObject to a Hugging Face Dataset.
+        """Convert the SchemaObject to a Hugging Face Dataset.
 
-        :return: The Hugging Face Dataset
-        :rtype: Dataset
+        :return: The Hugging Face Dataset :rtype: Dataset
+
         """
         dictionary = {
             "category": [self.category.value if self.category else None],
@@ -253,11 +252,10 @@ class SchemaObject:
 
 # TODO: we may end up wanting to both abstract and/or move this elsewhere
 def schema_objects_to_dataset(schema_objects: List[SchemaObject]) -> Dataset:
-    """
-    Convert a list of SchemaObjects to a Hugging Face Dataset.
+    """Convert a list of SchemaObjects to a Hugging Face Dataset.
 
-    :param schema_objects: The list of SchemaObjects
-    :return: The Hugging Face Dataset
+    :param schema_objects: The list of SchemaObjects :return: The Hugging Face Dataset
+
     """
     return concatenate_datasets(
         [schema_object.to_dataset() for schema_object in schema_objects]

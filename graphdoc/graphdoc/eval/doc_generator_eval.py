@@ -36,10 +36,12 @@ class DocGeneratorEvaluator(dspy.Module):
         evaluator_prediction_field: str = "rating",
         readable_value: int = 25,
     ):
-        """
-        A simple module for evaluating the quality of generated documentation. We will make this extensible to include more complex evaluation metrics in the future.
+        """A simple module for evaluating the quality of generated documentation. We
+        will make this extensible to include more complex evaluation metrics in the
+        future.
 
         Important: we assume that the rating values returned by the evaluator are [1, 2, 3, 4]. We will make this more flexible in the future.
+
         """
         self.generator = generator
         self.evaluator = evaluator
@@ -52,9 +54,8 @@ class DocGeneratorEvaluator(dspy.Module):
         self.readable_value = readable_value
 
     def forward(self, database_schema: str) -> dict[str, Any]:
-        """
-        Takes a database schema, documents it, and then evaluates each component and the aggregate.
-        """
+        """Takes a database schema, documents it, and then evaluates each component and
+        the aggregate."""
         generator_result = self.generator.forward(database_schema)  # type: ignore (we assume we are using DocGeneratorModule)
         # TODO: let's decide if this is how we want to handle this in the future. Alternatively, we could return the documented schema from forward, not as a prediction object.
         documented_schema = getattr(generator_result, self.generator_prediction_field)
@@ -93,9 +94,7 @@ class DocGeneratorEvaluator(dspy.Module):
             }
 
     def evaluate(self):
-        """
-        Batches the evaluation set and logs the results to mlflow.
-        """
+        """Batches the evaluation set and logs the results to mlflow."""
         mlflow.set_experiment(self.mlflow_experiment_name)
         with mlflow.start_run():
             # evalset = [x.database_schema for x in self.evalset]
