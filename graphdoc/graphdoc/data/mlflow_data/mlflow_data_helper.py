@@ -1,19 +1,21 @@
 # Copyright 2025-, Semiotic AI, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-# system packages
-import os
 import ast
 import logging
+
+# system packages
+import os
 from pathlib import Path
 from typing import Any, Dict, Optional, Union
-
-# internal packages
 
 # external packages
 import dspy
 import mlflow
 from mlflow.models import ModelSignature
+
+# internal packages
+
 
 # logging
 log = logging.getLogger(__name__)

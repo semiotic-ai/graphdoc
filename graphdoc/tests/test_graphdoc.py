@@ -3,20 +3,25 @@
 
 # system packages
 import logging
-from typing import List
 from pathlib import Path
-
-# internal packages
-from graphdoc import GraphDoc
-from graphdoc import SinglePrompt
-from graphdoc import load_yaml_config
-from graphdoc import DocGeneratorModule
-from graphdoc import DocGeneratorEvaluator
-from graphdoc import DocGeneratorPrompt, DocQualityPrompt
-from graphdoc import SinglePromptTrainer, DocQualityTrainer, DocGeneratorTrainer
+from typing import List
 
 # external packages
 import dspy
+
+# internal packages
+from graphdoc import (
+    DocGeneratorEvaluator,
+    DocGeneratorModule,
+    DocGeneratorPrompt,
+    DocGeneratorTrainer,
+    DocQualityPrompt,
+    DocQualityTrainer,
+    GraphDoc,
+    SinglePrompt,
+    SinglePromptTrainer,
+    load_yaml_config,
+)
 
 # logging
 log = logging.getLogger(__name__)

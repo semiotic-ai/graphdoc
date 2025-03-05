@@ -4,16 +4,19 @@
 # system packages
 import logging
 
-# internal packages
-from graphdoc import GraphDoc
-from graphdoc import QualityDataHelper
-from graphdoc import DocQualitySignature
-from graphdoc import DocQualityPrompt
-from graphdoc import optimizer_class, optimizer_compile
-
 # external packages
 import dspy
 import pytest
+
+# internal packages
+from graphdoc import (
+    DocQualityPrompt,
+    DocQualitySignature,
+    GraphDoc,
+    QualityDataHelper,
+    optimizer_class,
+    optimizer_compile,
+)
 
 # logging
 log = logging.getLogger(__name__)

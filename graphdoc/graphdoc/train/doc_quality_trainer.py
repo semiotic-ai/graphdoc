@@ -4,18 +4,19 @@
 # system packages
 import io
 import logging
-from typing import Dict, Any, List, Optional, Tuple
-
-# internal packages
-from ..prompts import DocQualityPrompt
-from .optimizers import optimizer_compile
-from ..data import DspyDataHelper, QualityDataHelper
-from .single_prompt_trainer import SinglePromptTrainer
+from typing import Any, Dict, List, Optional, Tuple
 
 # external packages
 import dspy
 import mlflow
 import pandas as pd
+
+from ..data import DspyDataHelper, QualityDataHelper
+
+# internal packages
+from ..prompts import DocQualityPrompt
+from .optimizers import optimizer_compile
+from .single_prompt_trainer import SinglePromptTrainer
 
 # logging
 log = logging.getLogger(__name__)

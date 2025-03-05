@@ -6,11 +6,11 @@ import logging
 from collections import defaultdict
 from typing import Any, Callable, Dict, List, Literal, Union
 
-# internal packages
-from .single_prompt import SinglePrompt
-
 # external packages
 import dspy
+
+# internal packages
+from .single_prompt import SinglePrompt
 
 # logging
 log = logging.getLogger(__name__)
@@ -31,9 +31,9 @@ class DocQualitySignature(dspy.Signature):
     """
 
     database_schema: str = dspy.InputField()
-    category: Literal[
-        "perfect", "almost perfect", "poor but correct", "incorrect"
-    ] = dspy.OutputField()
+    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
+        dspy.OutputField()
+    )
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 
@@ -69,9 +69,9 @@ class DocQualityDemonstrationSignature(dspy.Signature):
     """
 
     database_schema: str = dspy.InputField()
-    category: Literal[
-        "perfect", "almost perfect", "poor but correct", "incorrect"
-    ] = dspy.OutputField()
+    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
+        dspy.OutputField()
+    )
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 

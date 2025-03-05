@@ -5,18 +5,18 @@
 import logging
 from pathlib import Path
 
-# internal packages
-from graphdoc import Parser
-from graphdoc import SchemaObject
+import pytest
 
 # external packages
 from graphql import (
     DocumentNode,
-    ObjectTypeDefinitionNode,
     EnumTypeDefinitionNode,
     EnumValueDefinitionNode,
+    ObjectTypeDefinitionNode,
 )
-import pytest
+
+# internal packages
+from graphdoc import Parser, SchemaObject
 
 # logging
 log = logging.getLogger(__name__)

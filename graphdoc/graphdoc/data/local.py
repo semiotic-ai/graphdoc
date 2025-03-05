@@ -5,21 +5,21 @@
 import logging
 from enum import Enum
 from pathlib import Path
-from typing import Optional, Union, Type, Callable, Dict
-
-# internal packages
-from .helper import check_directory_path, check_file_path
-from .schema import (
-    SchemaCategoryRatingMapping,
-    SchemaObject,
-    SchemaCategory,
-    SchemaRating,
-    SchemaCategoryPath,
-)
-from .parser import Parser
+from typing import Callable, Dict, Optional, Type, Union
 
 # external packages
 from datasets import Dataset, concatenate_datasets
+
+# internal packages
+from .helper import check_directory_path, check_file_path
+from .parser import Parser
+from .schema import (
+    SchemaCategory,
+    SchemaCategoryPath,
+    SchemaCategoryRatingMapping,
+    SchemaObject,
+    SchemaRating,
+)
 
 # logging
 log = logging.getLogger(__name__)

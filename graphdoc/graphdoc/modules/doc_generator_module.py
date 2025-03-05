@@ -5,14 +5,14 @@
 import logging
 from typing import Any, Literal, Optional, Union
 
-# internal packages
-from ..data import Parser
-from ..prompts import DocGeneratorPrompt, SinglePrompt
-
 # external packages
 import dspy
 import mlflow
 from graphql import parse, print_ast
+
+# internal packages
+from ..data import Parser
+from ..prompts import DocGeneratorPrompt, SinglePrompt
 
 # logging
 log = logging.getLogger(__name__)
@@ -306,5 +306,5 @@ class DocGeneratorModule(dspy.Module):
                 outputs={"documented_schema": return_schema},
                 status=status,
             )
-            log.info(f"ended trace: {root_trace}") # type: ignore # TODO: we should have better type handling, but we check at the top
+            log.info(f"ended trace: {root_trace}")  # type: ignore # TODO: we should have better type handling, but we check at the top
         return dspy.Prediction(documented_schema=return_schema)

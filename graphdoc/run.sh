@@ -25,6 +25,10 @@ format_command() {
     poetry run black .
 }
 
+sort_command() {
+    poetry run isort .
+}
+
 lint_command() {
     poetry run pyright .
 }
@@ -35,6 +39,7 @@ test_command() {
 
 commit_command() {
     format_command
+    sort_command
     lint_command
     test_command
     requirements_command

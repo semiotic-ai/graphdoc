@@ -3,16 +3,18 @@
 
 # system packages
 import logging
-from enum import Enum
 from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
-from typing import List, Optional, Union, Type
+from typing import List, Optional, Type, Union
 
-# internal packages
+from datasets import Dataset, Features, Value, concatenate_datasets
 
 # external packages
 from graphql import Node
-from datasets import Features, Value, Dataset, concatenate_datasets
+
+# internal packages
+
 
 # logging
 log = logging.getLogger(__name__)

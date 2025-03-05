@@ -4,11 +4,11 @@
 # system packages
 import logging
 
-# internal packages
-from graphdoc import DspyDataHelper
-
 # external packages
 import dspy
+
+# internal packages
+from graphdoc import DspyDataHelper
 
 # logging
 log = logging.getLogger(__name__)

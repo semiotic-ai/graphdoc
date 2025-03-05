@@ -4,18 +4,17 @@
 # system packages
 import logging
 from pathlib import Path
-from typing import Union, List, Any
+from typing import Any, List, Union
 
+# external packages
+import dspy
+import mlflow
 from graphql import parse, print_ast
 
 # internal packages
 from ..data import MlflowDataHelper
 from ..modules import DocGeneratorModule
 from ..prompts import DocQualityPrompt, SinglePrompt
-
-# external packages
-import dspy
-import mlflow
 
 # logging
 log = logging.getLogger(__name__)

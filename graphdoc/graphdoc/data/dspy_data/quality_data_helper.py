@@ -6,12 +6,13 @@ import logging
 
 # internal packages
 from typing import Any, Optional, Union
-from .dspy_data_helper import DspyDataHelper
 
 # external packages
 import dspy
 from datasets import Dataset
 from mlflow.models import ModelSignature, infer_signature
+
+from .dspy_data_helper import DspyDataHelper
 
 # logging
 log = logging.getLogger(__name__)

@@ -7,12 +7,13 @@ from abc import ABC, abstractmethod
 from functools import singledispatch
 from typing import Any, Optional, Union
 
-# internal packages
-
 # external packages
 import dspy
 from datasets import Dataset
 from mlflow.models import ModelSignature
+
+# internal packages
+
 
 # logging
 log = logging.getLogger(__name__)

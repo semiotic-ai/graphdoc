@@ -1,26 +1,32 @@
 # Copyright 2025-, Semiotic AI, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
+import logging
+
 # system packages
 import os
-import logging
 from enum import Enum
 from pathlib import Path
 
-# internal packages
-from graphdoc import Parser
-from graphdoc import GraphDoc
-from graphdoc import LocalDataHelper
-from graphdoc import DocGeneratorPrompt, DocQualityPrompt
-from .conftest import (
-    OverwriteSchemaCategory,
-    OverwriteSchemaRating,
-    OverwriteSchemaCategoryRatingMapping,
-)
+from dotenv import load_dotenv
 
 # external packages
 from pytest import fixture
-from dotenv import load_dotenv
+
+# internal packages
+from graphdoc import (
+    DocGeneratorPrompt,
+    DocQualityPrompt,
+    GraphDoc,
+    LocalDataHelper,
+    Parser,
+)
+
+from .conftest import (
+    OverwriteSchemaCategory,
+    OverwriteSchemaCategoryRatingMapping,
+    OverwriteSchemaRating,
+)
 
 # logging
 log = logging.getLogger(__name__)

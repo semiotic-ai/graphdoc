@@ -5,14 +5,15 @@
 import logging
 from typing import Any, Callable, Dict, List, Literal, Union
 
-# internal packages
-from graphdoc import Parser
-from .single_prompt import SinglePrompt
-from .schema_doc_quality import DocQualityPrompt
-
 # external packages
 import dspy
 from graphql import parse
+
+# internal packages
+from graphdoc import Parser
+
+from .schema_doc_quality import DocQualityPrompt
+from .single_prompt import SinglePrompt
 
 # logging
 log = logging.getLogger(__name__)

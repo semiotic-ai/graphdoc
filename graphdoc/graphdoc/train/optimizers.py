@@ -1,15 +1,17 @@
 # Copyright 2025-, Semiotic AI, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
+import inspect
+
 # system packages
 import logging
-import inspect
 from typing import Any, Dict
-
-# internal packages
 
 # external packages
 import dspy
+
+# internal packages
+
 
 # logging
 log = logging.getLogger(__name__)

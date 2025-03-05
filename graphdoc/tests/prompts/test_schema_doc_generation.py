@@ -3,17 +3,20 @@
 
 # system packages
 import logging
-
-# internal packages
-from graphdoc import GraphDoc
-from graphdoc import DocGeneratorSignature
-from graphdoc import GenerationDataHelper
-from graphdoc import DocGeneratorPrompt, DocQualityPrompt
+from typing import Callable
 
 # external packages
 import dspy
 import pytest
-from typing import Callable
+
+# internal packages
+from graphdoc import (
+    DocGeneratorPrompt,
+    DocGeneratorSignature,
+    DocQualityPrompt,
+    GenerationDataHelper,
+    GraphDoc,
+)
 
 # logging
 log = logging.getLogger(__name__)
