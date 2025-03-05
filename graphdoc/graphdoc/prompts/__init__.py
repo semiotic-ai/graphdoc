@@ -3,15 +3,25 @@
 
 # system packages
 import logging
+from typing import Union
 
 # external packages
 import dspy
 
-from .schema_doc_generation import *
-from .schema_doc_quality import *
+from .schema_doc_generation import (
+    BadDocGeneratorSignature,
+    DocGeneratorHelperSignature,
+    DocGeneratorPrompt,
+    DocGeneratorSignature,
+)
+from .schema_doc_quality import (
+    DocQualityDemonstrationSignature,
+    DocQualityPrompt,
+    DocQualitySignature,
+)
 
 # internal packages
-from .single_prompt import *
+from .single_prompt import SinglePrompt
 
 
 class PromptFactory:
