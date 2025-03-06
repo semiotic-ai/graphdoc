@@ -52,7 +52,7 @@ class SinglePrompt(ABC):
             )  # .get and then we can remove the error
         elif isinstance(self.prompt_type, Callable):
             log.warning(
-                f"Using alternative dspy.Module for inference, please know what you are doing"
+                "Using alternative dspy.Module for inference, please know what you are doing"
             )
             self.infer = self.prompt_type(self.prompt)
         else:
@@ -145,5 +145,5 @@ class SinglePrompt(ABC):
             overall_score, results, scores = evaluator(self.infer, self.evaluate_metric)  # type: ignore
             return self.format_metric(examples, overall_score, results, scores)  # type: ignore
         except Exception as e:
-            log.error(f"Error evaluating evalset: {e}")
+            log.error("Error evaluating evalset: " + str(e))
             raise e

@@ -9,7 +9,6 @@ from typing import Any, Dict, List, Optional, Tuple
 # external packages
 import dspy
 import mlflow
-from mlflow.models import ModelSignature
 
 from ..data import DspyDataHelper
 from ..data.dspy_data import GenerationDataHelper

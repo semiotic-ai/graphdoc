@@ -29,7 +29,7 @@ class GenerationDataHelper(DspyDataHelper):
     ```
 
     """
-    
+
     @staticmethod
     def example(inputs: dict[str, Any]) -> dspy.Example:
         return dspy.Example(

@@ -69,7 +69,7 @@ def main():
     module_evaluator = gd.doc_generator_eval_from_yaml(args.config_path)
 
     # run the evaluation and log the results
-    log.info(f"Running evaluation and logging results")
+    log.info("Running evaluation and logging results")
     module_evaluator.evaluate()
 
 

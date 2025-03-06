@@ -93,22 +93,22 @@ class DocGeneratorModule(dspy.Module):
             # get the rating for the documentation
             rating_prediction = _try_rating(database_schema=pred_database_schema)
             rating = rating_prediction.rating
-            log.info(f"Current rating (attempt #{retries + 1}): {rating}")
+            log.info("Current rating (attempt #" + str(retries + 1) + "): " + str(rating))
 
             # if the rating is above the threshold, return the documentation
             if rating >= self.rating_threshold:
                 if retries > 0:
                     log.info(
-                        f"Retry improved rating quality to meet threshold (attempt #{retries + 1})"
+                        "Retry improved rating quality to meet threshold (attempt #" + str(retries + 1) + ")"
                     )
                 return pred_database_schema
             log.info(
-                f"The rating prediction is (attempt #{retries + 1}): {rating_prediction}"
+                "The rating prediction is (attempt #" + str(retries + 1) + "): " + str(rating_prediction)
             )
 
             # if the rating is below the threshold, prepare for a retry
             if self.prompt.prompt_metric.prompt_type == "chain_of_thought":
-                log.info(f"Adding reasoning returned from the rating prediction")
+                log.info("Adding reasoning returned from the rating prediction")
                 reason = rating_prediction.reasoning
                 reason_database_schema = (
                     f"# The documentation was previously generated and received a low quality rating because of the following reasoning: {reason}. Remove this comment in the documentation you generate\n"
@@ -125,7 +125,7 @@ class DocGeneratorModule(dspy.Module):
             retries += 1
 
         log.warning(
-            f"Retry limit reached. Returning the last documented schema with rating: {rating}"
+            "Retry limit reached. Returning the last documented schema with rating: " + str(rating)
         )
         if pred_database_schema is None:
             log.warning("No documented schema returned from retries")
@@ -152,7 +152,7 @@ class DocGeneratorModule(dspy.Module):
         try:
             database_ast = parse(database_schema)
         except Exception as e:
-            log.warning(f"Invalid GraphQL schema provided at onset: {e}")
+            log.warning("Invalid GraphQL schema provided at onset: " + str(e))
             return dspy.Prediction(documented_schema=database_schema)
 
         # fill the empty descriptions
@@ -164,21 +164,21 @@ class DocGeneratorModule(dspy.Module):
         try:
             prediction = self.prompt.infer(database_schema=database_schema)
         except Exception as e:
-            log.warning(f"Error generating schema: {e}")
+            log.warning("Error generating schema: " + str(e))
             return dspy.Prediction(documented_schema=database_schema)
 
         # check that the generated schema is valid
         try:
             prediction_ast = parse(prediction.documented_schema)
         except Exception as e:
-            log.warning(f"Invalid GraphQL schema generated: {e}")
+            log.warning("Invalid GraphQL schema generated: " + str(e))
             return dspy.Prediction(documented_schema=database_schema)
 
         # check that the generated schema matches the original schema
         if self.par.schema_equality_check(database_ast, prediction_ast):
             return dspy.Prediction(documented_schema=prediction.documented_schema)
         else:
-            log.warning(f"Generated schema does not match the original schema")
+            log.warning("Generated schema does not match the original schema")
             return dspy.Prediction(documented_schema=database_schema)
 
     def forward(self, database_schema: str) -> dspy.Prediction:
@@ -259,7 +259,7 @@ class DocGeneratorModule(dspy.Module):
         try:
             document_ast = parse(database_schema)
         except Exception as e:
-            raise ValueError(f"Invalid GraphQL schema provided: {e}")
+            raise ValueError("Invalid GraphQL schema provided: " + str(e))
 
         # parse the schema into examples
         examples = []
@@ -279,7 +279,7 @@ class DocGeneratorModule(dspy.Module):
                 inputs={"database_schema": database_schema},
                 attributes={"api_key": api_key},
             )
-            log.info(f"created trace: {root_trace}")
+            log.info("created trace: " + str(root_trace))
 
         # batch generate the documentation
         documented_examples = self.batch(examples, num_threads=32)
@@ -293,7 +293,7 @@ class DocGeneratorModule(dspy.Module):
             return_schema = print_ast(document_ast)
             status = "OK"
         else:
-            log.warning(f"Generated schema does not match the original schema")
+            log.warning("Generated schema does not match the original schema")
             if self.fill_empty_descriptions:
                 updated_ast = self.par.fill_empty_descriptions(document_ast)
                 return_schema = print_ast(updated_ast)
@@ -309,5 +309,5 @@ class DocGeneratorModule(dspy.Module):
                 outputs={"documented_schema": return_schema},
                 status=status,
             )
-            log.info(f"ended trace: {root_trace}")  # type: ignore # TODO: we should have better type handling, but we check at the top
+            log.info("ended trace: " + str(root_trace))  # type: ignore # TODO: we should have better type handling, but we check at the top
         return dspy.Prediction(documented_schema=return_schema)

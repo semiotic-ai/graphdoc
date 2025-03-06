@@ -161,7 +161,7 @@ class SchemaObject:
         if data.get("category"):
             try:
                 category = category_enum(data["category"])
-            except ValueError as e:
+            except ValueError:
                 raise ValueError(
                     f"Invalid category. Must be one of: {[e.value for e in category_enum]}"
                 )
@@ -174,7 +174,7 @@ class SchemaObject:
                     rating = rating_enum.from_value(data["rating"])  # type: ignore
                 else:
                     rating = rating_enum(data["rating"])
-            except ValueError as e:
+            except ValueError:
                 raise ValueError(
                     f"Invalid rating. Must be one of: {[e.value for e in rating_enum]}"
                 )
@@ -183,7 +183,7 @@ class SchemaObject:
         if data.get("schema_type"):
             try:
                 schema_type = type_enum(data["schema_type"])
-            except ValueError as e:
+            except ValueError:
                 raise ValueError(
                     f"Invalid schema type. Must be one of: {[e.value for e in type_enum]}"
                 )

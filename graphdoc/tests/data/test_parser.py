@@ -5,8 +5,6 @@
 import logging
 from pathlib import Path
 
-import pytest
-
 # external packages
 from graphql import (
     DocumentNode,

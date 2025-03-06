@@ -175,7 +175,7 @@ class GraphDoc:
             return trainset
         else:
             raise ValueError(
-                f"Current implementation only supports loading from local directory"
+                "Current implementation only supports loading from local directory"
             )
 
     def trainset_from_yaml(self, yaml_path: Union[str, Path]) -> List[dspy.Example]:

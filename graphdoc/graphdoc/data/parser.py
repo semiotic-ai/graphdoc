@@ -188,7 +188,7 @@ class Parser:
         """
         if hasattr(node, "description"):  # and node.description == None:
             description = getattr(node, "description", None)
-            if description == None:
+            if description is None:
                 # if the node is a table, use the table value
                 if isinstance(node, ObjectTypeDefinitionNode):
                     new_value = new_table_value
@@ -323,11 +323,11 @@ class Parser:
         tables = {}
         for definition in schema.schema_ast.definitions:
             if isinstance(definition, ObjectTypeDefinitionNode):
-                log.debug(f"found table schema")
+                log.debug("found table schema")
                 key = f"{schema.key}_{definition.name.value}"
                 schema_type = Parser._check_node_type(definition, type_mapping)
             elif isinstance(definition, EnumTypeDefinitionNode):
-                log.debug(f"found enum schema")
+                log.debug("found enum schema")
                 key = f"{schema.key}_{definition.name.value}"
                 schema_type = Parser._check_node_type(definition, type_mapping)
             else:

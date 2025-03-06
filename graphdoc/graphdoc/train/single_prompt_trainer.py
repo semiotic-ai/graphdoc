@@ -55,20 +55,20 @@ class SinglePromptTrainer(ABC):
         self.evalset = evalset
 
         # setup mlflow
-        log.info(f"---------------------------------------------------------")
-        log.info(f"Setting MLFlow tracking URI to {self.mlflow_tracking_uri}")
-        log.info(f"---------------------------------------------------------")
+        log.info("---------------------------------------------------------")
+        log.info("Setting MLFlow tracking URI to " + str(self.mlflow_tracking_uri))
+        log.info("---------------------------------------------------------")
 
         mlflow.dspy.autolog()
         self.mlflow_data_helper = MlflowDataHelper(self.mlflow_tracking_uri)
         experiment = mlflow.set_experiment(self.mlflow_experiment_name)
 
-        log.info(f"Setting MLFlow experiment to {self.mlflow_experiment_name}")
-        log.info(f"Experiment_id: {experiment.experiment_id}")
-        log.info(f"Artifact Location: {experiment.artifact_location}")
+        log.info("Setting MLFlow experiment to " + str(self.mlflow_experiment_name))
+        log.info("Experiment_id: " + str(experiment.experiment_id))
+        log.info("Artifact Location: " + str(experiment.artifact_location))
         log.info(f"Tags: {experiment.tags}")
-        log.info(f"Lifecycle_stage: {experiment.lifecycle_stage}")
-        log.info(f"---------------------------------------------------------")
+        log.info("Lifecycle_stage: " + str(experiment.lifecycle_stage))
+        log.info("---------------------------------------------------------")
 
     ####################
     # Abstract Methods #
