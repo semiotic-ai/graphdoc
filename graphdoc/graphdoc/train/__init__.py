@@ -60,3 +60,17 @@ class TrainerFactory:
             raise ValueError(
                 f"Failed to initialize trainer class ({trainer_class}): {e}"
             )
+
+
+__all__ = [
+    "TrainerFactory",
+    "DocGeneratorTrainer",
+    "DocQualityTrainer",
+    "_optimizer_kwargs_filter",
+    "optimizer_class",
+    "optimizer_compile",
+    "SinglePrompt",
+    "SinglePromptTrainer",
+    "DocGeneratorTrainer",
+    "DocQualityTrainer",
+]
