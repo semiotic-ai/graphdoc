@@ -16,9 +16,7 @@ log = logging.getLogger(__name__)
 
 
 class CustomPrompt(dspy.Signature):
-    """
-    This is a custom prompt.
-    """
+    """This is a custom prompt."""
 
     input = dspy.InputField()
     output = dspy.OutputField()

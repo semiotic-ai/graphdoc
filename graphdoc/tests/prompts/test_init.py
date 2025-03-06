@@ -15,9 +15,7 @@ log = logging.getLogger(__name__)
 
 class TestPromptInit:
     def test_single_prompt(self):
-        """
-        Test the single_prompt function.
-        """
+        """Test the single_prompt function."""
         dqp = PromptFactory.single_prompt(
             prompt="doc_quality",
             prompt_class="DocQualityPrompt",
