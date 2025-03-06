@@ -33,9 +33,6 @@ class QualityDataHelper(DspyDataHelper):
 
     """
 
-    def __init__(self):
-        super().__init__()
-
     @staticmethod
     def example(inputs: dict[str, Any]) -> dspy.Example:
         return dspy.Example(
