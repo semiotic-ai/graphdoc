@@ -26,9 +26,9 @@ format_command() {
 }
 
 docstring_format_command() {
-    poetry run docformatter --black --style spinx --in-place --recursive graphdoc/  
-    poetry run docformatter --black --style spinx --in-place --recursive runners/ 
-    poetry run docformatter --black --style spinx --in-place --recursive tests/ 
+    poetry run docformatter --black --style sphinx --in-place --recursive graphdoc/  
+    poetry run docformatter --black --style sphinx --in-place --recursive runners/ 
+    poetry run docformatter --black --style sphinx --in-place --recursive tests/ 
 }
 
 pep8_check_command() {
