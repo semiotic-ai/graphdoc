@@ -11,8 +11,8 @@ import mlflow
 from graphql import parse, print_ast
 
 # internal packages
-from ..data import Parser
-from ..prompts import DocGeneratorPrompt, SinglePrompt
+from graphdoc.data import Parser
+from graphdoc.prompts import DocGeneratorPrompt, SinglePrompt
 
 # logging
 log = logging.getLogger(__name__)

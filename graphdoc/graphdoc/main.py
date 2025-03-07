@@ -10,7 +10,8 @@ from typing import List, Literal, Optional, Union
 # external packages
 import dspy
 
-from .data import (
+# internal packages
+from graphdoc.data import (
     DspyDataHelper,
     GenerationDataHelper,
     LocalDataHelper,
@@ -19,12 +20,10 @@ from .data import (
     load_yaml_config,
     setup_logging,
 )
-from .eval import DocGeneratorEvaluator
-from .modules import DocGeneratorModule
-from .prompts import DocGeneratorPrompt, PromptFactory, SinglePrompt
-
-# internal packages
-from .train import SinglePromptTrainer, TrainerFactory
+from graphdoc.eval import DocGeneratorEvaluator
+from graphdoc.modules import DocGeneratorModule
+from graphdoc.prompts import DocGeneratorPrompt, PromptFactory, SinglePrompt
+from graphdoc.train import SinglePromptTrainer, TrainerFactory
 
 # logging
 log = logging.getLogger(__name__)

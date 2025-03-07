@@ -11,12 +11,11 @@ import dspy
 import mlflow
 import pandas as pd
 
-from ..data import DspyDataHelper, QualityDataHelper
-
 # internal packages
-from ..prompts import DocQualityPrompt
-from .optimizers import optimizer_compile
-from .single_prompt_trainer import SinglePromptTrainer
+from graphdoc.data import DspyDataHelper, QualityDataHelper
+from graphdoc.prompts import DocQualityPrompt
+from graphdoc.train.optimizers import optimizer_compile
+from graphdoc.train.single_prompt_trainer import SinglePromptTrainer
 
 # logging
 log = logging.getLogger(__name__)

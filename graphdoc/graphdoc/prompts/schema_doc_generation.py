@@ -10,10 +10,9 @@ import dspy
 from graphql import parse
 
 # internal packages
-from graphdoc import Parser
-
-from .schema_doc_quality import DocQualityPrompt
-from .single_prompt import SinglePrompt
+from graphdoc.data import Parser
+from graphdoc.prompts.schema_doc_quality import DocQualityPrompt
+from graphdoc.prompts.single_prompt import SinglePrompt
 
 # logging
 log = logging.getLogger(__name__)
@@ -35,7 +34,7 @@ class DocGeneratorSignature(dspy.Signature):
     ### Formatting
     - Ensure that the schema maintains proper documentation formatting, as is provided.
 
-    """
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
