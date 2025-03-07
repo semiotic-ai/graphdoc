@@ -54,5 +54,13 @@ class TestDspyDataHelper:
         assert "------\nUser\n------" in formatted_signature
         assert (
             formatted_signature
-            == "------\nSystem\n------\n Your input fields are:\n1. `test_input` (str)\n2. `test_output` (str)\n\nYour output fields are:\n\n\nAll interactions will be structured in the following way, with the appropriate values filled in.\n\n[[ ## test_input ## ]]\n{test_input}\n\n[[ ## test_output ## ]]\n{test_output}\n\n\n\n[[ ## completed ## ]]\n\nIn adhering to this structure, your objective is: \n        Test signature. \n------\nUser\n------\n [[ ## test_input ## ]]\ntest input\n\n[[ ## test_output ## ]]\ntest output"
+            == "------\nSystem\n------\n Your input fields are:\n1. `test_input` (str)\n"
+            "2. `test_output` (str)\n\nYour output fields are:\n\n\n"
+            "All interactions will be structured in the following way, "
+            "with the appropriate values filled in.\n\n"
+            "[[ ## test_input ## ]]\n{test_input}\n\n"
+            "[[ ## test_output ## ]]\n{test_output}\n\n\n\n"
+            "[[ ## completed ## ]]\n\nIn adhering to this structure, your objective is: \n"
+            "        Test signature. \n------\nUser\n------\n [[ ## test_input ## ]]\n"
+            "test input\n\n[[ ## test_output ## ]]\ntest output"
         )

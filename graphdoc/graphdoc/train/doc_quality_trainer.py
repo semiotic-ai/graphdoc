@@ -112,20 +112,26 @@ class DocQualityTrainer(SinglePromptTrainer):
     ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         """Evaluate the training of the model. Comparing the base and optimized models.
 
-        :param base_model: The base model. :type base_model: Any :param optimized_model:
-        The optimized model. :type optimized_model: Any
+        :param base_model: The base model.
+        :type base_model: Any
+        :param optimized_model: The optimized model.
+        :type optimized_model: Any
 
         """
         base_prompt = DocQualityPrompt(
             prompt=DspyDataHelper.prompt_signature(base_model),
-            prompt_type=self.prompt.prompt_type,  # type: ignore # TODO: we should have better type handling, but we know this works
-            prompt_metric=self.prompt.prompt_metric,  # type: ignore # TODO: we should have better type handling, but we know this works
+            prompt_type=self.prompt.prompt_type,  # type: ignore
+            # TODO: we should have better type handling, but we know this works
+            prompt_metric=self.prompt.prompt_metric,  # type: ignore
+            # TODO: we should have better type handling, but we know this works
         )
 
         optimized_prompt = DocQualityPrompt(
             prompt=DspyDataHelper.prompt_signature(optimized_model),
-            prompt_type=self.prompt.prompt_type,  # type: ignore # TODO: we should have better type handling, but we know this works
-            prompt_metric=self.prompt.prompt_metric,  # type: ignore # TODO: we should have better type handling, but we know this works
+            prompt_type=self.prompt.prompt_type,  # type: ignore
+            # TODO: we should have better type handling, but we know this works
+            prompt_metric=self.prompt.prompt_metric,  # type: ignore
+            # TODO: we should have better type handling, but we know this works
         )
 
         base_evaluation = base_prompt.evaluate_evalset(self.evalset)
@@ -140,19 +146,22 @@ class DocQualityTrainer(SinglePromptTrainer):
         """Train the model. If provided, we will load the model from mlflow. Otherwise,
         we will use the provided DocQualityPrompt as the base model.
 
-        :param load_model_args: The arguments to load the model. :type load_model_args:
-        Dict[str, Any] :param save_model: Whether to save the model. :type save_model:
-        bool
+        :param load_model_args: The arguments to load the model.
+        :type load_model_args: Dict[str, Any]
+        :param save_model: Whether to save the model.
+        :type save_model: bool
 
         """
         # if model args are provided, load the model from mlflow.
         if load_model_args:
-            # we assume the user wants to load the model as was stored, without modifying the module type (e.g. dspy.Predict, dspy.ChainOfThought)
+            # we assume the user wants to load the model as was stored,
+            # without modifying the module type (e.g. dspy.Predict, dspy.ChainOfThought)
             base_model = self.mlflow_data_helper.model_by_args(load_model_args)
         else:
             base_model = self.prompt.infer
 
-        # make sure the optimizer_kwargs include the student, overwriting whatever was provided if necessary
+        # make sure the optimizer_kwargs include the student,
+        # overwriting whatever was provided if necessary
         self.optimizer_kwargs["student"] = base_model
 
         # run the trainer

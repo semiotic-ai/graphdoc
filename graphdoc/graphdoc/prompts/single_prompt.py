@@ -24,16 +24,19 @@ class SinglePrompt(ABC):
         prompt: Union[dspy.Signature, dspy.SignatureMeta],
         prompt_type: Union[Literal["predict", "chain_of_thought"], Callable],
         prompt_metric: Any,
-        # TODO: we should consider adding a DspyDataHelper object here for convenience and tighter coupling
+        # TODO: we should consider adding a DspyDataHelper object here for convenience
+        # and tighter coupling
     ) -> None:
         """Initialize a single prompt.
 
-        :param prompt: The prompt to use. :type prompt: dspy.Signature :param
-        prompt_type: The type of prompt to use. Can be "predict" or "chain_of_thought".
-        Optionally, pass another dspy.Module. :type prompt_type:
-        Union[Literal["predict", "chain_of_thought"], Callable] :param prompt_metric:
-        The metric to use. Marked as Any for flexibility (as metrics can be other
-        prompts). :type prompt_metric: Any
+        :param prompt: The prompt to use.
+        :type prompt: dspy.Signature
+        :param prompt_type: The type of prompt to use. Can be "predict" or
+            "chain_of_thought". Optionally, pass another dspy.Module.
+        :type prompt_type: Union[Literal["predict", "chain_of_thought"], Callable]
+        :param prompt_metric: The metric to use. Marked as Any for flexibility (as
+            metrics can be other prompts).
+        :type prompt_metric: Any
 
         """
         self.prompt = prompt

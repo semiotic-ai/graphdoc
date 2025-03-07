@@ -31,7 +31,7 @@ class DocQualitySignature(dspy.Signature):
     - incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.
     Output a number rating that corresponds to the categories described above.
 
-    """
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
@@ -72,7 +72,7 @@ class DocQualityDemonstrationSignature(dspy.Signature):
         }
     Output a number rating that corresponds to the categories described above.
 
-    """
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
@@ -87,8 +87,9 @@ def doc_quality_factory(
     """Factory function to return the correct signature based on the key. Currently only
     supports two signatures (doc_quality and doc_quality_demo).
 
-    :param key: The key to return the signature for. :type key: Union[str,
-    dspy.Signature] :return: The signature for the given key.
+    :param key: The key to return the signature for.
+    :type key: Union[str, dspy.Signature]
+    :return: The signature for the given key.
 
     """
     # allow the user to pass in their own dspy signature
@@ -204,7 +205,8 @@ class DocQualityPrompt(SinglePrompt):
         :type results: List
         :param scores: The scores of the evaluation.
         :type scores: List
-        :return: A dictionary containing the overall score, per category scores, and details. { "overall_score": 0, "per_category_scores": {}, "details": [], "results": [] }
+        :return: A dictionary containing the overall score, per category scores, and details.
+                { "overall_score": 0, "per_category_scores": {}, "details": [], "results": [] }
         :rtype: Dict[str, Any]
         """
 

@@ -39,7 +39,7 @@ class DocGeneratorSignature(dspy.Signature):
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
-        desc="The database schema with proper documentation, ensuring that the underlying schema is not altered."
+        desc="The database schema with proper documentation, ensuring that the underlying schema is not altered."  # noqa: B950
     )
 
 
@@ -58,11 +58,11 @@ class DocGeneratorHelperSignature(dspy.Signature):
     - Maintain consistency with the existing documentation style and structure.
     - Focus on clarity and precision to aid developers and system architects in understanding the schema's components effectively.
 
-    """
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
-        desc="The database schema with proper documentation, ensuring that the underlying schema is not altered."
+        desc="The database schema with proper documentation, ensuring that the underlying schema is not altered."  # noqa: B950
     )
 
 
@@ -78,11 +78,11 @@ class BadDocGeneratorSignature(dspy.Signature):
     ### Formatting
     - Ensure that the schema maintains proper documentation formatting, as is provided.
 
-    """
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
-        desc="The database schema with intentionally incorrect documentation, ensuring that the underlying schema is not altered."
+        desc="The database schema with intentionally incorrect documentation, ensuring that the underlying schema is not altered."  # noqa: B950
     )
 
 
@@ -92,9 +92,10 @@ def doc_gen_factory(
     """Factory function to return the correct signature based on the key. Currently only
     supports three signatures (zero_shot_doc_gen, doc_gen_helper, bad_doc_gen).
 
-    :param key: The key to return the signature for. :type key: Union[str,
-    dspy.Signature] :return: The signature for the given key. :rtype:
-    Union[dspy.Signature, dspy.SignatureMeta]
+    :param key: The key to return the signature for.
+    :type key: Union[str, dspy.Signature]
+    :return: The signature for the given key.
+    :rtype: Union[dspy.Signature, dspy.SignatureMeta]
 
     """
     # allow the user to pass in their own dspy signature
@@ -137,11 +138,15 @@ class DocGeneratorPrompt(SinglePrompt):
         """Evaluate the quality of the documentation. Utilizes the instantiated metric
         type to evaluate the quality of the documentation.
 
-        :param schema: The schema to evaluate the documentation for. :type schema:
-        dspy.Example :param pred: The predicted documentation. :type pred:
-        dspy.Prediction :param trace: The trace of the prediction. :type trace: Any
+        :param schema: The schema to evaluate the documentation for.
+        :type schema: dspy.Example
+        :param pred: The predicted documentation.
+        :type pred: dspy.Prediction
+        :param trace: The trace of the prediction.
+        :type trace: Any
         :param scalar: Whether to return a squared score or the full evaluation object.
-        :type scalar: bool :return: The squared score or the full evaluation object.
+        :type scalar: bool
+        :return: The squared score or the full evaluation object.
         :rtype: int
 
         """
@@ -150,7 +155,8 @@ class DocGeneratorPrompt(SinglePrompt):
             pred_schema = parse(pred.documented_schema)
         except Exception as e:
             log.warning(
-                f"evaluate_documentation_quality: An exception occurred while parsing the schema: {e}"
+                f"evaluate_documentation_quality: An exception occurred while "
+                f"parsing the schema: {e}"
             )
             return 1
         if not Parser.schema_equality_check(gold_schema, pred_schema):

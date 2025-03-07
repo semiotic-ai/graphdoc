@@ -37,15 +37,23 @@ def optimizer_class(optimizer_type: str, optimizer_kwargs: Dict[str, Any]):
         )
     elif optimizer_type == "BootstrapFewShotWithRandomSearch":
         # metric: Callable (this is a function that takes a prediction and an example)
-        # teacher_settings (dict, optional): Settings for the teacher predictor. Defaults to an empty dictionary.
-        # max_bootstrapped_demos (int, optional): Maximum number of bootstrapped demonstrations per predictor. Defaults to 4.
-        # max_labeled_demos (int, optional): Maximum number of labeled demonstrations per predictor. Defaults to 16.
+        # teacher_settings (dict, optional): Settings for the teacher predictor.
+        #                                    Defaults to an empty dictionary.
+        # max_bootstrapped_demos (int, optional): Maximum number of bootstrapped demonstrations
+        #                                         per predictor. Defaults to 4.
+        # max_labeled_demos (int, optional): Maximum number of labeled demonstrations
+        #                                    per predictor.
         # max_rounds (int, optional): Maximum number of bootstrapping rounds. Defaults to 1.
-        # num_candidate_programs (int): Number of candidate programs to generate during random search. Defaults to 16.
-        # num_threads (int): Number of threads used for evaluation during random search. Defaults to 6.
-        # max_errors (int): Maximum errors permitted during evaluation. Halts run with the latest error message. Defaults to 10.
-        # stop_at_score (float, optional): Score threshold for random search to stop early. Defaults to None.
-        # metric_threshold (float, optional): Score threshold for the metric to determine a successful example. Defaults to None.
+        # num_candidate_programs (int): Number of candidate programs to generate
+        #                               during random search.
+        # num_threads (int): Number of threads used for evaluation during random search.
+        #                    Defaults to 6.
+        # max_errors (int): Maximum errors permitted during evaluation.
+        #                   Halts run with the latest error message. Defaults to 10.
+        # stop_at_score (float, optional): Score threshold for random search to stop early.
+        #                                  Defaults to None.
+        # metric_threshold (float, optional): Score threshold for the metric to determine
+        #                                     a successful example. Defaults to None.
         return dspy.BootstrapFewShotWithRandomSearch(
             **_optimizer_kwargs_filter(
                 init_signature=inspect.signature(

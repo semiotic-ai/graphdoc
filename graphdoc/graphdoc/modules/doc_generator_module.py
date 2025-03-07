@@ -41,7 +41,8 @@ class DocGeneratorModule(dspy.Module):
         :type retry: bool
         :param retry_limit: The maximum number of retries.
         :type retry_limit: int
-        :param rating_threshold: The minimum rating for a generated document to be considered valid.
+        :param rating_threshold: The minimum rating for a generated document to be
+                                 considered valid.
         :type rating_threshold: int
 
         """
@@ -51,7 +52,8 @@ class DocGeneratorModule(dspy.Module):
         self.retry = retry
         self.retry_limit = retry_limit
         self.rating_threshold = rating_threshold
-        # TODO: as we start to add more transformations to the schema, we should move to a dict like structure for passing in those parameters
+        # TODO: as we start to add more transformations to the schema,
+        # we should move to a dict like structure for passing in those parameters
         self.fill_empty_descriptions = fill_empty_descriptions
         self.par = Parser()
 
@@ -78,9 +80,9 @@ class DocGeneratorModule(dspy.Module):
                 log.warning(
                     f"DocGeneratorModule: error while attempting to compute rating: {e}"
                 )
-                return dspy.Prediction(
-                    rating=self.rating_threshold
-                )  # TODO: we could have better handling here, but the exponential decay on retries is a good fallback that is already built into the retry logic
+                return dspy.Prediction(rating=self.rating_threshold)
+                # TODO: we could have better handling here, but the exponential decay
+                # on retries is a good fallback that is already built into the retry logic
 
         retries = 0
         rating = 0
@@ -93,17 +95,24 @@ class DocGeneratorModule(dspy.Module):
             # get the rating for the documentation
             rating_prediction = _try_rating(database_schema=pred_database_schema)
             rating = rating_prediction.rating
-            log.info("Current rating (attempt #" + str(retries + 1) + "): " + str(rating))
+            log.info(
+                "Current rating (attempt #" + str(retries + 1) + "): " + str(rating)
+            )
 
             # if the rating is above the threshold, return the documentation
             if rating >= self.rating_threshold:
                 if retries > 0:
                     log.info(
-                        "Retry improved rating quality to meet threshold (attempt #" + str(retries + 1) + ")"
+                        "Retry improved rating quality to meet threshold (attempt #"
+                        + str(retries + 1)
+                        + ")"
                     )
                 return pred_database_schema
             log.info(
-                "The rating prediction is (attempt #" + str(retries + 1) + "): " + str(rating_prediction)
+                "The rating prediction is (attempt #"
+                + str(retries + 1)
+                + "): "
+                + str(rating_prediction)
             )
 
             # if the rating is below the threshold, prepare for a retry
@@ -111,12 +120,17 @@ class DocGeneratorModule(dspy.Module):
                 log.info("Adding reasoning returned from the rating prediction")
                 reason = rating_prediction.reasoning
                 reason_database_schema = (
-                    f"# The documentation was previously generated and received a low quality rating because of the following reasoning: {reason}. Remove this comment in the documentation you generate\n"
+                    f"# The documentation was previously generated "
+                    f"and received a low quality rating "
+                    f"because of the following reasoning: {reason}. "
+                    f"Remove this comment in the documentation you generate\n"
                     + database_schema
                 )
             else:
                 reason_database_schema = (
-                    f"# This documentation was considered {rating_prediction.category}, please attempt again to generate the documentation properly. Remove this comment in the documentation you generate\n"
+                    f"# This documentation was considered {rating_prediction.category}, "
+                    f"please attempt again to generate the documentation properly. "
+                    f"Remove this comment in the documentation you generate\n"
                     + database_schema
                 )
 
@@ -125,7 +139,8 @@ class DocGeneratorModule(dspy.Module):
             retries += 1
 
         log.warning(
-            "Retry limit reached. Returning the last documented schema with rating: " + str(rating)
+            "Retry limit reached. Returning the last documented schema with rating: "
+            + str(rating)
         )
         if pred_database_schema is None:
             log.warning("No documented schema returned from retries")
@@ -199,7 +214,8 @@ class DocGeneratorModule(dspy.Module):
     #######################
     # MLFLOW TRACING      #
     #######################
-    # TODO: we will break this out into a separate class later when we have need for it elsewhere
+    # TODO: we will break this out into a separate class later
+    # when we have need for it elsewhere
     def _start_trace(
         self,
         client: mlflow.MlflowClient,
@@ -224,7 +240,8 @@ class DocGeneratorModule(dspy.Module):
     def _end_trace(
         self,
         client: mlflow.MlflowClient,
-        trace: Any,  # TODO: trace: mlflow.Span, E   AttributeError: module 'mlflow' has no attribute 'Span'
+        trace: Any,  # TODO: trace: mlflow.Span,
+        # E   AttributeError: module 'mlflow' has no attribute 'Span'
         outputs: dict,
         status: Literal["OK", "ERROR"],
     ):
@@ -273,8 +290,10 @@ class DocGeneratorModule(dspy.Module):
             # start the trace
             log.info("Starting trace")
             root_trace = self._start_trace(
-                client=client,  # type: ignore # TODO: we should have better type handling, but we check at the top
-                expirement_name=expirement_name,  # type: ignore # TODO: we should have better type handling, but we check at the top
+                client=client,  # type: ignore
+                # TODO: we should have better type handling, but we check at the top
+                expirement_name=expirement_name,  # type: ignore
+                # TODO: we should have better type handling, but we check at the top
                 trace_name="document_full_schema",
                 inputs={"database_schema": database_schema},
                 attributes={"api_key": api_key},
@@ -284,7 +303,9 @@ class DocGeneratorModule(dspy.Module):
         # batch generate the documentation
         documented_examples = self.batch(examples, num_threads=32)
         document_ast.definitions = tuple(
-            parse(ex.documented_schema) for ex in documented_examples  # type: ignore # TODO: we should have better type handling, but we know this works
+            parse(ex.documented_schema)
+            for ex in documented_examples  # type: ignore
+            # TODO: we should have better type handling, but we know this works
         )
 
         # check that the generated schema matches the original schema
@@ -304,10 +325,14 @@ class DocGeneratorModule(dspy.Module):
         if trace:
             log.info("Ending trace")
             self._end_trace(
-                client=client,  # type: ignore # TODO: we should have better type handling, but we check at the top
-                trace=root_trace,  # type: ignore # TODO: we should have better type handling, but i believe we will get an error if root_trace has an issue during the start_trace call
+                client=client,  # type: ignore
+                # TODO: we should have better type handling, but we check at the top
+                trace=root_trace,  # type: ignore
+                # TODO: we should have better type handling, but i believe we will get an
+                # error if root_trace has an issue during the start_trace call
                 outputs={"documented_schema": return_schema},
                 status=status,
             )
-            log.info("ended trace: " + str(root_trace))  # type: ignore # TODO: we should have better type handling, but we check at the top
+            log.info("ended trace: " + str(root_trace))  # type: ignore
+            # TODO: we should have better type handling, but we check at the top
         return dspy.Prediction(documented_schema=return_schema)

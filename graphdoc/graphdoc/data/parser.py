@@ -95,9 +95,13 @@ class Parser:
         updating all descriptions with the new value. Can also be used to remove
         descriptions by passing None as the new value.
 
-        :param node: The GraphQL node to update :type node: Node :param new_value: The
-        new description value. If None, the description will be removed. :type
-        new_value: Optional[str] :return: The updated node :rtype: Node
+        :param node: The GraphQL node to update
+        :type node: Node
+        :param new_value: The new description value. If None, the description will be
+            removed.
+        :type new_value: Optional[str]
+        :return: The updated node
+        :rtype: Node
 
         """
         if hasattr(node, "description"):
@@ -106,7 +110,7 @@ class Parser:
                 if new_value:
                     description.value = new_value
                 else:
-                    setattr(node, "description", None)
+                    node.description = None
 
         for attr in dir(node):
             if attr.startswith("__") or attr == "description":
@@ -125,11 +129,12 @@ class Parser:
         """Counts the number of times a pattern matches a description in a node and its
         children.
 
-        :param node: The GraphQL node to count the pattern matches in :type node: Node
-        :param pattern: The pattern to count the matches of :type pattern: str :return:
-        A dictionary containing the total number of descriptions, the number of
-        descriptions that match the pattern, and the number of descriptions that are
-        empty. { "total": int, "pattern": int, "empty": int } :rtype: dict[str, int]
+        :param node: The GraphQL node to count the pattern matches in
+        :type node: Node
+        :param pattern: The pattern to count the matches of
+        :type pattern: str
+        :return: A dictionary with the counts of matches
+        :rtype: dict[str, int]
 
         """
         counts = {
@@ -193,7 +198,9 @@ class Parser:
                 if isinstance(node, ObjectTypeDefinitionNode):
                     new_value = new_table_value
                 elif isinstance(node, EnumTypeDefinitionNode):  # this is an enum type
-                    new_value = f"Description for enum type: {value_name}"  # TODO: we should add this back to the fill_empty_descriptions parameter list
+                    new_value = f"Description for enum type: {value_name}"
+                    # TODO: we should add this back to the fill_empty_descriptions
+                    # parameter list
                 # else the node is a column, use the column value
                 else:
                     new_value = new_column_value
@@ -222,7 +229,8 @@ class Parser:
                         ):
                             if isinstance(child, ObjectTypeDefinitionNode):
                                 log.debug(
-                                    f"found an instance of a ObjectTypeDefinitionNode: {item.name.value}"
+                                    f"found an instance of a ObjectTypeDefinitionNode: "
+                                    f"{item.name.value}"
                                 )
                             value_name = item.name.value
                         Parser.fill_empty_descriptions(
@@ -241,7 +249,8 @@ class Parser:
                 ):
                     if isinstance(child, ObjectTypeDefinitionNode):
                         log.debug(
-                            f"found an instance of a ObjectTypeDefinitionNode: {child.name.value}"
+                            f"found an instance of a ObjectTypeDefinitionNode: "
+                            f"{child.name.value}"
                         )
                     value_name = child.name.value
                 Parser.fill_empty_descriptions(

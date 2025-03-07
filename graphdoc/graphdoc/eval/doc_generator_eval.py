@@ -40,7 +40,8 @@ class DocGeneratorEvaluator(dspy.Module):
         will make this extensible to include more complex evaluation metrics in the
         future.
 
-        Important: we assume that the rating values returned by the evaluator are [1, 2, 3, 4]. We will make this more flexible in the future.
+        Important: we assume that the rating values returned by the evaluator are
+        [1, 2, 3, 4]. We will make this more flexible in the future.
 
         """
         self.generator = generator
@@ -56,8 +57,11 @@ class DocGeneratorEvaluator(dspy.Module):
     def forward(self, database_schema: str) -> dict[str, Any]:
         """Takes a database schema, documents it, and then evaluates each component and
         the aggregate."""
-        generator_result = self.generator.forward(database_schema)  # type: ignore (we assume we are using DocGeneratorModule)
-        # TODO: let's decide if this is how we want to handle this in the future. Alternatively, we could return the documented schema from forward, not as a prediction object.
+        # (we assume we are using DocGeneratorModule)
+        generator_result = self.generator.forward(database_schema)  # type: ignore
+        # TODO: let's decide if this is how we want to handle this in the future.
+        # Alternatively, we could return the documented schema from forward,
+        # not as a prediction object.
         documented_schema = getattr(generator_result, self.generator_prediction_field)
 
         try:
@@ -65,7 +69,8 @@ class DocGeneratorEvaluator(dspy.Module):
             component_ratings = []
             for node in documented_ast.definitions:
                 p = self.evaluator.infer(database_schema=print_ast(node))
-                # TODO: let's decide if this is how we want to handle this, or if we should standardize the return type of the evaluator.
+                # TODO: let's decide if this is how we want to handle this,
+                # or if we should standardize the return type of the evaluator.
                 rating = getattr(p, self.evaluator_prediction_field)
                 rating = rating * self.readable_value if rating != 1 else 0
                 component_ratings.append(rating)
@@ -86,7 +91,8 @@ class DocGeneratorEvaluator(dspy.Module):
         except Exception as e:
             log.warning(f"Generated schema was not valid GraphQL: {e}")
             document_ast = parse(database_schema)
-            # TODO: we should have a dynamic way of knowing the rating values that are being used by the evaluator.
+            # TODO: we should have a dynamic way of knowing the rating values
+            # that are being used by the evaluator.
             return {
                 "overall_rating": 0,
                 "average_component_rating": 0,

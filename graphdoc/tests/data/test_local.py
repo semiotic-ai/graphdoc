@@ -7,10 +7,11 @@ from pathlib import Path
 
 from datasets import Dataset
 
-# external packages
-
 # internal packages
 from graphdoc.data import LocalDataHelper, SchemaObject
+
+# external packages
+
 
 # logging
 log = logging.getLogger(__name__)

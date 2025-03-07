@@ -66,8 +66,10 @@ class DocGeneratorTrainer(SinglePromptTrainer):
     def _calculate_average_score(self, evaluation: dict) -> float:
         """Given a dictionary of evaluation results, calculate the average score.
 
-        :param evaluation: The evaluation results. :type evaluation: Dict[str, Any]
-        :return: The average score. :rtype: float
+        :param evaluation: The evaluation results.
+        :type evaluation: Dict[str, Any]
+        :return: The average score.
+        :rtype: float
 
         """
         examples = evaluation["results"]
@@ -108,20 +110,26 @@ class DocGeneratorTrainer(SinglePromptTrainer):
     ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         """Evaluate the training of the model. Comparing the base and optimized models.
 
-        :param base_model: The base model. :type base_model: Any :param optimized_model:
-        The optimized model. :type optimized_model: Any
+        :param base_model: The base model.
+        :type base_model: Any
+        :param optimized_model: The optimized model.
+        :type optimized_model: Any
 
         """
         base_prompt = DocGeneratorPrompt(
             prompt=DspyDataHelper.prompt_signature(base_model),
-            prompt_type=self.doc_generator_prompt.prompt_type,  # type: ignore # TODO: we should have better type checking here
-            prompt_metric=self.doc_generator_prompt.prompt_metric,  # type: ignore # TODO: we should have better type checking here
+            prompt_type=self.doc_generator_prompt.prompt_type,  # type: ignore
+            # TODO: we should have better type checking here
+            prompt_metric=self.doc_generator_prompt.prompt_metric,  # type: ignore
+            # TODO: we should have better type checking here
         )
 
         optimized_prompt = DocGeneratorPrompt(
             prompt=DspyDataHelper.prompt_signature(optimized_model),
-            prompt_type=self.doc_generator_prompt.prompt_type,  # type: ignore # TODO: we should have better type checking here
-            prompt_metric=self.doc_generator_prompt.prompt_metric,  # type: ignore # TODO: we should have better type checking here
+            prompt_type=self.doc_generator_prompt.prompt_type,  # type: ignore
+            # TODO: we should have better type checking here
+            prompt_metric=self.doc_generator_prompt.prompt_metric,  # type: ignore
+            # TODO: we should have better type checking here
         )
 
         base_evaluation = base_prompt.evaluate_evalset(self.evalset)
@@ -146,7 +154,8 @@ class DocGeneratorTrainer(SinglePromptTrainer):
         else:
             base_model = self.doc_generator_prompt.infer
 
-        # make sure the optimizer_kwargs include the student, overwriting whatever was provided if necessary
+        # make sure the optimizer_kwargs include the student,
+        # overwriting whatever was provided if necessary
         self.optimizer_kwargs["student"] = base_model
 
         # run the optimizer

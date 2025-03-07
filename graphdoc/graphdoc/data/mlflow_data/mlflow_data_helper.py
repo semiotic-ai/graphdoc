@@ -58,8 +58,9 @@ class MlflowDataHelper:
         """Update the authentication environment variables.
 
         :param mlflow_tracking_username: The username for the mlflow tracking server.
-        :type mlflow_tracking_username: str :param mlflow_tracking_password: The
-        password for the mlflow tracking server. :type mlflow_tracking_password: str
+        :type mlflow_tracking_username: str
+        :param mlflow_tracking_password: The password for the mlflow tracking server.
+        :type mlflow_tracking_password: str
 
         """
         os.environ["MLFLOW_TRACKING_USERNAME"] = mlflow_tracking_username
@@ -77,8 +78,9 @@ class MlflowDataHelper:
     def latest_model_version(self, model_name: str):
         """Load the latest version of a model from mlflow.
 
-        :param model_name: The name of the model to load. :type model_name: str :return:
-        The loaded model.
+        :param model_name: The name of the model to load.
+        :type model_name: str
+        :return: The loaded model.
 
         """
         model_latest_version = self.mlflow_client.get_latest_versions(model_name)
@@ -100,8 +102,9 @@ class MlflowDataHelper:
     def model_by_uri(self, model_uri: str):
         """Load a model from mlflow by uri.
 
-        :param model_uri: The uri of the model to load. :type model_uri: str :return:
-        The loaded model.
+        :param model_uri: The uri of the model to load.
+        :type model_uri: str
+        :return: The loaded model.
 
         """
         return mlflow.dspy.load_model(model_uri)
@@ -111,8 +114,9 @@ class MlflowDataHelper:
         """Given a dictionary of arguments, load a model from mlflow. Ordering is
         model_by_uri, model_by_name_and_version, latest_model_version.
 
-        :param load_model_args: A dictionary of arguments. :type load_model_args:
-        Dict[str, str] :return: The loaded model.
+        :param load_model_args: A dictionary of arguments.
+        :type load_model_args: Dict[str, str]
+        :return: The loaded model.
 
         """
         if load_model_args.get("model_uri"):
@@ -156,13 +160,15 @@ class MlflowDataHelper:
     def run_parameters(self, run_id: str) -> dict[str, Any]:
         """Load the parameters of a run from mlflow.
 
-        :param run_id: The id of the run to load the parameters from. :type run_id: str
+        :param run_id: The id of the run to load the parameters from.
+        :type run_id: str
         :return: The parameters of the run.
 
         """
         run = self.mlflow_client.get_run(run_id)
 
-        # go through and convert the nested dictionaries to actual dictionaries (as they are currently strings)
+        # go through and convert the nested dictionaries to actual dictionaries
+        # (as they are currently strings)
         for key, value in run.data.params.items():
             run.data.params[key] = ast.literal_eval(value)
         return run.data.params

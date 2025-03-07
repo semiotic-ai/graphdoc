@@ -32,7 +32,8 @@ class DspyDataHelper(ABC):
     ) -> Union[dspy.Signature, dspy.SignatureMeta]:
         """Given a prompt, return a dspy.Signature object.
 
-        :param prompt: A prompt. :type prompt: Any
+        :param prompt: A prompt.
+        :type prompt: Any
 
         """
         log.warning("No prompt signature found for the given prompt.")
@@ -58,18 +59,25 @@ class DspyDataHelper(ABC):
         """Given a dspy.Signature and a dspy.Example, return a formatted signature as a
         string.
 
-        :param signature: A dspy.Signature object. :type signature: dspy.Signature
-        :param example: A dspy.Example object. :type example: dspy.Example :return: A
-        formatted signature as a string. :rtype: str
+        :param signature: A dspy.Signature object.
+        :type signature: dspy.Signature
+        :param example: A dspy.Example object.
+        :type example: dspy.Example
+        :return: A formatted signature as a string.
+        :rtype: str
 
         """
         adapter = dspy.ChatAdapter()
         prompt = adapter.format(
-            signature=signature,  # type: ignore # TODO: we should only accept dspy.Signature objects, not dspy.SignatureMeta
+            signature=signature,  # type: ignore
+            # TODO: we should only accept dspy.Signature objects, not dspy.SignatureMeta
             demos=[example.toDict()],
             inputs=example.toDict(),
         )
-        return f"------\nSystem\n------\n {prompt[0]['content']} \n------\nUser\n------\n {prompt[1]['content']}"
+        return (
+            f"------\nSystem\n------\n {prompt[0]['content']} \n"
+            f"------\nUser\n------\n {prompt[1]['content']}"
+        )
 
     #######################
     # Abstract Methods    #
@@ -79,8 +87,10 @@ class DspyDataHelper(ABC):
     def example(inputs: dict[str, Any]) -> dspy.Example:
         """Given a dictionary of inputs, return a dspy.Example object.
 
-        :param inputs: A dictionary of inputs. :type inputs: dict[str, Any] :return: A
-        dspy.Example object. :rtype: dspy.Example
+        :param inputs: A dictionary of inputs.
+        :type inputs: dict[str, Any]
+        :return: A dspy.Example object.
+        :rtype: dspy.Example
 
         """
         pass
@@ -91,7 +101,8 @@ class DspyDataHelper(ABC):
         """Return an example dspy.Example object with the inputs set to the example
         values.
 
-        :return: A dspy.Example object. :rtype: dspy.Example
+        :return: A dspy.Example object.
+        :rtype: dspy.Example
 
         """
         pass
@@ -103,8 +114,8 @@ class DspyDataHelper(ABC):
         removes the output fields and utilizes the remaining fields to infer the model
         signature.
 
-        :return: A mlflow.models.ModelSignature object. :rtype:
-        mlflow.models.ModelSignature
+        :return: A mlflow.models.ModelSignature object.
+        :rtype: mlflow.models.ModelSignature
 
         """
         # TODO: decide if this should be here or in the mlflow_data_helper
@@ -115,8 +126,10 @@ class DspyDataHelper(ABC):
     def prediction(inputs: dict[str, Any]) -> dspy.Prediction:
         """Given a dictionary of inputs, return a dspy.Prediction object.
 
-        :param inputs: A dictionary of inputs. :type inputs: dict[str, Any] :return: A
-        dspy.Prediction object. :rtype: dspy.Prediction
+        :param inputs: A dictionary of inputs.
+        :type inputs: dict[str, Any]
+        :return: A dspy.Prediction object.
+        :rtype: dspy.Prediction
 
         """
         pass
@@ -127,7 +140,8 @@ class DspyDataHelper(ABC):
         """Return an example dspy.Prediction object with the inputs set to the example
         values.
 
-        :return: A dspy.Prediction object. :rtype: dspy.Prediction
+        :return: A dspy.Prediction object.
+        :rtype: dspy.Prediction
 
         """
         pass
@@ -141,12 +155,16 @@ class DspyDataHelper(ABC):
         """Given a dictionary of inputs or a datasets.Dataset object, return a list of
         dspy.Example objects.
 
-        :param inputs: A dictionary of inputs or a datasets.Dataset object. :type
-        inputs: Union[dict[str, Any], datasets.Dataset] :param filter_args: A dictionary
-        of filter arguments. These are instructions for how we will filter and / or
-        transform the inputs. :type filter_args: Optional[dict[str, Any]] :return: A
-        list of dspy.Example objects. :rtype: list[dspy.Example]
+        :param inputs: A dictionary of inputs or a datasets.Dataset object.
+        :type inputs: Union[dict[str, Any], datasets.Dataset]
+        :param filter_args: A dictionary of filter arguments. These are instructions for
+            how we will filter and / or transform the inputs.
+        :type filter_args: Optional[dict[str, Any]]
+        :return: A list of dspy.Example objects.
+        :rtype: list[dspy.Example]
 
         """
-        # TODO: we should consider tighter coupling between DspyDataHelper and SchemaObject (turning SchemaObject into a base class for all data objects) so that we can have guarantees on the formatting and contents of the inputs
+        # TODO: we should consider tighter coupling between DspyDataHelper and SchemaObject
+        # (turning SchemaObject into a base class for all data objects)
+        # so that we can have guarantees on the formatting and contents of the inputs
         pass

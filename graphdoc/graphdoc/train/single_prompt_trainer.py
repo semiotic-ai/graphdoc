@@ -92,8 +92,10 @@ class SinglePromptTrainer(ABC):
     ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
         """Evaluate the training of the model. Comparing the base and optimized models.
 
-        :param base_model: The base model. :type base_model: Any :param optimized_model:
-        The optimized model. :type optimized_model: Any
+        :param base_model: The base model.
+        :type base_model: Any
+        :param optimized_model: The optimized model.
+        :type optimized_model: Any
 
         """
         pass
@@ -104,9 +106,10 @@ class SinglePromptTrainer(ABC):
     ):
         """Train the model.
 
-        :param load_model_args: The arguments to load the model. :type load_model_args:
-        Dict[str, Any] :param save_model: Whether to save the model. :type save_model:
-        bool
+        :param load_model_args: The arguments to load the model.
+        :type load_model_args: Dict[str, Any]
+        :param save_model: Whether to save the model.
+        :type save_model: bool
 
         """
         pass

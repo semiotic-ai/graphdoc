@@ -25,18 +25,21 @@ from .schema import (
 log = logging.getLogger(__name__)
 
 
-# TODO: we can make this a base class to enable better separation of our enum values and set up a factory pattern so that everything can be defined at the config level
+# TODO: we can make this a base class to enable better separation of our enum values
+# and set up a factory pattern so that everything can be defined at the config level
 # check out how pytorch etc. handles loading in something like imagenet
 class LocalDataHelper:
     """A helper class for loading data from a directory.
 
-    :param schema_directory_path: The path to the directory containing the schemas :type
-    schema_directory_path: Union[str, Path]. Defaults to the path to the schemas in the
-    graphdoc package. :param categories: The categories of the schemas. Defaults to
-    SchemaCategory. :type categories: Type[Enum] :param ratings: The ratings of the
-    schemas. Defaults to SchemaRating. :type ratings: Type[Enum] :param
-    categories_ratings: A callable that maps categories to ratings. Defaults to
-    SchemaCategoryRatingMapping.get_rating.
+    :param schema_directory_path: The path to the directory containing the schemas
+    :type schema_directory_path: Union[str, Path] Defaults to the path to the schemas in
+        the graphdoc package.
+    :param categories: The categories of the schemas. Defaults to SchemaCategory.
+    :type categories: Type[Enum]
+    :param ratings: The ratings of the schemas. Defaults to SchemaRating.
+    :type ratings: Type[Enum]
+    :param categories_ratings: A callable that maps categories to ratings. Defaults to
+        SchemaCategoryRatingMapping.get_rating.
 
     """
 
@@ -94,9 +97,10 @@ class LocalDataHelper:
         """Load a folder of folders containing schemas, keeping the difficulty tag.
 
         :param folder_paths: Enum class defining folder paths, defaults to
-        SchemaCategoryPath. Must have a get_path method. :type folder_paths:
-        Optional[Type[Enum]] :return: Dictionary of loaded schemas :rtype:
-        Union[Dict[str, SchemaObject], None]
+            SchemaCategoryPath. Must have a get_path method.
+        :type folder_paths: Optional[Type[Enum]]
+        :return: Dictionary of loaded schemas
+        :rtype: Union[Dict[str, SchemaObject], None]
 
         """
         schemas = {}
@@ -110,9 +114,13 @@ class LocalDataHelper:
                 # get path using provided folder_paths enum
                 if not hasattr(folder_paths, "get_path"):
                     raise AttributeError(
-                        f"folder_paths enum must have a get_path method. Received: {folder_paths}"
+                        f"folder_paths enum must have a get_path method. "
+                        f"Received: {folder_paths}"
                     )
-                path = folder_paths.get_path(category_enum, self.schema_directory_path)  # type: ignore # since we know that the enum has a get_path method
+                # since we know that the enum has a get_path method
+                path = folder_paths.get_path(  # type: ignore
+                    category_enum, self.schema_directory_path
+                )
                 if not path:
                     log.warning(f"No path found for category: {category}")
                     continue
