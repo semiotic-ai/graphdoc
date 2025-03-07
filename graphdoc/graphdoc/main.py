@@ -33,7 +33,7 @@ log = logging.getLogger(__name__)
 random.seed(42)
 
 
-class GraphDoc:  # noqa: B950
+class GraphDoc:
     def __init__(
         self,
         model_args: dict,
