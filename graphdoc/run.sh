@@ -26,7 +26,7 @@ format_command() {
 }
 
 docstring_format_command() {
-    poetry run docformatter --black --style sphinx --in-place --recursive graphdoc/  
+    poetry run docformatter --black --style sphinx --in-place --exclude="prompts" --recursive graphdoc/  
     poetry run docformatter --black --style sphinx --in-place --recursive runners/ 
     poetry run docformatter --black --style sphinx --in-place --recursive tests/ 
 }
