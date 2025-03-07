@@ -3,16 +3,17 @@
 
 # system packages
 import logging
+from typing import Any, Dict, List
 
 # external packages
 import dspy
 
-from .doc_generator_trainer import *
-from .doc_quality_trainer import *
+from .doc_generator_trainer import DocGeneratorTrainer
+from .doc_quality_trainer import DocQualityTrainer
 
 # internal packages
-from .optimizers import *
-from .single_prompt_trainer import *
+from .optimizers import _optimizer_kwargs_filter, optimizer_class, optimizer_compile
+from .single_prompt_trainer import SinglePrompt, SinglePromptTrainer
 
 # logging
 log = logging.getLogger(__name__)
@@ -31,9 +32,7 @@ class TrainerFactory:
         trainset: List[dspy.Example],
         evalset: List[dspy.Example],
     ):
-        """
-        Returns an instance of the specified trainer class.
-        """
+        """Returns an instance of the specified trainer class."""
         # update any potentially missing or conflicting values
         optimizer_kwargs["metric"] = prompt.evaluate_metric
         optimizer_kwargs["student"] = prompt.infer
@@ -61,3 +60,17 @@ class TrainerFactory:
             raise ValueError(
                 f"Failed to initialize trainer class ({trainer_class}): {e}"
             )
+
+
+__all__ = [
+    "TrainerFactory",
+    "DocGeneratorTrainer",
+    "DocQualityTrainer",
+    "_optimizer_kwargs_filter",
+    "optimizer_class",
+    "optimizer_compile",
+    "SinglePrompt",
+    "SinglePromptTrainer",
+    "DocGeneratorTrainer",
+    "DocQualityTrainer",
+]

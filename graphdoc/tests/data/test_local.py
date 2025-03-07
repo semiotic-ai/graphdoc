@@ -7,11 +7,11 @@ from pathlib import Path
 
 from datasets import Dataset
 
-# external packages
-from graphql import DocumentNode
-
 # internal packages
-from graphdoc import LocalDataHelper, SchemaObject
+from graphdoc.data import LocalDataHelper, SchemaObject
+
+# external packages
+
 
 # logging
 log = logging.getLogger(__name__)

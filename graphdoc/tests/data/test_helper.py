@@ -29,7 +29,7 @@ CONFIG_DIR = BASE_DIR / "tests" / "assets" / "configs"
 class TestHelper:
     @pytest.fixture(autouse=True)
     def setup_and_teardown(self):
-        """Reset logging configuration before and after each test"""
+        """Reset logging configuration before and after each test."""
         self.original_level = logging.getLogger().getEffectiveLevel()
         yield
         logging.getLogger().setLevel(self.original_level)

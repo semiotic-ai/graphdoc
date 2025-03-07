@@ -25,6 +25,18 @@ format_command() {
     poetry run black .
 }
 
+docstring_format_command() {
+    poetry run docformatter --black --style sphinx --in-place --exclude="prompts" --recursive graphdoc/  
+    poetry run docformatter --black --style sphinx --in-place --recursive runners/ 
+    poetry run docformatter --black --style sphinx --in-place --recursive tests/ 
+}
+
+pep8_check_command() {
+    flake8 graphdoc/
+    flake8 runners/
+    flake8 tests/
+}
+
 sort_command() {
     poetry run isort .
 }
@@ -39,8 +51,10 @@ test_command() {
 
 commit_command() {
     format_command
+    docstring_format_command
     sort_command
     lint_command
+    pep8_check_command
     test_command
     requirements_command
 }
@@ -100,6 +114,8 @@ show_help() {
     echo "  dev                    Install dependencies with dev"
     echo "  requirements           Generate requirements.txt"
     echo "  format                 Format the code"
+    echo "  docstring-format       Format the docstrings"
+    echo "  pep-check              Check the PEP8 compliance"
     echo "  lint                   Lint the code"
     echo "  test                   Run the tests"
     echo "  commit                 Format, lint, and test the code"
@@ -127,6 +143,8 @@ else
         "dev") dev_command ;;
         "requirements") requirements_command ;;
         "format") format_command ;;
+        "docstring-format") docstring_format_command ;;
+        "pep-check") pep8_check_command ;;
         "lint") lint_command ;;
         "test") test_command ;;
         "commit") commit_command ;;

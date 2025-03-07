@@ -3,16 +3,6 @@
 
 import logging
 
-# system packages
-import os
-from enum import Enum
-from pathlib import Path
-
-from dotenv import load_dotenv
-
-# external packages
-from pytest import fixture
-
 # internal packages
 from graphdoc import (
     DocGeneratorPrompt,
@@ -27,6 +17,10 @@ from .conftest import (
     OverwriteSchemaCategoryRatingMapping,
     OverwriteSchemaRating,
 )
+
+# system packages
+
+# external packages
 
 # logging
 log = logging.getLogger(__name__)

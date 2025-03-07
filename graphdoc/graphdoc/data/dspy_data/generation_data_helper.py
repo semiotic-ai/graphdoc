@@ -19,18 +19,16 @@ log = logging.getLogger(__name__)
 
 
 class GenerationDataHelper(DspyDataHelper):
-    """
-    A helper class for creating data objects related to our Documentation Generation dspy.Signature.
+    """A helper class for creating data objects related to our Documentation Generation
+    dspy.Signature.
 
     The example signature is defined as:
     ```
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField()
     ```
-    """
 
-    def __init__(self):
-        super().__init__()
+    """
 
     @staticmethod
     def example(inputs: dict[str, Any]) -> dspy.Example:

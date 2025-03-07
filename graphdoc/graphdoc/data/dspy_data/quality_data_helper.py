@@ -19,8 +19,8 @@ log = logging.getLogger(__name__)
 
 
 class QualityDataHelper(DspyDataHelper):
-    """
-    A helper class for creating data objects related to our Documentation Quality dspy.Signature.
+    """A helper class for creating data objects related to our Documentation Quality
+    dspy.Signature.
 
     The example signature is defined as:
     ```
@@ -30,10 +30,8 @@ class QualityDataHelper(DspyDataHelper):
     )
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
     ```
-    """
 
-    def __init__(self):
-        super().__init__()
+    """
 
     @staticmethod
     def example(inputs: dict[str, Any]) -> dspy.Example:

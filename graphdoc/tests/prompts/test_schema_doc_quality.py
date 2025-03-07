@@ -16,9 +16,7 @@ log = logging.getLogger(__name__)
 
 
 class CustomPrompt(dspy.Signature):
-    """
-    This is a custom prompt.
-    """
+    """This is a custom prompt."""
 
     input = dspy.InputField()
     output = dspy.OutputField()
@@ -74,8 +72,8 @@ class TestDocQualityPrompt:
             category="incorrect",
             rating=1,
         )
-        assert dqp.evaluate_metric(example, pass_prediction) == True
-        assert dqp.evaluate_metric(example, fail_prediction) == False
+        assert dqp.evaluate_metric(example, pass_prediction) is True
+        assert dqp.evaluate_metric(example, fail_prediction) is False
 
     def test_format_metric(self):
         dqp = DocQualityPrompt(
@@ -113,5 +111,5 @@ class TestDocQualityPrompt:
             "details": [],
             "results": [],
         }
-        assert dqp.compare_metrics(base_metrics, optimized_metrics) == True
-        assert dqp.compare_metrics(optimized_metrics, base_metrics) == False
+        assert dqp.compare_metrics(base_metrics, optimized_metrics) is True
+        assert dqp.compare_metrics(optimized_metrics, base_metrics) is False

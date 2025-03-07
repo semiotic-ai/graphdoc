@@ -5,8 +5,6 @@
 import logging
 from pathlib import Path
 
-import pytest
-
 # external packages
 from graphql import (
     DocumentNode,
@@ -111,11 +109,15 @@ class TestParser:
             test_entity_definition_updated = definitions[3].fields[0].description.value
             assert test_entity_definition_updated == "Description for column: id"
 
-            test_enum_definition_content = definitions[2].values[0].description.value
-            assert (
-                test_enum_definition_content
-                == " Strategy that executes an order at a fixed price that can be taken either by a bid or an ask. "
-            )
+            description = getattr(definitions[2].values[0], "description", None)
+            if description:
+                assert (
+                    description.value
+                    == " Strategy that executes an order at a fixed price "
+                    "that can be taken either by a bid or an ask. "
+                )
+            else:
+                raise AssertionError("Expected description to be found")
 
             test_entity_description = definitions[5].description.value
             assert (

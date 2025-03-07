@@ -20,14 +20,14 @@ log = logging.getLogger(__name__)
 
 
 def check_directory_path(directory_path: Union[str, Path]) -> None:
-    """
-    Check if the provided path resolves to a valid directory.
+    """Check if the provided path resolves to a valid directory.
 
     :param directory_path: The path to check.
     :type directory_path: Union[str, Path]
     :raises ValueError: If the path does not resolve to a valid directory.
     :return: None
     :rtype: None
+
     """
     _directory_path = Path(directory_path).resolve()
     if not _directory_path.is_dir():
@@ -37,14 +37,11 @@ def check_directory_path(directory_path: Union[str, Path]) -> None:
 
 
 def check_file_path(file_path: Union[str, Path]) -> None:
-    """
-    Check if the provided path resolves to a valid file.
+    """Check if the provided path resolves to a valid file.
 
-    :param file_path: The path to check.
-    :type file_path: Union[str, Path]
-    :raises ValueError: If the path does not resolve to a valid file.
-    :return: None
-    :rtype: None
+    :param file_path: The path to check. :type file_path: Union[str, Path] :raises
+    ValueError: If the path does not resolve to a valid file. :return: None :rtype: None
+
     """
     _file_path = Path(file_path).resolve()
     if not _file_path.is_file():
@@ -54,8 +51,7 @@ def check_file_path(file_path: Union[str, Path]) -> None:
 
 
 def _env_constructor(loader: SafeLoader, node: yaml.nodes.ScalarNode) -> str:
-    """
-    Custom constructor for environment variables.
+    """Custom constructor for environment variables.
 
     :param loader: The YAML loader.
     :type loader: yaml.SafeLoader
@@ -64,6 +60,7 @@ def _env_constructor(loader: SafeLoader, node: yaml.nodes.ScalarNode) -> str:
     :return: The environment variable value.
     :rtype: str
     :raises ValueError: If the environment variable is not set.
+
     """
     value = loader.construct_scalar(node)
     env_value = os.getenv(value)
@@ -73,8 +70,7 @@ def _env_constructor(loader: SafeLoader, node: yaml.nodes.ScalarNode) -> str:
 
 
 def load_yaml_config(file_path: Union[str, Path], use_env: bool = True) -> dict:
-    """
-    Load a YAML configuration file.
+    """Load a YAML configuration file.
 
     :param file_path: The path to the YAML file.
     :type file_path: Union[str, Path]
@@ -82,7 +78,9 @@ def load_yaml_config(file_path: Union[str, Path], use_env: bool = True) -> dict:
     :type use_env: bool
     :return: The YAML configuration.
     :rtype: dict
-    :raises ValueError: If the path does not resolve to a valid file or the environment variable is not set.
+    :raises ValueError: If the path does not resolve to a valid file or the environment
+        variable is not set.
+
     """
     if use_env:
         SafeLoader.add_constructor("!env", _env_constructor)
@@ -99,11 +97,11 @@ def load_yaml_config(file_path: Union[str, Path], use_env: bool = True) -> dict:
 def setup_logging(
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
 ):
-    """
-    Setup logging for the application.
+    """Setup logging for the application.
 
     :param log_level: The log level.
     :type log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
+
     """
     root_logger = logging.getLogger()
     root_logger.handlers.clear()

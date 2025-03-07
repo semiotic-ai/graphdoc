@@ -22,13 +22,15 @@ log = logging.getLogger(__name__)
 class DocQualitySignature(dspy.Signature):
     """
     You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
+
     The categories are described as:
     - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
     - almost perfect (3): The documentation is almost perfect and free from ambiguity, but there is room for improvement.
     - poor but correct (2): The documentation is poor but correct and has room for improvement due to missing information. The documentation is not incorrect.
     - incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.
     Output a number rating that corresponds to the categories described above.
-    """
+
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
@@ -40,6 +42,7 @@ class DocQualitySignature(dspy.Signature):
 class DocQualityDemonstrationSignature(dspy.Signature):
     """
     You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
+
     The categories are described as:
     - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
         perfect (4) example:
@@ -66,7 +69,8 @@ class DocQualityDemonstrationSignature(dspy.Signature):
             id: Bytes!
         }
     Output a number rating that corresponds to the categories described above.
-    """
+
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
@@ -78,12 +82,13 @@ class DocQualityDemonstrationSignature(dspy.Signature):
 def doc_quality_factory(
     key: Union[str, dspy.Signature, dspy.SignatureMeta]
 ) -> Union[dspy.Signature, dspy.SignatureMeta]:
-    """
-    Factory function to return the correct signature based on the key. Currently only supports two signatures (doc_quality and doc_quality_demo).
+    """Factory function to return the correct signature based on the key. Currently only
+    supports two signatures (doc_quality and doc_quality_demo).
 
     :param key: The key to return the signature for.
     :type key: Union[str, dspy.Signature]
     :return: The signature for the given key.
+
     """
     # allow the user to pass in their own dspy signature
     if isinstance(key, dspy.Signature) or isinstance(key, dspy.SignatureMeta):
@@ -115,15 +120,20 @@ class DocQualityPrompt(SinglePrompt):
         prompt_metric: Union[Literal["rating", "category"], Callable] = "rating",
     ) -> None:
         # TODO: we should think about if we want to add checks on any provided dspy.Signature
-        """
-        Initialize the DocQualityPrompt. This is a single prompt that can be used to evaluate the quality of the documentation for a given schema. This is a wrapper around the SinglePrompt class that implements the abstract methods.
+        """Initialize the DocQualityPrompt. This is a single prompt that can be used to
+        evaluate the quality of the documentation for a given schema. This is a wrapper
+        around the SinglePrompt class that implements the abstract methods.
 
-        :param prompt: The prompt to use. Can either be a string that maps to a defined signature, as set in the doc_quality_factory, or a dspy.Signature.
-        :type prompt: Union[str, dspy.Signature]
-        :param prompt_type: The type of prompt to use.
-        :type prompt_type: Union[Literal["predict", "chain_of_thought"], Callable]
-        :param prompt_metric: The metric to use. Can either be a string that maps to a defined metric, as set in the doc_quality_factory, or a custom callable function. Function must have the signature (example: dspy.Example, prediction: dspy.Prediction) -> bool.
-        :type prompt_metric: Union[Literal["rating", "category"], Callable]
+        :param prompt: The prompt to use. Can either be a string that maps to a defined
+        signature, as set in the doc_quality_factory, or a dspy.Signature. :type prompt:
+        Union[str, dspy.Signature] :param prompt_type: The type of prompt to use. :type
+        prompt_type: Union[Literal["predict", "chain_of_thought"], Callable] :param
+        prompt_metric: The metric to use. Can either be a string that maps to a defined
+        metric, as set in the doc_quality_factory, or a custom callable function.
+        Function must have the signature (example: dspy.Example, prediction:
+        dspy.Prediction) -> bool. :type prompt_metric: Union[Literal["rating",
+        "category"], Callable]
+
         """
         prompt_signature = doc_quality_factory(prompt)
         super().__init__(
@@ -151,17 +161,14 @@ class DocQualityPrompt(SinglePrompt):
     def evaluate_metric(
         self, example: dspy.Example, prediction: dspy.Prediction, trace=None
     ) -> bool:
-        """
-        Evaluate the metric for the given example and prediction.
+        """Evaluate the metric for the given example and prediction.
 
-        :param example: The example to evaluate the metric on.
-        :type example: dspy.Example
-        :param prediction: The prediction to evaluate the metric on.
-        :type prediction: dspy.Prediction
-        :param trace: Used for DSPy.
-        :type trace: Any
+        :param example: The example to evaluate the metric on. :type example:
+        dspy.Example :param prediction: The prediction to evaluate the metric on. :type
+        prediction: dspy.Prediction :param trace: Used for DSPy. :type trace: Any
         :return: The result of the evaluation. A boolean for if the metric is correct.
         :rtype: bool
+
         """
         evaluation_mapping = {
             "rating": self._evaluate_rating_metric,
@@ -196,12 +203,13 @@ class DocQualityPrompt(SinglePrompt):
         :type results: List
         :param scores: The scores of the evaluation.
         :type scores: List
-        :return: A dictionary containing the overall score, per category scores, and details. { "overall_score": 0, "per_category_scores": {}, "details": [], "results": [] }
+        :return: A dictionary containing the overall score, per category scores, and details.
+                { "overall_score": 0, "per_category_scores": {}, "details": [], "results": [] }
         :rtype: Dict[str, Any]
         """
 
         def _initialize_formatted_results() -> Dict[str, Any]:
-            """Initialize the results structure with empty containers"""
+            """Initialize the results structure with empty containers."""
             return {
                 "overall_score": overall_score,
                 "per_category_scores": {},
@@ -210,7 +218,7 @@ class DocQualityPrompt(SinglePrompt):
             }
 
         def _process_single_result(result: tuple, score: Any) -> Dict[str, Any]:
-            """Process individual result to extract metadata and update statistics"""
+            """Process individual result to extract metadata and update statistics."""
             example, prediction, is_correct = result
             example_data = dict(example.items())
 
@@ -232,11 +240,11 @@ class DocQualityPrompt(SinglePrompt):
             }
 
         def _calculate_percent_correct(correct: int, total: int) -> float:
-            """Calculate percentage correct with safe division"""
+            """Calculate percentage correct with safe division."""
             return (correct / total) * 100 if total > 0 else 0.0
 
         def _calculate_per_category_scores() -> Dict[str, Dict]:
-            """Convert category statistics to percentage scores"""
+            """Convert category statistics to percentage scores."""
             return {
                 category: {
                     "percent_correct": _calculate_percent_correct(
@@ -269,14 +277,13 @@ class DocQualityPrompt(SinglePrompt):
         optimized_metrics: Any,
         comparison_value: str = "overall_score",
     ) -> bool:
-        """
-        Compare the metrics of the base and optimized models. Returns true if the optimized model is better than the base model.
+        """Compare the metrics of the base and optimized models. Returns true if the
+        optimized model is better than the base model.
 
-        :param base_metrics: The metrics of the base model.
-        :type base_metrics: Any
-        :param optimized_metrics: The metrics of the optimized model.
-        :type optimized_metrics: Any
-        :param comparison_value: The value to compare.
+        :param base_metrics: The metrics of the base model. :type base_metrics: Any
+        :param optimized_metrics: The metrics of the optimized model. :type
+        optimized_metrics: Any :param comparison_value: The value to compare.
+
         """
         if comparison_value == "overall_score":
             return optimized_metrics["overall_score"] > base_metrics["overall_score"]

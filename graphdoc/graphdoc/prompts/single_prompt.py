@@ -24,17 +24,20 @@ class SinglePrompt(ABC):
         prompt: Union[dspy.Signature, dspy.SignatureMeta],
         prompt_type: Union[Literal["predict", "chain_of_thought"], Callable],
         prompt_metric: Any,
-        # TODO: we should consider adding a DspyDataHelper object here for convenience and tighter coupling
+        # TODO: we should consider adding a DspyDataHelper object here for convenience
+        # and tighter coupling
     ) -> None:
-        """
-        Initialize a single prompt.
+        """Initialize a single prompt.
 
         :param prompt: The prompt to use.
         :type prompt: dspy.Signature
-        :param prompt_type: The type of prompt to use. Can be "predict" or "chain_of_thought". Optionally, pass another dspy.Module.
+        :param prompt_type: The type of prompt to use. Can be "predict" or
+            "chain_of_thought". Optionally, pass another dspy.Module.
         :type prompt_type: Union[Literal["predict", "chain_of_thought"], Callable]
-        :param prompt_metric: The metric to use. Marked as Any for flexibility (as metrics can be other prompts).
+        :param prompt_metric: The metric to use. Marked as Any for flexibility (as
+            metrics can be other prompts).
         :type prompt_metric: Any
+
         """
         self.prompt = prompt
         self.prompt_type = prompt_type
@@ -52,7 +55,7 @@ class SinglePrompt(ABC):
             )  # .get and then we can remove the error
         elif isinstance(self.prompt_type, Callable):
             log.warning(
-                f"Using alternative dspy.Module for inference, please know what you are doing"
+                "Using alternative dspy.Module for inference, please know what you are doing"
             )
             self.infer = self.prompt_type(self.prompt)
         else:
@@ -67,12 +70,11 @@ class SinglePrompt(ABC):
     ) -> Any:
         """This is the metric used to evalaute the prompt.
 
-        :param example: The example to evaluate the metric on.
-        :type example: dspy.Example
-        :param prediction: The prediction to evaluate the metric on.
-        :type prediction: dspy.Prediction
-        :param trace: The trace to evaluate the metric on. This is for DSPy.
-        :type trace: Any
+        :param example: The example to evaluate the metric on. :type example:
+        dspy.Example :param prediction: The prediction to evaluate the metric on. :type
+        prediction: dspy.Prediction :param trace: The trace to evaluate the metric on.
+        This is for DSPy. :type trace: Any
+
         """
         pass
 
@@ -84,16 +86,15 @@ class SinglePrompt(ABC):
         results: List,
         scores: List,
     ) -> Dict[str, Any]:
-        """This takes the results from the evaluate_evalset and does any necessary formatting, taking into account the metric type.
+        """This takes the results from the evaluate_evalset and does any necessary
+        formatting, taking into account the metric type.
 
-        :param examples: The examples to evaluate the metric on.
-        :type examples: List[dspy.Example]
-        :param overall_score: The overall score of the metric.
-        :type overall_score: float
-        :param results: The results from the evaluate_evalset.
-        :type results: List
-        :param scores: The scores from the evaluate_evalset.
-        :type scores: List
+        :param examples: The examples to evaluate the metric on. :type examples:
+        List[dspy.Example] :param overall_score: The overall score of the metric. :type
+        overall_score: float :param results: The results from the evaluate_evalset.
+        :type results: List :param scores: The scores from the evaluate_evalset. :type
+        scores: List
+
         """
         pass
 
@@ -104,16 +105,16 @@ class SinglePrompt(ABC):
         optimized_metrics: Any,
         comparison_value: str = "overall_score",
     ) -> bool:
-        """Compare the metrics of the base and optimized models. Return true if the optimized model is better than the base model.
+        """Compare the metrics of the base and optimized models. Return true if the
+        optimized model is better than the base model.
 
-        :param base_metrics: The metrics of the base model.
-        :type base_metrics: Any
-        :param optimized_metrics: The metrics of the optimized model.
-        :type optimized_metrics: Any
-        :param comparison_value: The value to compare the metrics on. Determines which metric is used to compare the models.
-        :type comparison_value: str
-        :return: True if the optimized model is better than the base model, False otherwise.
-        :rtype: bool
+        :param base_metrics: The metrics of the base model. :type base_metrics: Any
+        :param optimized_metrics: The metrics of the optimized model. :type
+        optimized_metrics: Any :param comparison_value: The value to compare the metrics
+        on. Determines which metric is used to compare the models. :type
+        comparison_value: str :return: True if the optimized model is better than the
+        base model, False otherwise. :rtype: bool
+
         """
         pass
 
@@ -126,16 +127,14 @@ class SinglePrompt(ABC):
     ) -> Dict[str, Any]:
         """Take in a list of examples and evaluate the results.
 
-        :param examples: The examples to evaluate the results on.
-        :type examples: List[dspy.Example]
-        :param num_threads: The number of threads to use for evaluation.
-        :type num_threads: int
-        :param display_progress: Whether to display the progress of the evaluation.
-        :type display_progress: bool
-        :param display_table: Whether to display the table of the evaluation.
-        :type display_table: bool
-        :return: A dictionary containing the overall score, results, and scores.
-        :rtype: Dict[str, Any]
+        :param examples: The examples to evaluate the results on. :type examples:
+        List[dspy.Example] :param num_threads: The number of threads to use for
+        evaluation. :type num_threads: int :param display_progress: Whether to display
+        the progress of the evaluation. :type display_progress: bool :param
+        display_table: Whether to display the table of the evaluation. :type
+        display_table: bool :return: A dictionary containing the overall score, results,
+        and scores. :rtype: Dict[str, Any]
+
         """
         evaluator = dspy.Evaluate(
             devset=examples,
@@ -149,5 +148,5 @@ class SinglePrompt(ABC):
             overall_score, results, scores = evaluator(self.infer, self.evaluate_metric)  # type: ignore
             return self.format_metric(examples, overall_score, results, scores)  # type: ignore
         except Exception as e:
-            log.error(f"Error evaluating evalset: {e}")
+            log.error("Error evaluating evalset: " + str(e))
             raise e

@@ -34,22 +34,18 @@ class DocQualityTrainer(SinglePromptTrainer):
         trainset: List[dspy.Example],
         evalset: List[dspy.Example],
     ):
-        """
-        Initialize the DocQualityTrainer. This is the base class for implementing a trainer for a DocQualityPrompt.
+        """Initialize the DocQualityTrainer. This is the base class for implementing a
+        trainer for a DocQualityPrompt.
 
-        :param prompt: The prompt to train.
-        :type prompt: DocQualityPrompt
-        :param optimizer_type: The type of optimizer to use.
-        :type optimizer_type: str
-        :param optimizer_kwargs: The keyword arguments for the optimizer.
-        :type optimizer_kwargs: Dict[str, Any]
-        :param mlflow_model_name: The name of the model in mlflow.
-        :type mlflow_model_name: str
-        :param mlflow_experiment_name: The name of the experiment in mlflow.
-        :type mlflow_experiment_name: str
-        :param mlflow_tracking_uri: The uri of the mlflow tracking server.
-        :type mlflow_tracking_uri: str
-        :param trainset: The training set.
+        :param prompt: The prompt to train. :type prompt: DocQualityPrompt :param
+        optimizer_type: The type of optimizer to use. :type optimizer_type: str :param
+        optimizer_kwargs: The keyword arguments for the optimizer. :type
+        optimizer_kwargs: Dict[str, Any] :param mlflow_model_name: The name of the model
+        in mlflow. :type mlflow_model_name: str :param mlflow_experiment_name: The name
+        of the experiment in mlflow. :type mlflow_experiment_name: str :param
+        mlflow_tracking_uri: The uri of the mlflow tracking server. :type
+        mlflow_tracking_uri: str :param trainset: The training set.
+
         """
         super().__init__(
             prompt=prompt,
@@ -66,13 +62,13 @@ class DocQualityTrainer(SinglePromptTrainer):
     # Abstract Methods #
     ####################
     def evaluation_metrics(self, base_evaluation, optimized_evaluation):
-        """
-        Log evaluation metrics to mlflow. We will log the overall scores and the per category scores. Per category scores will be logged as a csv file.
+        """Log evaluation metrics to mlflow. We will log the overall scores and the per
+        category scores. Per category scores will be logged as a csv file.
 
-        :param base_evaluation: The evaluation metrics of the base model.
-        :type base_evaluation: Any
-        :param optimized_evaluation: The evaluation metrics of the optimized model.
-        :type optimized_evaluation: Any
+        :param base_evaluation: The evaluation metrics of the base model. :type
+        base_evaluation: Any :param optimized_evaluation: The evaluation metrics of the
+        optimized model. :type optimized_evaluation: Any
+
         """
         base_evaluation_overall_score = base_evaluation["overall_score"]
         optimized_evaluation_overall_score = optimized_evaluation["overall_score"]
@@ -114,24 +110,28 @@ class DocQualityTrainer(SinglePromptTrainer):
     def evaluate_training(
         self, base_model, optimized_model
     ) -> Tuple[Dict[str, Any], Dict[str, Any]]:
-        """
-        Evaluate the training of the model. Comparing the base and optimized models.
+        """Evaluate the training of the model. Comparing the base and optimized models.
 
         :param base_model: The base model.
         :type base_model: Any
         :param optimized_model: The optimized model.
         :type optimized_model: Any
+
         """
         base_prompt = DocQualityPrompt(
             prompt=DspyDataHelper.prompt_signature(base_model),
-            prompt_type=self.prompt.prompt_type,  # type: ignore # TODO: we should have better type handling, but we know this works
-            prompt_metric=self.prompt.prompt_metric,  # type: ignore # TODO: we should have better type handling, but we know this works
+            prompt_type=self.prompt.prompt_type,  # type: ignore
+            # TODO: we should have better type handling, but we know this works
+            prompt_metric=self.prompt.prompt_metric,  # type: ignore
+            # TODO: we should have better type handling, but we know this works
         )
 
         optimized_prompt = DocQualityPrompt(
             prompt=DspyDataHelper.prompt_signature(optimized_model),
-            prompt_type=self.prompt.prompt_type,  # type: ignore # TODO: we should have better type handling, but we know this works
-            prompt_metric=self.prompt.prompt_metric,  # type: ignore # TODO: we should have better type handling, but we know this works
+            prompt_type=self.prompt.prompt_type,  # type: ignore
+            # TODO: we should have better type handling, but we know this works
+            prompt_metric=self.prompt.prompt_metric,  # type: ignore
+            # TODO: we should have better type handling, but we know this works
         )
 
         base_evaluation = base_prompt.evaluate_evalset(self.evalset)
@@ -143,22 +143,25 @@ class DocQualityTrainer(SinglePromptTrainer):
     def train(
         self, load_model_args: Optional[Dict[str, Any]] = None, save_model: bool = True
     ):
-        """
-        Train the model. If provided, we will load the model from mlflow. Otherwise, we will use the provided DocQualityPrompt as the base model.
+        """Train the model. If provided, we will load the model from mlflow. Otherwise,
+        we will use the provided DocQualityPrompt as the base model.
 
         :param load_model_args: The arguments to load the model.
         :type load_model_args: Dict[str, Any]
         :param save_model: Whether to save the model.
         :type save_model: bool
+
         """
         # if model args are provided, load the model from mlflow.
         if load_model_args:
-            # we assume the user wants to load the model as was stored, without modifying the module type (e.g. dspy.Predict, dspy.ChainOfThought)
+            # we assume the user wants to load the model as was stored,
+            # without modifying the module type (e.g. dspy.Predict, dspy.ChainOfThought)
             base_model = self.mlflow_data_helper.model_by_args(load_model_args)
         else:
             base_model = self.prompt.infer
 
-        # make sure the optimizer_kwargs include the student, overwriting whatever was provided if necessary
+        # make sure the optimizer_kwargs include the student,
+        # overwriting whatever was provided if necessary
         self.optimizer_kwargs["student"] = base_model
 
         # run the trainer

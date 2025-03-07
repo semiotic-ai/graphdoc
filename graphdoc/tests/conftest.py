@@ -8,7 +8,6 @@ import os
 from enum import Enum
 from pathlib import Path
 
-import mlflow
 from dotenv import load_dotenv
 
 # external packages
