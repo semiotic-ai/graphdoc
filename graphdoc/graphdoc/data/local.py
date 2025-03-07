@@ -45,21 +45,20 @@ class LocalDataHelper:
 
     def __init__(
         self,
-        schema_directory_path: Union[str, Path] = Path(__file__).parent
-        / "assets"
-        / "schemas",
+        schema_directory_path: Optional[Union[str, Path]] = None,
         categories: Type[Enum] = SchemaCategory,
         ratings: Type[Enum] = SchemaRating,
         categories_ratings: Callable = SchemaCategoryRatingMapping.get_rating,
         # TODO: potentially add a category_path object here (defaulting to SchemaCategoryPath)
     ):
-        if schema_directory_path:
-            check_directory_path(schema_directory_path)
-            self.schema_directory_path = schema_directory_path
-            self.package_directory_path = False
-        else:
-            check_directory_path(self.schema_directory_path)
+        if schema_directory_path is None:
+            schema_directory_path = Path(__file__).parent / "assets" / "schemas"
             self.package_directory_path = True
+        else: 
+            self.package_directory_path = False
+        check_directory_path(schema_directory_path)
+        self.schema_directory_path = schema_directory_path
+            
 
         self.categories = categories
         self.ratings = ratings
