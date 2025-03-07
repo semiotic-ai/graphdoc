@@ -4,7 +4,6 @@
 # system packages
 import logging
 from pathlib import Path
-from typing import List
 
 # external packages
 import dspy
@@ -18,7 +17,6 @@ from graphdoc import (
     DocQualityPrompt,
     DocQualityTrainer,
     GraphDoc,
-    SinglePrompt,
     SinglePromptTrainer,
     load_yaml_config,
 )

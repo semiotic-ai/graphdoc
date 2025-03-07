@@ -117,7 +117,7 @@ class TestParser:
                     "that can be taken either by a bid or an ask. "
                 )
             else:
-                assert False
+                raise AssertionError("Expected description to be found")
 
             test_entity_description = definitions[5].description.value
             assert (

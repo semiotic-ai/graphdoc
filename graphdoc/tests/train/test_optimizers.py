@@ -11,11 +11,7 @@ import pytest
 # internal packages
 from graphdoc import (
     DocQualityPrompt,
-    DocQualitySignature,
-    GraphDoc,
-    QualityDataHelper,
     optimizer_class,
-    optimizer_compile,
 )
 
 # logging

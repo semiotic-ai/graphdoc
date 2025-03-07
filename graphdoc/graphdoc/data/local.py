@@ -54,11 +54,10 @@ class LocalDataHelper:
         if schema_directory_path is None:
             schema_directory_path = Path(__file__).parent / "assets" / "schemas"
             self.package_directory_path = True
-        else: 
+        else:
             self.package_directory_path = False
         check_directory_path(schema_directory_path)
         self.schema_directory_path = schema_directory_path
-            
 
         self.categories = categories
         self.ratings = ratings

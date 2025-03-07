@@ -33,7 +33,7 @@ log = logging.getLogger(__name__)
 random.seed(42)
 
 
-class GraphDoc:
+class GraphDoc:  # noqa: B950
     def __init__(
         self,
         model_args: dict,
@@ -64,7 +64,9 @@ class GraphDoc:
 
         if mlflow_tracking_uri:
             self.mdh = MlflowDataHelper(
-                mlflow_tracking_uri, mlflow_tracking_username, mlflow_tracking_password
+                mlflow_tracking_uri,
+                mlflow_tracking_username,
+                mlflow_tracking_password,
             )
         else:
             self.mdh = None
@@ -132,29 +134,29 @@ class GraphDoc:
         Load a trainset from a dictionary of parameters.
 
         {
-            "hf_api_key": !env HF_DATASET_KEY,                    # Must be a valid Hugging
-                                                                  # Face API key
-                                                                  # (with permission to
-                                                                  # access graphdoc)
-                                                                  # TODO: we may make
-                                                                  # this public in the future
-            "load_from_hf": false,                                # Whether to load the dataset
-                                                                  # from Hugging Face
-            "load_from_local": true,                              # Whether to load the dataset
-                                                                  # from a local directory
-            "load_local_specific_category": false,                # Whether to load all categories
-                                                                  # or a specific category
-            "local_specific_category": perfect,                   # The specific category to load from the dataset
-                                                                  # (if load_from_local is true)
-            "local_parse_objects": true,                          # Whether to parse the objects
-                                                                  # in the dataset
-                                                                  # (if load_from_local is true)
-            "split_for_eval": true,                               # Whether to split the dataset
-                                                                  # into trainset and evalset
-            "trainset_size": 1000,                                # The size of the trainset
-            "evalset_ratio": 0.1,                                 # The proportionate size of evalset
-            "data_helper_type": "quality"                         # Type of data helper to use
-                                                                  # (quality, generation)
+            "hf_api_key": !env HF_DATASET_KEY,          # Must be a valid Hugging
+                                                        # Face API key
+                                                        # (with permission to
+                                                        # access graphdoc)
+                                                        # TODO: we may make
+                                                        # this public in the future
+            "load_from_hf": false,                      # Whether to load the dataset
+                                                        # from Hugging Face
+            "load_from_local": true,                    # Whether to load the dataset
+                                                        # from a local directory
+            "load_local_specific_category": false,      # Whether to load all categories
+                                                        # or a specific category
+            "local_specific_category": perfect,         # The specific category
+                                                        # (if load_from_local is true)
+            "local_parse_objects": true,                # Whether to parse the objects
+                                                        # in the dataset
+                                                        # (if load_from_local is true)
+            "split_for_eval": true,                     # Whether to split the dataset
+                                                        # into trainset and evalset
+            "trainset_size": 1000,                      # The size of the trainset
+            "evalset_ratio": 0.1,                       # The proportionate size of evalset
+            "data_helper_type": "quality"               # Type of data helper to use
+                                                        # (quality, generation)
         }
 
         :param trainset_dict: Dictionary containing trainset parameters.
@@ -201,24 +203,24 @@ class GraphDoc:
         """Load a trainset from a YAML file.
 
         data:
-            hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key
-                                                                  # (with permission to access graphdoc)
-                                                                  # TODO: we may make this public in the future
-            load_from_hf: false                                   # Whether to load the dataset from Hugging Face
-            load_from_local: true                                 # Whether to load the dataset from a local directory
-            load_local_specific_category: false                   # Whether to load all categories or a specific category
-                                                                  # (if load_from_local is true)
-            local_specific_category: perfect,                     # The specific category to load from the dataset
-                                                                  # (if load_from_local is true)
-            local_parse_objects: true,                            # Whether to parse the objects
-                                                                  # in the dataset
-                                                                  # (if load_from_local is true)
-            split_for_eval: true,                                 # Whether to split the dataset
-                                                                  # into trainset and evalset
-            trainset_size: 1000,                                  # The size of the trainset
-            evalset_ratio: 0.1,                                   # The proportionate size of evalset
-            data_helper_type: quality                             # Type of data helper to use
-                                                                  # (quality, generation)
+            hf_api_key: !env HF_DATASET_KEY         # Must be a valid Hugging Face API key
+                                                    # (with permission to access graphdoc)
+                                                    # TODO: we may make this public
+            load_from_hf: false                     # Load the dataset from Hugging Face
+            load_from_local: true                   # Load the dataset from a local directory
+            load_local_specific_category: false     # Load all categories or a specific category
+                                                    # (if load_from_local is true)
+            local_specific_category: perfect,       # Which category to load from the dataset
+                                                    # (if load_from_local is true)
+            local_parse_objects: true,              # Whether to parse the objects
+                                                    # in the dataset
+                                                    # (if load_from_local is true)
+            split_for_eval: true,                   # Whether to split the dataset
+                                                    # into trainset and evalset
+            trainset_size: 1000,                    # The size of the trainset
+            evalset_ratio: 0.1,                     # The proportionate size of evalset
+            data_helper_type: quality               # Type of data helper to use
+                                                    # (quality, generation)
 
         :param yaml_path: Path to the YAML file.
         :type yaml_path: Union[str, Path]
@@ -253,24 +255,24 @@ class GraphDoc:
         """Load a trainset and evalset from a YAML file.
 
         data:
-            hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key
-                                                                  # (with permission to access graphdoc)
-                                                                  # TODO: we may make this public in the future
-            load_from_hf: false                                   # Whether to load the dataset from Hugging Face
-            load_from_local: true                                 # Whether to load the dataset from a local directory
-            load_local_specific_category: false                   # Whether to load all categories or a specific category
-                                                                  # (if load_from_local is true)
-            local_specific_category: perfect,                     # The specific category to load from the dataset
-                                                                  # (if load_from_local is true)
-            local_parse_objects: true,                            # Whether to parse the objects
-                                                                  # in the dataset
-                                                                  # (if load_from_local is true)
-            split_for_eval: true,                                 # Whether to split the dataset
-                                                                  # into trainset and evalset
-            trainset_size: 1000,                                  # The size of the trainset
-            evalset_ratio: 0.1,                                   # The proportionate size of evalset
-            data_helper_type: quality                             # Type of data helper to use
-                                                                  # (quality, generation)
+            hf_api_key: !env HF_DATASET_KEY         # Must be a valid Hugging Face API key
+                                                    # (with permission to access graphdoc)
+                                                    # TODO: we may make this public
+            load_from_hf: false                     # Load the dataset from Hugging Face
+            load_from_local: true                   # Load the dataset from a local directory
+            load_local_specific_category: false     # Load all categories or a specific category
+                                                    # (if load_from_local is true)
+            local_specific_category: perfect,       # Which category to load from the dataset
+                                                    # (if load_from_local is true)
+            local_parse_objects: true,              # Whether to parse the objects
+                                                    # in the dataset
+                                                    # (if load_from_local is true)
+            split_for_eval: true,                   # Whether to split the dataset
+                                                    # into trainset and evalset
+            trainset_size: 1000,                    # The size of the trainset
+            evalset_ratio: 0.1,                     # The proportionate size of evalset
+            data_helper_type: quality               # Type of data helper to use
+                                                    # (quality, generation)
 
         :param yaml_path: Path to the YAML file.
         :type yaml_path: Union[str, Path]
@@ -293,14 +295,17 @@ class GraphDoc:
 
         {
             "prompt": "doc_quality",             # Which prompt signature to use
-            "class": "SchemaDocQualityPrompt",   # Must be a child of SinglePrompt (we will use an enum to map this)
-            "type": "predict",                   # The type of prompt to use (predict, chain_of_thought)
-            "metric": "rating",                  # The type of metric to use (rating, category)
+            "class": "SchemaDocQualityPrompt",   # Must be a child of SinglePrompt
+            "type": "predict",                   # The type of prompt to use
+                                                 # (predict, chain_of_thought)
+            "metric": "rating",                  # The type of metric to use
+                                                 # (rating, category)
             "load_from_mlflow": false,           # Whether to load the prompt from an MLFlow URI
             "model_uri": null,                   # The tracking URI for MLflow
             "model_name": null,                  # The name of the model in MLflow
             "model_version": null                # The version of the model in MLflow
-            "prompt_metric": False               # Whether another prompt is used to calculate the metric
+            "prompt_metric": False               # Whether another prompt is used
+                                                 # to calculate the metric
                                                  # (in which case we must also load that prompt)
         }
 
@@ -338,33 +343,33 @@ class GraphDoc:
         """Load a single prompt from a YAML file.
 
         prompt:
-            prompt: base_doc_gen                                  # Which prompt signature to use
-            class: DocGeneratorPrompt                             # Must be a child of SinglePrompt
-                                                                  # (we will use an enum to map this)
-            type: chain_of_thought                                # The type of prompt to use
-                                                                  # (predict, chain_of_thought)
-            metric: rating                                        # The type of metric to use
-                                                                  # (rating, category)
-            load_from_mlflow: false                               # Whether to load the prompt
-                                                                  # from an MLFlow URI
-            model_uri: null                                       # The tracking URI for MLflow
-            model_name: null                                      # The name of the model in MLflow
-            model_version: null                                   # The version of the model in MLflow
-            prompt_metric: true                                   # Whether another prompt is used
-                                                                  # to calculate the metric
-                                                                  # (in which case we must also load that prompt)
+            prompt: base_doc_gen        # Which prompt signature to use
+            class: DocGeneratorPrompt   # Must be a child of SinglePrompt
+                                        # (we will use an enum to map this)
+            type: chain_of_thought      # The type of prompt to use
+                                        # (predict, chain_of_thought)
+            metric: rating              # The type of metric to use
+                                        # (rating, category)
+            load_from_mlflow: false     # Whether to load the prompt
+                                        # from an MLFlow URI
+            model_uri: null             # The tracking URI for MLflow
+            model_name: null            # The name of the model in MLflow
+            model_version: null         # The version of the model in MLflow
+            prompt_metric: true         # Whether another prompt is used
+                                        # to calculate the metric
+                                        # (in which case we must also load that prompt)
 
         prompt_metric:
-            prompt: doc_quality                                   # The prompt to use to calculate
-                                                                  # the metric
-            class: DocQualityPrompt                               # The class of the prompt to use
-                                                                  # to calculate the metric
-            type: predict                                         # The type of prompt to use
-                                                                  # to calculate the metric
-            metric: rating                                        # The metric to use to calculate
-                                                                  # the metric
-            load_from_mlflow: false                               # Whether to load the prompt
-                                                                  # from an MLFlow URI
+            prompt: doc_quality         # The prompt to use to calculate
+                                        # the metric
+            class: DocQualityPrompt     # The class of the prompt to use
+                                        # to calculate the metric
+            type: predict               # The type of prompt to use
+                                        # to calculate the metric
+            metric: rating              # The metric to use to calculate
+                                        # the metric
+            load_from_mlflow: false     # Whether to load the prompt
+                                        # from an MLFlow URI
 
         :param yaml_path: Path to the YAML file.
         :type yaml_path: str
@@ -391,8 +396,8 @@ class GraphDoc:
         self,
         trainer_dict: dict,
         prompt: SinglePrompt,
-        trainset: List[dspy.Example] = [dspy.Example()],
-        evalset: List[dspy.Example] = [dspy.Example()],
+        trainset: Optional[List[dspy.Example]] = None,
+        evalset: Optional[List[dspy.Example]] = None,
     ) -> SinglePromptTrainer:
         """
         Load a single trainer from a dictionary of parameters.
@@ -421,6 +426,10 @@ class GraphDoc:
         :return: A SinglePromptTrainer object.
         :rtype: SinglePromptTrainer
         """
+        if trainset is None:
+            trainset = []
+        if evalset is None:
+            evalset = []
         try:
             return TrainerFactory.single_trainer(
                 trainer_class=trainer_dict["trainer"]["class"],
@@ -445,46 +454,52 @@ class GraphDoc:
         """Load a single prompt trainer from a YAML file.
 
         trainer:
-            hf_api_key: !env HF_DATASET_KEY                       # Must be a valid Hugging Face API key
-                                                                  # (with permission to access graphdoc)
-                                                                  # TODO: we may make this public in the future
-            load_from_hf: false                                   # Whether to load the dataset from Hugging Face
-            load_from_local: true                                 # Whether to load the dataset from a local directory
-            load_local_specific_category: false                   # Whether to load all categories or a specific category
-                                                                  # (if load_from_local is true)
-            local_specific_category: perfect,                     # The specific category to load from the dataset
-                                                                  # (if load_from_local is true)
-            local_parse_objects: true,                            # Whether to parse the objects
-                                                                  # in the dataset
-                                                                  # (if load_from_local is true)
-            split_for_eval: true,                                 # Whether to split the dataset
-                                                                  # into trainset and evalset
-            trainset_size: 1000,                                  # The size of the trainset
-            evalset_ratio: 0.1,                                   # The proportionate size of evalset
+            hf_api_key: !env HF_DATASET_KEY         # Must be a valid Hugging Face API key
+                                                    # (with permission to access graphdoc)
+                                                    # TODO: we may make this public
+            load_from_hf: false                     # Load the dataset from Hugging Face
+            load_from_local: true                   # Load the dataset from a local directory
+            load_local_specific_category: false     # Load all categories or a specific category
+                                                    # (if load_from_local is true)
+            local_specific_category: perfect,       # Which category to load from the dataset
+                                                    # (if load_from_local is true)
+            local_parse_objects: true,              # Whether to parse the objects
+                                                    # in the dataset
+                                                    # (if load_from_local is true)
+            split_for_eval: true,                   # Whether to split the dataset
+                                                    # into trainset and evalset
+            trainset_size: 1000,                    # The size of the trainset
+            evalset_ratio: 0.1,                     # The proportionate size of evalset
 
         prompt:
-            prompt: base_doc_gen                                  # Which prompt signature to use
-            class: DocGeneratorPrompt                             # Must be a child of SinglePrompt
-                                                                  # (we will use an enum to map this)
-            type: chain_of_thought                                # The type of prompt to use
-                                                                  # (predict, chain_of_thought)
-            metric: rating                                        # The type of metric to use (rating, category)
-            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
-            model_uri: null                                       # The tracking URI for MLflow
-            model_name: null                                      # The name of the model in MLflow
-            model_version: null                                   # The version of the model in MLflow
-            prompt_metric: true                                   # Whether another prompt is used to calculate the metric
-                                                                  # (in which case we must also load that prompt)
+            prompt: base_doc_gen                    # Which prompt signature to use
+            class: DocGeneratorPrompt               # Must be a child of SinglePrompt
+                                                    # (we will use an enum to map this)
+            type: chain_of_thought                  # The type of prompt to use
+                                                    # (predict, chain_of_thought)
+            metric: rating                          # The type of metric to use
+                                                    # (rating, category)
+            load_from_mlflow: false                 # L oad the prompt from an MLFlow URI
+            model_uri: null                         # The tracking URI for MLflow
+            model_name: null                        # The name of the model in MLflow
+            model_version: null                     # The version of the model in MLflow
+            prompt_metric: true                     # Whether another prompt is used
+                                                    # to calculate the metric
+                                                    # (in which case we must load prompt)
 
         prompt_metric:
-            prompt: doc_quality                                   # The prompt to use to calculate the metric
-            class: DocQualityPrompt                               # The class of the prompt to use to calculate the metric
-            type: predict                                         # The type of prompt to use to calculate the metric
-            metric: rating                                        # The metric to use to calculate the metric
-            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
-            model_uri: null                                       # The tracking URI for MLflow
-            model_name: null                                      # The name of the model in MLflow
-            model_version: null                                   # The version of the model in MLflow
+            prompt: doc_quality                     # The prompt to use to calculate the metric
+            class: DocQualityPrompt                 # The class of the prompt to use
+                                                    # to calculate the metric
+            type: predict                           # The type of prompt to use
+                                                    # to calculate the metric
+            metric: rating                          # The metric to use to calculate
+                                                    # the metric
+            load_from_mlflow: false                 # Whether to load the prompt
+                                                    # from an MLFlow URI
+            model_uri: null                         # The tracking URI for MLflow
+            model_name: null                        # The name of the model in MLflow
+            model_version: null                     # The version of the model in MLflow
 
         :param yaml_path: Path to the YAML file.
         :type yaml_path: Union[str, Path]
@@ -538,36 +553,42 @@ class GraphDoc:
         """Load a doc generator module from a YAML file.
 
         prompt:
-            prompt: base_doc_gen                                  # Which prompt signature to use
-            class: DocGeneratorPrompt                             # Must be a child of SinglePrompt
-                                                                  # (we will use an enum to map this)
-            type: chain_of_thought                                # The type of prompt to use
-                                                                  # (predict, chain_of_thought)
-            metric: rating                                        # The type of metric to use (rating, category)
-            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
-            model_uri: null                                       # The tracking URI for MLflow
-            model_name: null                                      # The name of the model in MLflow
-            model_version: null                                   # The version of the model in MLflow
-            prompt_metric: true                                   # Whether another prompt is used to calculate the metric
-                                                                  # (in which case we must also load that prompt)
+            prompt: base_doc_gen            # Which prompt signature to use
+            class: DocGeneratorPrompt       # Must be a child of SinglePrompt
+                                            # (we will use an enum to map this)
+            type: chain_of_thought          # The type of prompt to use
+                                            # (predict, chain_of_thought)
+            metric: rating                  # The type of metric to use
+                                            # (rating, category)
+            load_from_mlflow: false         # Whether to load the prompt
+                                            # from an MLFlow URI
+            model_uri: null                 # The tracking URI for MLflow
+            model_name: null                # The name of the model in MLflow
+            model_version: null             # The version of the model in MLflow
+            prompt_metric: true             # Whether another prompt is used
+                                            # to calculate the metric
+                                            # (in which case we must load that prompt)
 
         prompt_metric:
-            prompt: doc_quality                                   # The prompt to use to calculate the metric
-            class: DocQualityPrompt                               # The class of the prompt to use to calculate the metric
-            type: predict                                         # The type of prompt to use to calculate the metric
-            metric: rating                                        # The metric to use to calculate the metric
-            load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
-            model_uri: null                                       # The tracking URI for MLflow
-            model_name: null                                      # The name of the model in MLflow
-            model_version: null                                   # The version of the model in MLflow
+            prompt: doc_quality             # The prompt to use to calculate the metric
+            class: DocQualityPrompt         # The class of the prompt to use
+                                            # to calculate the metric
+            type: predict                   # The type of prompt to use
+                                            # to calculate the metric
+            metric: rating                  # The metric to use to calculate the metric
+            load_from_mlflow: false         # Whether to load the prompt
+                                            # from an MLFlow URI
+            model_uri: null                 # The tracking URI for MLflow
+            model_name: null                # The name of the model in MLflow
+            model_version: null             # The version of the model in MLflow
 
         module:
-            retry: true                                           # Whether to retry the generation
-                                                                  # if the quality check fails
-            retry_limit: 1                                        # The maximum number of retries
-            rating_threshold: 3                                   # The rating threshold for the quality check
-            fill_empty_descriptions: true                         # Whether to fill empty descriptions with
-                                                                  # generated documentation
+            retry: true                     # Whether to retry the generation
+                                            # if the quality check fails
+            retry_limit: 1                  # The maximum number of retries
+            rating_threshold: 3             # The rating threshold for the quality check
+            fill_empty_descriptions: true   # Whether to fill empty descriptions with
+                                            # generated documentation
 
         """
         config = load_yaml_config(yaml_path)["module"]
