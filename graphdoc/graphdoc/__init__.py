@@ -1,7 +1,7 @@
 # Copyright 2025-, Semiotic AI, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-from .data import (
+from graphdoc.data import (
     DspyDataHelper,
     GenerationDataHelper,
     LocalDataHelper,
@@ -21,10 +21,10 @@ from .data import (
     schema_objects_to_dataset,
     setup_logging,
 )
-from .eval import DocGeneratorEvaluator
-from .main import GraphDoc
-from .modules import DocGeneratorModule
-from .prompts import (
+from graphdoc.eval import DocGeneratorEvaluator
+from graphdoc.main import GraphDoc
+from graphdoc.modules import DocGeneratorModule
+from graphdoc.prompts import (
     BadDocGeneratorSignature,
     DocGeneratorHelperSignature,
     DocGeneratorPrompt,
@@ -35,7 +35,7 @@ from .prompts import (
     PromptFactory,
     SinglePrompt,
 )
-from .train import (
+from graphdoc.train import (
     DocGeneratorTrainer,
     DocQualityTrainer,
     SinglePromptTrainer,

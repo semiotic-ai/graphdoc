@@ -20,10 +20,10 @@ from graphql import (
     print_ast,
 )
 
-from .helper import check_directory_path, check_file_path
+from graphdoc.data.helper import check_directory_path, check_file_path
 
 # internal packages
-from .schema import SchemaObject
+from graphdoc.data.schema import SchemaObject
 
 # logging
 log = logging.getLogger(__name__)

@@ -11,9 +11,9 @@ from typing import Callable, Dict, Optional, Type, Union
 from datasets import Dataset, concatenate_datasets
 
 # internal packages
-from .helper import check_directory_path, check_file_path
-from .parser import Parser
-from .schema import (
+from graphdoc.data.helper import check_directory_path, check_file_path
+from graphdoc.data.parser import Parser
+from graphdoc.data.schema import (
     SchemaCategory,
     SchemaCategoryPath,
     SchemaCategoryRatingMapping,

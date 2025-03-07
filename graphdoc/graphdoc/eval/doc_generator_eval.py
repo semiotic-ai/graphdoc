@@ -12,9 +12,9 @@ import mlflow
 from graphql import parse, print_ast
 
 # internal packages
-from ..data import MlflowDataHelper
-from ..modules import DocGeneratorModule
-from ..prompts import DocQualityPrompt, SinglePrompt
+from graphdoc.data import MlflowDataHelper
+from graphdoc.modules import DocGeneratorModule
+from graphdoc.prompts import DocQualityPrompt, SinglePrompt
 
 # logging
 log = logging.getLogger(__name__)

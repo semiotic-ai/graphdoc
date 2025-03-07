@@ -3,8 +3,6 @@
 
 # system packages
 import logging
-
-# internal packages
 from typing import Any, Optional, Union
 
 # external packages
@@ -12,7 +10,8 @@ import dspy
 from datasets import Dataset
 from mlflow.models import ModelSignature, infer_signature
 
-from .dspy_data_helper import DspyDataHelper
+# internal packages
+from graphdoc.data.dspy_data.dspy_data_helper import DspyDataHelper
 
 # logging
 log = logging.getLogger(__name__)

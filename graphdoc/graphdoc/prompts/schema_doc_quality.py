@@ -10,7 +10,7 @@ from typing import Any, Callable, Dict, List, Literal, Union
 import dspy
 
 # internal packages
-from .single_prompt import SinglePrompt
+from graphdoc.prompts.single_prompt import SinglePrompt
 
 # logging
 log = logging.getLogger(__name__)

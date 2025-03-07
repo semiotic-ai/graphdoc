@@ -10,13 +10,12 @@ from typing import Any, Dict, List, Optional, Tuple
 import dspy
 import mlflow
 
-from ..data import DspyDataHelper
-from ..data.dspy_data import GenerationDataHelper
+from graphdoc.data import DspyDataHelper, GenerationDataHelper
 
 # internal packages
-from ..prompts import DocGeneratorPrompt
-from .optimizers import optimizer_compile
-from .single_prompt_trainer import SinglePromptTrainer
+from graphdoc.prompts import DocGeneratorPrompt
+from graphdoc.train.optimizers import optimizer_compile
+from graphdoc.train.single_prompt_trainer import SinglePromptTrainer
 
 # logging
 log = logging.getLogger(__name__)

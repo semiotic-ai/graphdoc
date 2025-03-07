@@ -10,10 +10,9 @@ from typing import Any, Dict, List, Optional, Tuple
 import dspy
 import mlflow
 
-from ..data import MlflowDataHelper
-
 # internal packages
-from ..prompts import SinglePrompt
+from graphdoc.data import MlflowDataHelper
+from graphdoc.prompts import SinglePrompt
 
 # logging
 log = logging.getLogger(__name__)
