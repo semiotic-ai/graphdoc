@@ -23,8 +23,8 @@ log = logging.getLogger(__name__)
 # DSPy Signatures #
 ###################
 class DocGeneratorSignature(dspy.Signature):
-    """### TASK: Given a GraphQL Schema, generate a precise description for the columns
-    of the tables in the database.
+    """
+    ### TASK: Given a GraphQL Schema, generate a precise description for the columns of the tables in the database.
 
     ### Requirements:
     - Focus solely on confirmed details from the provided schema.
@@ -44,8 +44,8 @@ class DocGeneratorSignature(dspy.Signature):
 
 
 class DocGeneratorHelperSignature(dspy.Signature):
-    """### TASK: Analyze the provided GraphQL Schema and generate detailed yet concise
-    descriptions for each field within the database tables and enums.
+    """
+    ### TASK: Analyze the provided GraphQL Schema and generate detailed yet concise descriptions for each field within the database tables and enums.
 
     ### Requirements:
     - If the field is unclear, and the documentation result is ambiguous, request additional information: "WARNING: Please provide additional information to avoid confusion".
@@ -67,8 +67,8 @@ class DocGeneratorHelperSignature(dspy.Signature):
 
 
 class BadDocGeneratorSignature(dspy.Signature):
-    """### TASK: Given a GraphQL Schema, generate intentionally incorrect documentation
-    for the columns of the tables in the database.
+    """
+    ### TASK: Given a GraphQL Schema, generate intentionally incorrect documentation for the columns of the tables in the database.
 
     ### Requirements:
     - Every table, entity, enum, etc. must have at least one column with a description that is obviosly incorrect.

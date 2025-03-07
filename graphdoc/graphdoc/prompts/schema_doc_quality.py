@@ -20,9 +20,8 @@ log = logging.getLogger(__name__)
 # DSPy Signatures #
 ###################
 class DocQualitySignature(dspy.Signature):
-    """You are evaluating the output of an LLM program, expect hallucinations. Given a
-    GraphQL Schema, evaluate the quality of documentation for that schema and provide a
-    category rating.
+    """
+    You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
 
     The categories are described as:
     - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
@@ -41,9 +40,8 @@ class DocQualitySignature(dspy.Signature):
 
 
 class DocQualityDemonstrationSignature(dspy.Signature):
-    """You are evaluating the output of an LLM program, expect hallucinations. Given a
-    GraphQL Schema, evaluate the quality of documentation for that schema and provide a
-    category rating.
+    """
+    You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
 
     The categories are described as:
     - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
