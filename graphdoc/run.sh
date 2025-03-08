@@ -32,9 +32,9 @@ docstring_format_command() {
 }
 
 pep8_check_command() {
-    flake8 graphdoc/
-    flake8 runners/
-    flake8 tests/
+    poetry run flake8 graphdoc/
+    poetry run flake8 runners/
+    poetry run flake8 tests/
 }
 
 sort_command() {
