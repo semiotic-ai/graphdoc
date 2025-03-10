@@ -3,7 +3,6 @@
 
 import argparse
 import logging
-import random
 
 # system packages
 import sys
@@ -19,9 +18,6 @@ from graphdoc.config import (
 
 # logging
 log = logging.getLogger(__name__)
-
-# global variables
-random.seed(42)
 
 #######################
 # Main Entry Point    #

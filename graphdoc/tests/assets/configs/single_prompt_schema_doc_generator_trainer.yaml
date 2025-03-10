@@ -15,6 +15,7 @@ data:
   load_local_specific_category: false # Whether to load all categories or a specific category (if load_from_local is true)
   local_specific_category: perfect # The specific category to load from the dataset (if load_from_local is true)
   local_parse_objects: True # Whether to parse the objects in the dataset (if load_from_local is true)
+  seed: 42 # The seed for the random number generator
 
 prompt:
   prompt: zero_shot_doc_gen # Which prompt signature to use

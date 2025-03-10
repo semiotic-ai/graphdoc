@@ -29,10 +29,6 @@ from graphdoc.train import SinglePromptTrainer, TrainerFactory
 # logging
 log = logging.getLogger(__name__)
 
-# global variables
-random.seed(42)
-
-
 #######################
 # Resource Setup      #
 #######################
@@ -160,7 +156,9 @@ def trainset_from_yaml(yaml_path: Union[str, Path]) -> List[dspy.Example]:
 
 
 def split_trainset(
-    trainset: List[dspy.Example], evalset_ratio: float
+    trainset: List[dspy.Example],
+    evalset_ratio: float,
+    seed: int = 42,
 ) -> tuple[List[dspy.Example], List[dspy.Example]]:
     """Split a trainset into a trainset and evalset.
 
@@ -170,6 +168,7 @@ def split_trainset(
     tuple[List[dspy.Example], List[dspy.Example]]
 
     """
+    random.seed(seed)
     split_idx = int(len(trainset) * (1 - evalset_ratio))
     random.shuffle(trainset)
     evalset = trainset[split_idx:]
@@ -201,6 +200,7 @@ def trainset_and_evalset_from_yaml(
         evalset_ratio: 0.1,                     # The proportionate size of evalset
         data_helper_type: quality               # Type of data helper to use
                                                 # (quality, generation)
+        seed: 42                                # The seed for the random number generator
 
     :param yaml_path: Path to the YAML file.
     :type yaml_path: Union[str, Path]
@@ -210,7 +210,9 @@ def trainset_and_evalset_from_yaml(
     """
     config = load_yaml_config(yaml_path)
     trainset = trainset_from_dict(config["data"])
-    return split_trainset(trainset, config["data"]["evalset_ratio"])
+    return split_trainset(
+        trainset, config["data"]["evalset_ratio"], config["data"]["seed"]
+    )
 
 
 #######################
