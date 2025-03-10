@@ -25,7 +25,7 @@ data:
   trainset_size: 1000                                   # The size of the trainset
   evalset_ratio: 0.1                                    # The proportionate size of the evalset
   data_helper_type: generation                          # Type of data helper to use (quality, generation)
-
+  seed: 42                                              # The seed for the random number generator
 prompt:
   prompt: base_doc_gen                                  # Which prompt signature to use
   class: DocGeneratorPrompt                             # Must be a child of SinglePrompt (we will use an enum to map this)

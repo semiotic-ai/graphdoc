@@ -25,6 +25,7 @@ data:
   trainset_size: 1000                                   # The size of the trainset
   evalset_ratio: 0.1                                    # The proportionate size of the evalset
   data_helper_type: quality                             # Type of data helper to use (quality, generation)
+  seed: 42                                              # The seed for the random number generator
 
 prompt:
   prompt: doc_quality                                   # Which prompt signature to use
