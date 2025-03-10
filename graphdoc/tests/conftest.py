@@ -19,10 +19,11 @@ from graphdoc import (
     DocQualityPrompt,
     LocalDataHelper,
     Parser,
+    setup_logging,
 )
-from graphdoc.main import GraphDoc
 
 # logging
+setup_logging("INFO")
 log = logging.getLogger(__name__)
 
 # define test asset paths
@@ -122,31 +123,31 @@ def overwrite_ldh() -> LocalDataHelper:
     )
 
 
-@fixture
-def gd() -> GraphDoc:
-    """Fixture for GraphDoc with proper environment setup."""
-    # Ensure environment is set up correctly
-    if ENV_PATH.exists():
-        load_dotenv(dotenv_path=ENV_PATH, override=True)
-    ensure_env_vars()
+# @fixture
+# def gd() -> GraphDoc:
+#     """Fixture for GraphDoc with proper environment setup."""
+#     # Ensure environment is set up correctly
+#     if ENV_PATH.exists():
+#         load_dotenv(dotenv_path=ENV_PATH, override=True)
+#     ensure_env_vars()
 
-    api_key = os.environ.get("OPENAI_API_KEY")
-    mlflow_tracking_username = os.environ.get("MLFLOW_TRACKING_USERNAME")
-    mlflow_tracking_password = os.environ.get("MLFLOW_TRACKING_PASSWORD")
-    if not api_key:
-        log.error("OPENAI_API_KEY still not available after loading .env file")
+#     api_key = os.environ.get("OPENAI_API_KEY")
+#     mlflow_tracking_username = os.environ.get("MLFLOW_TRACKING_USERNAME")
+#     mlflow_tracking_password = os.environ.get("MLFLOW_TRACKING_PASSWORD")
+#     if not api_key:
+#         log.error("OPENAI_API_KEY still not available after loading .env file")
 
-    return GraphDoc(
-        model_args={
-            "model": "gpt-4o-mini",
-            "api_key": api_key,
-            "cache": True,
-        },
-        mlflow_tracking_uri=MLRUNS_DIR,
-        mlflow_tracking_username=mlflow_tracking_username,
-        mlflow_tracking_password=mlflow_tracking_password,
-        log_level="INFO",
-    )
+#     return GraphDoc(
+#         model_args={
+#             "model": "gpt-4o-mini",
+#             "api_key": api_key,
+#             "cache": True,
+#         },
+#         mlflow_tracking_uri=MLRUNS_DIR,
+#         mlflow_tracking_username=mlflow_tracking_username,
+#         mlflow_tracking_password=mlflow_tracking_password,
+#         log_level="INFO",
+#     )
 
 
 @fixture
