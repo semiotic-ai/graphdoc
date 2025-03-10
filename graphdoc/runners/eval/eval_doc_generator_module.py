@@ -11,7 +11,7 @@ import os
 from dotenv import load_dotenv
 
 # internal packages
-from graphdoc.main import GraphDoc
+from graphdoc.config import doc_generator_eval_from_yaml
 
 # logging
 log = logging.getLogger(__name__)
@@ -62,11 +62,10 @@ def main():
 
     # load config
     log.info(f"Loading config from {args.config_path}")
-    gd = GraphDoc.from_yaml(args.config_path)
 
     # load the doc generator module
     log.info(f"Loading doc generator module from {args.config_path}")
-    module_evaluator = gd.doc_generator_eval_from_yaml(args.config_path)
+    module_evaluator = doc_generator_eval_from_yaml(args.config_path)
 
     # run the evaluation and log the results
     log.info("Running evaluation and logging results")

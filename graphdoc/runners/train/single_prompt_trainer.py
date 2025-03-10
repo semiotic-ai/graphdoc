@@ -3,18 +3,19 @@
 
 import argparse
 import copy
-
-# internal packages
 import logging
 
-# system packages
+# internal packages
 import os
 
 # external packages
 import mlflow
 from dotenv import load_dotenv
 
-from graphdoc.main import GraphDoc, load_yaml_config
+from graphdoc.config import single_trainer_from_yaml
+
+# system packages
+from graphdoc.data import load_yaml_config
 
 # logging
 log = logging.getLogger(__name__)
@@ -35,11 +36,8 @@ def main():
     )
     args = parser.parse_args()
 
-    # load config
-    gd = GraphDoc.from_yaml(args.config_path)
-
     # load the trainer object (including trainset and evalset)
-    trainer = gd.single_trainer_from_yaml(args.config_path)
+    trainer = single_trainer_from_yaml(args.config_path)
 
     # trainer trainset and evalset can be modified here if needed
     # trainer.trainset = ...
