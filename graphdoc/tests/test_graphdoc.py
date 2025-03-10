@@ -16,10 +16,10 @@ from graphdoc import (
     DocGeneratorTrainer,
     DocQualityPrompt,
     DocQualityTrainer,
-    GraphDoc,
     SinglePromptTrainer,
     load_yaml_config,
 )
+from graphdoc.main import GraphDoc
 
 # logging
 log = logging.getLogger(__name__)

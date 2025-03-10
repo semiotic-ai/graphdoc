@@ -7,10 +7,10 @@ import logging
 from graphdoc import (
     DocGeneratorPrompt,
     DocQualityPrompt,
-    GraphDoc,
     LocalDataHelper,
     Parser,
 )
+from graphdoc.main import GraphDoc
 
 from .conftest import (
     OverwriteSchemaCategory,

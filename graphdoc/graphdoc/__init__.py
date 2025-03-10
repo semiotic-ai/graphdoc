@@ -44,7 +44,6 @@ from graphdoc.train import (
 )
 
 __all__ = [
-    "GraphDoc",
     "DocGeneratorModule",
     "DocGeneratorEvaluator",
     "DocGeneratorTrainer",

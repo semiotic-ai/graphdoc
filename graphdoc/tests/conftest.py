@@ -17,10 +17,10 @@ from pytest import fixture
 from graphdoc import (
     DocGeneratorPrompt,
     DocQualityPrompt,
-    GraphDoc,
     LocalDataHelper,
     Parser,
 )
+from graphdoc.main import GraphDoc
 
 # logging
 log = logging.getLogger(__name__)
