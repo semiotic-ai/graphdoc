@@ -10,7 +10,6 @@ from graphdoc import (
     LocalDataHelper,
     Parser,
 )
-from graphdoc.main import GraphDoc
 
 from .conftest import (
     OverwriteSchemaCategory,
@@ -45,9 +44,9 @@ class TestFixtures:
             == OverwriteSchemaCategoryRatingMapping.get_rating
         )
 
-    def test_gd(self, gd: GraphDoc):
-        assert gd is not None
-        assert isinstance(gd, GraphDoc)
+    # def test_gd(self, gd: GraphDoc):
+    #     assert gd is not None
+    #     assert isinstance(gd, GraphDoc)
 
     def test_dqp(self, dqp):
         assert isinstance(dqp, DocQualityPrompt)

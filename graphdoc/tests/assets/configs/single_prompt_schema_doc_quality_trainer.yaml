@@ -3,6 +3,11 @@ language_model:
   lm_api_key: !env OPENAI_API_KEY # Must be a valid dspy language model API key
   cache: true # Whether to cache the calls to the language model
 
+mlflow: 
+  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
+  mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
+  mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
+
 data: 
   hf_api_key: !env HF_DATASET_KEY # Must be a valid Hugging Face API key (with permission to access graphdoc) # TODO: we may make this public in the future
   load_from_hf: true # Whether to load the dataset from Hugging Face
