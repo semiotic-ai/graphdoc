@@ -659,14 +659,14 @@ Commands:
     generate               Generate documentation for schema files
         --module-config PATH     Path to module YAML configuration
         --input PATH             Path to input schema file or directory
-        --output PATH            Path to output directory
+        --output PATH            Path to output file
 
     evaluate               Evaluate documentation quality
         --eval-config PATH       Path to evaluator YAML configuration
 
 Examples:
     # Train a documentation quality model
-    python -m graphdoc.main --config config.yaml train --trainer-config trainer_config.yaml /Users/denver/Documents/code/graph/graphdoc-mono/graphdoc/graphdoc/assets/configs/single_prompt_doc_generator_trainer.yaml
+    python -m graphdoc.main --config config.yaml train --trainer-config trainer_config.yaml 
 
     # Generate documentation for schemas
     python -m graphdoc.main --config config.yaml generate --module-config module_config.yaml --input schema.graphql --output documented_schema.graphql
@@ -732,7 +732,7 @@ if __name__ == "__main__":
         documented_schema = module.document_full_schema(schema)
 
         with open(args.output, "w") as f:
-            f.write(documented_schema)
+            f.write(documented_schema.documented_schema)
         print(f"Generation complete. Documentation saved to {args.output}")
     
     elif args.command == "evaluate":
