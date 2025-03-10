@@ -14,7 +14,7 @@ import os
 import mlflow
 from dotenv import load_dotenv
 
-from graphdoc import GraphDoc, load_yaml_config
+from graphdoc.main import GraphDoc, load_yaml_config
 
 # logging
 log = logging.getLogger(__name__)

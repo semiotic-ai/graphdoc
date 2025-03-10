@@ -22,7 +22,6 @@ from graphdoc.data import (
     setup_logging,
 )
 from graphdoc.eval import DocGeneratorEvaluator
-from graphdoc.main import GraphDoc
 from graphdoc.modules import DocGeneratorModule
 from graphdoc.prompts import (
     BadDocGeneratorSignature,
@@ -45,7 +44,6 @@ from graphdoc.train import (
 )
 
 __all__ = [
-    "GraphDoc",
     "DocGeneratorModule",
     "DocGeneratorEvaluator",
     "DocGeneratorTrainer",

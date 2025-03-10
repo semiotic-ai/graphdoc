@@ -64,6 +64,45 @@ class DocGeneratorModule(dspy.Module):
             )
             self.prompt.prompt_metric.prompt_metric = "rating"
 
+    #######################
+    # MLFLOW TRACING      #
+    #######################
+    # TODO: we will break this out into a separate class later
+    # when we have need for it elsewhere
+    def _start_trace(
+        self,
+        client: mlflow.MlflowClient,
+        expirement_name: str,
+        trace_name: str,
+        inputs: dict,
+        attributes: dict,
+    ):
+        # set the experiment name so that everything is logged to the same experiment
+        mlflow.set_experiment(expirement_name)
+
+        # start the trace
+        trace = client.start_trace(
+            name=trace_name,
+            inputs=inputs,
+            attributes=attributes,
+            # experiment_id=expirement_name,
+        )
+
+        return trace
+
+    def _end_trace(
+        self,
+        client: mlflow.MlflowClient,
+        trace: Any,  # TODO: trace: mlflow.Span,
+        # E   AttributeError: module 'mlflow' has no attribute 'Span'
+        outputs: dict,
+        status: Literal["OK", "ERROR"],
+    ):
+        client.end_trace(request_id=trace.request_id, outputs=outputs, status=status)
+
+    #######################
+    # MODULE FUNCTIONS    #
+    #######################
     def _retry_by_rating(self, database_schema: str) -> str:
         """Retry the generation if the quality check fails. Rating threshold is
         determined at initialization.
@@ -210,42 +249,6 @@ class DocGeneratorModule(dspy.Module):
             return dspy.Prediction(documented_schema=database_schema)
         else:
             return self._predict(database_schema=database_schema)
-
-    #######################
-    # MLFLOW TRACING      #
-    #######################
-    # TODO: we will break this out into a separate class later
-    # when we have need for it elsewhere
-    def _start_trace(
-        self,
-        client: mlflow.MlflowClient,
-        expirement_name: str,
-        trace_name: str,
-        inputs: dict,
-        attributes: dict,
-    ):
-        # set the experiment name so that everything is logged to the same experiment
-        mlflow.set_experiment(expirement_name)
-
-        # start the trace
-        trace = client.start_trace(
-            name=trace_name,
-            inputs=inputs,
-            attributes=attributes,
-            # experiment_id=expirement_name,
-        )
-
-        return trace
-
-    def _end_trace(
-        self,
-        client: mlflow.MlflowClient,
-        trace: Any,  # TODO: trace: mlflow.Span,
-        # E   AttributeError: module 'mlflow' has no attribute 'Span'
-        outputs: dict,
-        status: Literal["OK", "ERROR"],
-    ):
-        client.end_trace(request_id=trace.request_id, outputs=outputs, status=status)
 
     def document_full_schema(
         self,

@@ -11,7 +11,7 @@ import os
 from dotenv import load_dotenv
 
 # internal packages
-from graphdoc import GraphDoc
+from graphdoc.main import GraphDoc
 
 # logging
 log = logging.getLogger(__name__)
