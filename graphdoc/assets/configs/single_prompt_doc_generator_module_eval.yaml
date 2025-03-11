@@ -5,7 +5,7 @@ graphdoc:
   mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
 
 mlflow: 
-  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
+  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI           # The tracking URI for MLflow
   mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
   mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
 
