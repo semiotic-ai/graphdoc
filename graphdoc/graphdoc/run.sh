@@ -60,16 +60,13 @@ commit_command() {
 }
 
 # Documentation commands
-docs_generate() {
+docs() {
     echo "Generating RST files..."
     cd docs && python generate_docs.py
-    echo "RST files generated successfully!"
-}
-
-docs() {
+    
     echo "Building documentation..."
     cd docs && make clean html
-    echo "Documentation built in docs/_build/html"
+    echo "Documentation built in docs/build/html"
 }
 
 docs_init() {
@@ -125,7 +122,6 @@ show_help() {
     echo "  lint                   Lint the code"
     echo "  test                   Run the tests"
     echo "  commit                 Format, lint, and test the code"
-    echo "  docs-generate          Generate documentation RST files"
     echo "  docs                   Build the documentation"
     echo "  docs-init              Initialize the Sphinx documentation"
 
@@ -155,7 +151,6 @@ else
         "lint") lint_command ;;
         "test") test_command ;;
         "commit") commit_command ;;
-        "docs-generate") docs_generate ;;
         "docs") docs ;;
         "docs-init") docs_init ;;
         "doc-quality-train") doc_quality_train_command ;;
@@ -166,4 +161,4 @@ else
             exit 1
             ;;
     esac
-fi
+fi 

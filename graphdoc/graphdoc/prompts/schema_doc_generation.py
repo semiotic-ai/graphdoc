@@ -22,19 +22,10 @@ log = logging.getLogger(__name__)
 # DSPy Signatures #
 ###################
 class DocGeneratorSignature(dspy.Signature):
+    """A signature that takes a full GraphQL schema and returns a documented schema.
+    
+    :no-index:
     """
-    ### TASK: Given a GraphQL Schema, generate a precise description for the columns of the tables in the database.
-
-    ### Requirements:
-    - Focus solely on confirmed details from the provided schema.
-    - Keep the description concise and factual.
-    - Exclude any speculative or additional commentary.
-    - DO NOT return the phrase "in the { table } table" in your description.
-
-    ### Formatting
-    - Ensure that the schema maintains proper documentation formatting, as is provided.
-
-    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
@@ -43,21 +34,11 @@ class DocGeneratorSignature(dspy.Signature):
 
 
 class DocGeneratorHelperSignature(dspy.Signature):
+    """A signature that takes a code section that requires a transformation as well as
+    the current description of that section and returns a new description.
+    
+    :no-index:
     """
-    ### TASK: Analyze the provided GraphQL Schema and generate detailed yet concise descriptions for each field within the database tables and enums.
-
-    ### Requirements:
-    - If the field is unclear, and the documentation result is ambiguous, request additional information: "WARNING: Please provide additional information to avoid confusion".
-    - Utilize only the verified information from the schema to ensure accuracy.
-    - Descriptions should be factual, straightforward, and avoid any speculative language.
-    - Refrain from using the phrase "in the { table } table" within your descriptions.
-    - Ensure that the documentation adheres to standard schema formatting without modifying the underlying schema structure.
-
-    ### Formatting:
-    - Maintain consistency with the existing documentation style and structure.
-    - Focus on clarity and precision to aid developers and system architects in understanding the schema's components effectively.
-
-    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
@@ -66,18 +47,11 @@ class DocGeneratorHelperSignature(dspy.Signature):
 
 
 class BadDocGeneratorSignature(dspy.Signature):
+    """A signature that takes a full GraphQL schema and returns a list of
+    issues with the schema.
+    
+    :no-index:
     """
-    ### TASK: Given a GraphQL Schema, generate intentionally incorrect documentation for the columns of the tables in the database.
-
-    ### Requirements:
-    - Every table, entity, enum, etc. must have at least one column with a description that is obviosly incorrect.
-    - The documentation must be incorrect and misleading.
-    - The documentation should be scattered, with only some columns having documentation.
-
-    ### Formatting
-    - Ensure that the schema maintains proper documentation formatting, as is provided.
-
-    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
@@ -115,6 +89,11 @@ def doc_gen_factory(
 # Single Prompt Class #
 #######################
 class DocGeneratorPrompt(SinglePrompt):
+    """DocGeneratorPrompt class for generating documentation for GraphQL schemas.
+    
+    :no-index:
+    """
+
     def __init__(
         self,
         prompt: Union[str, dspy.Signature, dspy.SignatureMeta],
@@ -190,13 +169,13 @@ class DocGeneratorPrompt(SinglePrompt):
     ) -> Dict[str, Any]:
         """Format the metric results into a dictionary.
 
-        :param examples: The examples used to evaluate the metric. 
-        :type examples: List[dspy.Example] 
-        :param overall_score: The overall score of the metric. 
-        :type overall_score: float 
-        :param results: The results of the metric. 
-        :type results: List 
-        :param scores: The scores of the metric. 
+        :param examples: The examples used to evaluate the metric.
+        :type examples: List[dspy.Example]
+        :param overall_score: The overall score of the metric.
+        :type overall_score: float
+        :param results: The results of the metric.
+        :type results: List
+        :param scores: The scores of the metric.
         :type scores: List
 
         """
@@ -217,8 +196,8 @@ class DocGeneratorPrompt(SinglePrompt):
 
         :param base_metrics: The base metrics.
         :type base_metrics: Any
-        :param optimized_metrics: The optimized metrics.
-        :type 
+        :param optimized_metrics: The optimized metrics. :type
+
         """
         if comparison_value == "overall_score":
             return optimized_metrics.get("overall_score", 0) > base_metrics.get(

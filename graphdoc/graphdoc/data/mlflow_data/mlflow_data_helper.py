@@ -29,12 +29,15 @@ class MlflowDataHelper:
         mlflow_tracking_password: Optional[str] = None,
     ):
         """A helper class for loading and saving models and metadata from mlflow.
+        
+        :no-index:
 
-        :param mlflow_tracking_uri: The uri of the mlflow tracking server. :type
-        mlflow_tracking_uri: Union[str, Path] :param mlflow_tracking_username: The
-        username for the mlflow tracking server. :type mlflow_tracking_username: str
+        :param mlflow_tracking_uri: The uri of the mlflow tracking server.
+        :type mlflow_tracking_uri: Union[str, Path]
+        :param mlflow_tracking_username: The username for the mlflow tracking server.
+        :type mlflow_tracking_username: Optional[str]
         :param mlflow_tracking_password: The password for the mlflow tracking server.
-        :type mlflow_tracking_password: str
+        :type mlflow_tracking_password: Optional[str]
 
         """
         self.mlflow_tracking_uri = mlflow_tracking_uri
@@ -90,8 +93,10 @@ class MlflowDataHelper:
     def model_by_name_and_version(self, model_name: str, model_version: str):
         """Load a model from mlflow by name and version.
 
-        :param model_name: The name of the model to load. :type model_name: str :param
-        model_version: The version of the model to load. :type model_version: str
+        :param model_name: The name of the model to load.
+        :type model_name: str
+        :param model_version: The version of the model to load.
+        :type model_version: str
         :return: The loaded model.
 
         """
@@ -139,10 +144,12 @@ class MlflowDataHelper:
     ):
         """Save a model to mlflow.
 
-        :param model: The model to save. :type model: dspy.Signature :param
-        model_signature: The signature of the model. :type model_signature:
-        ModelSignature :param model_name: The name of the model to save. :type
-        model_name: str
+        :param model: The model to save.
+        :type model: dspy.Signature
+        :param model_signature: The signature of the model.
+        :type model_signature: ModelSignature
+        :param model_name: The name of the model to save.
+        :type model_name: str
 
         """
         mlflow.dspy.log_model(

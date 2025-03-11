@@ -28,6 +28,8 @@ class SinglePrompt(ABC):
         # and tighter coupling
     ) -> None:
         """Initialize a single prompt.
+        
+        :no-index:
 
         :param prompt: The prompt to use.
         :type prompt: dspy.Signature
@@ -70,10 +72,12 @@ class SinglePrompt(ABC):
     ) -> Any:
         """This is the metric used to evalaute the prompt.
 
-        :param example: The example to evaluate the metric on. :type example:
-        dspy.Example :param prediction: The prediction to evaluate the metric on. :type
-        prediction: dspy.Prediction :param trace: The trace to evaluate the metric on.
-        This is for DSPy. :type trace: Any
+        :param example: The example to evaluate the metric on.
+        :type example: dspy.Example
+        :param prediction: The prediction to evaluate the metric on.
+        :type prediction: dspy.Prediction
+        :param trace: The trace to evaluate the metric on. This is for DSPy.
+        :type trace: Any
 
         """
         pass
@@ -89,11 +93,14 @@ class SinglePrompt(ABC):
         """This takes the results from the evaluate_evalset and does any necessary
         formatting, taking into account the metric type.
 
-        :param examples: The examples to evaluate the metric on. :type examples:
-        List[dspy.Example] :param overall_score: The overall score of the metric. :type
-        overall_score: float :param results: The results from the evaluate_evalset.
-        :type results: List :param scores: The scores from the evaluate_evalset. :type
-        scores: List
+        :param examples: The examples to evaluate the metric on.
+        :type examples: List[dspy.Example]
+        :param overall_score: The overall score of the metric.
+        :type overall_score: float
+        :param results: The results from the evaluate_evalset.
+        :type results: List
+        :param scores: The scores from the evaluate_evalset.
+        :type scores: List
 
         """
         pass
@@ -108,12 +115,14 @@ class SinglePrompt(ABC):
         """Compare the metrics of the base and optimized models. Return true if the
         optimized model is better than the base model.
 
-        :param base_metrics: The metrics of the base model. :type base_metrics: Any
-        :param optimized_metrics: The metrics of the optimized model. :type
-        optimized_metrics: Any :param comparison_value: The value to compare the metrics
-        on. Determines which metric is used to compare the models. :type
-        comparison_value: str :return: True if the optimized model is better than the
-        base model, False otherwise. :rtype: bool
+        :param base_metrics: The metrics of the base model.
+        :type base_metrics: Any
+        :param optimized_metrics: The metrics of the optimized model.
+        :type optimized_metrics: Any
+        :param comparison_value: The value to compare the metrics on. Determines which metric is used to compare the models.
+        :type comparison_value: str
+        :return: True if the optimized model is better than the base model, False otherwise.
+        :rtype: bool
 
         """
         pass
@@ -127,13 +136,16 @@ class SinglePrompt(ABC):
     ) -> Dict[str, Any]:
         """Take in a list of examples and evaluate the results.
 
-        :param examples: The examples to evaluate the results on. :type examples:
-        List[dspy.Example] :param num_threads: The number of threads to use for
-        evaluation. :type num_threads: int :param display_progress: Whether to display
-        the progress of the evaluation. :type display_progress: bool :param
-        display_table: Whether to display the table of the evaluation. :type
-        display_table: bool :return: A dictionary containing the overall score, results,
-        and scores. :rtype: Dict[str, Any]
+        :param examples: The examples to evaluate the results on.
+        :type examples: List[dspy.Example]
+        :param num_threads: The number of threads to use for evaluation.
+        :type num_threads: int
+        :param display_progress: Whether to display the progress of the evaluation.
+        :type display_progress: bool
+        :param display_table: Whether to display the table of the evaluation.
+        :type display_table: bool
+        :return: A dictionary containing the overall score, results, and scores.
+        :rtype: Dict[str, Any]
 
         """
         evaluator = dspy.Evaluate(

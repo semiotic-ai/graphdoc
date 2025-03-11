@@ -42,6 +42,19 @@ mlflow_teardown() {
     cd ..
 }
 
+# Documentation commands
+docs_generate() {
+    echo "Generating documentation RST files..."
+    cd graphdoc && ./run.sh docs-generate
+    cd ..
+}
+
+docs_build() {
+    echo "Building documentation..."
+    cd graphdoc && ./run.sh docs
+    cd ..
+}
+
 # train commands
 doc_quality_train() {
     echo "Training a document quality model..."
@@ -75,6 +88,10 @@ show_help() {
     # make commands
     echo "  mlflow-setup                    Install mlflow-manager dependencies and run the services"
     echo "  mlflow-teardown                 Teardown mlflow-manager services"
+    
+    # documentation commands
+    echo "  docs-generate                   Generate documentation RST files automatically"
+    echo "  docs-build                      Build documentation HTML files"
 
     # train commands
     echo "  doc-quality-train               Train a document quality model"
@@ -96,6 +113,10 @@ else
         # make commands
         "mlflow-setup") mlflow_setup ;;
         "mlflow-teardown") mlflow_teardown ;;
+        
+        # documentation commands
+        "docs-generate") docs_generate ;;
+        "docs-build") docs_build ;;
 
         # train commands
         "doc-quality-train") doc_quality_train ;;

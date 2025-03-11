@@ -33,16 +33,22 @@ class SinglePromptTrainer(ABC):
         """Initialize the SinglePromptTrainer. This is the base class for implementing a
         trainer for a single prompt.
 
-        :param prompt: The prompt to train. :type prompt: SinglePrompt :param
-        optimizer_type: The type of optimizer to use. :type optimizer_type: str :param
-        optimizer_kwargs: The keyword arguments for the optimizer. :type
-        optimizer_kwargs: Dict[str, Any] :param mlflow_model_name: The name of the model
-        in mlflow. :type mlflow_model_name: str :param mlflow_experiment_name: The name
-        of the experiment in mlflow. :type mlflow_experiment_name: str :param
-        mlflow_tracking_uri: The uri of the mlflow tracking server. :type
-        mlflow_tracking_uri: str :param trainset: The training set. :type trainset:
-        List[dspy.Example]
-
+        :param prompt: The prompt to train.
+        :type prompt: SinglePrompt
+        :param optimizer_type: The type of optimizer to use.
+        :type optimizer_type: str
+        :param optimizer_kwargs: The keyword arguments for the optimizer.
+        :type optimizer_kwargs: Dict[str, Any]
+        :param mlflow_model_name: The name of the model in mlflow.
+        :type mlflow_model_name: str
+        :param mlflow_experiment_name: The name of the experiment in mlflow.
+        :type mlflow_experiment_name: str
+        :param mlflow_tracking_uri: The uri of the mlflow tracking server.
+        :type mlflow_tracking_uri: str
+        :param trainset: The training set.
+        :type trainset: List[dspy.Example]
+        :param evalset: The evaluation set.
+        :type evalset: List[dspy.Example]
         """
         self.prompt = prompt
         self.optimizer_type = optimizer_type
@@ -73,15 +79,14 @@ class SinglePromptTrainer(ABC):
     # Abstract Methods #
     ####################
 
-    # TODO: decide on a return type and implement better type checking for parameters
     @abstractmethod
     def evaluation_metrics(self, base_evaluation, optimized_evaluation):
         """Log evaluation metrics to mlflow.
 
-        :param base_evaluation: The evaluation metrics of the base model. :type
-        base_evaluation: Any :param optimized_evaluation: The evaluation metrics of the
-        optimized model. :type optimized_evaluation: Any
-
+        :param base_evaluation: The evaluation metrics of the base model.
+        :type base_evaluation: Any
+        :param optimized_evaluation: The evaluation metrics of the optimized model.
+        :type optimized_evaluation: Any
         """
         pass
 

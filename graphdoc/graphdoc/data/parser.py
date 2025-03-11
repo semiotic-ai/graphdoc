@@ -30,7 +30,10 @@ log = logging.getLogger(__name__)
 
 
 class Parser:
-    """A class for parsing and handling of GraphQL objects."""
+    """A class for parsing and handling of GraphQL objects.
+    
+    :no-index:
+    """
 
     DEFAULT_NODE_TYPES = {
         DocumentNode: "full schema",
@@ -48,9 +51,12 @@ class Parser:
     ) -> str:
         """Check the type of a schema node.
 
-        :param node: The schema node to check :type node: Node :param type_mapping:
-        Custom mapping of node types to strings. Defaults to DEFAULT_NODE_TYPES :type
-        type_mapping: Optional[dict[type, str]] :return: The type of the schema node
+        :param node: The schema node to check
+        :type node: Node
+        :param type_mapping: Custom mapping of node types to strings. Defaults to
+            DEFAULT_NODE_TYPES
+        :type type_mapping: Optional[dict[type, str]]
+        :return: The type of the schema node
         :rtype: str
 
         """
@@ -65,11 +71,10 @@ class Parser:
     ) -> DocumentNode:
         """Parse a schema from a file.
 
-        :param schema_file: The name of the schema file :type schema_
-        file:
-        str
+        :param schema_file: The name of the schema file
+        :type schema_file: Union[str, Path]
         :param schema_directory_path: A path to a directory containing schemas
-        :type schema_directory_path: str
+        :type schema_directory_path: Optional[Union[str, Path]]
         :return: The parsed schema
         :rtype: DocumentNode
         :raises Exception: If the schema cannot be parsed
@@ -183,12 +188,18 @@ class Parser:
         with the new column or table value. Do not update descriptions that already have
         a value. Default values are provided for the new column and table descriptions.
 
-        :param node: The GraphQL node to update :type node: Node :param
-        new_column_value: The new column description value :type new_column_value: str
-        :param new_table_value: The new table description value :type new_table_value:
-        str :param use_value_name: Whether to use the value name in the description
-        :type use_value_name: bool :param value_name: The name of the value :type
-        value_name: Optional[str] :return: The updated node :rtype: Node
+        :param node: The GraphQL node to update
+        :type node: Node
+        :param new_column_value: The new column description value
+        :type new_column_value: str
+        :param new_table_value: The new table description value
+        :type new_table_value: str
+        :param use_value_name: Whether to use the value name in the description
+        :type use_value_name: bool
+        :param value_name: The name of the value
+        :type value_name: Optional[str]
+        :return: The updated node
+        :rtype: Node
 
         """
         if hasattr(node, "description"):  # and node.description == None:
@@ -267,9 +278,12 @@ class Parser:
         """A method to check if two schema nodes are equal. Only checks that the schemas
         structures are equal, not the descriptions.
 
-        :param gold_node: The gold standard schema node :type gold_node: Node :param
-        check_node: The schema node to check :type check_node: Node :return: Whether the
-        schemas are equal :rtype: bool
+        :param gold_node: The gold standard schema node
+        :type gold_node: Node
+        :param check_node: The schema node to check
+        :type check_node: Node
+        :return: Whether the schemas are equal
+        :rtype: bool
 
         """
         gold_node_copy = copy.deepcopy(gold_node)
@@ -314,10 +328,13 @@ class Parser:
     ) -> Union[dict[str, SchemaObject], None]:
         """Parse out all available tables from a full schema object.
 
-        :param schema: The full schema object to parse :type schema: SchemaObject :param
-        type_mapping: Custom mapping of node types to strings. Defaults to
-        DEFAULT_NODE_TYPES :type type_mapping: Optional[dict[type, str]] :return: The
-        parsed objects (tables and enums) :rtype: Union[dict, None]
+        :param schema: The full schema object to parse
+        :type schema: SchemaObject
+        :param type_mapping: Custom mapping of node types to strings. Defaults to
+            DEFAULT_NODE_TYPES
+        :type type_mapping: Optional[dict[type, str]]
+        :return: The parsed objects (tables and enums)
+        :rtype: Union[dict, None]
 
         """
         if schema.schema_ast is None:

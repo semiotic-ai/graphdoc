@@ -20,7 +20,10 @@ log = logging.getLogger(__name__)
 # DSPy Signatures #
 ###################
 class DocQualitySignature(dspy.Signature):
-    """
+    """A signature for evaluating the quality of GraphQL schema documentation.
+    
+    :no-index:
+    
     You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
 
     The categories are described as:
@@ -40,37 +43,10 @@ class DocQualitySignature(dspy.Signature):
 
 
 class DocQualityDemonstrationSignature(dspy.Signature):
+    """A signature for demonstrating good, average and bad GraphQL schema documentation quality examples.
+    
+    :no-index:
     """
-    You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
-
-    The categories are described as:
-    - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
-        perfect (4) example:
-        type Domain @entity {
-            " The namehash (id) of the parent name. References the Domain entity that is the parent of the current domain. Type: Domain "
-            parent: Domain
-        }
-    - almost perfect (3): The documentation is almost perfect and free from ambiguity, but there is room for improvement.
-        almost perfect (3) example:
-        type Token @entity {
-            " Name of the token, mirrored from the smart contract "
-            name: String!
-        }
-    - poor but correct (2): The documentation is poor but correct and has room for improvement due to missing information. The documentation is not incorrect.
-        poor but correct (2) example:
-        type InterestRate @entity {
-            "Description for column: id"
-            id: ID!
-        }
-    - incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.
-        incorrect (1) example:
-        type BridgeProtocol implements Protocol @entity {
-            " Social Security Number of the protocol's main developer "
-            id: Bytes!
-        }
-    Output a number rating that corresponds to the categories described above.
-
-    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
@@ -107,6 +83,15 @@ def doc_quality_factory(
 # Single Prompt Class #
 #######################
 class DocQualityPrompt(SinglePrompt):
+    """DocQualityPrompt class for evaluating documentation quality.
+    
+    :no-index:
+    
+    This is a single prompt that can be used to evaluate the quality of the documentation
+    for a given schema. This is a wrapper around the SinglePrompt class that implements
+    the abstract methods.
+    """
+
     def __init__(
         self,
         prompt: Union[
@@ -120,20 +105,20 @@ class DocQualityPrompt(SinglePrompt):
         prompt_metric: Union[Literal["rating", "category"], Callable] = "rating",
     ) -> None:
         # TODO: we should think about if we want to add checks on any provided dspy.Signature
-        """Initialize the DocQualityPrompt. This is a single prompt that can be used to
-        evaluate the quality of the documentation for a given schema. This is a wrapper
-        around the SinglePrompt class that implements the abstract methods.
+        """Initialize the DocQualityPrompt.
 
         :param prompt: The prompt to use. Can either be a string that maps to a defined
-        signature, as set in the doc_quality_factory, or a dspy.Signature. :type prompt:
-        Union[str, dspy.Signature] :param prompt_type: The type of prompt to use. :type
-        prompt_type: Union[Literal["predict", "chain_of_thought"], Callable] :param
-        prompt_metric: The metric to use. Can either be a string that maps to a defined
-        metric, as set in the doc_quality_factory, or a custom callable function.
-        Function must have the signature (example: dspy.Example, prediction:
-        dspy.Prediction) -> bool. :type prompt_metric: Union[Literal["rating",
-        "category"], Callable]
+          signature, as set in the doc_quality_factory, or a dspy.Signature.
+        :type prompt: Union[str, dspy.Signature]
 
+        :param prompt_type: The type of prompt to use.
+        :type prompt_type: Union[Literal["predict", "chain_of_thought"], Callable]
+
+        :param prompt_metric: The metric to use. Can either be a string that maps to a defined
+          metric, as set in the doc_quality_factory, or a custom callable function.
+          Function must have the signature (example: dspy.Example, prediction:
+          dspy.Prediction) -> bool.
+        :type prompt_metric: Union[Literal["rating", "category"], Callable]
         """
         prompt_signature = doc_quality_factory(prompt)
         super().__init__(
@@ -163,12 +148,14 @@ class DocQualityPrompt(SinglePrompt):
     ) -> bool:
         """Evaluate the metric for the given example and prediction.
 
-        :param example: The example to evaluate the metric on. :type example:
-        dspy.Example :param prediction: The prediction to evaluate the metric on. :type
-        prediction: dspy.Prediction :param trace: Used for DSPy. :type trace: Any
+        :param example: The example to evaluate the metric on.
+        :type example: dspy.Example
+        :param prediction: The prediction to evaluate the metric on.
+        :type prediction: dspy.Prediction
+        :param trace: Used for DSPy.
+        :type trace: Any
         :return: The result of the evaluation. A boolean for if the metric is correct.
         :rtype: bool
-
         """
         evaluation_mapping = {
             "rating": self._evaluate_rating_metric,
@@ -280,10 +267,14 @@ class DocQualityPrompt(SinglePrompt):
         """Compare the metrics of the base and optimized models. Returns true if the
         optimized model is better than the base model.
 
-        :param base_metrics: The metrics of the base model. :type base_metrics: Any
-        :param optimized_metrics: The metrics of the optimized model. :type
-        optimized_metrics: Any :param comparison_value: The value to compare.
-
+        :param base_metrics: The metrics of the base model.
+        :type base_metrics: Any
+        :param optimized_metrics: The metrics of the optimized model.
+        :type optimized_metrics: Any
+        :param comparison_value: The value to compare.
+        :type comparison_value: str
+        :return: True if the optimized model is better than the base model.
+        :rtype: bool
         """
         if comparison_value == "overall_score":
             return optimized_metrics["overall_score"] > base_metrics["overall_score"]
