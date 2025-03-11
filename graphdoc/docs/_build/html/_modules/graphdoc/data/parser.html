@@ -71,15 +71,14 @@
            <div itemprop="articleBody">
              
   <h1>Source code for graphdoc.data.parser</h1><div class="highlight"><pre>
-<span></span><span class="c1"># system packages</span>
+<span></span><span class="c1"># Copyright 2025-, Semiotic AI, Inc.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="c1"># system packages</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
-
-<span class="c1"># internal packages</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaObject</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_directory_path</span><span class="p">,</span> <span class="n">check_file_path</span>
 
 <span class="c1"># external packages</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">graphql</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -94,16 +93,19 @@
     <span class="n">print_ast</span><span class="p">,</span>
 <span class="p">)</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.data.helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_directory_path</span><span class="p">,</span> <span class="n">check_file_path</span>
+
+<span class="c1"># internal packages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.data.schema</span><span class="w"> </span><span class="kn">import</span> <span class="n">SchemaObject</span>
+
 <span class="c1"># logging</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Parser">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.parser.Parser">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.Parser">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Parser</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A class for parsing and handling of GraphQL objects.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A class for parsing and handling of GraphQL objects.&quot;&quot;&quot;</span>
 
     <span class="n">DEFAULT_NODE_TYPES</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">DocumentNode</span><span class="p">:</span> <span class="s2">&quot;full schema&quot;</span><span class="p">,</span>
@@ -116,20 +118,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">type_mapping</span> <span class="o">=</span> <span class="n">type_mapping</span> <span class="ow">or</span> <span class="n">Parser</span><span class="o">.</span><span class="n">DEFAULT_NODE_TYPES</span>
 
 <div class="viewcode-block" id="Parser._check_node_type">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.parser.Parser._check_node_type">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.Parser._check_node_type">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_check_node_type</span><span class="p">(</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">type_mapping</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Check the type of a schema node.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Check the type of a schema node.</span>
 
-<span class="sd">        :param node: The schema node to check</span>
-<span class="sd">        :type node: Node</span>
-<span class="sd">        :param type_mapping: Custom mapping of node types to strings. Defaults to DEFAULT_NODE_TYPES</span>
-<span class="sd">        :type type_mapping: Optional[dict[type, str]]</span>
-<span class="sd">        :return: The type of the schema node</span>
+<span class="sd">        :param node: The schema node to check :type node: Node :param type_mapping:</span>
+<span class="sd">        Custom mapping of node types to strings. Defaults to DEFAULT_NODE_TYPES :type</span>
+<span class="sd">        type_mapping: Optional[dict[type, str]] :return: The type of the schema node</span>
 <span class="sd">        :rtype: str</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># use provided mapping or fall back to defaults</span>
         <span class="n">mapping</span> <span class="o">=</span> <span class="n">type_mapping</span> <span class="ow">or</span> <span class="n">Parser</span><span class="o">.</span><span class="n">DEFAULT_NODE_TYPES</span>
@@ -137,22 +137,23 @@
 
 
 <div class="viewcode-block" id="Parser.parse_schema_from_file">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.parser.Parser.parse_schema_from_file">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.Parser.parse_schema_from_file">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parse_schema_from_file</span><span class="p">(</span>
         <span class="n">schema_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
         <span class="n">schema_directory_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DocumentNode</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse a schema from a file.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a schema from a file.</span>
 
-<span class="sd">        :param schema_file: The name of the schema file</span>
-<span class="sd">        :type schema_file: str</span>
+<span class="sd">        :param schema_file: The name of the schema file :type schema_</span>
+<span class="sd">        file:</span>
+<span class="sd">        str</span>
 <span class="sd">        :param schema_directory_path: A path to a directory containing schemas</span>
 <span class="sd">        :type schema_directory_path: str</span>
 <span class="sd">        :return: The parsed schema</span>
 <span class="sd">        :rtype: DocumentNode</span>
 <span class="sd">        :raises Exception: If the schema cannot be parsed</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">schema_directory_path</span><span class="p">:</span>
             <span class="n">check_directory_path</span><span class="p">(</span><span class="n">schema_directory_path</span><span class="p">)</span>
@@ -170,18 +171,21 @@
 
 
 <div class="viewcode-block" id="Parser.update_node_descriptions">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.parser.Parser.update_node_descriptions">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.Parser.update_node_descriptions">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">update_node_descriptions</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">new_value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Node</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Given a GraphQL node, recursively traverse the node and its children, updating all descriptions with the new value. Can also be used to remove descriptions by passing None as the new value.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a GraphQL node, recursively traverse the node and its children,</span>
+<span class="sd">        updating all descriptions with the new value. Can also be used to remove</span>
+<span class="sd">        descriptions by passing None as the new value.</span>
 
 <span class="sd">        :param node: The GraphQL node to update</span>
 <span class="sd">        :type node: Node</span>
-<span class="sd">        :param new_value: The new description value. If None, the description will be removed.</span>
+<span class="sd">        :param new_value: The new description value. If None, the description will be</span>
+<span class="sd">            removed.</span>
 <span class="sd">        :type new_value: Optional[str]</span>
 <span class="sd">        :return: The updated node</span>
 <span class="sd">        :rtype: Node</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">):</span>
             <span class="n">description</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
@@ -189,7 +193,7 @@
                 <span class="k">if</span> <span class="n">new_value</span><span class="p">:</span>
                     <span class="n">description</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">new_value</span>
                 <span class="k">else</span><span class="p">:</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                    <span class="n">node</span><span class="o">.</span><span class="n">description</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">attr</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;__&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">attr</span> <span class="o">==</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span>
@@ -205,18 +209,19 @@
 
 
 <div class="viewcode-block" id="Parser.count_description_pattern_matching">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.parser.Parser.count_description_pattern_matching">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.Parser.count_description_pattern_matching">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">count_description_pattern_matching</span><span class="p">(</span><span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">pattern</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Counts the number of times a pattern matches a description in a node and its children.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Counts the number of times a pattern matches a description in a node and its</span>
+<span class="sd">        children.</span>
 
 <span class="sd">        :param node: The GraphQL node to count the pattern matches in</span>
 <span class="sd">        :type node: Node</span>
 <span class="sd">        :param pattern: The pattern to count the matches of</span>
 <span class="sd">        :type pattern: str</span>
-<span class="sd">        :return: A dictionary containing the total number of descriptions, the number of descriptions that match the pattern, and the number of descriptions that are empty. { &quot;total&quot;: int, &quot;pattern&quot;: int, &quot;empty&quot;: int }</span>
+<span class="sd">        :return: A dictionary with the counts of matches</span>
 <span class="sd">        :rtype: dict[str, int]</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">counts</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;total&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
@@ -254,7 +259,7 @@
 
 
 <div class="viewcode-block" id="Parser.fill_empty_descriptions">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.parser.Parser.fill_empty_descriptions">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.Parser.fill_empty_descriptions">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">fill_empty_descriptions</span><span class="p">(</span>
         <span class="n">node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span>
@@ -263,30 +268,28 @@
         <span class="n">use_value_name</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
         <span class="n">value_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Recursively traverse the node and its children, filling in empty descriptions with the new column or table value. Do not update descriptions that already have a value. Default values are provided for the new column and table descriptions.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Recursively traverse the node and its children, filling in empty descriptions</span>
+<span class="sd">        with the new column or table value. Do not update descriptions that already have</span>
+<span class="sd">        a value. Default values are provided for the new column and table descriptions.</span>
 
-<span class="sd">        :param node: The GraphQL node to update</span>
-<span class="sd">        :type node: Node</span>
-<span class="sd">        :param new_column_value: The new column description value</span>
-<span class="sd">        :type new_column_value: str</span>
-<span class="sd">        :param new_table_value: The new table description value</span>
-<span class="sd">        :type new_table_value: str</span>
-<span class="sd">        :param use_value_name: Whether to use the value name in the description</span>
-<span class="sd">        :type use_value_name: bool</span>
-<span class="sd">        :param value_name: The name of the value</span>
-<span class="sd">        :type value_name: Optional[str]</span>
-<span class="sd">        :return: The updated node</span>
-<span class="sd">        :rtype: Node</span>
+<span class="sd">        :param node: The GraphQL node to update :type node: Node :param</span>
+<span class="sd">        new_column_value: The new column description value :type new_column_value: str</span>
+<span class="sd">        :param new_table_value: The new table description value :type new_table_value:</span>
+<span class="sd">        str :param use_value_name: Whether to use the value name in the description</span>
+<span class="sd">        :type use_value_name: bool :param value_name: The name of the value :type</span>
+<span class="sd">        value_name: Optional[str] :return: The updated node :rtype: Node</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">):</span>  <span class="c1"># and node.description == None:</span>
             <span class="n">description</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">description</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">description</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># if the node is a table, use the table value</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">ObjectTypeDefinitionNode</span><span class="p">):</span>
                     <span class="n">new_value</span> <span class="o">=</span> <span class="n">new_table_value</span>
                 <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">EnumTypeDefinitionNode</span><span class="p">):</span>  <span class="c1"># this is an enum type</span>
-                    <span class="n">new_value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Description for enum type: </span><span class="si">{</span><span class="n">value_name</span><span class="si">}</span><span class="s2">&quot;</span>  <span class="c1"># TODO: we should add this back to the fill_empty_descriptions parameter list</span>
+                    <span class="n">new_value</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Description for enum type: </span><span class="si">{</span><span class="n">value_name</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="c1"># TODO: we should add this back to the fill_empty_descriptions</span>
+                    <span class="c1"># parameter list</span>
                 <span class="c1"># else the node is a column, use the column value</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">new_value</span> <span class="o">=</span> <span class="n">new_column_value</span>
@@ -315,7 +318,8 @@
                         <span class="p">):</span>
                             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">ObjectTypeDefinitionNode</span><span class="p">):</span>
                                 <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                                    <span class="sa">f</span><span class="s2">&quot;found an instance of a ObjectTypeDefinitionNode: </span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;found an instance of a ObjectTypeDefinitionNode: &quot;</span>
+                                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
                                 <span class="p">)</span>
                             <span class="n">value_name</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span>
                         <span class="n">Parser</span><span class="o">.</span><span class="n">fill_empty_descriptions</span><span class="p">(</span>
@@ -334,7 +338,8 @@
                 <span class="p">):</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">ObjectTypeDefinitionNode</span><span class="p">):</span>
                         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-                            <span class="sa">f</span><span class="s2">&quot;found an instance of a ObjectTypeDefinitionNode: </span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;found an instance of a ObjectTypeDefinitionNode: &quot;</span>
+                            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
                         <span class="p">)</span>
                     <span class="n">value_name</span> <span class="o">=</span> <span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span>
                 <span class="n">Parser</span><span class="o">.</span><span class="n">fill_empty_descriptions</span><span class="p">(</span>
@@ -348,18 +353,16 @@
 
 
 <div class="viewcode-block" id="Parser.schema_equality_check">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.parser.Parser.schema_equality_check">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.Parser.schema_equality_check">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">schema_equality_check</span><span class="p">(</span><span class="n">gold_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">,</span> <span class="n">check_node</span><span class="p">:</span> <span class="n">Node</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        A method to check if two schema nodes are equal. Only checks that the schemas structures are equal, not the descriptions.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;A method to check if two schema nodes are equal. Only checks that the schemas</span>
+<span class="sd">        structures are equal, not the descriptions.</span>
 
-<span class="sd">        :param gold_node: The gold standard schema node</span>
-<span class="sd">        :type gold_node: Node</span>
-<span class="sd">        :param check_node: The schema node to check</span>
-<span class="sd">        :type check_node: Node</span>
-<span class="sd">        :return: Whether the schemas are equal</span>
-<span class="sd">        :rtype: bool</span>
+<span class="sd">        :param gold_node: The gold standard schema node :type gold_node: Node :param</span>
+<span class="sd">        check_node: The schema node to check :type check_node: Node :return: Whether the</span>
+<span class="sd">        schemas are equal :rtype: bool</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">gold_node_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">gold_node</span><span class="p">)</span>
         <span class="n">check_node_copy</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">check_node</span><span class="p">)</span>
@@ -373,16 +376,14 @@
 
 
 <div class="viewcode-block" id="Parser.schema_object_from_file">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.parser.Parser.schema_object_from_file">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.Parser.schema_object_from_file">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">schema_object_from_file</span><span class="p">(</span>
         <span class="n">schema_file</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span>
         <span class="n">category</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SchemaObject</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse a schema object from a file.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse a schema object from a file.&quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">schema_ast</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">parse_schema_from_file</span><span class="p">(</span><span class="n">schema_file</span><span class="p">)</span>
             <span class="n">schema_str</span> <span class="o">=</span> <span class="n">print_ast</span><span class="p">(</span><span class="n">schema_ast</span><span class="p">)</span>
@@ -404,20 +405,18 @@
 
 
 <div class="viewcode-block" id="Parser.parse_objects_from_full_schema_object">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.parser.Parser.parse_objects_from_full_schema_object">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.Parser.parse_objects_from_full_schema_object">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">parse_objects_from_full_schema_object</span><span class="p">(</span>
         <span class="n">schema</span><span class="p">:</span> <span class="n">SchemaObject</span><span class="p">,</span> <span class="n">type_mapping</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">type</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">SchemaObject</span><span class="p">],</span> <span class="kc">None</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Parse out all available tables from a full schema object.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Parse out all available tables from a full schema object.</span>
 
-<span class="sd">        :param schema: The full schema object to parse</span>
-<span class="sd">        :type schema: SchemaObject</span>
-<span class="sd">        :param type_mapping: Custom mapping of node types to strings. Defaults to DEFAULT_NODE_TYPES</span>
-<span class="sd">        :type type_mapping: Optional[dict[type, str]]</span>
-<span class="sd">        :return: The parsed objects (tables and enums)</span>
-<span class="sd">        :rtype: Union[dict, None]</span>
+<span class="sd">        :param schema: The full schema object to parse :type schema: SchemaObject :param</span>
+<span class="sd">        type_mapping: Custom mapping of node types to strings. Defaults to</span>
+<span class="sd">        DEFAULT_NODE_TYPES :type type_mapping: Optional[dict[type, str]] :return: The</span>
+<span class="sd">        parsed objects (tables and enums) :rtype: Union[dict, None]</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">schema</span><span class="o">.</span><span class="n">schema_ast</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Schema object has no schema_ast: </span><span class="si">{</span><span class="n">schema</span><span class="o">.</span><span class="n">schema_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -431,11 +430,11 @@
         <span class="n">tables</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">for</span> <span class="n">definition</span> <span class="ow">in</span> <span class="n">schema</span><span class="o">.</span><span class="n">schema_ast</span><span class="o">.</span><span class="n">definitions</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">ObjectTypeDefinitionNode</span><span class="p">):</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;found table schema&quot;</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;found table schema&quot;</span><span class="p">)</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">schema</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="n">schema_type</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">_check_node_type</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">type_mapping</span><span class="p">)</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">EnumTypeDefinitionNode</span><span class="p">):</span>
-                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;found enum schema&quot;</span><span class="p">)</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;found enum schema&quot;</span><span class="p">)</span>
                 <span class="n">key</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">schema</span><span class="o">.</span><span class="n">key</span><span class="si">}</span><span class="s2">_</span><span class="si">{</span><span class="n">definition</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span>
                 <span class="n">schema_type</span> <span class="o">=</span> <span class="n">Parser</span><span class="o">.</span><span class="n">_check_node_type</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">type_mapping</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>

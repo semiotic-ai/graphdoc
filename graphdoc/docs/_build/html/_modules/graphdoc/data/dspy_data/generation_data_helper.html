@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>graphdoc.data.dspy_data.generation_data_helper &mdash; GraphDoc 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            GraphDoc
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">GraphDoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">graphdoc.data.dspy_data.generation_data_helper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for graphdoc.data.dspy_data.generation_data_helper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2025-, Semiotic AI, Inc.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="c1"># system packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="c1"># external packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dspy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mlflow.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelSignature</span><span class="p">,</span> <span class="n">infer_signature</span>
+
+<span class="c1"># internal packages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.data.dspy_data.dspy_data_helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">DspyDataHelper</span>
+
+<span class="c1"># logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="GenerationDataHelper">
+<a class="viewcode-back" href="../../../../source/graphdoc.data.html#graphdoc.GenerationDataHelper">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">GenerationDataHelper</span><span class="p">(</span><span class="n">DspyDataHelper</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A helper class for creating data objects related to our Documentation Generation</span>
+<span class="sd">    dspy.Signature.</span>
+
+<span class="sd">    The example signature is defined as:</span>
+<span class="sd">    ```</span>
+<span class="sd">    database_schema: str = dspy.InputField()</span>
+<span class="sd">    documented_schema: str = dspy.OutputField()</span>
+<span class="sd">    ```</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="GenerationDataHelper.example">
+<a class="viewcode-back" href="../../../../source/graphdoc.data.html#graphdoc.GenerationDataHelper.example">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">example</span><span class="p">(</span><span class="n">inputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">(</span>
+            <span class="n">database_schema</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database_schema&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">documented_schema</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;documented_schema&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">with_inputs</span><span class="p">(</span><span class="s2">&quot;database_schema&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GenerationDataHelper.example_example">
+<a class="viewcode-back" href="../../../../source/graphdoc.data.html#graphdoc.GenerationDataHelper.example_example">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">example_example</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">GenerationDataHelper</span><span class="o">.</span><span class="n">example</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;database_schema&quot;</span><span class="p">:</span> <span class="s2">&quot;test database schema&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;documented_schema&quot;</span><span class="p">:</span> <span class="s2">&quot;test documented schema&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GenerationDataHelper.model_signature">
+<a class="viewcode-back" href="../../../../source/graphdoc.data.html#graphdoc.GenerationDataHelper.model_signature">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">model_signature</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">ModelSignature</span><span class="p">:</span>
+        <span class="c1"># TODO: decide if this should be here or in the mlflow_data_helper</span>
+        <span class="n">example</span> <span class="o">=</span> <span class="n">GenerationDataHelper</span><span class="o">.</span><span class="n">example_example</span><span class="p">()</span><span class="o">.</span><span class="n">toDict</span><span class="p">()</span>
+        <span class="n">example</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;documented_schema&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">infer_signature</span><span class="p">(</span><span class="n">example</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GenerationDataHelper.prediction">
+<a class="viewcode-back" href="../../../../source/graphdoc.data.html#graphdoc.GenerationDataHelper.prediction">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prediction</span><span class="p">(</span><span class="n">inputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">(</span>
+            <span class="n">database_schema</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;database_schema&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+            <span class="n">documented_schema</span><span class="o">=</span><span class="n">inputs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;documented_schema&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GenerationDataHelper.prediction_example">
+<a class="viewcode-back" href="../../../../source/graphdoc.data.html#graphdoc.GenerationDataHelper.prediction_example">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">prediction_example</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">GenerationDataHelper</span><span class="o">.</span><span class="n">prediction</span><span class="p">(</span>
+            <span class="p">{</span>
+                <span class="s2">&quot;database_schema&quot;</span><span class="p">:</span> <span class="s2">&quot;test database schema&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;documented_schema&quot;</span><span class="p">:</span> <span class="s2">&quot;test documented schema&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="GenerationDataHelper.trainset">
+<a class="viewcode-back" href="../../../../source/graphdoc.data.html#graphdoc.GenerationDataHelper.trainset">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">trainset</span><span class="p">(</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span> <span class="n">Dataset</span><span class="p">],</span>
+        <span class="n">filter_args</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># TODO: implement this</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s2">&quot;from dictionary is not implemented&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">Dataset</span><span class="p">):</span>
+            <span class="c1"># TODO: here is where we will want to enable post-processing of the inputs</span>
+            <span class="n">examples</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">inputs</span><span class="p">)):</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">inputs</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">database_schema</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_str&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="n">documented_schema</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;schema_str&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">database_schema</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">documented_schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;dataset item </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> is missing one or more required fields&quot;</span>
+                    <span class="p">)</span>
+                <span class="n">example_dict</span> <span class="o">=</span> <span class="p">{</span>
+                    <span class="s2">&quot;database_schema&quot;</span><span class="p">:</span> <span class="n">database_schema</span><span class="p">,</span>
+                    <span class="s2">&quot;documented_schema&quot;</span><span class="p">:</span> <span class="n">documented_schema</span><span class="p">,</span>
+                <span class="p">}</span>
+                <span class="n">examples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">GenerationDataHelper</span><span class="o">.</span><span class="n">example</span><span class="p">(</span><span class="n">example_dict</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">examples</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;inputs must be a dictionary or a datasets, not: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Semiotic Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

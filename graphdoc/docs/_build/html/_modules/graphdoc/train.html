@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>graphdoc.train &mdash; GraphDoc 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            GraphDoc
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">graphdoc</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">GraphDoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">graphdoc.train</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for graphdoc.train</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2025-, Semiotic AI, Inc.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="c1"># system packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+
+<span class="c1"># external packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dspy</span>
+
+<span class="c1"># internal packages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.train.doc_generator_trainer</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocGeneratorTrainer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.train.doc_quality_trainer</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocQualityTrainer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.train.optimizers</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">_optimizer_kwargs_filter</span><span class="p">,</span>
+    <span class="n">optimizer_class</span><span class="p">,</span>
+    <span class="n">optimizer_compile</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.train.single_prompt_trainer</span><span class="w"> </span><span class="kn">import</span> <span class="n">SinglePrompt</span><span class="p">,</span> <span class="n">SinglePromptTrainer</span>
+
+<span class="c1"># logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="TrainerFactory">
+<a class="viewcode-back" href="../../graphdoc.train.html#graphdoc.train.TrainerFactory">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">TrainerFactory</span><span class="p">:</span>
+<div class="viewcode-block" id="TrainerFactory.single_trainer">
+<a class="viewcode-back" href="../../graphdoc.train.html#graphdoc.train.TrainerFactory.single_trainer">[docs]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">single_trainer</span><span class="p">(</span>
+        <span class="n">trainer_class</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="n">SinglePrompt</span><span class="p">,</span>
+        <span class="n">optimizer_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">optimizer_kwargs</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
+        <span class="n">mlflow_tracking_uri</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">mlflow_model_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">mlflow_experiment_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">trainset</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">],</span>
+        <span class="n">evalset</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">],</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an instance of the specified trainer class.&quot;&quot;&quot;</span>
+        <span class="c1"># update any potentially missing or conflicting values</span>
+        <span class="n">optimizer_kwargs</span><span class="p">[</span><span class="s2">&quot;metric&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">evaluate_metric</span>
+        <span class="n">optimizer_kwargs</span><span class="p">[</span><span class="s2">&quot;student&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prompt</span><span class="o">.</span><span class="n">infer</span>
+        <span class="n">optimizer_kwargs</span><span class="p">[</span><span class="s2">&quot;trainset&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">trainset</span>
+
+        <span class="n">trainer_classes</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;DocQualityTrainer&quot;</span><span class="p">:</span> <span class="n">DocQualityTrainer</span><span class="p">,</span>
+            <span class="s2">&quot;DocGeneratorTrainer&quot;</span><span class="p">:</span> <span class="n">DocGeneratorTrainer</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="n">trainer_class</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">trainer_classes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unknown trainer class: </span><span class="si">{</span><span class="n">trainer_class</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">trainer_classes</span><span class="p">[</span><span class="n">trainer_class</span><span class="p">](</span>
+                <span class="n">prompt</span><span class="o">=</span><span class="n">prompt</span><span class="p">,</span>  <span class="c1"># type: ignore # TODO: we should have better type checking here</span>
+                <span class="n">optimizer_type</span><span class="o">=</span><span class="n">optimizer_type</span><span class="p">,</span>
+                <span class="n">optimizer_kwargs</span><span class="o">=</span><span class="n">optimizer_kwargs</span><span class="p">,</span>
+                <span class="n">mlflow_tracking_uri</span><span class="o">=</span><span class="n">mlflow_tracking_uri</span><span class="p">,</span>
+                <span class="n">mlflow_model_name</span><span class="o">=</span><span class="n">mlflow_model_name</span><span class="p">,</span>
+                <span class="n">mlflow_experiment_name</span><span class="o">=</span><span class="n">mlflow_experiment_name</span><span class="p">,</span>
+                <span class="n">trainset</span><span class="o">=</span><span class="n">trainset</span><span class="p">,</span>
+                <span class="n">evalset</span><span class="o">=</span><span class="n">evalset</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Failed to initialize trainer class (</span><span class="si">{</span><span class="n">trainer_class</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span></div>
+</div>
+
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;TrainerFactory&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocGeneratorTrainer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocQualityTrainer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;_optimizer_kwargs_filter&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;optimizer_class&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;optimizer_compile&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SinglePrompt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SinglePromptTrainer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocGeneratorTrainer&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocQualityTrainer&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Semiotic Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

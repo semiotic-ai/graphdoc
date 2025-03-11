@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>graphdoc.data.mlflow_data package &mdash; GraphDoc 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="graphdoc.eval package" href="graphdoc.eval.html" />
+    <link rel="prev" title="graphdoc.data.dspy_data package" href="graphdoc.data.dspy_data.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GraphDoc
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">graphdoc</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="graphdoc.html">graphdoc package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="graphdoc.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="graphdoc.data.html">graphdoc.data package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphdoc.eval.html">graphdoc.eval package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphdoc.modules.html">graphdoc.modules package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphdoc.prompts.html">graphdoc.prompts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphdoc.train.html">graphdoc.train package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="graphdoc.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphdoc.html#module-graphdoc.config">graphdoc.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphdoc.html#module-graphdoc.main">graphdoc.main module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphdoc.html#module-graphdoc">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GraphDoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">graphdoc</a></li>
+          <li class="breadcrumb-item"><a href="graphdoc.html">graphdoc package</a></li>
+          <li class="breadcrumb-item"><a href="graphdoc.data.html">graphdoc.data package</a></li>
+      <li class="breadcrumb-item active">graphdoc.data.mlflow_data package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/graphdoc.data.mlflow_data.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="graphdoc-data-mlflow-data-package">
+<h1>graphdoc.data.mlflow_data package<a class="headerlink" href="#graphdoc-data-mlflow-data-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-graphdoc.data.mlflow_data.mlflow_data_helper">
+<span id="graphdoc-data-mlflow-data-mlflow-data-helper-module"></span><h2>graphdoc.data.mlflow_data.mlflow_data_helper module<a class="headerlink" href="#module-graphdoc.data.mlflow_data.mlflow_data_helper" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.data.mlflow_data.mlflow_data_helper.</span></span><span class="sig-name descname"><span class="pre">MlflowDataHelper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.__init__" title="Link to this definition"></a></dt>
+<dd><p>A helper class for loading and saving models and metadata from mlflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mlflow_tracking_uri</strong> – The uri of the mlflow tracking server. :type</p>
+</dd>
+</dl>
+<p>mlflow_tracking_uri: Union[str, Path] :param mlflow_tracking_username: The
+username for the mlflow tracking server. :type mlflow_tracking_username: str
+:param mlflow_tracking_password: The password for the mlflow tracking server.
+:type mlflow_tracking_password: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.latest_model_version">
+<span class="sig-name descname"><span class="pre">latest_model_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.latest_model_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.latest_model_version" title="Link to this definition"></a></dt>
+<dd><p>Load the latest version of a model from mlflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_name</strong> (<em>str</em>) – The name of the model to load.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.model_by_args">
+<span class="sig-name descname"><span class="pre">model_by_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">load_model_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.model_by_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.model_by_args" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of arguments, load a model from mlflow. Ordering is
+model_by_uri, model_by_name_and_version, latest_model_version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>load_model_args</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – A dictionary of arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.model_by_name_and_version">
+<span class="sig-name descname"><span class="pre">model_by_name_and_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.model_by_name_and_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.model_by_name_and_version" title="Link to this definition"></a></dt>
+<dd><p>Load a model from mlflow by name and version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_name</strong> – The name of the model to load. :type model_name: str :param</p>
+</dd>
+</dl>
+<p>model_version: The version of the model to load. :type model_version: str
+:return: The loaded model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.model_by_uri">
+<span class="sig-name descname"><span class="pre">model_by_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.model_by_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.model_by_uri" title="Link to this definition"></a></dt>
+<dd><p>Load a model from mlflow by uri.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_uri</strong> (<em>str</em>) – The uri of the model to load.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.run_parameters">
+<span class="sig-name descname"><span class="pre">run_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.run_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.run_parameters" title="Link to this definition"></a></dt>
+<dd><p>Load the parameters of a run from mlflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>run_id</strong> (<em>str</em>) – The id of the run to load the parameters from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The parameters of the run.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.save_model">
+<span class="sig-name descname"><span class="pre">save_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_signature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ModelSignature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.save_model" title="Link to this definition"></a></dt>
+<dd><p>Save a model to mlflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> – The model to save. :type model: dspy.Signature :param</p>
+</dd>
+</dl>
+<p>model_signature: The signature of the model. :type model_signature:
+ModelSignature :param model_name: The name of the model to save. :type
+model_name: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.set_auth_env_vars">
+<span class="sig-name descname"><span class="pre">set_auth_env_vars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.set_auth_env_vars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.set_auth_env_vars" title="Link to this definition"></a></dt>
+<dd><p>Set the authentication environment variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.update_auth_env_vars">
+<span class="sig-name descname"><span class="pre">update_auth_env_vars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.update_auth_env_vars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.mlflow_data_helper.MlflowDataHelper.update_auth_env_vars" title="Link to this definition"></a></dt>
+<dd><p>Update the authentication environment variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mlflow_tracking_username</strong> (<em>str</em>) – The username for the mlflow tracking server.</p></li>
+<li><p><strong>mlflow_tracking_password</strong> (<em>str</em>) – The password for the mlflow tracking server.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-graphdoc.data.mlflow_data">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-graphdoc.data.mlflow_data" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.data.mlflow_data.</span></span><span class="sig-name descname"><span class="pre">MlflowDataHelper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper.__init__" title="Link to this definition"></a></dt>
+<dd><p>A helper class for loading and saving models and metadata from mlflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>mlflow_tracking_uri</strong> – The uri of the mlflow tracking server. :type</p>
+</dd>
+</dl>
+<p>mlflow_tracking_uri: Union[str, Path] :param mlflow_tracking_username: The
+username for the mlflow tracking server. :type mlflow_tracking_username: str
+:param mlflow_tracking_password: The password for the mlflow tracking server.
+:type mlflow_tracking_password: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper.latest_model_version">
+<span class="sig-name descname"><span class="pre">latest_model_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.latest_model_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper.latest_model_version" title="Link to this definition"></a></dt>
+<dd><p>Load the latest version of a model from mlflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_name</strong> (<em>str</em>) – The name of the model to load.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper.model_by_args">
+<span class="sig-name descname"><span class="pre">model_by_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">load_model_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.model_by_args"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper.model_by_args" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of arguments, load a model from mlflow. Ordering is
+model_by_uri, model_by_name_and_version, latest_model_version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>load_model_args</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – A dictionary of arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper.model_by_name_and_version">
+<span class="sig-name descname"><span class="pre">model_by_name_and_version</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_version</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.model_by_name_and_version"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper.model_by_name_and_version" title="Link to this definition"></a></dt>
+<dd><p>Load a model from mlflow by name and version.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_name</strong> – The name of the model to load. :type model_name: str :param</p>
+</dd>
+</dl>
+<p>model_version: The version of the model to load. :type model_version: str
+:return: The loaded model.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper.model_by_uri">
+<span class="sig-name descname"><span class="pre">model_by_uri</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.model_by_uri"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper.model_by_uri" title="Link to this definition"></a></dt>
+<dd><p>Load a model from mlflow by uri.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model_uri</strong> (<em>str</em>) – The uri of the model to load.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded model.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper.run_parameters">
+<span class="sig-name descname"><span class="pre">run_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.run_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper.run_parameters" title="Link to this definition"></a></dt>
+<dd><p>Load the parameters of a run from mlflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>run_id</strong> (<em>str</em>) – The id of the run to load the parameters from.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The parameters of the run.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper.save_model">
+<span class="sig-name descname"><span class="pre">save_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Signature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_signature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ModelSignature</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper.save_model" title="Link to this definition"></a></dt>
+<dd><p>Save a model to mlflow.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>model</strong> – The model to save. :type model: dspy.Signature :param</p>
+</dd>
+</dl>
+<p>model_signature: The signature of the model. :type model_signature:
+ModelSignature :param model_name: The name of the model to save. :type
+model_name: str</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper.set_auth_env_vars">
+<span class="sig-name descname"><span class="pre">set_auth_env_vars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.set_auth_env_vars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper.set_auth_env_vars" title="Link to this definition"></a></dt>
+<dd><p>Set the authentication environment variables.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.mlflow_data.MlflowDataHelper.update_auth_env_vars">
+<span class="sig-name descname"><span class="pre">update_auth_env_vars</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_username</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mlflow_tracking_password</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphdoc/data/mlflow_data/mlflow_data_helper.html#MlflowDataHelper.update_auth_env_vars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.mlflow_data.MlflowDataHelper.update_auth_env_vars" title="Link to this definition"></a></dt>
+<dd><p>Update the authentication environment variables.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mlflow_tracking_username</strong> (<em>str</em>) – The username for the mlflow tracking server.</p></li>
+<li><p><strong>mlflow_tracking_password</strong> (<em>str</em>) – The password for the mlflow tracking server.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="graphdoc.data.dspy_data.html" class="btn btn-neutral float-left" title="graphdoc.data.dspy_data package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="graphdoc.eval.html" class="btn btn-neutral float-right" title="graphdoc.eval package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Semiotic Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

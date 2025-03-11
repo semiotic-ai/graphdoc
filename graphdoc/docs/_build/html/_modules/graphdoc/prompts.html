@@ -71,23 +71,40 @@
            <div itemprop="articleBody">
              
   <h1>Source code for graphdoc.prompts</h1><div class="highlight"><pre>
-<span></span><span class="c1"># system packages</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span></span><span class="c1"># Copyright 2025-, Semiotic AI, Inc.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
 
-<span class="c1"># internal packages</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.single_prompt</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.schema_doc_quality</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.schema_doc_generation</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="c1"># system packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
 
 <span class="c1"># external packages</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dspy</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.prompts.schema_doc_generation</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">BadDocGeneratorSignature</span><span class="p">,</span>
+    <span class="n">DocGeneratorHelperSignature</span><span class="p">,</span>
+    <span class="n">DocGeneratorPrompt</span><span class="p">,</span>
+    <span class="n">DocGeneratorSignature</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.prompts.schema_doc_quality</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">DocQualityDemonstrationSignature</span><span class="p">,</span>
+    <span class="n">DocQualityPrompt</span><span class="p">,</span>
+    <span class="n">DocQualitySignature</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># internal packages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.prompts.single_prompt</span><span class="w"> </span><span class="kn">import</span> <span class="n">SinglePrompt</span>
+
+<span class="c1"># logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="PromptFactory">
-<a class="viewcode-back" href="../../source/graphdoc.prompts.html#graphdoc.prompts.PromptFactory">[docs]</a>
+<a class="viewcode-back" href="../../source/graphdoc.prompts.html#graphdoc.PromptFactory">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">PromptFactory</span><span class="p">:</span>
 <div class="viewcode-block" id="PromptFactory.single_prompt">
-<a class="viewcode-back" href="../../source/graphdoc.prompts.html#graphdoc.prompts.PromptFactory.single_prompt">[docs]</a>
+<a class="viewcode-back" href="../../source/graphdoc.prompts.html#graphdoc.PromptFactory.single_prompt">[docs]</a>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">single_prompt</span><span class="p">(</span>
         <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">],</span>
@@ -95,19 +112,16 @@
         <span class="n">prompt_type</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">prompt_metric</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">DocQualityPrompt</span><span class="p">,</span> <span class="n">SinglePrompt</span><span class="p">],</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SinglePrompt</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Returns an instance of the specified prompt class. Allows for the user to pass in their own dspy signature.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Returns an instance of the specified prompt class. Allows for the user to</span>
+<span class="sd">        pass in their own dspy signature.</span>
 
-<span class="sd">        :param prompt: The prompt to use.</span>
-<span class="sd">        :type prompt: Union[str, dspy.Signature]</span>
-<span class="sd">        :param prompt_class: The class of the prompt to use.</span>
-<span class="sd">        :type prompt_class: str</span>
-<span class="sd">        :param prompt_type: The type of the prompt to use.</span>
-<span class="sd">        :type prompt_type: str</span>
-<span class="sd">        :param prompt_metric: The metric to use for the prompt.</span>
-<span class="sd">        :type prompt_metric: Union[str, DocQualityPrompt, SinglePrompt]</span>
-<span class="sd">        :return: An instance of the specified prompt class.</span>
-<span class="sd">        :rtype: SinglePrompt</span>
+<span class="sd">        :param prompt: The prompt to use. :type prompt: Union[str, dspy.Signature]</span>
+<span class="sd">        :param prompt_class: The class of the prompt to use. :type prompt_class: str</span>
+<span class="sd">        :param prompt_type: The type of the prompt to use. :type prompt_type: str :param</span>
+<span class="sd">        prompt_metric: The metric to use for the prompt. :type prompt_metric: Union[str,</span>
+<span class="sd">        DocQualityPrompt, SinglePrompt] :return: An instance of the specified prompt</span>
+<span class="sd">        class. :rtype: SinglePrompt</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prompt_classes</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;DocQualityPrompt&quot;</span><span class="p">:</span> <span class="n">DocQualityPrompt</span><span class="p">,</span>
@@ -124,6 +138,19 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Failed to initialize prompt class (</span><span class="si">{</span><span class="n">prompt_class</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 </div>
 
+
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;BadDocGeneratorSignature&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocGeneratorHelperSignature&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocGeneratorPrompt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocGeneratorSignature&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocQualityDemonstrationSignature&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocQualityPrompt&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;DocQualitySignature&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;PromptFactory&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;SinglePrompt&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 </pre></div>
 
            </div>

@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>graphdoc.data.dspy_data package &mdash; GraphDoc 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="graphdoc.data.mlflow_data package" href="graphdoc.data.mlflow_data.html" />
+    <link rel="prev" title="graphdoc.data package" href="graphdoc.data.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            GraphDoc
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">graphdoc</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="graphdoc.html">graphdoc package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="graphdoc.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="reference internal" href="graphdoc.data.html">graphdoc.data package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphdoc.eval.html">graphdoc.eval package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphdoc.modules.html">graphdoc.modules package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphdoc.prompts.html">graphdoc.prompts package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="graphdoc.train.html">graphdoc.train package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="graphdoc.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphdoc.html#module-graphdoc.config">graphdoc.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphdoc.html#module-graphdoc.main">graphdoc.main module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphdoc.html#module-graphdoc">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">GraphDoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">graphdoc</a></li>
+          <li class="breadcrumb-item"><a href="graphdoc.html">graphdoc package</a></li>
+          <li class="breadcrumb-item"><a href="graphdoc.data.html">graphdoc.data package</a></li>
+      <li class="breadcrumb-item active">graphdoc.data.dspy_data package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/graphdoc.data.dspy_data.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="graphdoc-data-dspy-data-package">
+<h1>graphdoc.data.dspy_data package<a class="headerlink" href="#graphdoc-data-dspy-data-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-graphdoc.data.dspy_data.dspy_data_helper">
+<span id="graphdoc-data-dspy-data-dspy-data-helper-module"></span><h2>graphdoc.data.dspy_data.dspy_data_helper module<a class="headerlink" href="#module-graphdoc.data.dspy_data.dspy_data_helper" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.data.dspy_data.dspy_data_helper.</span></span><span class="sig-name descname"><span class="pre">DspyDataHelper</span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract class for creating data objects related to a given dspy.Signature.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper._">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Predict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper._"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper._" title="Link to this definition"></a></dt>
+<dd><p>Given a dspy.Predict object, return a dspy.Signature object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.example">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.example" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Example object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.example_example">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.example_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.example_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Example object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.formatted_signature">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">formatted_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">example</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Example</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.formatted_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.formatted_signature" title="Link to this definition"></a></dt>
+<dd><p>Given a dspy.Signature and a dspy.Example, return a formatted signature as a
+string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signature</strong> (<em>dspy.Signature</em>) – A dspy.Signature object.</p></li>
+<li><p><strong>example</strong> (<em>dspy.Example</em>) – A dspy.Example object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A formatted signature as a string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.model_signature">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ModelSignature</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.model_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.model_signature" title="Link to this definition"></a></dt>
+<dd><p>Return a mlflow.models.ModelSignature object. Based on the example object,
+removes the output fields and utilizes the remaining fields to infer the model
+signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A mlflow.models.ModelSignature object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>mlflow.models.ModelSignature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.prediction">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.prediction" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Prediction object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.prediction_example">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.prediction_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.prediction_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Prediction object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.prompt_signature">
+<span class="sig-name descname"><span class="pre">prompt_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.prompt_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.prompt_signature" title="Link to this definition"></a></dt>
+<dd><p>Given a prompt, return a dspy.Signature object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prompt</strong> (<em>Any</em>) – A prompt.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.trainset">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trainset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.trainset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper.trainset" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs or a datasets.Dataset object, return a list of
+dspy.Example objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>Union</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>datasets.Dataset</em><em>]</em>) – A dictionary of inputs or a datasets.Dataset object.</p></li>
+<li><p><strong>filter_args</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary of filter arguments. These are instructions for
+how we will filter and / or transform the inputs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dspy.Example objects.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dspy.Example]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-graphdoc.data.dspy_data.generation_data_helper">
+<span id="graphdoc-data-dspy-data-generation-data-helper-module"></span><h2>graphdoc.data.dspy_data.generation_data_helper module<a class="headerlink" href="#module-graphdoc.data.dspy_data.generation_data_helper" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.data.dspy_data.generation_data_helper.</span></span><span class="sig-name descname"><span class="pre">GenerationDataHelper</span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper" title="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper"><code class="xref py py-class docutils literal notranslate"><span class="pre">DspyDataHelper</span></code></a></p>
+<p>A helper class for creating data objects related to our Documentation Generation
+dspy.Signature.</p>
+<p>The example signature is defined as:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">database_schema:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">dspy.InputField()</span>
+<span class="pre">documented_schema:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">dspy.OutputField()</span>
+<span class="pre">`</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.example" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Example object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.example_example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.example_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.example_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Example object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.model_signature">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ModelSignature</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.model_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.model_signature" title="Link to this definition"></a></dt>
+<dd><p>Return a mlflow.models.ModelSignature object. Based on the example object,
+removes the output fields and utilizes the remaining fields to infer the model
+signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A mlflow.models.ModelSignature object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>mlflow.models.ModelSignature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.prediction">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.prediction" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Prediction object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.prediction_example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.prediction_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.prediction_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Prediction object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.trainset">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trainset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.trainset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.generation_data_helper.GenerationDataHelper.trainset" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs or a datasets.Dataset object, return a list of
+dspy.Example objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>Union</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>datasets.Dataset</em><em>]</em>) – A dictionary of inputs or a datasets.Dataset object.</p></li>
+<li><p><strong>filter_args</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary of filter arguments. These are instructions for
+how we will filter and / or transform the inputs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dspy.Example objects.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dspy.Example]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-graphdoc.data.dspy_data.quality_data_helper">
+<span id="graphdoc-data-dspy-data-quality-data-helper-module"></span><h2>graphdoc.data.dspy_data.quality_data_helper module<a class="headerlink" href="#module-graphdoc.data.dspy_data.quality_data_helper" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.data.dspy_data.quality_data_helper.</span></span><span class="sig-name descname"><span class="pre">QualityDataHelper</span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper" title="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper"><code class="xref py py-class docutils literal notranslate"><span class="pre">DspyDataHelper</span></code></a></p>
+<p>A helper class for creating data objects related to our Documentation Quality
+dspy.Signature.</p>
+<p>The example signature is defined as:
+<a href="#id1"><span class="problematic" id="id2">``</span></a>`
+database_schema: str = dspy.InputField()
+category: Literal[“perfect”, “almost perfect”, “poor but correct”, “incorrect”] = (</p>
+<blockquote>
+<div><p>dspy.OutputField()</p>
+</div></blockquote>
+<p>)
+rating: Literal[4, 3, 2, 1] = dspy.OutputField()
+<a href="#id3"><span class="problematic" id="id4">``</span></a><a href="#id5"><span class="problematic" id="id6">`</span></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.example" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Example object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.example_example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.example_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.example_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Example object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.model_signature">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ModelSignature</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.model_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.model_signature" title="Link to this definition"></a></dt>
+<dd><p>Return a mlflow.models.ModelSignature object. Based on the example object,
+removes the output fields and utilizes the remaining fields to infer the model
+signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A mlflow.models.ModelSignature object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>mlflow.models.ModelSignature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.prediction">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.prediction" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Prediction object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.prediction_example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.prediction_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.prediction_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Prediction object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.trainset">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trainset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.trainset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.quality_data_helper.QualityDataHelper.trainset" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs or a datasets.Dataset object, return a list of
+dspy.Example objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>Union</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>datasets.Dataset</em><em>]</em>) – A dictionary of inputs or a datasets.Dataset object.</p></li>
+<li><p><strong>filter_args</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary of filter arguments. These are instructions for
+how we will filter and / or transform the inputs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dspy.Example objects.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dspy.Example]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-graphdoc.data.dspy_data">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-graphdoc.data.dspy_data" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.data.dspy_data.</span></span><span class="sig-name descname"><span class="pre">DspyDataHelper</span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Abstract class for creating data objects related to a given dspy.Signature.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper._">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prompt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Predict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper._"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper._" title="Link to this definition"></a></dt>
+<dd><p>Given a dspy.Predict object, return a dspy.Signature object.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper.example">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper.example" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Example object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper.example_example">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.example_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper.example_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Example object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper.formatted_signature">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">formatted_signature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">signature</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">example</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Example</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.formatted_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper.formatted_signature" title="Link to this definition"></a></dt>
+<dd><p>Given a dspy.Signature and a dspy.Example, return a formatted signature as a
+string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>signature</strong> (<em>dspy.Signature</em>) – A dspy.Signature object.</p></li>
+<li><p><strong>example</strong> (<em>dspy.Example</em>) – A dspy.Example object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A formatted signature as a string.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper.model_signature">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ModelSignature</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.model_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper.model_signature" title="Link to this definition"></a></dt>
+<dd><p>Return a mlflow.models.ModelSignature object. Based on the example object,
+removes the output fields and utilizes the remaining fields to infer the model
+signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A mlflow.models.ModelSignature object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>mlflow.models.ModelSignature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper.prediction">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper.prediction" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Prediction object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper.prediction_example">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.prediction_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper.prediction_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Prediction object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper.prompt_signature">
+<span class="sig-name descname"><span class="pre">prompt_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Signature</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">SignatureMeta</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.prompt_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper.prompt_signature" title="Link to this definition"></a></dt>
+<dd><p>Given a prompt, return a dspy.Signature object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>prompt</strong> (<em>Any</em>) – A prompt.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.DspyDataHelper.trainset">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trainset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/dspy_data_helper.html#DspyDataHelper.trainset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.DspyDataHelper.trainset" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs or a datasets.Dataset object, return a list of
+dspy.Example objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>Union</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>datasets.Dataset</em><em>]</em>) – A dictionary of inputs or a datasets.Dataset object.</p></li>
+<li><p><strong>filter_args</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary of filter arguments. These are instructions for
+how we will filter and / or transform the inputs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dspy.Example objects.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dspy.Example]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.GenerationDataHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.data.dspy_data.</span></span><span class="sig-name descname"><span class="pre">GenerationDataHelper</span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.GenerationDataHelper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper" title="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper"><code class="xref py py-class docutils literal notranslate"><span class="pre">DspyDataHelper</span></code></a></p>
+<p>A helper class for creating data objects related to our Documentation Generation
+dspy.Signature.</p>
+<p>The example signature is defined as:
+<code class="docutils literal notranslate"><span class="pre">`</span>
+<span class="pre">database_schema:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">dspy.InputField()</span>
+<span class="pre">documented_schema:</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">dspy.OutputField()</span>
+<span class="pre">`</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.GenerationDataHelper.example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.GenerationDataHelper.example" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Example object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.GenerationDataHelper.example_example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.example_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.GenerationDataHelper.example_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Example object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.GenerationDataHelper.model_signature">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ModelSignature</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.model_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.GenerationDataHelper.model_signature" title="Link to this definition"></a></dt>
+<dd><p>Return a mlflow.models.ModelSignature object. Based on the example object,
+removes the output fields and utilizes the remaining fields to infer the model
+signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A mlflow.models.ModelSignature object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>mlflow.models.ModelSignature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.GenerationDataHelper.prediction">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.GenerationDataHelper.prediction" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Prediction object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.GenerationDataHelper.prediction_example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.prediction_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.GenerationDataHelper.prediction_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Prediction object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.GenerationDataHelper.trainset">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trainset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/generation_data_helper.html#GenerationDataHelper.trainset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.GenerationDataHelper.trainset" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs or a datasets.Dataset object, return a list of
+dspy.Example objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>Union</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>datasets.Dataset</em><em>]</em>) – A dictionary of inputs or a datasets.Dataset object.</p></li>
+<li><p><strong>filter_args</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary of filter arguments. These are instructions for
+how we will filter and / or transform the inputs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dspy.Example objects.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dspy.Example]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.QualityDataHelper">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphdoc.data.dspy_data.</span></span><span class="sig-name descname"><span class="pre">QualityDataHelper</span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.QualityDataHelper" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper" title="graphdoc.data.dspy_data.dspy_data_helper.DspyDataHelper"><code class="xref py py-class docutils literal notranslate"><span class="pre">DspyDataHelper</span></code></a></p>
+<p>A helper class for creating data objects related to our Documentation Quality
+dspy.Signature.</p>
+<p>The example signature is defined as:
+<a href="#id7"><span class="problematic" id="id8">``</span></a>`
+database_schema: str = dspy.InputField()
+category: Literal[“perfect”, “almost perfect”, “poor but correct”, “incorrect”] = (</p>
+<blockquote>
+<div><p>dspy.OutputField()</p>
+</div></blockquote>
+<p>)
+rating: Literal[4, 3, 2, 1] = dspy.OutputField()
+<a href="#id9"><span class="problematic" id="id10">``</span></a><a href="#id11"><span class="problematic" id="id12">`</span></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.QualityDataHelper.example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.QualityDataHelper.example" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Example object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.QualityDataHelper.example_example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">example_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Example</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.example_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.QualityDataHelper.example_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Example object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Example object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Example</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.QualityDataHelper.model_signature">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">model_signature</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ModelSignature</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.model_signature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.QualityDataHelper.model_signature" title="Link to this definition"></a></dt>
+<dd><p>Return a mlflow.models.ModelSignature object. Based on the example object,
+removes the output fields and utilizes the remaining fields to infer the model
+signature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A mlflow.models.ModelSignature object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>mlflow.models.ModelSignature</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.QualityDataHelper.prediction">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.prediction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.QualityDataHelper.prediction" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs, return a dspy.Prediction object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>inputs</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>) – A dictionary of inputs.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.QualityDataHelper.prediction_example">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">prediction_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Prediction</span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.prediction_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.QualityDataHelper.prediction_example" title="Link to this definition"></a></dt>
+<dd><p>Return an example dspy.Prediction object with the inputs set to the example
+values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dspy.Prediction object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dspy.Prediction</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphdoc.data.dspy_data.QualityDataHelper.trainset">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">trainset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Example</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphdoc/data/dspy_data/quality_data_helper.html#QualityDataHelper.trainset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphdoc.data.dspy_data.QualityDataHelper.trainset" title="Link to this definition"></a></dt>
+<dd><p>Given a dictionary of inputs or a datasets.Dataset object, return a list of
+dspy.Example objects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>inputs</strong> (<em>Union</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>, </em><em>datasets.Dataset</em><em>]</em>) – A dictionary of inputs or a datasets.Dataset object.</p></li>
+<li><p><strong>filter_args</strong> (<em>Optional</em><em>[</em><em>dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em><em>]</em>) – A dictionary of filter arguments. These are instructions for
+how we will filter and / or transform the inputs.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of dspy.Example objects.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[dspy.Example]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="graphdoc.data.html" class="btn btn-neutral float-left" title="graphdoc.data package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="graphdoc.data.mlflow_data.html" class="btn btn-neutral float-right" title="graphdoc.data.mlflow_data package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Semiotic Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

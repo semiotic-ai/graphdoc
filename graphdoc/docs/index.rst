@@ -22,8 +22,6 @@ License: `Apache License 2.0 <Apache License 2.0_>`_
    :caption: Contents:
 
    modules
-   graphdoc
-   graphdoc.prompts
 
 Indices and tables
 ==================

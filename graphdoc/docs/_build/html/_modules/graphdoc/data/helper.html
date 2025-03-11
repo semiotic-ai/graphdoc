@@ -71,13 +71,18 @@
            <div itemprop="articleBody">
              
   <h1>Source code for graphdoc.data.helper</h1><div class="highlight"><pre>
-<span></span><span class="c1"># system packages</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span></span><span class="c1"># Copyright 2025-, Semiotic AI, Inc.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="c1"># system packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">SafeLoader</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">SafeLoader</span>
 
 <span class="c1"># internal packages</span>
 
@@ -88,16 +93,16 @@
 
 
 <div class="viewcode-block" id="check_directory_path">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.helper.check_directory_path">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.check_directory_path">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_directory_path</span><span class="p">(</span><span class="n">directory_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if the provided path resolves to a valid directory.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the provided path resolves to a valid directory.</span>
 
 <span class="sd">    :param directory_path: The path to check.</span>
 <span class="sd">    :type directory_path: Union[str, Path]</span>
 <span class="sd">    :raises ValueError: If the path does not resolve to a valid directory.</span>
 <span class="sd">    :return: None</span>
 <span class="sd">    :rtype: None</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_directory_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">directory_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_directory_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
@@ -108,16 +113,13 @@
 
 
 <div class="viewcode-block" id="check_file_path">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.helper.check_file_path">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.check_file_path">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">check_file_path</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check if the provided path resolves to a valid file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if the provided path resolves to a valid file.</span>
 
-<span class="sd">    :param file_path: The path to check.</span>
-<span class="sd">    :type file_path: Union[str, Path]</span>
-<span class="sd">    :raises ValueError: If the path does not resolve to a valid file.</span>
-<span class="sd">    :return: None</span>
-<span class="sd">    :rtype: None</span>
+<span class="sd">    :param file_path: The path to check. :type file_path: Union[str, Path] :raises</span>
+<span class="sd">    ValueError: If the path does not resolve to a valid file. :return: None :rtype: None</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">_file_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
@@ -128,10 +130,9 @@
 
 
 <div class="viewcode-block" id="_env_constructor">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.helper._env_constructor">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc._env_constructor">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">_env_constructor</span><span class="p">(</span><span class="n">loader</span><span class="p">:</span> <span class="n">SafeLoader</span><span class="p">,</span> <span class="n">node</span><span class="p">:</span> <span class="n">yaml</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">ScalarNode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Custom constructor for environment variables.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Custom constructor for environment variables.</span>
 
 <span class="sd">    :param loader: The YAML loader.</span>
 <span class="sd">    :type loader: yaml.SafeLoader</span>
@@ -140,6 +141,7 @@
 <span class="sd">    :return: The environment variable value.</span>
 <span class="sd">    :rtype: str</span>
 <span class="sd">    :raises ValueError: If the environment variable is not set.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">value</span> <span class="o">=</span> <span class="n">loader</span><span class="o">.</span><span class="n">construct_scalar</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
     <span class="n">env_value</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -150,10 +152,9 @@
 
 
 <div class="viewcode-block" id="load_yaml_config">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.helper.load_yaml_config">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.load_yaml_config">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">load_yaml_config</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">],</span> <span class="n">use_env</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Load a YAML configuration file.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load a YAML configuration file.</span>
 
 <span class="sd">    :param file_path: The path to the YAML file.</span>
 <span class="sd">    :type file_path: Union[str, Path]</span>
@@ -161,7 +162,9 @@
 <span class="sd">    :type use_env: bool</span>
 <span class="sd">    :return: The YAML configuration.</span>
 <span class="sd">    :rtype: dict</span>
-<span class="sd">    :raises ValueError: If the path does not resolve to a valid file or the environment variable is not set.</span>
+<span class="sd">    :raises ValueError: If the path does not resolve to a valid file or the environment</span>
+<span class="sd">        variable is not set.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">use_env</span><span class="p">:</span>
         <span class="n">SafeLoader</span><span class="o">.</span><span class="n">add_constructor</span><span class="p">(</span><span class="s2">&quot;!env&quot;</span><span class="p">,</span> <span class="n">_env_constructor</span><span class="p">)</span>
@@ -177,15 +180,15 @@
 
 
 <div class="viewcode-block" id="setup_logging">
-<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.data.helper.setup_logging">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.data.html#graphdoc.setup_logging">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">setup_logging</span><span class="p">(</span>
     <span class="n">log_level</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;DEBUG&quot;</span><span class="p">,</span> <span class="s2">&quot;INFO&quot;</span><span class="p">,</span> <span class="s2">&quot;WARNING&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">,</span> <span class="s2">&quot;CRITICAL&quot;</span><span class="p">],</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Setup logging for the application.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Setup logging for the application.</span>
 
 <span class="sd">    :param log_level: The log level.</span>
 <span class="sd">    :type log_level: Literal[&quot;DEBUG&quot;, &quot;INFO&quot;, &quot;WARNING&quot;, &quot;ERROR&quot;, &quot;CRITICAL&quot;]</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">root_logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
     <span class="n">root_logger</span><span class="o">.</span><span class="n">handlers</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>

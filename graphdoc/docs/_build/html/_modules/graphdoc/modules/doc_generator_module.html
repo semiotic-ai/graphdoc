@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>graphdoc.modules.doc_generator_module &mdash; GraphDoc 1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=f2a433a1"></script>
+        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            GraphDoc
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">GraphDoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">graphdoc.modules.doc_generator_module</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for graphdoc.modules.doc_generator_module</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright 2025-, Semiotic AI, Inc.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="c1"># system packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="c1"># external packages</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">dspy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">mlflow</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphql</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse</span><span class="p">,</span> <span class="n">print_ast</span>
+
+<span class="c1"># internal packages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Parser</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.prompts</span><span class="w"> </span><span class="kn">import</span> <span class="n">DocGeneratorPrompt</span><span class="p">,</span> <span class="n">SinglePrompt</span>
+
+<span class="c1"># logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="DocGeneratorModule">
+<a class="viewcode-back" href="../../../source/graphdoc.html#graphdoc.DocGeneratorModule">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DocGeneratorModule</span><span class="p">(</span><span class="n">dspy</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+<div class="viewcode-block" id="DocGeneratorModule.__init__">
+<a class="viewcode-back" href="../../../source/graphdoc.html#graphdoc.DocGeneratorModule.__init__">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DocGeneratorPrompt</span><span class="p">,</span> <span class="n">SinglePrompt</span><span class="p">],</span>
+        <span class="n">retry</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">retry_limit</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">rating_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+        <span class="n">fill_empty_descriptions</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the DocGeneratorModule. A module for generating documentation for</span>
+<span class="sd">        a given GraphQL schema. Schemas are decomposed and individually used to generate</span>
+<span class="sd">        documentation, with a quality check after each generation.</span>
+
+<span class="sd">        signature fields are:</span>
+<span class="sd">            - database_schema: str = dspy.InputField()</span>
+<span class="sd">            - documented_schema: str = dspy.OutputField()</span>
+
+<span class="sd">        :param prompt: The prompt to use for generating documentation.</span>
+<span class="sd">        :type prompt: DocGeneratorPrompt</span>
+<span class="sd">        :param retry: Whether to retry the generation if the quality check fails.</span>
+<span class="sd">        :type retry: bool</span>
+<span class="sd">        :param retry_limit: The maximum number of retries.</span>
+<span class="sd">        :type retry_limit: int</span>
+<span class="sd">        :param rating_threshold: The minimum rating for a generated document to be</span>
+<span class="sd">                                 considered valid.</span>
+<span class="sd">        :type rating_threshold: int</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span> <span class="o">=</span> <span class="n">prompt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retry</span> <span class="o">=</span> <span class="n">retry</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">retry_limit</span> <span class="o">=</span> <span class="n">retry_limit</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rating_threshold</span> <span class="o">=</span> <span class="n">rating_threshold</span>
+        <span class="c1"># TODO: as we start to add more transformations to the schema,</span>
+        <span class="c1"># we should move to a dict like structure for passing in those parameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fill_empty_descriptions</span> <span class="o">=</span> <span class="n">fill_empty_descriptions</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">par</span> <span class="o">=</span> <span class="n">Parser</span><span class="p">()</span>
+
+        <span class="c1"># ensure that the doc generator prompt metric is set to rating</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="o">.</span><span class="n">prompt_metric</span><span class="o">.</span><span class="n">prompt_metric</span> <span class="o">!=</span> <span class="s2">&quot;rating&quot;</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">&quot;DocGeneratorModule: prompt metric is not set to rating. Setting to rating.&quot;</span>
+            <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="o">.</span><span class="n">prompt_metric</span><span class="o">.</span><span class="n">prompt_metric</span> <span class="o">=</span> <span class="s2">&quot;rating&quot;</span></div>
+
+
+    <span class="c1">#######################</span>
+    <span class="c1"># MLFLOW TRACING      #</span>
+    <span class="c1">#######################</span>
+    <span class="c1"># TODO: we will break this out into a separate class later</span>
+    <span class="c1"># when we have need for it elsewhere</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_start_trace</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">MlflowClient</span><span class="p">,</span>
+        <span class="n">expirement_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">trace_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">inputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">attributes</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="c1"># set the experiment name so that everything is logged to the same experiment</span>
+        <span class="n">mlflow</span><span class="o">.</span><span class="n">set_experiment</span><span class="p">(</span><span class="n">expirement_name</span><span class="p">)</span>
+
+        <span class="c1"># start the trace</span>
+        <span class="n">trace</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">start_trace</span><span class="p">(</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">trace_name</span><span class="p">,</span>
+            <span class="n">inputs</span><span class="o">=</span><span class="n">inputs</span><span class="p">,</span>
+            <span class="n">attributes</span><span class="o">=</span><span class="n">attributes</span><span class="p">,</span>
+            <span class="c1"># experiment_id=expirement_name,</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">trace</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_end_trace</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">mlflow</span><span class="o">.</span><span class="n">MlflowClient</span><span class="p">,</span>
+        <span class="n">trace</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>  <span class="c1"># TODO: trace: mlflow.Span,</span>
+        <span class="c1"># E   AttributeError: module &#39;mlflow&#39; has no attribute &#39;Span&#39;</span>
+        <span class="n">outputs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+        <span class="n">status</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;OK&quot;</span><span class="p">,</span> <span class="s2">&quot;ERROR&quot;</span><span class="p">],</span>
+    <span class="p">):</span>
+        <span class="n">client</span><span class="o">.</span><span class="n">end_trace</span><span class="p">(</span><span class="n">request_id</span><span class="o">=</span><span class="n">trace</span><span class="o">.</span><span class="n">request_id</span><span class="p">,</span> <span class="n">outputs</span><span class="o">=</span><span class="n">outputs</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">)</span>
+
+    <span class="c1">#######################</span>
+    <span class="c1"># MODULE FUNCTIONS    #</span>
+    <span class="c1">#######################</span>
+<div class="viewcode-block" id="DocGeneratorModule._retry_by_rating">
+<a class="viewcode-back" href="../../../source/graphdoc.html#graphdoc.DocGeneratorModule._retry_by_rating">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_retry_by_rating</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Retry the generation if the quality check fails. Rating threshold is</span>
+<span class="sd">        determined at initialization.</span>
+
+<span class="sd">        :param database_schema: The database schema to generate documentation for. :type</span>
+<span class="sd">        database_schema: str :return: The generated documentation. :rtype: str</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">def</span><span class="w"> </span><span class="nf">_try_rating</span><span class="p">(</span><span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="o">.</span><span class="n">prompt_metric</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">database_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;DocGeneratorModule: error while attempting to compute rating: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+                <span class="p">)</span>
+                <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">(</span><span class="n">rating</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">rating_threshold</span><span class="p">)</span>
+                <span class="c1"># TODO: we could have better handling here, but the exponential decay</span>
+                <span class="c1"># on retries is a good fallback that is already built into the retry logic</span>
+
+        <span class="n">retries</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">rating</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">pred_database_schema</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="n">retries</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">retry_limit</span><span class="p">:</span>
+            <span class="c1"># first pass, generate the documentation</span>
+            <span class="n">prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict</span><span class="p">(</span><span class="n">database_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span>
+            <span class="n">pred_database_schema</span> <span class="o">=</span> <span class="n">prediction</span><span class="o">.</span><span class="n">documented_schema</span>
+
+            <span class="c1"># get the rating for the documentation</span>
+            <span class="n">rating_prediction</span> <span class="o">=</span> <span class="n">_try_rating</span><span class="p">(</span><span class="n">database_schema</span><span class="o">=</span><span class="n">pred_database_schema</span><span class="p">)</span>
+            <span class="n">rating</span> <span class="o">=</span> <span class="n">rating_prediction</span><span class="o">.</span><span class="n">rating</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;Current rating (attempt #&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;): &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rating</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="c1"># if the rating is above the threshold, return the documentation</span>
+            <span class="k">if</span> <span class="n">rating</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rating_threshold</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">retries</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                        <span class="s2">&quot;Retry improved rating quality to meet threshold (attempt #&quot;</span>
+                        <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+                    <span class="p">)</span>
+                <span class="k">return</span> <span class="n">pred_database_schema</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="s2">&quot;The rating prediction is (attempt #&quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">retries</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="o">+</span> <span class="s2">&quot;): &quot;</span>
+                <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rating_prediction</span><span class="p">)</span>
+            <span class="p">)</span>
+
+            <span class="c1"># if the rating is below the threshold, prepare for a retry</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="o">.</span><span class="n">prompt_metric</span><span class="o">.</span><span class="n">prompt_type</span> <span class="o">==</span> <span class="s2">&quot;chain_of_thought&quot;</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Adding reasoning returned from the rating prediction&quot;</span><span class="p">)</span>
+                <span class="n">reason</span> <span class="o">=</span> <span class="n">rating_prediction</span><span class="o">.</span><span class="n">reasoning</span>
+                <span class="n">reason_database_schema</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;# The documentation was previously generated &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;and received a low quality rating &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;because of the following reasoning: </span><span class="si">{</span><span class="n">reason</span><span class="si">}</span><span class="s2">. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Remove this comment in the documentation you generate</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="o">+</span> <span class="n">database_schema</span>
+                <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">reason_database_schema</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;# This documentation was considered </span><span class="si">{</span><span class="n">rating_prediction</span><span class="o">.</span><span class="n">category</span><span class="si">}</span><span class="s2">, &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;please attempt again to generate the documentation properly. &quot;</span>
+                    <span class="sa">f</span><span class="s2">&quot;Remove this comment in the documentation you generate</span><span class="se">\n</span><span class="s2">&quot;</span>
+                    <span class="o">+</span> <span class="n">database_schema</span>
+                <span class="p">)</span>
+
+            <span class="c1"># prepare for the next retry</span>
+            <span class="n">database_schema</span> <span class="o">=</span> <span class="n">reason_database_schema</span>
+            <span class="n">retries</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">&quot;Retry limit reached. Returning the last documented schema with rating: &quot;</span>
+            <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rating</span><span class="p">)</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">pred_database_schema</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;No documented schema returned from retries&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">database_schema</span>
+        <span class="k">return</span> <span class="n">pred_database_schema</span></div>
+
+
+<div class="viewcode-block" id="DocGeneratorModule._predict">
+<a class="viewcode-back" href="../../../source/graphdoc.html#graphdoc.DocGeneratorModule._predict">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a database schema, generate a documented schema. Performs the following</span>
+<span class="sd">        steps:</span>
+
+<span class="sd">        - Check that the graphql is valid</span>
+<span class="sd">        - Fill the empty descriptions (if fill_empty_descriptions is True)</span>
+<span class="sd">        - Generate the documentation</span>
+<span class="sd">        - Check that the generated schema is valid</span>
+<span class="sd">        - Check that the generated schema matches the original schema</span>
+
+<span class="sd">        :param database_schema: The database schema to generate documentation for.</span>
+<span class="sd">        :type database_schema: str</span>
+<span class="sd">        :return: The generated documentation.</span>
+<span class="sd">        :rtype: dspy.Prediction</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># check that the graphql is valid</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">database_ast</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">database_schema</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Invalid GraphQL schema provided at onset: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">(</span><span class="n">documented_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span>
+
+        <span class="c1"># fill the empty descriptions</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fill_empty_descriptions</span><span class="p">:</span>
+            <span class="n">updated_ast</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="o">.</span><span class="n">fill_empty_descriptions</span><span class="p">(</span><span class="n">database_ast</span><span class="p">)</span>
+            <span class="n">database_schema</span> <span class="o">=</span> <span class="n">print_ast</span><span class="p">(</span><span class="n">updated_ast</span><span class="p">)</span>
+
+        <span class="c1"># try to generate the schema</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">prediction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prompt</span><span class="o">.</span><span class="n">infer</span><span class="p">(</span><span class="n">database_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Error generating schema: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">(</span><span class="n">documented_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span>
+
+        <span class="c1"># check that the generated schema is valid</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">prediction_ast</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">prediction</span><span class="o">.</span><span class="n">documented_schema</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Invalid GraphQL schema generated: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">(</span><span class="n">documented_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span>
+
+        <span class="c1"># check that the generated schema matches the original schema</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="o">.</span><span class="n">schema_equality_check</span><span class="p">(</span><span class="n">database_ast</span><span class="p">,</span> <span class="n">prediction_ast</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">(</span><span class="n">documented_schema</span><span class="o">=</span><span class="n">prediction</span><span class="o">.</span><span class="n">documented_schema</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Generated schema does not match the original schema&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">(</span><span class="n">documented_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DocGeneratorModule.forward">
+<a class="viewcode-back" href="../../../source/graphdoc.html#graphdoc.DocGeneratorModule.forward">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a database schema, generate a documented schema. If retry is True, the</span>
+<span class="sd">        generation will be retried if the quality check fails.</span>
+
+<span class="sd">        :param database_schema: The database schema to generate documentation for. :type</span>
+<span class="sd">        database_schema: str :return: The generated documentation. :rtype:</span>
+<span class="sd">        dspy.Prediction</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">retry</span><span class="p">:</span>
+            <span class="n">database_schema</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retry_by_rating</span><span class="p">(</span><span class="n">database_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">(</span><span class="n">documented_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_predict</span><span class="p">(</span><span class="n">database_schema</span><span class="o">=</span><span class="n">database_schema</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="DocGeneratorModule.document_full_schema">
+<a class="viewcode-back" href="../../../source/graphdoc.html#graphdoc.DocGeneratorModule.document_full_schema">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">document_full_schema</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">trace</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="n">client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">mlflow</span><span class="o">.</span><span class="n">MlflowClient</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">expirement_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">api_key</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Given a database schema, parse out the underlying components and document on</span>
+<span class="sd">        a per-component basis.</span>
+
+<span class="sd">        :param database_schema: The database schema to generate documentation for. :type</span>
+<span class="sd">        database_schema: str :return: The generated documentation. :rtype:</span>
+<span class="sd">        dspy.Prediction</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># if we are tracing, make sure make sure we have everything needed to log to mlflow</span>
+        <span class="k">if</span> <span class="n">trace</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;client must be provided if trace is True&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">expirement_name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;expirement_name must be provided if trace is True&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">api_key</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;api_key must be provided if trace is True&quot;</span><span class="p">)</span>
+
+        <span class="c1"># check that the graphql is valid</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">document_ast</span> <span class="o">=</span> <span class="n">parse</span><span class="p">(</span><span class="n">database_schema</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid GraphQL schema provided: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">))</span>
+
+        <span class="c1"># parse the schema into examples</span>
+        <span class="n">examples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">document_ast</span><span class="o">.</span><span class="n">definitions</span><span class="p">:</span>
+            <span class="n">example</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">(</span>
+                <span class="n">database_schema</span><span class="o">=</span><span class="n">print_ast</span><span class="p">(</span><span class="n">node</span><span class="p">),</span> <span class="n">documented_schema</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">with_inputs</span><span class="p">(</span><span class="s2">&quot;database_schema&quot;</span><span class="p">)</span>
+            <span class="n">examples</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">example</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">trace</span><span class="p">:</span>
+            <span class="c1"># start the trace</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Starting trace&quot;</span><span class="p">)</span>
+            <span class="n">root_trace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_trace</span><span class="p">(</span>
+                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                <span class="c1"># TODO: we should have better type handling, but we check at the top</span>
+                <span class="n">expirement_name</span><span class="o">=</span><span class="n">expirement_name</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                <span class="c1"># TODO: we should have better type handling, but we check at the top</span>
+                <span class="n">trace_name</span><span class="o">=</span><span class="s2">&quot;document_full_schema&quot;</span><span class="p">,</span>
+                <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;database_schema&quot;</span><span class="p">:</span> <span class="n">database_schema</span><span class="p">},</span>
+                <span class="n">attributes</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">},</span>
+            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;created trace: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">root_trace</span><span class="p">))</span>
+
+        <span class="c1"># batch generate the documentation</span>
+        <span class="n">documented_examples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">examples</span><span class="p">,</span> <span class="n">num_threads</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+        <span class="n">document_ast</span><span class="o">.</span><span class="n">definitions</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">parse</span><span class="p">(</span><span class="n">ex</span><span class="o">.</span><span class="n">documented_schema</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">ex</span> <span class="ow">in</span> <span class="n">documented_examples</span>  <span class="c1"># type: ignore</span>
+            <span class="c1"># TODO: we should have better type handling, but we know this works</span>
+        <span class="p">)</span>
+
+        <span class="c1"># check that the generated schema matches the original schema</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="o">.</span><span class="n">schema_equality_check</span><span class="p">(</span><span class="n">parse</span><span class="p">(</span><span class="n">database_schema</span><span class="p">),</span> <span class="n">document_ast</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Schema equality check passed, returning documented schema&quot;</span><span class="p">)</span>
+            <span class="n">return_schema</span> <span class="o">=</span> <span class="n">print_ast</span><span class="p">(</span><span class="n">document_ast</span><span class="p">)</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;OK&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">&quot;Generated schema does not match the original schema&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fill_empty_descriptions</span><span class="p">:</span>
+                <span class="n">updated_ast</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">par</span><span class="o">.</span><span class="n">fill_empty_descriptions</span><span class="p">(</span><span class="n">document_ast</span><span class="p">)</span>
+                <span class="n">return_schema</span> <span class="o">=</span> <span class="n">print_ast</span><span class="p">(</span><span class="n">updated_ast</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">return_schema</span> <span class="o">=</span> <span class="n">database_schema</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="s2">&quot;ERROR&quot;</span>
+
+        <span class="k">if</span> <span class="n">trace</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Ending trace&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_end_trace</span><span class="p">(</span>
+                <span class="n">client</span><span class="o">=</span><span class="n">client</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                <span class="c1"># TODO: we should have better type handling, but we check at the top</span>
+                <span class="n">trace</span><span class="o">=</span><span class="n">root_trace</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                <span class="c1"># TODO: we should have better type handling, but i believe we will get an</span>
+                <span class="c1"># error if root_trace has an issue during the start_trace call</span>
+                <span class="n">outputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;documented_schema&quot;</span><span class="p">:</span> <span class="n">return_schema</span><span class="p">},</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ended trace: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">root_trace</span><span class="p">))</span>  <span class="c1"># type: ignore</span>
+            <span class="c1"># TODO: we should have better type handling, but we check at the top</span>
+        <span class="k">return</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">(</span><span class="n">documented_schema</span><span class="o">=</span><span class="n">return_schema</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Semiotic Labs.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

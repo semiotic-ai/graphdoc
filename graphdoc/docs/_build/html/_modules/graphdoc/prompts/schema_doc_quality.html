@@ -72,16 +72,19 @@
            <div itemprop="articleBody">
              
   <h1>Source code for graphdoc.prompts.schema_doc_quality</h1><div class="highlight"><pre>
-<span></span><span class="c1"># system packages</span>
+<span></span><span class="c1"># Copyright 2025-, Semiotic AI, Inc.</span>
+<span class="c1"># SPDX-License-Identifier: Apache-2.0</span>
+
+<span class="c1"># system packages</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Union</span>
 
-<span class="c1"># internal packages</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">.single_prompt</span><span class="w"> </span><span class="kn">import</span> <span class="n">SinglePrompt</span>
-
 <span class="c1"># external packages</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">dspy</span>
+
+<span class="c1"># internal packages</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphdoc.prompts.single_prompt</span><span class="w"> </span><span class="kn">import</span> <span class="n">SinglePrompt</span>
 
 <span class="c1"># logging</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
@@ -91,17 +94,19 @@
 <span class="c1"># DSPy Signatures #</span>
 <span class="c1">###################</span>
 <div class="viewcode-block" id="DocQualitySignature">
-<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_quality.DocQualitySignature">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.DocQualitySignature">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DocQualitySignature</span><span class="p">(</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.</span>
+
 <span class="sd">    The categories are described as:</span>
 <span class="sd">    - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.</span>
 <span class="sd">    - almost perfect (3): The documentation is almost perfect and free from ambiguity, but there is room for improvement.</span>
 <span class="sd">    - poor but correct (2): The documentation is poor but correct and has room for improvement due to missing information. The documentation is not incorrect.</span>
 <span class="sd">    - incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.</span>
 <span class="sd">    Output a number rating that corresponds to the categories described above.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: B950</span>
 
     <span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">InputField</span><span class="p">()</span>
     <span class="n">category</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;perfect&quot;</span><span class="p">,</span> <span class="s2">&quot;almost perfect&quot;</span><span class="p">,</span> <span class="s2">&quot;poor but correct&quot;</span><span class="p">,</span> <span class="s2">&quot;incorrect&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
@@ -112,10 +117,11 @@
 
 
 <div class="viewcode-block" id="DocQualityDemonstrationSignature">
-<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_quality.DocQualityDemonstrationSignature">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.DocQualityDemonstrationSignature">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DocQualityDemonstrationSignature</span><span class="p">(</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.</span>
+
 <span class="sd">    The categories are described as:</span>
 <span class="sd">    - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.</span>
 <span class="sd">        perfect (4) example:</span>
@@ -142,7 +148,8 @@
 <span class="sd">            id: Bytes!</span>
 <span class="sd">        }</span>
 <span class="sd">    Output a number rating that corresponds to the categories described above.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>  <span class="c1"># noqa: B950</span>
 
     <span class="n">database_schema</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">dspy</span><span class="o">.</span><span class="n">InputField</span><span class="p">()</span>
     <span class="n">category</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;perfect&quot;</span><span class="p">,</span> <span class="s2">&quot;almost perfect&quot;</span><span class="p">,</span> <span class="s2">&quot;poor but correct&quot;</span><span class="p">,</span> <span class="s2">&quot;incorrect&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
@@ -153,16 +160,17 @@
 
 
 <div class="viewcode-block" id="doc_quality_factory">
-<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_quality.doc_quality_factory">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.doc_quality_factory">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">doc_quality_factory</span><span class="p">(</span>
     <span class="n">key</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">]</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Factory function to return the correct signature based on the key. Currently only supports two signatures (doc_quality and doc_quality_demo).</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Factory function to return the correct signature based on the key. Currently only</span>
+<span class="sd">    supports two signatures (doc_quality and doc_quality_demo).</span>
 
 <span class="sd">    :param key: The key to return the signature for.</span>
 <span class="sd">    :type key: Union[str, dspy.Signature]</span>
 <span class="sd">    :return: The signature for the given key.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># allow the user to pass in their own dspy signature</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Signature</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">dspy</span><span class="o">.</span><span class="n">SignatureMeta</span><span class="p">):</span>
@@ -182,10 +190,10 @@
 <span class="c1"># Single Prompt Class #</span>
 <span class="c1">#######################</span>
 <div class="viewcode-block" id="DocQualityPrompt">
-<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_quality.DocQualityPrompt">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.DocQualityPrompt">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DocQualityPrompt</span><span class="p">(</span><span class="n">SinglePrompt</span><span class="p">):</span>
 <div class="viewcode-block" id="DocQualityPrompt.__init__">
-<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.__init__">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.DocQualityPrompt.__init__">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">prompt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span>
@@ -199,15 +207,20 @@
         <span class="n">prompt_metric</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;rating&quot;</span><span class="p">,</span> <span class="s2">&quot;category&quot;</span><span class="p">],</span> <span class="n">Callable</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;rating&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># TODO: we should think about if we want to add checks on any provided dspy.Signature</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Initialize the DocQualityPrompt. This is a single prompt that can be used to evaluate the quality of the documentation for a given schema. This is a wrapper around the SinglePrompt class that implements the abstract methods.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the DocQualityPrompt. This is a single prompt that can be used to</span>
+<span class="sd">        evaluate the quality of the documentation for a given schema. This is a wrapper</span>
+<span class="sd">        around the SinglePrompt class that implements the abstract methods.</span>
 
-<span class="sd">        :param prompt: The prompt to use. Can either be a string that maps to a defined signature, as set in the doc_quality_factory, or a dspy.Signature.</span>
-<span class="sd">        :type prompt: Union[str, dspy.Signature]</span>
-<span class="sd">        :param prompt_type: The type of prompt to use.</span>
-<span class="sd">        :type prompt_type: Union[Literal[&quot;predict&quot;, &quot;chain_of_thought&quot;], Callable]</span>
-<span class="sd">        :param prompt_metric: The metric to use. Can either be a string that maps to a defined metric, as set in the doc_quality_factory, or a custom callable function. Function must have the signature (example: dspy.Example, prediction: dspy.Prediction) -&gt; bool.</span>
-<span class="sd">        :type prompt_metric: Union[Literal[&quot;rating&quot;, &quot;category&quot;], Callable]</span>
+<span class="sd">        :param prompt: The prompt to use. Can either be a string that maps to a defined</span>
+<span class="sd">        signature, as set in the doc_quality_factory, or a dspy.Signature. :type prompt:</span>
+<span class="sd">        Union[str, dspy.Signature] :param prompt_type: The type of prompt to use. :type</span>
+<span class="sd">        prompt_type: Union[Literal[&quot;predict&quot;, &quot;chain_of_thought&quot;], Callable] :param</span>
+<span class="sd">        prompt_metric: The metric to use. Can either be a string that maps to a defined</span>
+<span class="sd">        metric, as set in the doc_quality_factory, or a custom callable function.</span>
+<span class="sd">        Function must have the signature (example: dspy.Example, prediction:</span>
+<span class="sd">        dspy.Prediction) -&gt; bool. :type prompt_metric: Union[Literal[&quot;rating&quot;,</span>
+<span class="sd">        &quot;category&quot;], Callable]</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">prompt_signature</span> <span class="o">=</span> <span class="n">doc_quality_factory</span><span class="p">(</span><span class="n">prompt</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
@@ -234,21 +247,18 @@
     <span class="c1"># Abstract Methods    #</span>
     <span class="c1">#######################</span>
 <div class="viewcode-block" id="DocQualityPrompt.evaluate_metric">
-<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.evaluate_metric">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.DocQualityPrompt.evaluate_metric">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">evaluate_metric</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">example</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">,</span> <span class="n">prediction</span><span class="p">:</span> <span class="n">dspy</span><span class="o">.</span><span class="n">Prediction</span><span class="p">,</span> <span class="n">trace</span><span class="o">=</span><span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Evaluate the metric for the given example and prediction.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the metric for the given example and prediction.</span>
 
-<span class="sd">        :param example: The example to evaluate the metric on.</span>
-<span class="sd">        :type example: dspy.Example</span>
-<span class="sd">        :param prediction: The prediction to evaluate the metric on.</span>
-<span class="sd">        :type prediction: dspy.Prediction</span>
-<span class="sd">        :param trace: Used for DSPy.</span>
-<span class="sd">        :type trace: Any</span>
+<span class="sd">        :param example: The example to evaluate the metric on. :type example:</span>
+<span class="sd">        dspy.Example :param prediction: The prediction to evaluate the metric on. :type</span>
+<span class="sd">        prediction: dspy.Prediction :param trace: Used for DSPy. :type trace: Any</span>
 <span class="sd">        :return: The result of the evaluation. A boolean for if the metric is correct.</span>
 <span class="sd">        :rtype: bool</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">evaluation_mapping</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;rating&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_rating_metric</span><span class="p">,</span>
@@ -264,7 +274,7 @@
 
 
 <div class="viewcode-block" id="DocQualityPrompt.format_metric">
-<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.format_metric">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.DocQualityPrompt.format_metric">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">format_metric</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">examples</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">dspy</span><span class="o">.</span><span class="n">Example</span><span class="p">],</span>
@@ -286,12 +296,13 @@
 <span class="sd">        :type results: List</span>
 <span class="sd">        :param scores: The scores of the evaluation.</span>
 <span class="sd">        :type scores: List</span>
-<span class="sd">        :return: A dictionary containing the overall score, per category scores, and details. { &quot;overall_score&quot;: 0, &quot;per_category_scores&quot;: {}, &quot;details&quot;: [], &quot;results&quot;: [] }</span>
+<span class="sd">        :return: A dictionary containing the overall score, per category scores, and details.</span>
+<span class="sd">                { &quot;overall_score&quot;: 0, &quot;per_category_scores&quot;: {}, &quot;details&quot;: [], &quot;results&quot;: [] }</span>
 <span class="sd">        :rtype: Dict[str, Any]</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_initialize_formatted_results</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Initialize the results structure with empty containers&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Initialize the results structure with empty containers.&quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="p">{</span>
                 <span class="s2">&quot;overall_score&quot;</span><span class="p">:</span> <span class="n">overall_score</span><span class="p">,</span>
                 <span class="s2">&quot;per_category_scores&quot;</span><span class="p">:</span> <span class="p">{},</span>
@@ -300,7 +311,7 @@
             <span class="p">}</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_process_single_result</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">score</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Process individual result to extract metadata and update statistics&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Process individual result to extract metadata and update statistics.&quot;&quot;&quot;</span>
             <span class="n">example</span><span class="p">,</span> <span class="n">prediction</span><span class="p">,</span> <span class="n">is_correct</span> <span class="o">=</span> <span class="n">result</span>
             <span class="n">example_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">example</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
 
@@ -322,11 +333,11 @@
             <span class="p">}</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_percent_correct</span><span class="p">(</span><span class="n">correct</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">total</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Calculate percentage correct with safe division&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Calculate percentage correct with safe division.&quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="p">(</span><span class="n">correct</span> <span class="o">/</span> <span class="n">total</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="k">if</span> <span class="n">total</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
 
         <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_per_category_scores</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">]:</span>
-<span class="w">            </span><span class="sd">&quot;&quot;&quot;Convert category statistics to percentage scores&quot;&quot;&quot;</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Convert category statistics to percentage scores.&quot;&quot;&quot;</span>
             <span class="k">return</span> <span class="p">{</span>
                 <span class="n">category</span><span class="p">:</span> <span class="p">{</span>
                     <span class="s2">&quot;percent_correct&quot;</span><span class="p">:</span> <span class="n">_calculate_percent_correct</span><span class="p">(</span>
@@ -355,21 +366,20 @@
 
 
 <div class="viewcode-block" id="DocQualityPrompt.compare_metrics">
-<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.prompts.schema_doc_quality.DocQualityPrompt.compare_metrics">[docs]</a>
+<a class="viewcode-back" href="../../../source/graphdoc.prompts.html#graphdoc.DocQualityPrompt.compare_metrics">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">compare_metrics</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">base_metrics</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">optimized_metrics</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">comparison_value</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;overall_score&quot;</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Compare the metrics of the base and optimized models. Returns true if the optimized model is better than the base model.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compare the metrics of the base and optimized models. Returns true if the</span>
+<span class="sd">        optimized model is better than the base model.</span>
 
-<span class="sd">        :param base_metrics: The metrics of the base model.</span>
-<span class="sd">        :type base_metrics: Any</span>
-<span class="sd">        :param optimized_metrics: The metrics of the optimized model.</span>
-<span class="sd">        :type optimized_metrics: Any</span>
-<span class="sd">        :param comparison_value: The value to compare.</span>
+<span class="sd">        :param base_metrics: The metrics of the base model. :type base_metrics: Any</span>
+<span class="sd">        :param optimized_metrics: The metrics of the optimized model. :type</span>
+<span class="sd">        optimized_metrics: Any :param comparison_value: The value to compare.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">comparison_value</span> <span class="o">==</span> <span class="s2">&quot;overall_score&quot;</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">optimized_metrics</span><span class="p">[</span><span class="s2">&quot;overall_score&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">base_metrics</span><span class="p">[</span><span class="s2">&quot;overall_score&quot;</span><span class="p">]</span>
