@@ -33,6 +33,45 @@ log = logging.getLogger(__name__)
 # Resource Setup      #
 #######################
 
+def lm_from_dict(lm_config: dict):
+    """Load a language model from a dictionary of parameters.
+
+    :param lm_config: Dictionary containing language model parameters.
+    :type lm_config: dict
+
+    """
+    return dspy.LM(**lm_config)
+
+
+def lm_from_yaml(yaml_path: Union[str, Path]):
+    """Load a language model from a YAML file.
+
+    :param lm_config: Dictionary containing language model parameters.
+    :type lm_config: dict
+
+    """
+    config = load_yaml_config(yaml_path)
+    return lm_from_dict(config["language_model"])
+
+def dspy_lm_from_dict(lm_config: dict):
+    """Load a language model from a dictionary of parameters. Set the dspy language model.
+
+    :param lm_config: Dictionary containing language model parameters.
+    :type lm_config: dict
+
+    """
+    lm = lm_from_dict(lm_config)
+    dspy.configure(lm=lm)
+
+def dspy_lm_from_yaml(yaml_path: Union[str, Path]):
+    """Load a language model from a YAML file. Set the dspy language model.
+
+    :param lm_config: Dictionary containing language model parameters.
+    :type lm_config: dict
+
+    """
+    config = load_yaml_config(yaml_path)
+    dspy_lm_from_dict(config["language_model"])
 
 def mlflow_data_helper_from_dict(mlflow_config: dict) -> MlflowDataHelper:
     """Load a mlflow data helper from a dictionary of parameters.
@@ -342,6 +381,9 @@ def single_prompt_from_yaml(yaml_path: Union[str, Path]) -> SinglePrompt:
     :rtype: SinglePrompt
 
     """
+    # set the dspy language model
+    dspy_lm_from_yaml(yaml_path)
+
     config = load_yaml_config(yaml_path)
     mlflow_config = config.get("mlflow", None)
     if config["prompt"]["prompt_metric"]:
@@ -472,6 +514,9 @@ def single_trainer_from_yaml(yaml_path: Union[str, Path]) -> SinglePromptTrainer
     :rtype: SinglePromptTrainer
 
     """
+    # set the dspy language model
+    dspy_lm_from_yaml(yaml_path)
+
     try:
         config = load_yaml_config(yaml_path)
         prompt = single_prompt_from_yaml(yaml_path)
@@ -563,6 +608,9 @@ def doc_generator_module_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorM
     :rtype: DocGeneratorModule
 
     """
+    # set the dspy language model
+    dspy_lm_from_yaml(yaml_path)
+
     config = load_yaml_config(yaml_path)["module"]
     prompt = single_prompt_from_yaml(yaml_path)
     return doc_generator_module_from_dict(config, prompt)
@@ -620,6 +668,9 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
     :rtype: DocGeneratorEvaluator
 
     """  # noqa: B950
+    # set the dspy language model
+    dspy_lm_from_yaml(yaml_path)
+
     # load the generator
     generator = doc_generator_module_from_yaml(yaml_path)
     config = load_yaml_config(yaml_path)
