@@ -190,13 +190,13 @@ class DocGeneratorPrompt(SinglePrompt):
     ) -> Dict[str, Any]:
         """Format the metric results into a dictionary.
 
-        :param examples: The examples used to evaluate the metric. 
-        :type examples: List[dspy.Example] 
-        :param overall_score: The overall score of the metric. 
-        :type overall_score: float 
-        :param results: The results of the metric. 
-        :type results: List 
-        :param scores: The scores of the metric. 
+        :param examples: The examples used to evaluate the metric.
+        :type examples: List[dspy.Example]
+        :param overall_score: The overall score of the metric.
+        :type overall_score: float
+        :param results: The results of the metric.
+        :type results: List
+        :param scores: The scores of the metric.
         :type scores: List
 
         """
@@ -218,7 +218,7 @@ class DocGeneratorPrompt(SinglePrompt):
         :param base_metrics: The base metrics.
         :type base_metrics: Any
         :param optimized_metrics: The optimized metrics.
-        :type 
+        :type
         """
         if comparison_value == "overall_score":
             return optimized_metrics.get("overall_score", 0) > base_metrics.get(

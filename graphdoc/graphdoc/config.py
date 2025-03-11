@@ -67,7 +67,7 @@ def mlflow_data_helper_from_yaml(yaml_path: Union[str, Path]) -> MlflowDataHelpe
             mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
             mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
 
-    """
+    """  # noqa: B950
     config = load_yaml_config(yaml_path)
     return mlflow_data_helper_from_dict(
         config["mlflow"],
@@ -278,7 +278,7 @@ def single_prompt_from_dict(
     :return: A SinglePrompt object.
     :rtype: SinglePrompt
 
-    """
+    """  # noqa: B950
     try:
         # if we are loading from mlflow, modify the prompt_dict with the loaded model
         if prompt_dict["load_from_mlflow"]:
@@ -619,7 +619,7 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
     :return: A DocGeneratorEvaluator object.
     :rtype: DocGeneratorEvaluator
 
-    """
+    """  # noqa: B950
     # load the generator
     generator = doc_generator_module_from_yaml(yaml_path)
     config = load_yaml_config(yaml_path)
