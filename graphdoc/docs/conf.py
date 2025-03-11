@@ -45,3 +45,11 @@ language = "en"
 
 html_theme = "sphinx_rtd_theme"
 html_static_path = ["_static"]
+
+# -- Path setup --------------------------------------------------------------
+# If extensions (or modules to document with autodoc) are in another directory,
+# add these directories to sys.path here.
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath(".."))

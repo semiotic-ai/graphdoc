@@ -1,6 +1,15 @@
 graphdoc.data package
 =====================
 
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   graphdoc.data.dspy_data
+   graphdoc.data.mlflow_data
+
 Submodules
 ----------
 
