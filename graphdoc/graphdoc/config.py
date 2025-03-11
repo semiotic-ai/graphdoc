@@ -35,8 +35,7 @@ log = logging.getLogger(__name__)
 
 
 def mlflow_data_helper_from_dict(mlflow_config: dict) -> MlflowDataHelper:
-    """
-    Load a mlflow data helper from a dictionary of parameters.
+    """Load a mlflow data helper from a dictionary of parameters.
 
     :param mlflow_config: Dictionary containing mlflow parameters.
     :type mlflow_config: dict
@@ -47,6 +46,7 @@ def mlflow_data_helper_from_dict(mlflow_config: dict) -> MlflowDataHelper:
             "mlflow_tracking_username": "admin",
             "mlflow_tracking_password": "password"
         }
+
     """
     return MlflowDataHelper(
         mlflow_tracking_uri=mlflow_config["mlflow_tracking_uri"],
@@ -56,17 +56,17 @@ def mlflow_data_helper_from_dict(mlflow_config: dict) -> MlflowDataHelper:
 
 
 def mlflow_data_helper_from_yaml(yaml_path: Union[str, Path]) -> MlflowDataHelper:
-    """
-    Load a mlflow data helper from a YAML file.
+    """Load a mlflow data helper from a YAML file.
 
     :param yaml_path: Path to the YAML file.
     :type yaml_path: Union[str, Path]
 
     .. code-block:: yaml
-        mlflow: 
+        mlflow:
             mlflow_tracking_uri: !env MLFLOW_TRACKING_URI           # The tracking URI for MLflow
             mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
             mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
+
     """
     config = load_yaml_config(yaml_path)
     return mlflow_data_helper_from_dict(
@@ -78,8 +78,7 @@ def mlflow_data_helper_from_yaml(yaml_path: Union[str, Path]) -> MlflowDataHelpe
 # Data Methods        #
 #######################
 def trainset_from_dict(trainset_dict: dict) -> List[dspy.Example]:
-    """
-    Load a trainset from a dictionary of parameters.
+    """Load a trainset from a dictionary of parameters.
 
     .. code-block:: yaml
         {
@@ -112,6 +111,7 @@ def trainset_from_dict(trainset_dict: dict) -> List[dspy.Example]:
     :type trainset_dict: dict
     :return: A trainset.
     :rtype: List[dspy.Example]
+
     """
     # TODO: refactor to enable the passing of alternative schema_directory_path,
     # and the related enums that must be passed in turn
@@ -251,8 +251,7 @@ def single_prompt_from_dict(
     prompt_metric: Union[str, SinglePrompt],
     mlflow_dict: Optional[dict] = None,
 ) -> SinglePrompt:
-    """
-    Load a single prompt from a dictionary of parameters.
+    """Load a single prompt from a dictionary of parameters.
 
     .. code-block:: json
         {
@@ -278,6 +277,7 @@ def single_prompt_from_dict(
     :type prompt_metric: Union[str, SinglePrompt]
     :return: A SinglePrompt object.
     :rtype: SinglePrompt
+
     """
     try:
         # if we are loading from mlflow, modify the prompt_dict with the loaded model
@@ -365,8 +365,7 @@ def single_trainer_from_dict(
     trainset: Optional[List[dspy.Example]] = None,
     evalset: Optional[List[dspy.Example]] = None,
 ) -> SinglePromptTrainer:
-    """
-    Load a single trainer from a dictionary of parameters.
+    """Load a single trainer from a dictionary of parameters.
 
     .. code-block:: json
         {
@@ -392,6 +391,7 @@ def single_trainer_from_dict(
     :type prompt: SinglePrompt
     :return: A SinglePromptTrainer object.
     :rtype: SinglePromptTrainer
+
     """
     if trainset is None:
         trainset = []
@@ -488,8 +488,7 @@ def single_trainer_from_yaml(yaml_path: Union[str, Path]) -> SinglePromptTrainer
 def doc_generator_module_from_dict(
     module_dict: dict, prompt: Union[DocGeneratorPrompt, SinglePrompt]
 ) -> DocGeneratorModule:
-    """
-    Load a doc generator module from a dictionary of parameters.
+    """Load a doc generator module from a dictionary of parameters.
 
     .. code-block:: json
         {
@@ -505,6 +504,7 @@ def doc_generator_module_from_dict(
     :type prompt: DocGeneratorPrompt
     :return: A DocGeneratorModule object.
     :rtype: DocGeneratorModule
+
     """
     return DocGeneratorModule(
         prompt=prompt,
@@ -575,11 +575,11 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
     """Load a doc generator evaluator from a YAML file.
 
     .. code-block:: yaml
-        mlflow: 
+        mlflow:
             mlflow_tracking_uri: !env MLFLOW_TRACKING_URI           # The tracking URI for MLflow
             mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
             mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
-    
+
         prompt:
             prompt: base_doc_gen                                  # Which prompt signature to use
             class: DocGeneratorPrompt                             # Must be a child of SinglePrompt (we will use an enum to map this)
@@ -599,9 +599,9 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
             load_from_mlflow: false                               # Whether to load the prompt from an MLFlow URI
             model_uri: null                                       # The tracking URI for MLflow
             model_name: null                                      # The name of the model in MLflow
-            model_version: null   
+            model_version: null
 
-        module: 
+        module:
             retry: true                                           # Whether to retry the generation if the quality check fails
             retry_limit: 1                                        # The maximum number of retries
             rating_threshold: 3                                   # The rating threshold for the quality check
@@ -612,8 +612,8 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
             mlflow_experiment_name: doc_generator_eval            # The name of the experiment in MLflow
             generator_prediction_field: documented_schema         # The field in the generator prediction to use
             evaluator_prediction_field: rating                    # The field in the evaluator prediction to use
-            readable_value: 25          
-    
+            readable_value: 25
+
     :param yaml_path: Path to the YAML file.
     :type yaml_path: Union[str, Path]
     :return: A DocGeneratorEvaluator object.
