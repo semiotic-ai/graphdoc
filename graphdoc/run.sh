@@ -127,7 +127,6 @@ show_help() {
     echo "  commit                 Format, lint, and test the code"
     echo "  docs-generate          Generate documentation RST files"
     echo "  docs                   Build the documentation"
-    echo "  docs-init              Initialize the Sphinx documentation"
 
     # train commands
     echo "  doc-quality-train      Train a document quality model"
@@ -157,7 +156,6 @@ else
         "commit") commit_command ;;
         "docs-generate") docs_generate ;;
         "docs") docs ;;
-        "docs-init") docs_init ;;
         "doc-quality-train") doc_quality_train_command ;;
         "doc-generator-train") doc_generator_train_command ;;
         "doc-generator-eval") doc_generator_eval_command ;;
