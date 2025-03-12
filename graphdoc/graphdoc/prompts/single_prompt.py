@@ -29,8 +29,6 @@ class SinglePrompt(ABC):
     ) -> None:
         """Initialize a single prompt.
 
-        :no-index:
-
         :param prompt: The prompt to use.
         :type prompt: dspy.Signature
         :param prompt_type: The type of prompt to use. Can be "predict" or

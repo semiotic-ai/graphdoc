@@ -31,8 +31,6 @@ class DocGeneratorModule(dspy.Module):
         a given GraphQL schema. Schemas are decomposed and individually used to generate
         documentation, with a quality check after each generation.
 
-        :no-index:
-
         signature fields are:
             - database_schema: str = dspy.InputField()
             - documented_schema: str = dspy.OutputField()

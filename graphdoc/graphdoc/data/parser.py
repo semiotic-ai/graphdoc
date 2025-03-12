@@ -30,11 +30,7 @@ log = logging.getLogger(__name__)
 
 
 class Parser:
-    """A class for parsing and handling of GraphQL objects.
-
-    :no-index:
-
-    """
+    """A class for parsing and handling of GraphQL objects."""
 
     DEFAULT_NODE_TYPES = {
         DocumentNode: "full schema",

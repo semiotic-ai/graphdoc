@@ -115,10 +115,7 @@ def doc_gen_factory(
 # Single Prompt Class #
 #######################
 class DocGeneratorPrompt(SinglePrompt):
-    """DocGeneratorPrompt class for generating documentation for GraphQL schemas.
-
-    :no-index:
-    """
+    """DocGeneratorPrompt class for generating documentation for GraphQL schemas."""
 
     def __init__(
         self,

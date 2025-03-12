@@ -107,8 +107,6 @@ def doc_quality_factory(
 class DocQualityPrompt(SinglePrompt):
     """DocQualityPrompt class for evaluating documentation quality.
 
-    :no-index:
-
     This is a single prompt that can be used to evaluate the quality of the documentation
     for a given schema. This is a wrapper around the SinglePrompt class that implements
     the abstract methods.

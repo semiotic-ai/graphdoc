@@ -21,8 +21,6 @@ class GenerationDataHelper(DspyDataHelper):
     """A helper class for creating data objects related to our Documentation Generation
     dspy.Signature.
 
-    :no-index:
-
     The example signature is defined as:
     ```
     database_schema: str = dspy.InputField()

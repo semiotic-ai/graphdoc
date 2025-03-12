@@ -31,8 +31,6 @@ log = logging.getLogger(__name__)
 class LocalDataHelper:
     """A helper class for loading data from a directory.
 
-    :no-index:
-
     :param schema_directory_path: The path to the directory containing the schemas
     :type schema_directory_path: Union[str, Path] Defaults to the path to the schemas in
         the graphdoc package.

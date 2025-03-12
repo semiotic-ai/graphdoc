@@ -20,11 +20,7 @@ log = logging.getLogger(__name__)
 
 
 class DspyDataHelper(ABC):
-    """Abstract class for creating data objects related to a given dspy.Signature.
-
-    :no-index:
-
-    """
+    """Abstract class for creating data objects related to a given dspy.Signature."""
 
     #######################
     # Class Methods       #

@@ -21,8 +21,6 @@ class QualityDataHelper(DspyDataHelper):
     """A helper class for creating data objects related to our Documentation Quality
     dspy.Signature.
 
-    :no-index:
-
     The example signature is defined as:
 
     .. code-block:: python

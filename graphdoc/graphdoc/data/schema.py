@@ -21,11 +21,7 @@ log = logging.getLogger(__name__)
 
 
 class SchemaCategory(str, Enum):
-    """Schema quality categories enumeration.
-
-    :no-index:
-
-    """
+    """Schema quality categories enumeration."""
 
     PERFECT = "perfect"
     ALMOST_PERFECT = "almost perfect"
@@ -42,11 +38,7 @@ class SchemaCategory(str, Enum):
 
 
 class SchemaRating(str, Enum):
-    """Schema quality ratings enumeration.
-
-    :no-index:
-
-    """
+    """Schema quality ratings enumeration."""
 
     FOUR = "4"
     THREE = "3"
@@ -65,11 +57,7 @@ class SchemaRating(str, Enum):
 
 
 class SchemaCategoryRatingMapping:
-    """Mapping between schema categories and ratings.
-
-    :no-index:
-
-    """
+    """Mapping between schema categories and ratings."""
 
     @staticmethod
     def get_rating(category: SchemaCategory) -> SchemaRating:
@@ -107,11 +95,7 @@ class SchemaCategoryRatingMapping:
 
 
 class SchemaType(str, Enum):
-    """Schema type enumeration.
-
-    :no-index:
-
-    """
+    """Schema type enumeration."""
 
     FULL_SCHEMA = "full schema"
     TABLE_SCHEMA = "table schema"
@@ -126,11 +110,7 @@ class SchemaType(str, Enum):
 
 
 class SchemaCategoryPath(str, Enum):
-    """Maps schema categories to their folder names.
-
-    :no-index:
-
-    """
+    """Maps schema categories to their folder names."""
 
     PERFECT = "perfect"
     ALMOST_PERFECT = "almost_perfect"
@@ -160,11 +140,7 @@ class SchemaCategoryPath(str, Enum):
 
 @dataclass
 class SchemaObject:
-    """Schema object containing schema data and metadata.
-
-    :no-index:
-
-    """
+    """Schema object containing schema data and metadata."""
 
     key: str
     category: Optional[Enum] = None
