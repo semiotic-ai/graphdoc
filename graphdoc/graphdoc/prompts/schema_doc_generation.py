@@ -79,7 +79,6 @@ class BadDocGeneratorSignature(dspy.Signature):
 
     """  # noqa: B950
 
-
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
         desc="The database schema with intentionally incorrect documentation, ensuring that the underlying schema is not altered."  # noqa: B950
