@@ -20,11 +20,7 @@ log = logging.getLogger(__name__)
 # DSPy Signatures #
 ###################
 class DocQualitySignature(dspy.Signature):
-    """A signature for evaluating the quality of GraphQL schema documentation.
-
-    :no-index:
-
-    You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
+    """You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
 
     The categories are described as:
     - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
@@ -43,9 +39,35 @@ class DocQualitySignature(dspy.Signature):
 
 
 class DocQualityDemonstrationSignature(dspy.Signature):
-    """A signature for demonstrating good, average and bad GraphQL schema documentation quality examples.
+    """You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
 
-    :no-index:
+    The categories are described as:
+    - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
+        perfect (4) example:
+        type Domain @entity {
+            " The namehash (id) of the parent name. References the Domain entity that is the parent of the current domain. Type: Domain "
+            parent: Domain
+        }
+    - almost perfect (3): The documentation is almost perfect and free from ambiguity, but there is room for improvement.
+        almost perfect (3) example:
+        type Token @entity {
+            " Name of the token, mirrored from the smart contract "
+            name: String!
+        }
+    - poor but correct (2): The documentation is poor but correct and has room for improvement due to missing information. The documentation is not incorrect.
+        poor but correct (2) example:
+        type InterestRate @entity {
+            "Description for column: id"
+            id: ID!
+        }
+    - incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.
+        incorrect (1) example:
+        type BridgeProtocol implements Protocol @entity {
+            " Social Security Number of the protocol's main developer "
+            id: Bytes!
+        }
+    Output a number rating that corresponds to the categories described above.
+
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
@@ -110,10 +132,8 @@ class DocQualityPrompt(SinglePrompt):
         :param prompt: The prompt to use. Can either be a string that maps to a defined
           signature, as set in the doc_quality_factory, or a dspy.Signature.
         :type prompt: Union[str, dspy.Signature]
-
         :param prompt_type: The type of prompt to use.
         :type prompt_type: Union[Literal["predict", "chain_of_thought"], Callable]
-
         :param prompt_metric: The metric to use. Can either be a string that maps to a defined
           metric, as set in the doc_quality_factory, or a custom callable function.
           Function must have the signature (example: dspy.Example, prediction:

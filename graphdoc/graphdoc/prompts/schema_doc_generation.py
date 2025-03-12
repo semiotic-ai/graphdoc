@@ -22,10 +22,19 @@ log = logging.getLogger(__name__)
 # DSPy Signatures #
 ###################
 class DocGeneratorSignature(dspy.Signature):
-    """A signature that takes a full GraphQL schema and returns a documented schema.
-
-    :no-index:
     """
+    ### TASK: Given a GraphQL Schema, generate a precise description for the columns of the tables in the database.
+
+    ### Requirements:
+    - Focus solely on confirmed details from the provided schema.
+    - Keep the description concise and factual.
+    - Exclude any speculative or additional commentary.
+    - DO NOT return the phrase "in the { table } table" in your description.
+
+    ### Formatting
+    - Ensure that the schema maintains proper documentation formatting, as is provided.
+
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
@@ -34,11 +43,21 @@ class DocGeneratorSignature(dspy.Signature):
 
 
 class DocGeneratorHelperSignature(dspy.Signature):
-    """A signature that takes a code section that requires a transformation as well as
-    the current description of that section and returns a new description.
-
-    :no-index:
     """
+    ### TASK: Analyze the provided GraphQL Schema and generate detailed yet concise descriptions for each field within the database tables and enums.
+
+    ### Requirements:
+    - If the field is unclear, and the documentation result is ambiguous, request additional information: "WARNING: Please provide additional information to avoid confusion".
+    - Utilize only the verified information from the schema to ensure accuracy.
+    - Descriptions should be factual, straightforward, and avoid any speculative language.
+    - Refrain from using the phrase "in the { table } table" within your descriptions.
+    - Ensure that the documentation adheres to standard schema formatting without modifying the underlying schema structure.
+
+    ### Formatting:
+    - Maintain consistency with the existing documentation style and structure.
+    - Focus on clarity and precision to aid developers and system architects in understanding the schema's components effectively.
+
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
@@ -47,11 +66,19 @@ class DocGeneratorHelperSignature(dspy.Signature):
 
 
 class BadDocGeneratorSignature(dspy.Signature):
-    """A signature that takes a full GraphQL schema and returns a list of
-    issues with the schema.
-
-    :no-index:
     """
+    ### TASK: Given a GraphQL Schema, generate intentionally incorrect documentation for the columns of the tables in the database.
+
+    ### Requirements:
+    - Every table, entity, enum, etc. must have at least one column with a description that is obviosly incorrect.
+    - The documentation must be incorrect and misleading.
+    - The documentation should be scattered, with only some columns having documentation.
+
+    ### Formatting
+    - Ensure that the schema maintains proper documentation formatting, as is provided.
+
+    """  # noqa: B950
+
 
     database_schema: str = dspy.InputField()
     documented_schema: str = dspy.OutputField(
