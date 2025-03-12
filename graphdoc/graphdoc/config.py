@@ -289,7 +289,7 @@ def single_prompt_from_dict(
     :return: A SinglePrompt object.
     :rtype: SinglePrompt
 
-    """
+    """  # noqa: B950
     try:
         # if we are loading from mlflow, modify the prompt_dict with the loaded model
         if prompt_dict["load_from_mlflow"]:
