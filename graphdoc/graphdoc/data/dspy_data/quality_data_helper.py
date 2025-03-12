@@ -22,13 +22,14 @@ class QualityDataHelper(DspyDataHelper):
     dspy.Signature.
 
     The example signature is defined as:
-    ```
-    database_schema: str = dspy.InputField()
-    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
-        dspy.OutputField()
-    )
-    rating: Literal[4, 3, 2, 1] = dspy.OutputField()
-    ```
+
+    .. code-block:: python
+
+        database_schema: str = dspy.InputField()
+        category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
+            dspy.OutputField()
+        )
+        rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
     """
 
