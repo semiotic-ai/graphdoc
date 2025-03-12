@@ -96,10 +96,6 @@ else
         # make commands
         "mlflow-setup") mlflow_setup ;;
         "mlflow-teardown") mlflow_teardown ;;
-        
-        # documentation commands
-        "docs-generate") docs_generate ;;
-        "docs-build") docs_build ;;
 
         # train commands
         "doc-quality-train") doc_quality_train ;;
