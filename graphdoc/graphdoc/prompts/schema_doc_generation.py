@@ -23,7 +23,7 @@ log = logging.getLogger(__name__)
 ###################
 class DocGeneratorSignature(dspy.Signature):
     """A signature that takes a full GraphQL schema and returns a documented schema.
-    
+
     :no-index:
     """
 
@@ -36,7 +36,7 @@ class DocGeneratorSignature(dspy.Signature):
 class DocGeneratorHelperSignature(dspy.Signature):
     """A signature that takes a code section that requires a transformation as well as
     the current description of that section and returns a new description.
-    
+
     :no-index:
     """
 
@@ -49,7 +49,7 @@ class DocGeneratorHelperSignature(dspy.Signature):
 class BadDocGeneratorSignature(dspy.Signature):
     """A signature that takes a full GraphQL schema and returns a list of
     issues with the schema.
-    
+
     :no-index:
     """
 
@@ -90,7 +90,7 @@ def doc_gen_factory(
 #######################
 class DocGeneratorPrompt(SinglePrompt):
     """DocGeneratorPrompt class for generating documentation for GraphQL schemas.
-    
+
     :no-index:
     """
 

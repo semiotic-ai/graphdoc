@@ -29,7 +29,7 @@ class MlflowDataHelper:
         mlflow_tracking_password: Optional[str] = None,
     ):
         """A helper class for loading and saving models and metadata from mlflow.
-        
+
         :no-index:
 
         :param mlflow_tracking_uri: The uri of the mlflow tracking server.

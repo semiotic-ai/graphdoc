@@ -30,7 +30,7 @@ class DocGeneratorModule(dspy.Module):
         """Initialize the DocGeneratorModule. A module for generating documentation for
         a given GraphQL schema. Schemas are decomposed and individually used to generate
         documentation, with a quality check after each generation.
-        
+
         :no-index:
 
         signature fields are:
@@ -46,7 +46,8 @@ class DocGeneratorModule(dspy.Module):
         :param rating_threshold: The minimum rating for a generated document to be
                                  considered valid.
         :type rating_threshold: int
-        :param fill_empty_descriptions: Whether to fill empty descriptions with generated documentation.
+        :param fill_empty_descriptions: Whether to fill empty descriptions with
+                                        generated documentation.
         :type fill_empty_descriptions: bool
 
         """

@@ -30,7 +30,7 @@ log = logging.getLogger(__name__)
 # check out how pytorch etc. handles loading in something like imagenet
 class LocalDataHelper:
     """A helper class for loading data from a directory.
-    
+
     :no-index:
 
     :param schema_directory_path: The path to the directory containing the schemas

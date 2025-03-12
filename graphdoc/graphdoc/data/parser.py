@@ -31,8 +31,9 @@ log = logging.getLogger(__name__)
 
 class Parser:
     """A class for parsing and handling of GraphQL objects.
-    
+
     :no-index:
+
     """
 
     DEFAULT_NODE_TYPES = {

@@ -76,7 +76,7 @@ def mlflow_data_helper_from_yaml(yaml_path: Union[str, Path]) -> MlflowDataHelpe
             mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
             mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
 
-    """
+    """  # noqa: B950
     config = load_yaml_config(yaml_path)
     return mlflow_data_helper_from_dict(
         config["mlflow"],
@@ -621,14 +621,34 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
     :return: A DocGeneratorEvaluator object.
     :rtype: DocGeneratorEvaluator
 
-    """
+    """  # noqa: B950
+    # load the generator
+    generator = doc_generator_module_from_yaml(yaml_path)
     config = load_yaml_config(yaml_path)
-    module = doc_generator_module_from_yaml(yaml_path)
+
+    # load the evaluator
+    metric_config = config["prompt_metric"]
+    evaluator = single_prompt_from_dict(metric_config, metric_config["metric"])
+
+    # load the eval config
+    mdh = mlflow_data_helper_from_yaml(yaml_path)  # noqa: F841
+    mlflow_tracking_uri = config["eval"]["mlflow_tracking_uri"]
+    mlflow_experiment_name = config["eval"]["mlflow_experiment_name"]
+    generator_prediction_field = config["eval"]["generator_prediction_field"]
+    evaluator_prediction_field = config["eval"]["evaluator_prediction_field"]
+    readable_value = config["eval"]["readable_value"]
+
+    # load the evalset
+    evalset = trainset_from_yaml(yaml_path)
+
+    # return the evaluator
     return DocGeneratorEvaluator(
-        tracking_uri=config["eval"]["mlflow_tracking_uri"],
-        experiment_name=config["eval"]["mlflow_experiment_name"],
-        module=module,
-        generator_prediction_field=config["eval"]["generator_prediction_field"],
-        evaluator_prediction_field=config["eval"]["evaluator_prediction_field"],
-        readable_value=config["eval"]["readable_value"],
+        generator=generator,
+        evaluator=evaluator,
+        evalset=evalset,
+        mlflow_tracking_uri=mlflow_tracking_uri,
+        mlflow_experiment_name=mlflow_experiment_name,
+        generator_prediction_field=generator_prediction_field,
+        evaluator_prediction_field=evaluator_prediction_field,
+        readable_value=readable_value,
     )

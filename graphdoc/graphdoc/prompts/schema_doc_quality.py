@@ -21,9 +21,9 @@ log = logging.getLogger(__name__)
 ###################
 class DocQualitySignature(dspy.Signature):
     """A signature for evaluating the quality of GraphQL schema documentation.
-    
+
     :no-index:
-    
+
     You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
 
     The categories are described as:
@@ -36,22 +36,22 @@ class DocQualitySignature(dspy.Signature):
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
-    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
-        dspy.OutputField()
-    )
+    category: Literal[
+        "perfect", "almost perfect", "poor but correct", "incorrect"
+    ] = dspy.OutputField()
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 
 class DocQualityDemonstrationSignature(dspy.Signature):
     """A signature for demonstrating good, average and bad GraphQL schema documentation quality examples.
-    
+
     :no-index:
-    """
+    """  # noqa: B950
 
     database_schema: str = dspy.InputField()
-    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
-        dspy.OutputField()
-    )
+    category: Literal[
+        "perfect", "almost perfect", "poor but correct", "incorrect"
+    ] = dspy.OutputField()
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 
@@ -84,9 +84,9 @@ def doc_quality_factory(
 #######################
 class DocQualityPrompt(SinglePrompt):
     """DocQualityPrompt class for evaluating documentation quality.
-    
+
     :no-index:
-    
+
     This is a single prompt that can be used to evaluate the quality of the documentation
     for a given schema. This is a wrapper around the SinglePrompt class that implements
     the abstract methods.

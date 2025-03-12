@@ -76,6 +76,7 @@ class DocQualityTrainer(SinglePromptTrainer):
         :type base_evaluation: Any
         :param optimized_evaluation: The evaluation metrics of the optimized model.
         :type optimized_evaluation: Any
+
         """
         base_evaluation_overall_score = base_evaluation["overall_score"]
         optimized_evaluation_overall_score = optimized_evaluation["overall_score"]

@@ -49,6 +49,7 @@ class SinglePromptTrainer(ABC):
         :type trainset: List[dspy.Example]
         :param evalset: The evaluation set.
         :type evalset: List[dspy.Example]
+
         """
         self.prompt = prompt
         self.optimizer_type = optimizer_type
@@ -87,6 +88,7 @@ class SinglePromptTrainer(ABC):
         :type base_evaluation: Any
         :param optimized_evaluation: The evaluation metrics of the optimized model.
         :type optimized_evaluation: Any
+
         """
         pass
 

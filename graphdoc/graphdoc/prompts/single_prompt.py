@@ -28,7 +28,7 @@ class SinglePrompt(ABC):
         # and tighter coupling
     ) -> None:
         """Initialize a single prompt.
-        
+
         :no-index:
 
         :param prompt: The prompt to use.
@@ -119,7 +119,8 @@ class SinglePrompt(ABC):
         :type base_metrics: Any
         :param optimized_metrics: The metrics of the optimized model.
         :type optimized_metrics: Any
-        :param comparison_value: The value to compare the metrics on. Determines which metric is used to compare the models.
+        :param comparison_value: The value to compare the metrics on.
+                                 Determines which metric is used to compare the models.
         :type comparison_value: str
         :return: True if the optimized model is better than the base model, False otherwise.
         :rtype: bool

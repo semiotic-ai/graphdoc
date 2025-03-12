@@ -20,7 +20,7 @@ log = logging.getLogger(__name__)
 class GenerationDataHelper(DspyDataHelper):
     """A helper class for creating data objects related to our Documentation Generation
     dspy.Signature.
-    
+
     :no-index:
 
     The example signature is defined as:
