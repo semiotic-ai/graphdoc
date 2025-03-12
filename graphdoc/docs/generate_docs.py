@@ -20,7 +20,7 @@ def main():
     output_dir = docs_dir
 
     # Clean up existing RST files except for special ones
-    preserve_files = ["index.rst", "conf.py", "generate_docs.py"]
+    preserve_files = ["index.rst", "conf.py", "generate_docs.py", "links.rst"]
     for filename in os.listdir(output_dir):
         filepath = os.path.join(output_dir, filename)
         if (
