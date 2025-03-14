@@ -11,6 +11,7 @@ graphdoc.prompts.schema\_doc\_generation module
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
 
 graphdoc.prompts.schema\_doc\_quality module
 --------------------------------------------
@@ -19,6 +20,7 @@ graphdoc.prompts.schema\_doc\_quality module
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
 
 graphdoc.prompts.single\_prompt module
 --------------------------------------
@@ -27,6 +29,7 @@ graphdoc.prompts.single\_prompt module
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
 
 Module contents
 ---------------
@@ -35,3 +38,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:

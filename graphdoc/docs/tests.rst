@@ -1,7 +1,7 @@
-graphdoc.eval package
-=====================
+tests package
+=============
 
-.. automodule:: graphdoc.eval
+.. automodule:: tests
    :members:
    :undoc-members:
    :show-inheritance:
@@ -13,4 +13,6 @@ Submodules
 .. toctree::
    :maxdepth: 4
 
-   graphdoc.eval.doc_generator_eval
+   tests.conftest
+   tests.test_confest
+   tests.test_config

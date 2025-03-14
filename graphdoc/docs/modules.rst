@@ -5,3 +5,4 @@ graphdoc
    :maxdepth: 4
 
    graphdoc
+   tests

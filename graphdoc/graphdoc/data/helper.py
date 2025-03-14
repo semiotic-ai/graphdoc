@@ -39,8 +39,11 @@ def check_directory_path(directory_path: Union[str, Path]) -> None:
 def check_file_path(file_path: Union[str, Path]) -> None:
     """Check if the provided path resolves to a valid file.
 
-    :param file_path: The path to check. :type file_path: Union[str, Path] :raises
-    ValueError: If the path does not resolve to a valid file. :return: None :rtype: None
+    :param file_path: The path to check.
+    :type file_path: Union[str, Path]
+    :raises ValueError: If the path does not resolve to a valid file.
+    :return: None
+    :rtype: None
 
     """
     _file_path = Path(file_path).resolve()

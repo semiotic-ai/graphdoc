@@ -75,7 +75,7 @@ show_help() {
     # make commands
     echo "  mlflow-setup                    Install mlflow-manager dependencies and run the services"
     echo "  mlflow-teardown                 Teardown mlflow-manager services"
-
+    
     # train commands
     echo "  doc-quality-train               Train a document quality model"
     echo "  doc-generator-train             Train a document generator model"

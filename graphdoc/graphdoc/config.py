@@ -79,23 +79,31 @@ def dspy_lm_from_yaml(yaml_path: Union[str, Path]):
 
 
 def mlflow_data_helper_from_dict(mlflow_config: dict) -> MlflowDataHelper:
-    """Load a mlflow data helper from a dictionary of parameters.
+    """Load a MLflow data helper from a dictionary of parameters.
 
-    :param mlflow_config: Dictionary containing mlflow parameters.
-    :type mlflow_config: dict
+    The following keys are expected:
+    - mlflow_tracking_uri
+    - mlflow_tracking_username (optional)
+    - mlflow_tracking_password (optional)
 
-    .. code-block:: json
+    .. code-block:: python
+
         {
             "mlflow_tracking_uri": "http://localhost:5000",
             "mlflow_tracking_username": "admin",
             "mlflow_tracking_password": "password"
         }
 
+    :param mlflow_config: Dictionary containing MLflow parameters.
+    :type mlflow_config: dict
+    :return: A MlflowDataHelper object.
+    :rtype: MlflowDataHelper
+
     """
     return MlflowDataHelper(
         mlflow_tracking_uri=mlflow_config["mlflow_tracking_uri"],
-        mlflow_tracking_username=mlflow_config["mlflow_tracking_username"],
-        mlflow_tracking_password=mlflow_config["mlflow_tracking_password"],
+        mlflow_tracking_username=mlflow_config.get("mlflow_tracking_username", None),
+        mlflow_tracking_password=mlflow_config.get("mlflow_tracking_password", None),
     )
 
 
@@ -106,6 +114,7 @@ def mlflow_data_helper_from_yaml(yaml_path: Union[str, Path]) -> MlflowDataHelpe
     :type yaml_path: Union[str, Path]
 
     .. code-block:: yaml
+
         mlflow:
             mlflow_tracking_uri: !env MLFLOW_TRACKING_URI           # The tracking URI for MLflow
             mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
@@ -125,6 +134,7 @@ def trainset_from_dict(trainset_dict: dict) -> List[dspy.Example]:
     """Load a trainset from a dictionary of parameters.
 
     .. code-block:: yaml
+
         {
             "hf_api_key": !env HF_DATASET_KEY,          # Must be a valid Hugging
                                                         # Face API key
@@ -195,6 +205,7 @@ def trainset_from_yaml(yaml_path: Union[str, Path]) -> List[dspy.Example]:
     """Load a trainset from a YAML file.
 
     .. code-block:: yaml
+
         data:
             hf_api_key: !env HF_DATASET_KEY         # Must be a valid Hugging Face API key
                                                     # (with permission to access graphdoc)
@@ -233,10 +244,12 @@ def split_trainset(
 ) -> tuple[List[dspy.Example], List[dspy.Example]]:
     """Split a trainset into a trainset and evalset.
 
-    :param trainset: The trainset to split. :type trainset: List[dspy.Example]
-    :param evalset_ratio: The proportionate size of the evalset. :type
-    evalset_ratio: float :return: A tuple of trainset and evalset. :rtype:
-    tuple[List[dspy.Example], List[dspy.Example]]
+    :param trainset: The trainset to split.
+    :type trainset: List[dspy.Example]
+    :param evalset_ratio: The proportionate size of the evalset.
+    :type evalset_ratio: float
+    :return: A tuple of trainset and evalset.
+    :rtype: tuple[List[dspy.Example], List[dspy.Example]]
 
     """
     random.seed(seed)
@@ -253,6 +266,7 @@ def trainset_and_evalset_from_yaml(
     """Load a trainset and evalset from a YAML file.
 
     .. code-block:: yaml
+
         data:
             hf_api_key: !env HF_DATASET_KEY         # Must be a valid Hugging Face API key
                                                     # (with permission to access graphdoc)
@@ -297,28 +311,25 @@ def single_prompt_from_dict(
 ) -> SinglePrompt:
     """Load a single prompt from a dictionary of parameters.
 
-    .. code-block:: json
+    .. code-block:: python
+
         {
             "prompt": "doc_quality",             # Which prompt signature to use
             "class": "SchemaDocQualityPrompt",   # Must be a child of SinglePrompt
-            "type": "predict",                   # The type of prompt to use
-                                                    # (predict, chain_of_thought)
-            "metric": "rating",                  # The type of metric to use
-                                                    # (rating, category)
-            "load_from_mlflow": false,           # Whether to load the prompt from an MLFlow URI
+            "type": "predict",                   # Must be one of predict, generate
+            "metric": "rating",                  # The metric to use for evaluation
+            "load_from_mlflow": false,           # Whether to load the prompt from MLflow
             "model_uri": null,                   # The tracking URI for MLflow
             "model_name": null,                  # The name of the model in MLflow
             "model_version": null                # The version of the model in MLflow
-            "prompt_metric": False               # Whether another prompt is used
-                                                    # to calculate the metric
-                                                    # (in which case we must also load that prompt)
         }
 
-    :param prompt_dict: Dictionary containing prompt information.
+    :param prompt_dict: Dictionary containing prompt parameters.
     :type prompt_dict: dict
-    :param prompt_metric: The metric to use to calculate the metric.
-        Can be another prompt signature or a string.
+    :param prompt_metric: The prompt to use for the metric.
     :type prompt_metric: Union[str, SinglePrompt]
+    :param mlflow_dict: Dictionary containing MLflow parameters.
+    :type mlflow_dict: Optional[dict]
     :return: A SinglePrompt object.
     :rtype: SinglePrompt
 
@@ -351,6 +362,7 @@ def single_prompt_from_yaml(yaml_path: Union[str, Path]) -> SinglePrompt:
     """Load a single prompt from a YAML file.
 
     .. code-block:: yaml
+
         prompt:
             prompt: base_doc_gen        # Which prompt signature to use
             class: DocGeneratorPrompt   # Must be a child of SinglePrompt
@@ -414,7 +426,8 @@ def single_trainer_from_dict(
 ) -> SinglePromptTrainer:
     """Load a single trainer from a dictionary of parameters.
 
-    .. code-block:: json
+    .. code-block:: python
+
         {
             "trainer": {
                 "class": "DocQualityTrainer",
@@ -465,6 +478,7 @@ def single_trainer_from_yaml(yaml_path: Union[str, Path]) -> SinglePromptTrainer
     """Load a single prompt trainer from a YAML file.
 
     .. code-block:: yaml
+
         trainer:
             hf_api_key: !env HF_DATASET_KEY         # Must be a valid Hugging Face API key
                                                     # (with permission to access graphdoc)
@@ -497,21 +511,6 @@ def single_trainer_from_yaml(yaml_path: Union[str, Path]) -> SinglePromptTrainer
             model_version: null                     # The version of the model in MLflow
             prompt_metric: true                     # Whether another prompt is used
                                                     # to calculate the metric
-                                                    # (in which case we must load prompt)
-
-        prompt_metric:
-            prompt: doc_quality                     # The prompt to use to calculate the metric
-            class: DocQualityPrompt                 # The class of the prompt to use
-                                                    # to calculate the metric
-            type: predict                           # The type of prompt to use
-                                                    # to calculate the metric
-            metric: rating                          # The metric to use to calculate
-                                                    # the metric
-            load_from_mlflow: false                 # Whether to load the prompt
-                                                    # from an MLFlow URI
-            model_uri: null                         # The tracking URI for MLflow
-            model_name: null                        # The name of the model in MLflow
-            model_version: null                     # The version of the model in MLflow
 
     :param yaml_path: Path to the YAML file.
     :type yaml_path: Union[str, Path]
@@ -538,9 +537,10 @@ def single_trainer_from_yaml(yaml_path: Union[str, Path]) -> SinglePromptTrainer
 def doc_generator_module_from_dict(
     module_dict: dict, prompt: Union[DocGeneratorPrompt, SinglePrompt]
 ) -> DocGeneratorModule:
-    """Load a doc generator module from a dictionary of parameters.
+    """Load a single doc generator module from a dictionary of parameters.
 
-    .. code-block:: json
+    .. code-block:: python
+
         {
             "retry": true,
             "retry_limit": 1,
@@ -569,6 +569,7 @@ def doc_generator_module_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorM
     """Load a doc generator module from a YAML file.
 
     .. code-block:: yaml
+
         prompt:
             prompt: base_doc_gen            # Which prompt signature to use
             class: DocGeneratorPrompt       # Must be a child of SinglePrompt
@@ -628,6 +629,7 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
     """Load a doc generator evaluator from a YAML file.
 
     .. code-block:: yaml
+
         mlflow:
             mlflow_tracking_uri: !env MLFLOW_TRACKING_URI           # The tracking URI for MLflow
             mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server

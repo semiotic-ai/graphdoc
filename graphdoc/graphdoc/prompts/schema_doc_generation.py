@@ -116,6 +116,8 @@ def doc_gen_factory(
 # Single Prompt Class #
 #######################
 class DocGeneratorPrompt(SinglePrompt):
+    """DocGeneratorPrompt class for generating documentation for GraphQL schemas."""
+
     def __init__(
         self,
         prompt: Union[str, dspy.Signature, dspy.SignatureMeta],
@@ -219,7 +221,10 @@ class DocGeneratorPrompt(SinglePrompt):
         :param base_metrics: The base metrics.
         :type base_metrics: Any
         :param optimized_metrics: The optimized metrics.
-        :type
+        :type optimized_metrics: Any
+        :param comparison_value: The value to compare.
+        :type comparison_value: str
+
         """
         if comparison_value == "overall_score":
             return optimized_metrics.get("overall_score", 0) > base_metrics.get(

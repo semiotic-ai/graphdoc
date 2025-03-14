@@ -47,6 +47,9 @@ class DocGeneratorModule(dspy.Module):
         :param rating_threshold: The minimum rating for a generated document to be
                                  considered valid.
         :type rating_threshold: int
+        :param fill_empty_descriptions: Whether to fill empty descriptions with
+                                        generated documentation.
+        :type fill_empty_descriptions: bool
 
         """
         super().__init__()
@@ -111,8 +114,10 @@ class DocGeneratorModule(dspy.Module):
         """Retry the generation if the quality check fails. Rating threshold is
         determined at initialization.
 
-        :param database_schema: The database schema to generate documentation for. :type
-        database_schema: str :return: The generated documentation. :rtype: str
+        :param database_schema: The database schema to generate documentation for.
+        :type database_schema: str
+        :return: The generated documentation.
+        :rtype: str
 
         """
 
@@ -243,9 +248,10 @@ class DocGeneratorModule(dspy.Module):
         """Given a database schema, generate a documented schema. If retry is True, the
         generation will be retried if the quality check fails.
 
-        :param database_schema: The database schema to generate documentation for. :type
-        database_schema: str :return: The generated documentation. :rtype:
-        dspy.Prediction
+        :param database_schema: The database schema to generate documentation for.
+        :type database_schema: str
+        :return: The generated documentation.
+        :rtype: dspy.Prediction
 
         """
 

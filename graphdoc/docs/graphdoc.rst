@@ -1,6 +1,12 @@
 graphdoc package
 ================
 
+.. automodule:: graphdoc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+   :noindex:
+
 Subpackages
 -----------
 
@@ -16,26 +22,8 @@ Subpackages
 Submodules
 ----------
 
-graphdoc.config module
-----------------------
+.. toctree::
+   :maxdepth: 4
 
-.. automodule:: graphdoc.config
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-graphdoc.main module
---------------------
-
-.. automodule:: graphdoc.main
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-Module contents
----------------
-
-.. automodule:: graphdoc
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   graphdoc.config
+   graphdoc.main
