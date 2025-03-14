@@ -97,6 +97,36 @@ def load_yaml_config(file_path: Union[str, Path], use_env: bool = True) -> dict:
         return yaml.load(file, Loader=SafeLoader)
 
 
+def load_yaml_config_redacted(
+    file_path: Union[str, Path], replace_value: str = "redacted"
+) -> dict:
+    """Load a YAML configuration file with environment variables redacted.
+
+    :param file_path: The path to the YAML file.
+    :type file_path: Union[str, Path]
+    :param replace_value: The value to replace the environment variables with.
+    :type replace_value: str
+    :return: The YAML configuration with env vars replaced by "redacted".
+    :rtype: dict
+    :raises ValueError: If the path does not resolve to a valid file.
+
+    """
+
+    def _redacted_env_constructor(loader, node):
+        return replace_value
+
+    SafeLoader.add_constructor("!env", _redacted_env_constructor)
+
+    _file_path = Path(file_path).resolve()
+    if not _file_path.is_file():
+        raise ValueError(
+            f"The provided path does not resolve to a valid file: {file_path}"
+        )
+
+    with open(_file_path, "r") as file:
+        return yaml.load(file, Loader=SafeLoader)
+
+
 def setup_logging(
     log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
 ):

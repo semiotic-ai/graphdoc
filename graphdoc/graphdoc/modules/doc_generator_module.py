@@ -222,10 +222,13 @@ class DocGeneratorModule(dspy.Module):
         if self.fill_empty_descriptions:
             updated_ast = self.par.fill_empty_descriptions(database_ast)
             database_schema = print_ast(updated_ast)
+        else:
+            database_schema = print_ast(database_ast)
 
         # try to generate the schema
         try:
             prediction = self.prompt.infer(database_schema=database_schema)
+            log.info("Generated schema: " + str(prediction.documented_schema))
         except Exception as e:
             log.warning("Error generating schema: " + str(e))
             return dspy.Prediction(documented_schema=database_schema)
@@ -367,7 +370,7 @@ class DocGeneratorModule(dspy.Module):
                 updated_ast = self.par.fill_empty_descriptions(document_ast)
                 return_schema = print_ast(updated_ast)
             else:
-                return_schema = database_schema
+                return_schema = print_ast(document_ast)
             status = "ERROR"
 
         if trace:

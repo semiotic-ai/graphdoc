@@ -31,6 +31,7 @@ class DocGeneratorSignature(dspy.Signature):
     - Descriptions should be factual, straightforward, and avoid any speculative language.
     - Refrain from using the phrase "in the { table } table" within your descriptions.
     - Ensure that the documentation adheres to standard schema formatting without modifying the underlying schema structure.
+    - Make sure that the entities themselves are documented.
 
     ### Formatting:
     - Maintain consistency with the existing documentation style and structure.

@@ -11,6 +11,7 @@ from graphdoc.data.helper import (
     check_directory_path,
     check_file_path,
     load_yaml_config,
+    load_yaml_config_redacted,
     setup_logging,
 )
 from graphdoc.data.local import LocalDataHelper
@@ -45,4 +46,5 @@ __all__ = [
     "SchemaRating",
     "SchemaType",
     "schema_objects_to_dataset",
+    "load_yaml_config_redacted",
 ]
