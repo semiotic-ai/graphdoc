@@ -28,7 +28,7 @@ class DocGeneratorModule(dspy.Module):
         retry_limit: int = 1,
         rating_threshold: int = 3,
         fill_empty_descriptions: bool = True,
-        token_tracker: TokenTracker = None,
+        token_tracker: Optional[TokenTracker] = None,
     ) -> None:
         """Initialize the DocGeneratorModule. A module for generating documentation for
         a given GraphQL schema. Schemas are decomposed and individually used to generate

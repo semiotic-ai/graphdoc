@@ -59,13 +59,13 @@ class DocGeneratorEvaluator(dspy.Module):
         """Takes a database schema, documents it, and then evaluates each component and
         the aggregate."""
         # (we assume we are using DocGeneratorModule)
-        generator_result = self.generator.document_full_schema(
+        generator_result = self.generator.document_full_schema(  # type: ignore
             database_schema=database_schema,
             trace=True,
             client=self.mlflow_helper.mlflow_client,
             expirement_name=self.mlflow_experiment_name,
             api_key="temp",
-        )  # type: ignore
+        )
         # TODO: let's decide if this is how we want to handle this in the future.
         # Alternatively, we could return the documented schema from forward,
         # not as a prediction object.
