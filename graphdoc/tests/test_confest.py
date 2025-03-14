@@ -1,7 +1,11 @@
 # Copyright 2025-, Semiotic AI, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
+# system packages
 import logging
+
+# external packages
+from dotenv import load_dotenv
 
 # internal packages
 from graphdoc import (
@@ -17,12 +21,11 @@ from .conftest import (
     OverwriteSchemaRating,
 )
 
-# system packages
-
-# external packages
-
 # logging
 log = logging.getLogger(__name__)
+
+# load the environment variables
+load_dotenv("../.env")
 
 
 class TestFixtures:
@@ -43,10 +46,6 @@ class TestFixtures:
             overwrite_ldh.categories_ratings
             == OverwriteSchemaCategoryRatingMapping.get_rating
         )
-
-    # def test_gd(self, gd: GraphDoc):
-    #     assert gd is not None
-    #     assert isinstance(gd, GraphDoc)
 
     def test_dqp(self, dqp):
         assert isinstance(dqp, DocQualityPrompt)
