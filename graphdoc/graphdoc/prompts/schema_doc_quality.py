@@ -21,15 +21,12 @@ log = logging.getLogger(__name__)
 ###################
 class DocQualitySignature(dspy.Signature):
     """
-    You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
-
-    The categories are described as:
-    - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
-    - almost perfect (3): The documentation is almost perfect and free from ambiguity, but there is room for improvement.
-    - poor but correct (2): The documentation is poor but correct and has room for improvement due to missing information. The documentation is not incorrect.
-    - incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.
-    Output a number rating that corresponds to the categories described above.
-
+    You are a documentation quality evaluator specializing in GraphQL schemas. Your task is to assess the quality of documentation provided for a given database schema. Carefully analyze the schema's descriptions for clarity, accuracy, and completeness. Categorize the documentation into one of the following ratings based on your evaluation: 
+    - perfect (4): The documentation is comprehensive and leaves no room for ambiguity in understanding the schema and its database content.
+    - almost perfect (3): The documentation is clear and mostly free of ambiguity, but there is potential for further improvement.
+    - poor but correct (2): The documentation is correct but lacks detail, resulting in some ambiguity. It requires enhancement to be more informative.
+    - incorrect (1): The documentation contains errors or misleading information, regardless of any correct segments present. Such inaccuracies necessitate an incorrect rating.
+    Provide a step-by-step reasoning to support your evaluation, along with the appropriate category label and numerical rating. 
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
