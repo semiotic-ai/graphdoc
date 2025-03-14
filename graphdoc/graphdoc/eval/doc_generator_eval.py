@@ -3,7 +3,6 @@
 
 # system packages
 import logging
-from pathlib import Path
 from typing import Any, List, Union
 
 # external packages

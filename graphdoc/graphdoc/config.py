@@ -688,7 +688,6 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
     mdh = mlflow_data_helper_from_yaml(yaml_path)  # noqa: F841
 
     # load the eval config
-    mlflow_tracking_uri = config["mlflow"]["mlflow_tracking_uri"]
     mlflow_experiment_name = config["eval"]["mlflow_experiment_name"]
     generator_prediction_field = config["eval"]["generator_prediction_field"]
     evaluator_prediction_field = config["eval"]["evaluator_prediction_field"]
