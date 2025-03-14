@@ -37,7 +37,7 @@ from graphdoc.data import (
     setup_logging,
 )
 from graphdoc.eval import DocGeneratorEvaluator
-from graphdoc.modules import DocGeneratorModule
+from graphdoc.modules import DocGeneratorModule, TokenTracker
 from graphdoc.prompts import (
     BadDocGeneratorSignature,
     DocGeneratorHelperSignature,
@@ -60,6 +60,7 @@ from graphdoc.train import (
 
 __all__ = [
     "DocGeneratorModule",
+    "TokenTracker",
     "DocGeneratorEvaluator",
     "DocGeneratorTrainer",
     "DocQualityTrainer",

@@ -30,7 +30,8 @@ class DocGeneratorEvaluator(dspy.Module):
             DocQualityPrompt, SinglePrompt, Any
         ],  # we have type hints, but accept any type for flexibility
         evalset: Union[List[dspy.Example], Any],
-        mlflow_tracking_uri: Union[str, Path],
+        # mlflow_tracking_uri: Union[str, Path],
+        mlflow_helper: MlflowDataHelper,
         mlflow_experiment_name: str = "doc_generator_eval",
         generator_prediction_field: str = "documented_schema",
         evaluator_prediction_field: str = "rating",
@@ -47,10 +48,11 @@ class DocGeneratorEvaluator(dspy.Module):
         self.generator = generator
         self.evaluator = evaluator
         self.evalset = evalset
-        self.mlflow_tracking_uri = mlflow_tracking_uri
+        # self.mlflow_tracking_uri = mlflow_tracking_uri
+        self.mlflow_helper = mlflow_helper
         self.generator_prediction_field = generator_prediction_field
         self.evaluator_prediction_field = evaluator_prediction_field
-        self.mlflow_helper = MlflowDataHelper(mlflow_tracking_uri)
+        # self.mlflow_helper = MlflowDataHelper(mlflow_tracking_uri)
         self.mlflow_experiment_name = mlflow_experiment_name
         self.readable_value = readable_value
 
@@ -58,7 +60,13 @@ class DocGeneratorEvaluator(dspy.Module):
         """Takes a database schema, documents it, and then evaluates each component and
         the aggregate."""
         # (we assume we are using DocGeneratorModule)
-        generator_result = self.generator.forward(database_schema)  # type: ignore
+        generator_result = self.generator.document_full_schema(
+            database_schema=database_schema, 
+            trace=True,
+            client=self.mlflow_helper.mlflow_client,
+            expirement_name=self.mlflow_experiment_name,
+            api_key="temp",
+        )  # type: ignore
         # TODO: let's decide if this is how we want to handle this in the future.
         # Alternatively, we could return the documented schema from forward,
         # not as a prediction object.
