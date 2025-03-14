@@ -21,18 +21,18 @@ log = logging.getLogger(__name__)
 ###################
 class DocQualitySignature(dspy.Signature):
     """
-    You are a documentation quality evaluator specializing in GraphQL schemas. Your task is to assess the quality of documentation provided for a given database schema. Carefully analyze the schema's descriptions for clarity, accuracy, and completeness. Categorize the documentation into one of the following ratings based on your evaluation: 
+    You are a documentation quality evaluator specializing in GraphQL schemas. Your task is to assess the quality of documentation provided for a given database schema. Carefully analyze the schema's descriptions for clarity, accuracy, and completeness. Categorize the documentation into one of the following ratings based on your evaluation:
     - perfect (4): The documentation is comprehensive and leaves no room for ambiguity in understanding the schema and its database content.
     - almost perfect (3): The documentation is clear and mostly free of ambiguity, but there is potential for further improvement.
     - poor but correct (2): The documentation is correct but lacks detail, resulting in some ambiguity. It requires enhancement to be more informative.
     - incorrect (1): The documentation contains errors or misleading information, regardless of any correct segments present. Such inaccuracies necessitate an incorrect rating.
-    Provide a step-by-step reasoning to support your evaluation, along with the appropriate category label and numerical rating. 
+    Provide a step-by-step reasoning to support your evaluation, along with the appropriate category label and numerical rating.
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
-    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
-        dspy.OutputField()
-    )
+    category: Literal[
+        "perfect", "almost perfect", "poor but correct", "incorrect"
+    ] = dspy.OutputField()
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 
@@ -70,9 +70,9 @@ class DocQualityDemonstrationSignature(dspy.Signature):
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
-    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
-        dspy.OutputField()
-    )
+    category: Literal[
+        "perfect", "almost perfect", "poor but correct", "incorrect"
+    ] = dspy.OutputField()
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 

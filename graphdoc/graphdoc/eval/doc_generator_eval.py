@@ -61,7 +61,7 @@ class DocGeneratorEvaluator(dspy.Module):
         the aggregate."""
         # (we assume we are using DocGeneratorModule)
         generator_result = self.generator.document_full_schema(
-            database_schema=database_schema, 
+            database_schema=database_schema,
             trace=True,
             client=self.mlflow_helper.mlflow_client,
             expirement_name=self.mlflow_experiment_name,

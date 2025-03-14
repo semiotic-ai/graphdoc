@@ -33,6 +33,7 @@ log = logging.getLogger(__name__)
 # Resource Setup      #
 #######################
 
+
 def lm_from_dict(lm_config: dict):
     """Load a language model from a dictionary of parameters.
 
@@ -53,8 +54,10 @@ def lm_from_yaml(yaml_path: Union[str, Path]):
     config = load_yaml_config(yaml_path)
     return lm_from_dict(config["language_model"])
 
+
 def dspy_lm_from_dict(lm_config: dict):
-    """Load a language model from a dictionary of parameters. Set the dspy language model.
+    """Load a language model from a dictionary of parameters. Set the dspy language
+    model.
 
     :param lm_config: Dictionary containing language model parameters.
     :type lm_config: dict
@@ -62,6 +65,7 @@ def dspy_lm_from_dict(lm_config: dict):
     """
     lm = lm_from_dict(lm_config)
     dspy.configure(lm=lm)
+
 
 def dspy_lm_from_yaml(yaml_path: Union[str, Path]):
     """Load a language model from a YAML file. Set the dspy language model.
@@ -72,6 +76,7 @@ def dspy_lm_from_yaml(yaml_path: Union[str, Path]):
     """
     config = load_yaml_config(yaml_path)
     dspy_lm_from_dict(config["language_model"])
+
 
 def mlflow_data_helper_from_dict(mlflow_config: dict) -> MlflowDataHelper:
     """Load a mlflow data helper from a dictionary of parameters.

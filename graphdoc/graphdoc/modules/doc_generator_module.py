@@ -248,12 +248,13 @@ class DocGeneratorModule(dspy.Module):
         dspy.Prediction
 
         """
+
         def _update_active_tasks():
             with self.token_tracker.callback_lock:
                 self.token_tracker.active_tasks -= 1
                 if self.token_tracker.active_tasks == 0:
                     self.token_tracker.all_tasks_done.set()
-        
+
         if self.retry:
             database_schema = self._retry_by_rating(database_schema=database_schema)
             _update_active_tasks()
@@ -274,8 +275,9 @@ class DocGeneratorModule(dspy.Module):
         """Given a database schema, parse out the underlying components and document on
         a per-component basis.
 
-        :param database_schema: The database schema to generate documentation for. 
-        :type database_schema: str :return: The generated documentation. 
+        :param database_schema: The database schema to generate documentation for.
+        :type database_schema: str
+        :return: The generated documentation.
         :rtype: dspy.Prediction
 
         """
@@ -331,18 +333,20 @@ class DocGeneratorModule(dspy.Module):
         # token tracker details
         self.token_tracker.all_tasks_done.wait()
         callbacks_during_run = 0
-        while True: 
-            try: 
+        while True:
+            try:
                 data = self.token_tracker.callback_queue.get(timeout=2)
                 with self.token_tracker.callback_lock:
                     self.token_tracker.api_call_count += 1
                     self.token_tracker.model_name = data.get("model", "unknown")
-                    self.token_tracker.completion_tokens += data.get("completion_tokens", 0)
+                    self.token_tracker.completion_tokens += data.get(
+                        "completion_tokens", 0
+                    )
                     self.token_tracker.prompt_tokens += data.get("prompt_tokens", 0)
                     self.token_tracker.total_tokens += data.get("total_tokens", 0)
                 callbacks_during_run += 1
                 self.token_tracker.callback_queue.task_done()
-            except queue.Empty: 
+            except queue.Empty:
                 log.info("Queue empty after timeout, assuming all callbacks processed")
                 break
 
@@ -368,7 +372,10 @@ class DocGeneratorModule(dspy.Module):
                 trace=root_trace,  # type: ignore
                 # TODO: we should have better type handling, but i believe we will get an
                 # error if root_trace has an issue during the start_trace call
-                outputs={"documented_schema": return_schema, "token_tracker": self.token_tracker.stats()},
+                outputs={
+                    "documented_schema": return_schema,
+                    "token_tracker": self.token_tracker.stats(),
+                },
                 status=status,
             )
             log.info("ended trace: " + str(root_trace))  # type: ignore

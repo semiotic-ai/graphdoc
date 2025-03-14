@@ -1,15 +1,17 @@
-from datetime import datetime
+import concurrent.futures
+import logging
 import os
+import queue
 import random
 import threading
-from dotenv import load_dotenv
-import litellm
 import uuid
-import logging
+from datetime import datetime
+
 import dspy
-import concurrent.futures
+import litellm
+from dotenv import load_dotenv
+
 from graphdoc.config import dspy_lm_from_yaml
-import queue
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +26,7 @@ callback_lock = threading.Lock()
 callback_queue = queue.Queue()
 all_tasks_done = threading.Event()
 
+
 def global_token_callback(kwargs, response, start_time, end_time, **callback_kwargs):
     data = {
         "model": response.get("model", "unknown"),
@@ -32,7 +35,10 @@ def global_token_callback(kwargs, response, start_time, end_time, **callback_kwa
         "total_tokens": response.get("usage", {}).get("total_tokens", 0),
     }
     callback_queue.put(data)
-    logger.info(f"Callback triggered, queued data, thread: {threading.current_thread().name}")
+    logger.info(
+        f"Callback triggered, queued data, thread: {threading.current_thread().name}"
+    )
+
 
 def math_chain(task_id, active_tasks):
     math = dspy.Predict("question -> answer: float")
@@ -48,9 +54,10 @@ def math_chain(task_id, active_tasks):
             all_tasks_done.set()
     logger.info(f"Task {task_id} completed, remaining active tasks: {active_tasks[0]}")
 
+
 def math_chain_multi():
     global api_call_count, model_name, completion_tokens, prompt_tokens, total_tokens
-    
+
     with callback_lock:
         start_count = api_call_count
     logger.info(f"math_chain_multi started, initial api_call_count: {start_count}")
@@ -59,16 +66,18 @@ def math_chain_multi():
     logger.info(f"math_chain_multi: num_tasks: {num_tasks}")
     active_tasks = [num_tasks]
     all_tasks_done.clear()
-    
+
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-        futures = [executor.submit(math_chain, i, active_tasks) for i in range(num_tasks)]
+        futures = [
+            executor.submit(math_chain, i, active_tasks) for i in range(num_tasks)
+        ]
         logger.info(f"total futures: {len(futures)}")
         for future in concurrent.futures.as_completed(futures):
             future.result()
-    
+
     all_tasks_done.wait()
     logger.info("All tasks completed, now draining callback queue...")
-    
+
     callbacks_during_run = 0
     while True:
         try:
@@ -84,7 +93,7 @@ def math_chain_multi():
         except queue.Empty:
             logger.info("Queue empty after timeout, assuming all callbacks processed")
             break
-    
+
     logger.info(f"math_chain_multi: model_name: {model_name}")
     logger.info(f"math_chain_multi: completion_tokens: {completion_tokens}")
     logger.info(f"math_chain_multi: prompt_tokens: {prompt_tokens}")
@@ -92,12 +101,13 @@ def math_chain_multi():
     logger.info(f"math_chain_multi: total api_call_count: {api_call_count}")
     logger.info(f"math_chain_multi: callbacks during this run: {callbacks_during_run}")
 
+
 def main():
     print("hello, world!")
     load_dotenv("../.env")
     if global_token_callback not in litellm.callbacks:
         litellm.callbacks.append(global_token_callback)
-    
+
     log_dir = "logs"
     os.makedirs(log_dir, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -107,13 +117,15 @@ def main():
     root_logger.setLevel(logging.DEBUG)
     file_handler = logging.FileHandler(log_file)
     file_handler.setLevel(logging.DEBUG)
-    file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+    file_handler.setFormatter(
+        logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    )
     root_logger.addHandler(file_handler)
     console_handler = logging.StreamHandler()
     console_handler.setLevel(logging.INFO)
-    console_handler.setFormatter(logging.Formatter('%(levelname)s - %(message)s'))
+    console_handler.setFormatter(logging.Formatter("%(levelname)s - %(message)s"))
     root_logger.addHandler(console_handler)
-    
+
     print(f"logging to file: {log_file}")
     logger.info("logging initialized")
     os.environ["LITELLM_LOG"] = "DEBUG"
@@ -122,6 +134,7 @@ def main():
     dspy_lm_from_yaml(config_path)
 
     math_chain_multi()
+
 
 if __name__ == "__main__":
     main()
