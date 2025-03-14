@@ -29,7 +29,6 @@ class DocGeneratorEvaluator(dspy.Module):
             DocQualityPrompt, SinglePrompt, Any
         ],  # we have type hints, but accept any type for flexibility
         evalset: Union[List[dspy.Example], Any],
-        # mlflow_tracking_uri: Union[str, Path],
         mlflow_helper: MlflowDataHelper,
         mlflow_experiment_name: str = "doc_generator_eval",
         generator_prediction_field: str = "documented_schema",
@@ -47,11 +46,9 @@ class DocGeneratorEvaluator(dspy.Module):
         self.generator = generator
         self.evaluator = evaluator
         self.evalset = evalset
-        # self.mlflow_tracking_uri = mlflow_tracking_uri
         self.mlflow_helper = mlflow_helper
         self.generator_prediction_field = generator_prediction_field
         self.evaluator_prediction_field = evaluator_prediction_field
-        # self.mlflow_helper = MlflowDataHelper(mlflow_tracking_uri)
         self.mlflow_experiment_name = mlflow_experiment_name
         self.readable_value = readable_value
 
@@ -110,7 +107,6 @@ class DocGeneratorEvaluator(dspy.Module):
         """Batches the evaluation set and logs the results to mlflow."""
         mlflow.set_experiment(self.mlflow_experiment_name)
         with mlflow.start_run():
-            # evalset = [x.database_schema for x in self.evalset]
             evaluation_results = self.batch(self.evalset, num_threads=32)
             avg_overall_rating = sum(
                 [x["overall_rating"] for x in evaluation_results]
