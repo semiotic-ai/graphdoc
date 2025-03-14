@@ -373,4 +373,8 @@ class DocGeneratorModule(dspy.Module):
             )
             log.info("ended trace: " + str(root_trace))  # type: ignore
             # TODO: we should have better type handling, but we check at the top
+
+        # clear the token tracker
+        self.token_tracker.clear()
+
         return dspy.Prediction(documented_schema=return_schema)
