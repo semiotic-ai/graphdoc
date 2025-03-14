@@ -21,6 +21,8 @@ log = logging.getLogger(__name__)
 
 
 class SchemaCategory(str, Enum):
+    """Schema quality categories enumeration."""
+
     PERFECT = "perfect"
     ALMOST_PERFECT = "almost perfect"
     POOR_BUT_CORRECT = "poor but correct"
@@ -36,6 +38,8 @@ class SchemaCategory(str, Enum):
 
 
 class SchemaRating(str, Enum):
+    """Schema quality ratings enumeration."""
+
     FOUR = "4"
     THREE = "3"
     TWO = "2"
@@ -53,7 +57,7 @@ class SchemaRating(str, Enum):
 
 
 class SchemaCategoryRatingMapping:
-    """Maps SchemaCategory to SchemaRating."""
+    """Mapping between schema categories and ratings."""
 
     @staticmethod
     def get_rating(category: SchemaCategory) -> SchemaRating:
@@ -91,6 +95,8 @@ class SchemaCategoryRatingMapping:
 
 
 class SchemaType(str, Enum):
+    """Schema type enumeration."""
+
     FULL_SCHEMA = "full schema"
     TABLE_SCHEMA = "table schema"
     ENUM_SCHEMA = "enum schema"
@@ -134,6 +140,8 @@ class SchemaCategoryPath(str, Enum):
 
 @dataclass
 class SchemaObject:
+    """Schema object containing schema data and metadata."""
+
     key: str
     category: Optional[Enum] = None
     rating: Optional[Enum] = None

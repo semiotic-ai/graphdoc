@@ -36,14 +36,22 @@ class DocQualityTrainer(SinglePromptTrainer):
         """Initialize the DocQualityTrainer. This is the base class for implementing a
         trainer for a DocQualityPrompt.
 
-        :param prompt: The prompt to train. :type prompt: DocQualityPrompt :param
-        optimizer_type: The type of optimizer to use. :type optimizer_type: str :param
-        optimizer_kwargs: The keyword arguments for the optimizer. :type
-        optimizer_kwargs: Dict[str, Any] :param mlflow_model_name: The name of the model
-        in mlflow. :type mlflow_model_name: str :param mlflow_experiment_name: The name
-        of the experiment in mlflow. :type mlflow_experiment_name: str :param
-        mlflow_tracking_uri: The uri of the mlflow tracking server. :type
-        mlflow_tracking_uri: str :param trainset: The training set.
+        :param prompt: The prompt to train.
+        :type prompt: DocQualityPrompt
+        :param optimizer_type: The type of optimizer to use.
+        :type optimizer_type: str
+        :param optimizer_kwargs: The keyword arguments for the optimizer.
+        :type optimizer_kwargs: Dict[str, Any]
+        :param mlflow_model_name: The name of the model in mlflow.
+        :type mlflow_model_name: str
+        :param mlflow_experiment_name: The name of the experiment in mlflow.
+        :type mlflow_experiment_name: str
+        :param mlflow_tracking_uri: The uri of the mlflow tracking server.
+        :type mlflow_tracking_uri: str
+        :param trainset: The training set.
+        :type trainset: List[dspy.Example]
+        :param evalset: The evaluation set.
+        :type evalset: List[dspy.Example]
 
         """
         super().__init__(
@@ -64,9 +72,10 @@ class DocQualityTrainer(SinglePromptTrainer):
         """Log evaluation metrics to mlflow. We will log the overall scores and the per
         category scores. Per category scores will be logged as a csv file.
 
-        :param base_evaluation: The evaluation metrics of the base model. :type
-        base_evaluation: Any :param optimized_evaluation: The evaluation metrics of the
-        optimized model. :type optimized_evaluation: Any
+        :param base_evaluation: The evaluation metrics of the base model.
+        :type base_evaluation: Any
+        :param optimized_evaluation: The evaluation metrics of the optimized model.
+        :type optimized_evaluation: Any
 
         """
         base_evaluation_overall_score = base_evaluation["overall_score"]

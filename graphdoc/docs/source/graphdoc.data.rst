@@ -11,6 +11,7 @@ graphdoc.data.helper module
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
 
 graphdoc.data.local module
 --------------------------
@@ -19,6 +20,7 @@ graphdoc.data.local module
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
 
 graphdoc.data.parser module
 ---------------------------
@@ -27,6 +29,7 @@ graphdoc.data.parser module
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
 
 graphdoc.data.schema module
 ---------------------------
@@ -35,6 +38,7 @@ graphdoc.data.schema module
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:
 
 Module contents
 ---------------
@@ -43,3 +47,4 @@ Module contents
    :members:
    :undoc-members:
    :show-inheritance:
+   :no-index:

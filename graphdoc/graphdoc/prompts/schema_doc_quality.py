@@ -21,27 +21,23 @@ log = logging.getLogger(__name__)
 ###################
 class DocQualitySignature(dspy.Signature):
     """
-    You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
-
-    The categories are described as:
-    - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
-    - almost perfect (3): The documentation is almost perfect and free from ambiguity, but there is room for improvement.
-    - poor but correct (2): The documentation is poor but correct and has room for improvement due to missing information. The documentation is not incorrect.
-    - incorrect (1): The documentation is incorrect and contains inaccurate or misleading information. Any incorrect information automatically leads to an incorrect rating, even if some correct information is present.
-    Output a number rating that corresponds to the categories described above.
-
+    You are a documentation quality evaluator specializing in GraphQL schemas. Your task is to assess the quality of documentation provided for a given database schema. Carefully analyze the schema's descriptions for clarity, accuracy, and completeness. Categorize the documentation into one of the following ratings based on your evaluation:
+    - perfect (4): The documentation is comprehensive and leaves no room for ambiguity in understanding the schema and its database content.
+    - almost perfect (3): The documentation is clear and mostly free of ambiguity, but there is potential for further improvement.
+    - poor but correct (2): The documentation is correct but lacks detail, resulting in some ambiguity. It requires enhancement to be more informative.
+    - incorrect (1): The documentation contains errors or misleading information, regardless of any correct segments present. Such inaccuracies necessitate an incorrect rating.
+    Provide a step-by-step reasoning to support your evaluation, along with the appropriate category label and numerical rating.
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
-    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
-        dspy.OutputField()
-    )
+    category: Literal[
+        "perfect", "almost perfect", "poor but correct", "incorrect"
+    ] = dspy.OutputField()
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 
 class DocQualityDemonstrationSignature(dspy.Signature):
-    """
-    You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
+    """You are evaluating the output of an LLM program, expect hallucinations. Given a GraphQL Schema, evaluate the quality of documentation for that schema and provide a category rating.
 
     The categories are described as:
     - perfect (4): The documentation contains enough information so that the interpretation of the schema and its database content is completely free of ambiguity.
@@ -73,9 +69,9 @@ class DocQualityDemonstrationSignature(dspy.Signature):
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
-    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
-        dspy.OutputField()
-    )
+    category: Literal[
+        "perfect", "almost perfect", "poor but correct", "incorrect"
+    ] = dspy.OutputField()
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 
@@ -107,6 +103,13 @@ def doc_quality_factory(
 # Single Prompt Class #
 #######################
 class DocQualityPrompt(SinglePrompt):
+    """DocQualityPrompt class for evaluating documentation quality.
+
+    This is a single prompt that can be used to evaluate the quality of the documentation
+    for a given schema. This is a wrapper around the SinglePrompt class that implements
+    the abstract methods.
+    """
+
     def __init__(
         self,
         prompt: Union[
@@ -120,20 +123,18 @@ class DocQualityPrompt(SinglePrompt):
         prompt_metric: Union[Literal["rating", "category"], Callable] = "rating",
     ) -> None:
         # TODO: we should think about if we want to add checks on any provided dspy.Signature
-        """Initialize the DocQualityPrompt. This is a single prompt that can be used to
-        evaluate the quality of the documentation for a given schema. This is a wrapper
-        around the SinglePrompt class that implements the abstract methods.
+        """Initialize the DocQualityPrompt.
 
         :param prompt: The prompt to use. Can either be a string that maps to a defined
-        signature, as set in the doc_quality_factory, or a dspy.Signature. :type prompt:
-        Union[str, dspy.Signature] :param prompt_type: The type of prompt to use. :type
-        prompt_type: Union[Literal["predict", "chain_of_thought"], Callable] :param
-        prompt_metric: The metric to use. Can either be a string that maps to a defined
-        metric, as set in the doc_quality_factory, or a custom callable function.
-        Function must have the signature (example: dspy.Example, prediction:
-        dspy.Prediction) -> bool. :type prompt_metric: Union[Literal["rating",
-        "category"], Callable]
-
+          signature, as set in the doc_quality_factory, or a dspy.Signature.
+        :type prompt: Union[str, dspy.Signature]
+        :param prompt_type: The type of prompt to use.
+        :type prompt_type: Union[Literal["predict", "chain_of_thought"], Callable]
+        :param prompt_metric: The metric to use. Can either be a string that maps to a defined
+          metric, as set in the doc_quality_factory, or a custom callable function.
+          Function must have the signature (example: dspy.Example, prediction:
+          dspy.Prediction) -> bool.
+        :type prompt_metric: Union[Literal["rating", "category"], Callable]
         """
         prompt_signature = doc_quality_factory(prompt)
         super().__init__(
@@ -163,12 +164,14 @@ class DocQualityPrompt(SinglePrompt):
     ) -> bool:
         """Evaluate the metric for the given example and prediction.
 
-        :param example: The example to evaluate the metric on. :type example:
-        dspy.Example :param prediction: The prediction to evaluate the metric on. :type
-        prediction: dspy.Prediction :param trace: Used for DSPy. :type trace: Any
+        :param example: The example to evaluate the metric on.
+        :type example: dspy.Example
+        :param prediction: The prediction to evaluate the metric on.
+        :type prediction: dspy.Prediction
+        :param trace: Used for DSPy.
+        :type trace: Any
         :return: The result of the evaluation. A boolean for if the metric is correct.
         :rtype: bool
-
         """
         evaluation_mapping = {
             "rating": self._evaluate_rating_metric,
@@ -280,10 +283,14 @@ class DocQualityPrompt(SinglePrompt):
         """Compare the metrics of the base and optimized models. Returns true if the
         optimized model is better than the base model.
 
-        :param base_metrics: The metrics of the base model. :type base_metrics: Any
-        :param optimized_metrics: The metrics of the optimized model. :type
-        optimized_metrics: Any :param comparison_value: The value to compare.
-
+        :param base_metrics: The metrics of the base model.
+        :type base_metrics: Any
+        :param optimized_metrics: The metrics of the optimized model.
+        :type optimized_metrics: Any
+        :param comparison_value: The value to compare.
+        :type comparison_value: str
+        :return: True if the optimized model is better than the base model.
+        :rtype: bool
         """
         if comparison_value == "overall_score":
             return optimized_metrics["overall_score"] > base_metrics["overall_score"]

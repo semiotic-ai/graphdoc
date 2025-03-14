@@ -3,6 +3,7 @@
 
 # system packages
 import logging
+import queue
 from typing import Any, Literal, Optional, Union
 
 # external packages
@@ -12,6 +13,7 @@ from graphql import parse, print_ast
 
 # internal packages
 from graphdoc.data import Parser
+from graphdoc.modules.token_tracker import TokenTracker
 from graphdoc.prompts import DocGeneratorPrompt, SinglePrompt
 
 # logging
@@ -26,6 +28,7 @@ class DocGeneratorModule(dspy.Module):
         retry_limit: int = 1,
         rating_threshold: int = 3,
         fill_empty_descriptions: bool = True,
+        token_tracker: Optional[TokenTracker] = None,
     ) -> None:
         """Initialize the DocGeneratorModule. A module for generating documentation for
         a given GraphQL schema. Schemas are decomposed and individually used to generate
@@ -44,6 +47,9 @@ class DocGeneratorModule(dspy.Module):
         :param rating_threshold: The minimum rating for a generated document to be
                                  considered valid.
         :type rating_threshold: int
+        :param fill_empty_descriptions: Whether to fill empty descriptions with
+                                        generated documentation.
+        :type fill_empty_descriptions: bool
 
         """
         super().__init__()
@@ -56,6 +62,7 @@ class DocGeneratorModule(dspy.Module):
         # we should move to a dict like structure for passing in those parameters
         self.fill_empty_descriptions = fill_empty_descriptions
         self.par = Parser()
+        self.token_tracker = TokenTracker() if token_tracker is None else token_tracker
 
         # ensure that the doc generator prompt metric is set to rating
         if self.prompt.prompt_metric.prompt_metric != "rating":
@@ -107,8 +114,10 @@ class DocGeneratorModule(dspy.Module):
         """Retry the generation if the quality check fails. Rating threshold is
         determined at initialization.
 
-        :param database_schema: The database schema to generate documentation for. :type
-        database_schema: str :return: The generated documentation. :rtype: str
+        :param database_schema: The database schema to generate documentation for.
+        :type database_schema: str
+        :return: The generated documentation.
+        :rtype: str
 
         """
 
@@ -239,16 +248,27 @@ class DocGeneratorModule(dspy.Module):
         """Given a database schema, generate a documented schema. If retry is True, the
         generation will be retried if the quality check fails.
 
-        :param database_schema: The database schema to generate documentation for. :type
-        database_schema: str :return: The generated documentation. :rtype:
-        dspy.Prediction
+        :param database_schema: The database schema to generate documentation for.
+        :type database_schema: str
+        :return: The generated documentation.
+        :rtype: dspy.Prediction
 
         """
+
+        def _update_active_tasks():
+            with self.token_tracker.callback_lock:
+                self.token_tracker.active_tasks -= 1
+                if self.token_tracker.active_tasks == 0:
+                    self.token_tracker.all_tasks_done.set()
+
         if self.retry:
             database_schema = self._retry_by_rating(database_schema=database_schema)
+            _update_active_tasks()
             return dspy.Prediction(documented_schema=database_schema)
         else:
-            return self._predict(database_schema=database_schema)
+            prediction = self._predict(database_schema=database_schema)
+            _update_active_tasks()
+            return prediction
 
     def document_full_schema(
         self,
@@ -261,9 +281,10 @@ class DocGeneratorModule(dspy.Module):
         """Given a database schema, parse out the underlying components and document on
         a per-component basis.
 
-        :param database_schema: The database schema to generate documentation for. :type
-        database_schema: str :return: The generated documentation. :rtype:
-        dspy.Prediction
+        :param database_schema: The database schema to generate documentation for.
+        :type database_schema: str
+        :return: The generated documentation.
+        :rtype: dspy.Prediction
 
         """
         # if we are tracing, make sure make sure we have everything needed to log to mlflow
@@ -303,6 +324,10 @@ class DocGeneratorModule(dspy.Module):
             )
             log.info("created trace: " + str(root_trace))
 
+        # token tracker details
+        self.token_tracker.active_tasks = len(examples)
+        self.token_tracker.all_tasks_done.clear()
+
         # batch generate the documentation
         documented_examples = self.batch(examples, num_threads=32)
         document_ast.definitions = tuple(
@@ -310,6 +335,26 @@ class DocGeneratorModule(dspy.Module):
             for ex in documented_examples  # type: ignore
             # TODO: we should have better type handling, but we know this works
         )
+
+        # token tracker details
+        self.token_tracker.all_tasks_done.wait()
+        callbacks_during_run = 0
+        while True:
+            try:
+                data = self.token_tracker.callback_queue.get(timeout=2)
+                with self.token_tracker.callback_lock:
+                    self.token_tracker.api_call_count += 1
+                    self.token_tracker.model_name = data.get("model", "unknown")
+                    self.token_tracker.completion_tokens += data.get(
+                        "completion_tokens", 0
+                    )
+                    self.token_tracker.prompt_tokens += data.get("prompt_tokens", 0)
+                    self.token_tracker.total_tokens += data.get("total_tokens", 0)
+                callbacks_during_run += 1
+                self.token_tracker.callback_queue.task_done()
+            except queue.Empty:
+                log.info("Queue empty after timeout, assuming all callbacks processed")
+                break
 
         # check that the generated schema matches the original schema
         if self.par.schema_equality_check(parse(database_schema), document_ast):
@@ -333,9 +378,16 @@ class DocGeneratorModule(dspy.Module):
                 trace=root_trace,  # type: ignore
                 # TODO: we should have better type handling, but i believe we will get an
                 # error if root_trace has an issue during the start_trace call
-                outputs={"documented_schema": return_schema},
+                outputs={
+                    "documented_schema": return_schema,
+                    "token_tracker": self.token_tracker.stats(),
+                },
                 status=status,
             )
             log.info("ended trace: " + str(root_trace))  # type: ignore
             # TODO: we should have better type handling, but we check at the top
+
+        # clear the token tracker
+        self.token_tracker.clear()
+
         return dspy.Prediction(documented_schema=return_schema)

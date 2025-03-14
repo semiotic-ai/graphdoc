@@ -38,13 +38,16 @@ class PromptFactory:
         """Returns an instance of the specified prompt class. Allows for the user to
         pass in their own dspy signature.
 
-        :param prompt: The prompt to use. :type prompt: Union[str, dspy.Signature]
-        :param prompt_class: The class of the prompt to use. :type prompt_class: str
-        :param prompt_type: The type of the prompt to use. :type prompt_type: str :param
-        prompt_metric: The metric to use for the prompt. :type prompt_metric: Union[str,
-        DocQualityPrompt, SinglePrompt] :return: An instance of the specified prompt
-        class. :rtype: SinglePrompt
-
+        :param prompt: The prompt to use.
+        :type prompt: Union[str, dspy.Signature]
+        :param prompt_class: The class of the prompt to use.
+        :type prompt_class: str
+        :param prompt_type: The type of the prompt to use.
+        :type prompt_type: str
+        :param prompt_metric: The metric to use for the prompt.
+        :type prompt_metric: Union[str, DocQualityPrompt, SinglePrompt]
+        :return: An instance of the specified prompt class.
+        :rtype: SinglePrompt
         """
         prompt_classes = {
             "DocQualityPrompt": DocQualityPrompt,
