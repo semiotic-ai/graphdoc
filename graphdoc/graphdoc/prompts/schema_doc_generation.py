@@ -23,18 +23,18 @@ log = logging.getLogger(__name__)
 ###################
 class DocGeneratorSignature(dspy.Signature):
     """
-        ### TASK:
-        Analyze the provided GraphQL Schema and generate detailed yet concise descriptions for each field within the database tables and enums. 
-        
-        ### Requirements:
-        - Utilize only the verified information from the schema to ensure accuracy.
-        - Descriptions should be factual, straightforward, and avoid any speculative language.
-        - Refrain from using the phrase "in the { table } table" within your descriptions.
-        - Ensure that the documentation adheres to standard schema formatting without modifying the underlying schema structure.
-        
-        ### Formatting:
-        - Maintain consistency with the existing documentation style and structure.
-        - Focus on clarity and precision to aid developers and system architects in understanding the schema's components effectively. 
+    ### TASK:
+    Analyze the provided GraphQL Schema and generate detailed yet concise descriptions for each field within the database tables and enums. 
+    
+    ### Requirements:
+    - Utilize only the verified information from the schema to ensure accuracy.
+    - Descriptions should be factual, straightforward, and avoid any speculative language.
+    - Refrain from using the phrase "in the { table } table" within your descriptions.
+    - Ensure that the documentation adheres to standard schema formatting without modifying the underlying schema structure.
+    
+    ### Formatting:
+    - Maintain consistency with the existing documentation style and structure.
+    - Focus on clarity and precision to aid developers and system architects in understanding the schema's components effectively. 
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
