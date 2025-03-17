@@ -279,13 +279,21 @@ class DocGeneratorModule(dspy.Module):
         trace: bool = False,
         client: Optional[mlflow.MlflowClient] = None,
         expirement_name: Optional[str] = None,
-        api_key: Optional[str] = None,
+        logging_id: Optional[str] = None,
     ) -> dspy.Prediction:
         """Given a database schema, parse out the underlying components and document on
         a per-component basis.
 
         :param database_schema: The database schema to generate documentation for.
         :type database_schema: str
+        :param trace: Whether to trace the generation.
+        :type trace: bool
+        :param client: The mlflow client.
+        :type client: mlflow.MlflowClient
+        :param expirement_name: The name of the experiment.
+        :type expirement_name: str
+        :param logging_id: The id to use for logging. Maps back to the user request.
+        :type logging_id: str
         :return: The generated documentation.
         :rtype: dspy.Prediction
 
@@ -296,8 +304,8 @@ class DocGeneratorModule(dspy.Module):
                 raise ValueError("client must be provided if trace is True")
             if expirement_name is None:
                 raise ValueError("expirement_name must be provided if trace is True")
-            if api_key is None:
-                raise ValueError("api_key must be provided if trace is True")
+            if logging_id is None:
+                raise ValueError("logging_id must be provided if trace is True")
 
         # check that the graphql is valid
         try:
@@ -323,7 +331,7 @@ class DocGeneratorModule(dspy.Module):
                 # TODO: we should have better type handling, but we check at the top
                 trace_name="document_full_schema",
                 inputs={"database_schema": database_schema},
-                attributes={"api_key": api_key},
+                attributes={"logging_id": logging_id},
             )
             log.info("created trace: " + str(root_trace))
 
