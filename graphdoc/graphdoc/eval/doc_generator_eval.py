@@ -61,7 +61,7 @@ class DocGeneratorEvaluator(dspy.Module):
             trace=True,
             client=self.mlflow_helper.mlflow_client,
             expirement_name=self.mlflow_experiment_name,
-            api_key="temp",
+            logging_id="temp",
         )
         # TODO: let's decide if this is how we want to handle this in the future.
         # Alternatively, we could return the documented schema from forward,
