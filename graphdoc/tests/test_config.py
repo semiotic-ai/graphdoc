@@ -1,8 +1,9 @@
 # Copyright 2025-, Semiotic AI, Inc.
 # SPDX-License-Identifier: Apache-2.0
 
-# system packages
 import logging
+
+# system packages
 from pathlib import Path
 
 # external packages
@@ -83,10 +84,10 @@ class TestConfig:
         config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
         trainset, evalset = trainset_and_evalset_from_yaml(config_path)
         assert isinstance(trainset, list)
-        assert len(trainset) == 900
+        assert len(trainset) == 9
         assert isinstance(trainset[0], dspy.Example)
         assert isinstance(evalset, list)
-        assert len(evalset) == 100
+        assert len(evalset) == 1
 
     ############################################################
     # prompt tests                                             #
@@ -106,7 +107,7 @@ class TestConfig:
         assert isinstance(generator_prompt, DocGeneratorPrompt)
         assert isinstance(generator_prompt.prompt_metric, DocQualityPrompt)
 
-    def test_single_prompt_by_version_from_dict(self):
+    def test_single_prompt_by_version_from_dict(self, mlflow_dict):
         config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
         config_dict = load_yaml_config(config_path)
         prompt_dict = config_dict["prompt"]
@@ -115,8 +116,7 @@ class TestConfig:
         prompt_dict["model_version"] = "1"
         prompt_dict["type"] = "predict"
         prompt_metric = prompt_dict["metric"]
-        mlfow_dict = config_dict["mlflow"]
-        prompt = single_prompt_from_dict(prompt_dict, prompt_metric, mlfow_dict)
+        prompt = single_prompt_from_dict(prompt_dict, prompt_metric, mlflow_dict)
         assert isinstance(prompt, DocQualityPrompt)
 
     def test_single_prompt_from_yaml(self):

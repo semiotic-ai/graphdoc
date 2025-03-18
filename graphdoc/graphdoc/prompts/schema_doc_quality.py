@@ -30,9 +30,9 @@ class DocQualitySignature(dspy.Signature):
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
-    category: Literal[
-        "perfect", "almost perfect", "poor but correct", "incorrect"
-    ] = dspy.OutputField()
+    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
+        dspy.OutputField()
+    )
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 
@@ -69,9 +69,9 @@ class DocQualityDemonstrationSignature(dspy.Signature):
     """  # noqa: B950
 
     database_schema: str = dspy.InputField()
-    category: Literal[
-        "perfect", "almost perfect", "poor but correct", "incorrect"
-    ] = dspy.OutputField()
+    category: Literal["perfect", "almost perfect", "poor but correct", "incorrect"] = (
+        dspy.OutputField()
+    )
     rating: Literal[4, 3, 2, 1] = dspy.OutputField()
 
 

@@ -50,21 +50,27 @@ class TestHelper:
         OPENAI_API_KEY = "test"
         HF_DATASET_KEY = "test"
         MLFLOW_TRACKING_URI = "test"
+        MLFLOW_TRACKING_USERNAME = "test"
+        MLFLOW_TRACKING_PASSWORD = "test"
         os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
         os.environ["HF_DATASET_KEY"] = HF_DATASET_KEY
         os.environ["MLFLOW_TRACKING_URI"] = MLFLOW_TRACKING_URI
-        config_path = CONFIG_DIR / "single_prompt_trainer.yaml"
+        os.environ["MLFLOW_TRACKING_USERNAME"] = MLFLOW_TRACKING_USERNAME
+        os.environ["MLFLOW_TRACKING_PASSWORD"] = MLFLOW_TRACKING_PASSWORD
+        config_path = CONFIG_DIR / "single_prompt_doc_quality_trainer.yaml"
         config = load_yaml_config(str(config_path))
         assert config is not None
-        assert config["language_model"]["lm_api_key"] is not None
-        assert config["language_model"]["lm_api_key"] == OPENAI_API_KEY
+        assert config["language_model"]["api_key"] is not None
+        assert config["language_model"]["api_key"] == OPENAI_API_KEY
         assert config["data"]["hf_api_key"] is not None
         assert config["data"]["hf_api_key"] == HF_DATASET_KEY
-        assert config["trainer"]["mlflow_tracking_uri"] is not None
-        assert config["trainer"]["mlflow_tracking_uri"] == MLFLOW_TRACKING_URI
+        assert config["mlflow"]["mlflow_tracking_uri"] is not None
+        assert config["mlflow"]["mlflow_tracking_uri"] == MLFLOW_TRACKING_URI
         del os.environ["OPENAI_API_KEY"]
         del os.environ["HF_DATASET_KEY"]
         del os.environ["MLFLOW_TRACKING_URI"]
+        del os.environ["MLFLOW_TRACKING_USERNAME"]
+        del os.environ["MLFLOW_TRACKING_PASSWORD"]
 
     def test_setup_logging(self):
         root_logger = logging.getLogger()

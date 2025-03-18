@@ -51,7 +51,7 @@ def main():
     report_config = copy.deepcopy(config)
     report_config["language_model"]["api_key"] = "REDACTED"
     report_config["data"]["hf_api_key"] = "REDACTED"
-    report_config["trainer"]["mlflow_tracking_uri"] = "REDACTED"
+    report_config["mlflow"]["mlflow_tracking_uri"] = "REDACTED"
     mlflow.log_params(report_config)
 
 

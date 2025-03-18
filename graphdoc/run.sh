@@ -14,7 +14,7 @@ install_command() {
 }
 
 dev_command() {
-    poetry install --with dev
+    poetry install --with dev,docs
 }
 
 requirements_command() {
@@ -68,7 +68,7 @@ docs_generate() {
 
 docs() {
     echo "Building documentation..."
-    cd docs && make clean html
+    cd docs && poetry run make clean html
     echo "Documentation built in docs/_build/html"
 }
 

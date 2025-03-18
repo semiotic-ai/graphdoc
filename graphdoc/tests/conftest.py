@@ -32,6 +32,11 @@ ASSETS_DIR = TEST_DIR / "assets"
 MLRUNS_DIR = ASSETS_DIR / "mlruns"
 ENV_PATH = TEST_DIR / ".env"
 
+# set the environment variables
+os.environ["MLFLOW_TRACKING_URI"] = str(MLRUNS_DIR)
+os.environ["MLFLOW_TRACKING_USERNAME"] = "admin"
+os.environ["MLFLOW_TRACKING_PASSWORD"] = "password"
+
 # Check if .env file exists
 if not ENV_PATH.exists():
     log.error(f".env file not found at {ENV_PATH}")
@@ -123,33 +128,6 @@ def overwrite_ldh() -> LocalDataHelper:
     )
 
 
-# @fixture
-# def gd() -> GraphDoc:
-#     """Fixture for GraphDoc with proper environment setup."""
-#     # Ensure environment is set up correctly
-#     if ENV_PATH.exists():
-#         load_dotenv(dotenv_path=ENV_PATH, override=True)
-#     ensure_env_vars()
-
-#     api_key = os.environ.get("OPENAI_API_KEY")
-#     mlflow_tracking_username = os.environ.get("MLFLOW_TRACKING_USERNAME")
-#     mlflow_tracking_password = os.environ.get("MLFLOW_TRACKING_PASSWORD")
-#     if not api_key:
-#         log.error("OPENAI_API_KEY still not available after loading .env file")
-
-#     return GraphDoc(
-#         model_args={
-#             "model": "gpt-4o-mini",
-#             "api_key": api_key,
-#             "cache": True,
-#         },
-#         mlflow_tracking_uri=MLRUNS_DIR,
-#         mlflow_tracking_username=mlflow_tracking_username,
-#         mlflow_tracking_password=mlflow_tracking_password,
-#         log_level="INFO",
-#     )
-
-
 @fixture
 def dqp():
     return DocQualityPrompt(
@@ -170,3 +148,12 @@ def dgp():
             prompt_metric="rating",
         ),
     )
+
+
+@fixture
+def mlflow_dict():
+    return {
+        "mlflow_tracking_uri": MLRUNS_DIR,
+        "mlflow_tracking_username": "admin",
+        "mlflow_tracking_password": "password",
+    }
