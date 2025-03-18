@@ -11,8 +11,10 @@ cp .env.example .env
 
 # (optional) set environment variables directly in the shell
 export OPENAI_API_KEY="<your-openai-api-key>"
-export MLFLOW_TRACKING_URI="<your-mlflow-tracking-uri>"
 export HF_DATASET_KEY="<your-huggingface-dataset-key>"
+export MLFLOW_TRACKING_URI="<your-mlflow-tracking-uri>"
+export MLFLOW_TRACKING_USERNAME="<admin>"
+export MLFLOW_TRACKING_PASSWORD="<password>"
 
 # navigate to the graphdoc package root
 cd..
