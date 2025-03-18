@@ -4,6 +4,7 @@
 import logging
 
 # system packages
+import os
 from pathlib import Path
 
 # external packages
@@ -40,6 +41,12 @@ log = logging.getLogger(__name__)
 BASE_DIR = Path(__file__).resolve().parent.parent
 SCHEMA_DIR = BASE_DIR / "tests" / "assets" / "schemas"
 CONFIG_DIR = BASE_DIR / "tests" / "assets" / "configs"
+MLRUNS_DIR = BASE_DIR / "tests" / "assets" / "mlruns"
+
+# set the environment variables
+os.environ["MLFLOW_TRACKING_URI"] = str(MLRUNS_DIR)
+os.environ["MLFLOW_TRACKING_USERNAME"] = "admin"
+os.environ["MLFLOW_TRACKING_PASSWORD"] = "password"
 
 
 class TestConfig:
