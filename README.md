@@ -11,11 +11,13 @@ We utilize [poetry](https://python-poetry.org/) for dependency management. Pleas
 
 We utilize [commitizen](https://commitizen-tools.github.io/commitizen/) for commit messages and semantic versioning. Please run `cz commit` to commit your changes. Commitizen can be installed with `pip install commitizen` or `brew install commitizen`.
 
+We utilize [docker](https://www.docker.com/) for managing the tracking of our service and associated expirements through [mlflow](https://mlflow.org/). In our docker image, we spin up a [mlflow](https://mlflow.org/), [postgres](https://www.postgresql.org/), and [minio](https://min.io/) instance. This is very similar to our production setup, and allows for a pretty smooth development flow between local and prod. Please ensure you have downloaded and are running docker in the background of your machine. 
+
 Here are some quick commands for getting started:
 
 ```bash 
-brew add poetry
-brew add commitizen
+brew install poetry
+brew install commitizen
 ```
 
 ```bash 
@@ -26,11 +28,35 @@ cd ../mlflow-manager
 poetry install 
 ```
 
+### .env
+
+There are two `.env` files that we expect the user to set up. They are divided between `mlflow-manager` and `graphdoc`. First, let's setup the `mlflow-manager` `.env` file. You can leave these values as they are, or modify them as you see fit:
+
+```bash
+# navigate to the docker root
+cd mlflow-manager
+cd docker
+
+# copy the .env.example for setup
+cp .env.example .env # set values directly in your newly created .env file 
+```
+
+Next, let's set up the `.env` file to be used by our `graphdoc` program. 
+
+```bash
+# navigate to the graphdoc root 
+cd ../..
+
+# copy the .env.example for setup
+cp .env.example .env # set values directly in your newly created .env file 
+```
+
 ### run.sh
 
 The `run.sh` script is a convenience script for development. It provides a few shortcuts for running useful commands.
 
 ```bash 
+# make sure you are in the root of the repository 
 # ensure that the script is executable
 chmod +x run.sh
 
@@ -41,6 +67,8 @@ chmod +x run.sh
 To setup the mlflow-manager services, run the following command:
 
 ```bash 
+# default username: admin
+# default password: password
 ./run.sh mlflow-setup
 ```
 
