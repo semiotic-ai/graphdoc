@@ -116,7 +116,7 @@ def mlflow_data_helper_from_yaml(yaml_path: Union[str, Path]) -> MlflowDataHelpe
     .. code-block:: yaml
 
         mlflow:
-            mlflow_tracking_uri: !env MLFLOW_TRACKING_URI           # The tracking URI for MLflow
+            mlflow_tracking_uri:      !env MLFLOW_TRACKING_URI      # The tracking URI for MLflow
             mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
             mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
 
@@ -429,11 +429,15 @@ def single_trainer_from_dict(
     .. code-block:: python
 
         {
+            "mlflow": {
+                "mlflow_tracking_uri": "http://localhost:5000",
+                "mlflow_tracking_username": "admin",
+                "mlflow_tracking_password": "password",
+            },
             "trainer": {
                 "class": "DocQualityTrainer",
                 "mlflow_model_name": "doc_quality_model",
                 "mlflow_experiment_name": "doc_quality_experiment",
-                "mlflow_tracking_uri": "http://localhost:5000"
             },
             "optimizer": {
                 "optimizer_type": "miprov2",
@@ -465,7 +469,7 @@ def single_trainer_from_dict(
             optimizer_kwargs=trainer_dict["optimizer"],
             mlflow_model_name=trainer_dict["trainer"]["mlflow_model_name"],
             mlflow_experiment_name=trainer_dict["trainer"]["mlflow_experiment_name"],
-            mlflow_tracking_uri=trainer_dict["trainer"]["mlflow_tracking_uri"],
+            mlflow_tracking_uri=trainer_dict["mlflow"]["mlflow_tracking_uri"],
             trainset=trainset,
             evalset=evalset,
         )
@@ -631,7 +635,7 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
     .. code-block:: yaml
 
         mlflow:
-            mlflow_tracking_uri: !env MLFLOW_TRACKING_URI           # The tracking URI for MLflow
+            mlflow_tracking_uri:      !env MLFLOW_TRACKING_URI      # The tracking URI for MLflow
             mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
             mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
 
@@ -663,7 +667,6 @@ def doc_generator_eval_from_yaml(yaml_path: Union[str, Path]) -> DocGeneratorEva
             fill_empty_descriptions: true                         # Whether to fill the empty descriptions in the schema
 
         eval:
-            mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
             mlflow_experiment_name: doc_generator_eval            # The name of the experiment in MLflow
             generator_prediction_field: documented_schema         # The field in the generator prediction to use
             evaluator_prediction_field: rating                    # The field in the evaluator prediction to use
