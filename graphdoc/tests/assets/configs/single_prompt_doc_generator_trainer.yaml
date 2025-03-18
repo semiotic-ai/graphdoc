@@ -1,11 +1,8 @@
 graphdoc: 
-  log_level: INFO                                       # The log level to use (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
-  mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
-  mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
+  log_level: INFO                                         # The log level to use (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 
 mlflow: 
-  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
+  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI           # The tracking URI for MLflow
   mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
   mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
 
@@ -22,10 +19,11 @@ data:
   local_specific_category: perfect                      # The specific category to load from the dataset (if load_from_local is true)
   local_parse_objects: True                             # Whether to parse the objects in the dataset (if load_from_local is true)
   split_for_eval: True                                  # Whether to split the dataset into trainset and evalset 
-  trainset_size: 1000                                   # The size of the trainset
+  trainset_size: 10                                     # The size of the trainset
   evalset_ratio: 0.1                                    # The proportionate size of the evalset
   data_helper_type: generation                          # Type of data helper to use (quality, generation)
   seed: 42                                              # The seed for the random number generator
+
 prompt:
   prompt: base_doc_gen                                  # Which prompt signature to use
   class: DocGeneratorPrompt                             # Must be a child of SinglePrompt (we will use an enum to map this)
@@ -48,18 +46,15 @@ prompt_metric:
   model_version: null                                   # The version of the model in MLflow
 
 trainer: 
-  class: DocGeneratorTrainer                              # The type of trainer to use (DocQualityTrainer)
+  class: DocGeneratorTrainer                            # The type of trainer to use (DocQualityTrainer)
   optimizer_type: miprov2                               # The type of optimizer to use (miprov2, BootstrapFewShotWithRandomSearch)
-  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
-  mlflow_model_name: doc_quality_model                  # The name of the model in MLflow
-  mlflow_experiment_name: doc_quality_experiment        # The name of the experiment in MLflow
+  mlflow_model_name: doc_generator_model                # The name of the model in MLflow
+  mlflow_experiment_name: doc_generator_experiment      # The name of the experiment in MLflow
 
 optimizer: 
   optimizer_type: miprov2                               # BootstrapFewShotWithRandomSearch, miprov2
-  auto: medium                                          # miprov2 setting
-  # student: this is the prompt.infer object
-  # trainset: this is the dataset we are working with 
-  max_labeled_demos: 2
-  max_bootstrapped_demos: 4
-  num_trials: 25
+  auto: light                                           # miprov2 setting
+  max_labeled_demos: 2                                  # max number of labeled demonstrations
+  max_bootstrapped_demos: 4                             # max number of bootstrapped demonstrations
+  num_trials: 2                                         # number of trials
   minibatch: true                                       # default true

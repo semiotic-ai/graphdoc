@@ -1,8 +1,5 @@
 graphdoc: 
   log_level: INFO                                       # The log level to use (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
-  mlflow_tracking_username: !env MLFLOW_TRACKING_USERNAME # The username for the mlflow tracking server
-  mlflow_tracking_password: !env MLFLOW_TRACKING_PASSWORD # The password for the mlflow tracking server
 
 mlflow: 
   mlflow_tracking_uri: !env MLFLOW_TRACKING_URI           # The tracking URI for MLflow
@@ -51,18 +48,15 @@ prompt_metric:
 trainer: 
   class: DocGeneratorTrainer                            # The type of trainer to use (DocQualityTrainer)
   optimizer_type: miprov2                               # The type of optimizer to use (miprov2, BootstrapFewShotWithRandomSearch)
-  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
   mlflow_model_name: doc_generator_model                # The name of the model in MLflow
   mlflow_experiment_name: doc_generator_experiment      # The name of the experiment in MLflow
 
 optimizer: 
   optimizer_type: miprov2                               # BootstrapFewShotWithRandomSearch, miprov2
   auto: light                                           # miprov2 setting
-  # student: this is the prompt.infer object
-  # trainset: this is the dataset we are working with 
-  max_labeled_demos: 2
-  max_bootstrapped_demos: 4
-  num_trials: 2
+  max_labeled_demos: 2                                  # max number of labeled demonstrations
+  max_bootstrapped_demos: 4                             # max number of bootstrapped demonstrations
+  num_trials: 2                                         # number of trials
   minibatch: true                                       # default true
 
 module: 
@@ -72,7 +66,6 @@ module:
   fill_empty_descriptions: true                         # Whether to fill the empty descriptions in the schema
 
 eval:
-  mlflow_tracking_uri: !env MLFLOW_TRACKING_URI         # The tracking URI for MLflow
   mlflow_experiment_name: doc_generator_eval            # The name of the experiment in MLflow
   generator_prediction_field: documented_schema         # The field in the generator prediction to use
   evaluator_prediction_field: rating                    # The field in the evaluator prediction to use
