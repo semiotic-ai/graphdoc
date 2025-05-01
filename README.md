@@ -3,6 +3,7 @@
 [![Semantic Versioning](https://img.shields.io/badge/semver-2.0.0-green)](https://semver.org/spec/v2.0.0.html)
 
 # graphdoc
+
 Automating the generation of subgraph documentation through the utilization of Large Language Models.
 
 ## Development
