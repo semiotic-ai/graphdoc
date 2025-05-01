@@ -22,7 +22,7 @@ brew install commitizen
 ```
 
 ```bash 
-cd graphdoc
+cd graphdoc/graphdoc
 poetry install 
 
 cd ../mlflow-manager
