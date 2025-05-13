@@ -182,3 +182,6 @@ planning/
 
 # Ignore our examples directory (for now)
 examples/
+
+# Ignore Apple artifacts
+.DS_Store
